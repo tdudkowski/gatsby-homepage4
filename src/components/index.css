@@ -1,0 +1,22 @@
+.container {
+    /* background-image: url(../content/pageimages/Ornate-Dharma-Wheel-Silhouette.svg); */
+    background-image: url(../content/pageimages/dharma-wheel-publicdomainvectors.org.svg);
+    background-repeat: no-repeat;
+    background-size: 80%;
+    background-attachment: fixed;
+    background-position: 200% 120%;
+}
+
+.container main > div > ul li {background-color: rgba(250,250,250,.4);}
+/* .container main > article {background-color: rgba(153, 153, 153, 0.1);} */
+/*.container main > article {background-color: #fff;*/
+/*    background-image:*/
+/*    linear-gradient(90deg, transparent 79px, #abced4 79px, #abced4 81px, transparent 81px),*/
+/*    linear-gradient(#eee .1em, transparent .1em);*/
+/*    background-size: 100% 1.2em;}*/
+.content a, aside a {text-decoration: none;}
+.content a:hover, aside a:hover {text-decoration: underline;}
+.content > div {background-color: rgba(250,250,250,.9);}
+
+.container > header {background-color: rgba(80,0,20,.9); border-radius:0 0 10px 10px;}
+blockquote {padding-left:1rem;}

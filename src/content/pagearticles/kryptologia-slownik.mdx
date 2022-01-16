@@ -1,0 +1,515 @@
+---
+title: "Kryptologia - słownik pojęć"
+comment: ""
+section: "it"
+subsection: "kryptologia"
+---
+
+### Algorytm kryptograficzny
+
+Jednoznacznie opisana procedura szyfrująca lub rozszyfrowująca dane; najczęściej używana w znaczeniu konkretnego, udokumentowanego rozwiązania.
+
+### Atak
+
+Próba złamania szyfru, odczytania szyfrogramu bez uprzedniej znajomości przekształceń, jakim został poddany. Sformułowanie "zgłoszono atak" oznacza, że zakończył się przynajmniej częściowym powodzeniem.
+
+### CA (Certyficate Authority)
+
+Instytucja, która wystawia podpisy cyfrowe i gwarantuje związek pomiędzy danymi w certyfikacie.
+
+### CRL (Certificate Revocation List)
+
+Lista odwołanych certyfikatów - jest podpisywana przez CA i udostępniana publicznie. Każdy unieważniony certyfikat jest identyfikowany w CRL na podstawie swojego numeru seryjnego. Każdy wpis zawiera informację o dacie wystawienia, wystawcy oraz przyczynie odwołania.
+
+System wykorzystujący certyfikaty nie tylko sprawdza podpis certyfikatu oraz jego ważność, ale także sprawdza, czy numer seryjny certyfikatu znajduje się na aktualnej (najnowszej) CRL. Listy wydawane są regularnie w określonych interwałach czasowych i zwykle zawierają informację o spodziewanej dacie publikacji następnej listy. Możliwe jest także wydanie nadzwyczajne w celu przyspieszenia zawiadomienia o fakcie ujawnienia klucza prywatnego.
+
+Zaletą metody unieważniania za pomocą CRL jest możliwość rozprowadzania jej w dokładnie taki sam sposób jak samych certyfikatów: poprzez dowolne systemy komunikacyjne i serwery. Wadą tej metody jest ograniczenie dokładności czasowej unieważnienia do częstotliwości wydawania CRL.
+
+Inną metodą służącą do tego samego celu jest Online Certificate Status Protocol (OCSP), która ma tę przewagę, że sprawdza status certyfikatu w czasie rzeczywistym.
+
+### Diceware
+
+Metoda wybierania frazy hasła: za pomocą kości do gry losowo wybiera się słowa ze specjalnej listy (nazywanej Listą Słów Diceware - *Diceware Word List*)
+
+- [The Diceware Passphrase Home Page](https://theworld.com/~reinhold/diceware.html)
+- [Piotr (DrFugazi): Diceware](http://drfugazi.eu.org/?s=diceware)
+
+### Dowód bez przekazywania informacji, dowód wiedzy zerowej (ang. *zero knowledge proof*)
+
+W kryptografii oznacza metodę dowodzenia prawdziwości pewnego stwierdzenia drugiej stronie, tak, że nie zostaje ujawnione nic oprócz dowodzonego twierdzenia.
+
+Przyjęło się określać stronę dowodzącą jako Peggy (z ang. *prover*) a drugą jako Victor (z ang. *verifier*), czasem P i V to Pat i Vanna. Muszą zostać spełnione trzy warunki:
+
+- całkowitość (ang. *completeness*): jeśli twierdzenie jest prawdziwe, uczciwy sprawdzający zostanie przekonany przez uczciwego dowodzącego
+- wiarygodność (ang. *soundness*): jeśli twierdzenie jest fałszywe, żaden oszukujący dowodzący nie może przekonać uczciwego sprawdzającego, że jest prawdziwe, lub jest to mało prawdopodobne
+- dyskrecja: jeśli twierdzenie jest prawdziwe, żaden oszukujący sprawdzający nie dowie się niczego poza tym faktem
+
+Powszechnie stosowany w mechanizmach uwierzytelnienia, gdzie jedna strona chce dowieść swojej tożsamości poprzez przekazanie pewnej poufnej wiadomości (np. hasła), ale nie chce, żeby ktoś uzyskał dostęp do tej wiadomości.
+
+Nie jest to dowód w sensie matematycznym, ponieważ istnieje pewne małe prawdopodobieństwo (zwany błędem wiarygodności), że oszukujący dowodzący będzie w stanie przekonać sprawdzającego do fałszywego stwierdzenia. Istnieją standardowe techniki zmniejszające ten błąd do pewnej określonej, małej wartości.
+
+- [Zero knowledge proof](http://en.wikipedia.org/wiki/Zero_knowledge_proof)
+
+### FreeS/WAN
+
+Najbardziej znana implementacja IPsec, już nie jest rozwijana. Kontynuacją są projekty [Openswan](http://www.openswan.org/) i [Strongswan](http://www.strongswan.org/)
+
+### Funkcja haszująca (ang. *hash function*)
+
+Funkcja, która przyporządkowuje obiektom - zwykle łańcuchom znaków dowolnej długości - jakąś liczbę ze skończonego przedziału (tzw. hasz lub skrót).
+
+Funkcja haszująca jest definiowana przez swoją dziedzinę (ciąg bajtów o dowolnej długości), swój przedział (sekwencja bitów o określonej długości) oraz funkcje definiującą (H); pożądana charakterystyka funkcji haszującej - *H (x) =! H (y)* więc *x =! y* oraz *H (x) = H (y)* implikuje, że *x = y*.
+
+Niestety nie można mieć pewności co do tego, ponieważ skoro wartości *H (x)* jest dużo mniejsza od możliwych wartości *x*, co oznacza, że są takie *x* i *y*, które *x ! = y*, dla których *H (x) = H (y)* - sytuacja taka nazywana jest kolizją.
+
+Najważniejszym wymaganiem wobec funkcji haszującej jest brak prostych zależności między obiektem a wartością jego hasha (nieodwracalność).
+
+Dobra funkcja haszująca przy najdrobniejszej zmianie danych wejściowych zmienia około połowy bitów. Dzięki temu rzeczą niemal niemożliwą jest stworzenie dwóch różnych bloków danych dających taki sam rezultat - więc odnalezienie kolizji będzie wymagało ataku BF (co jest wymaganiem wobec każdego dobrego szyfru).
+
+Funkcje haszujące mają wiele zastosowań:
+
+- buduje się za ich pomocą efektywne struktury danych (ułatwia wyszukiwanie takich samych plików - "hash tables")
+- używa się ich do weryfikacji poprawności przesyłu danych (wykrywanie zmian w pliku)
+- stosuje się je w kryptografii
+
+Funkcje haszujące używane w kryptografii:
+
+- historyczne: MD2, MD4, SHA, MD5, SHA1, RIPEMD
+- współczesne: SHA-2, bcrypt
+
+Wyraz "hash" w znaczeniu używanym w informatyce wywodzi się prawdopodobnie ze standardowego znaczenia "mieszanka pociętych kawałków"; Knuth zauważa, że H.P. Luhn pierwszy raz użył tego pojęcia w notatce ze stycznia 1953; termin "hash" wszedł w użycie jakieś 10 lat później.
+
+- [Funkcja haszująca](http://pl.wikipedia.org/wiki/Funkcja_haszuj%C4%85ca), [Hash function](http://en.wikipedia.org/wiki/Hash_function)
+
+### Generator liczb pseudolosowych (ang. *pseudo random number generator* - *PRNG*)
+
+Procedura generująca sekwencję wartości numerycznych wyglądającą na przypadkową, prawie nie do przewidzenia; najczęściej używa się to do tego tzw. ziarna (ang. *seed*), czyli czysto losowej wartości (np. pochodzącej ze zdarzeń systemowych), która następnie jest przetwarzana.
+
+- [GPG (GNU Privacy Guard)](http://www.gnupg.org/)
+
+Darmowy i kompletny zamiennik PGP; program Free Software Foundation zgodny ze standardem OpenPGP opublikowany na licencji GPL, wspierany przez niemiecki rząd, część projektu GNU.
+
+GnuPG wspiera następujące algorytmy: ElGamal, DSA, RSA, AES, 3DES, Blowfish, Twofish, CAST5, MD5, SHA-1, RIPE-MD-160, TIGER.
+
+### Hasło (ang. *password*)
+
+Tajny element używany do potwierdzenia tożsamości, najczęściej słowa, które łatwo jest zapamiętać. Z założenia znane jest tylko osobom, których tożsamość ma potwierdzić. Klucz w postaci słowa.
+
+### Hasło jednorazowe (ang. *one time password* - *OTP*)
+
+1. Hasło, które może zostać użyte tylko raz, zwykle generowane przez sprzętowy token.
+2. OTP oznacza też szyfr z kluczem jednorazowym, czyli tzw. szyfr Vernama.
+
+### HTTPS (HyperText Transfer Protocol Secure)
+
+Zaszyfrowana, bezpieczniejsza wersja protokołu HTTP - wynalazek firmy Netscape Communications używany powszechnie. Zamiast użycia w komunikacji klient-serwer czystego, niezaszyfrowanego tekstu stosuje się szyfrowanie SSL lub TLS. Dzięki uwierzytelnieniu i szyfrowaniu informacji zapobiega przechwytywaniu i zmienianiu przesyłanej informacji.
+
+HTTPS domyślnie działa na porcie nr 443. Wywołania tego protokołu zaczynają się od https:, a zwykłego połączenia HTTP od http:.
+
+Poziom zabezpieczenia zależy od poprawności implementacji w przeglądarce i oprogramowaniu serwera oraz konkretnego zastosowanego algorytmu kryptograficznego.
+
+Sam HTTPS nie zabezpiecza w pełni danych, które są przesyłane podczas transakcji - tylko szyfruje informacje pomiędzy klientem a serwerem, gdzie dane te są przechowywane w bazie danych - najczęściej właśnie ten serwer jest atakowany.
+
+- Wikipedia [HTTPS](http://pl.wikipedia.org/wiki/HTTPS)
+
+### IETF (Internet Engineering Task Force)
+
+Powstałe w 1986 roku międzynarodowe stowarzyszenie osób zajmujące się tworzeniem standardów sieciowych. Chociaż nie posiada żadnej formalnej władzy publikowane przez nie dokumenty (o nazwie RFC) specyfikują stosowane w internecie standardy.
+
+Dzieli się na wyspecjalizowane grupy robocze.
+
+- [IETF](http://www.ietf.org/) | [IETF (pl.)](http://pl.wikipedia.org/wiki/IETF) | [Internet Engineering Task Force](http://en.wikipedia.org/wiki/Internet_Engineering_Task_Force)
+
+### IKE (*Internet key exchange*)
+
+Protokół używany do wymiany kluczy i ustanowienia bezpiecznych połączeń w zestawie protokołów IPsec. Jest obligatoryjną częścią standardu IPv6 oraz opcjonalną IPv4.
+
+IKE jest zdefiniowany w RFC 2409. Używa mechanizmu wymiany kluczy Diffie-Hellmana do ustanowienia współdzielonego sekretu na czas sesji, z niego są tworzone klucze.
+
+- [Internet Key Exchange](https://en.wikipedia.org/wiki/Internet_Key_Exchange)
+
+### IPsec
+
+Zbiór powiązanych ze sobą protokołów - opisanych w RFC 2401-2409 - które służą implementacji bezpiecznych połączeń oraz wymiany kluczy kodowych pomiędzy komputerami. Protokoły tej grupy używane są do tworzenia VPN (Virtual Private Network). VPN oparta na IPsec składa się z dwóch kanałów komunikacyjnych pomiędzy połączonymi komputerami:
+
+- kanał wymiany kluczy, za pośrednictwem którego przekazywane są dane związane z uwierzytelnieniem oraz kodowaniem (klucze) - dawniej używano ESP i AH a obecnie jest zdefiniowany tylko jeden protokół wymiany kluczy (IKE)
+- kanału (jednego lub więcej), który niesie pakiety transmitowane poprzeć sieć prywatną - protokoły zabezpieczające przepływ pakietów
+
+IPsec miał być obligatoryjnym standardem IPv6 i opcjonalnym dla IPv4. Protokoły IPsec operują na trzecim poziomie modelu OSI, dzięki czemu mogą chronić protokoły oparte zarówno na TCP jak i UDP.
+Implementacje:
+
+- [FreeS/WAN](http://www.freeswan.org/) zakończony w marcu 2004 - jego kontynuacją są [Openswan](http://www.openswan.org/) i [Strongswan](http://www.strongswan.org/)
+- Wikipedia [IPsec (pl.)](http://pl.wikipedia.org/wiki/IPsec), [IPsec (eng.)](http://en.wikipedia.org/wiki/IPsec)
+
+### KDF (Key Derivation Function)
+
+Tworzy klucz na podstawie hasła wymyślonego przez użytkownika, poddając je wielokrotnym przekształceniom w celu utrudnienia ataku BF.
+
+- [Key derivation function](http://en.wikipedia.org/wiki/Key_derivation_function)
+
+### Kerberos (Kerberos: The Network Authentication Protocol)
+
+Powstały w MIT (Massachusetts Institute of Technology) w celu ochrony usług sieciowych projektu Athena protokół uwierzytelniania obiektów w sieci komputerowej.
+
+Pozwala na komunikację przez niezabezpieczoną sieć i potwierdzenia swojej tożsamości w bezpieczny sposób, zapobiega podsłuchiwaniu lub atakom przez powtórzenie (ang. *replay attacks*) i zapewnia integralność danych; zaprojektowany pierwotnie dla sieci klient-serwer i zapewnia wzajemne uwierzytelnienie - dotyczące zarówno użytkownika, jak i usługi z której korzysta.
+
+Korzysta z kryptografii asymetrycznej (oparty jest na protokole Needham-Schroeder) i wymaga zaufanej trzeciej strony, tzw. Key Distribution Center (KDC), który składa się z dwóch logicznie oddzielnych części Authentication Server (AS) i Ticket Granting Server (TGS). Tożsamość użytkowników potwierdzona jest za pomocą tzw. biletów (ang. *tickets*).
+
+Kerberos używa bazy danych zawierających tajne klucze, każdy obiekt sieci - zarówno klient, jak i serwer - współdzieli tajny klucz znany tylko sobie i serwerowi Kerberos, znajomość tego klucza używana jest do potwierdzenia tożsamości. Dla komunikacji między obiektami Kerberos generuje klucz sesyjny używany do zabezpieczenia komunikacji.
+
+- [Kerberos: The Network Authentication Protocol](http://web.mit.edu/kerberos/www/)
+- [Kerberos (protocol)](http://en.wikipedia.org/wiki/Kerberos_(protocol))
+
+### *Key-agreement protocol*
+
+Protokół uzgodnienia wspólnego tajnego klucza używanego do zabezpieczenia komunikacji, użyty prawidłowo zabezpiecza przed wymuszeniem wyboru klucza przez trzecią stronę lub ujawnieniem go.
+
+Pierwszym znanym publicznie mechanizmem tego typu był *Diffie-Hellman key exchange*, w którym dwóch ludzi wspólnie używało generatora liczb pseudolosowych w taki sposób, że podsłuchiwacz nie miał możliwości odgadnięcia jaki klucz został wybrany.
+
+Diffie-Hellman był rozwijany przez badaczy GCHQ, UK odpowiednika NSA. James Ellis udowodnił, że elementy tej techniki były znane w latach 60., a cała wymiana kluczy (Malcolm Williamson) we wczesnych latach 70. GCHQ nie zezwoliło na ujawnienie, więc to Diffie i Hellman mieli pierwszą publikację.
+
+### *Keysigning party*
+
+Metoda tworzenia i umacniania sieci zaufania PGP.
+
+Spotkanie, którego uczestnicy wymieniają się odciskami palców (*fingerprints*) swoich podpisów PGP zapisanymi na papierze w czasie weryfikacji swojej tożsamości, żeby zmniejszyć możliwość podstępu, nie używa się ani komputerów, ani cyfrowych nośników pamięci.
+
+Po *keysigning party* uczestnicy podpisują swoje klucze PGP, sprawdzając przedtem, czy zgadzają się z otrzymanymi wcześniej skrótami.
+
+- [GnuPG Keysigning Party HOWTO](https://www.cryptnet.net/fdp/crypto/keysigning_party/en/keysigning_party.html)
+- Wikipedia [Keysigning party](http://en.wikipedia.org/wiki/Keysigning_party)
+
+### Klucz (ang. *key*)
+
+Informacja sprawiająca, że szyfr szyfruje informację w jednoznacznie określony sposób, konkretne klucze są zwykle związane z konkretną tożsamością.
+
+Parametry określające sposób działania algorytmu szyfrującego (np. para liczb w RSA, ciąg bitów w DES). Im większa przestrzeń klucza, tym trudniejszy jest atak BF.
+
+### Klucz prywatny (ang. *secret key*)
+
+W kryptografii asymetrycznej klucz służący do wykonywania zastrzeżonej czynności, którego rozpowszechnienie zagraża bezpieczeństwu systemu. Czynności te to najczęściej:
+
+- odszyfrowywanie (klucz publiczny szyfruje)
+- podpisywanie (klucz publiczny weryfikuje podpisy)
+
+Nazwa ta jest też czasem używana dla klucza w kryptografii symetrycznej.
+
+### Klucz publiczny (ang. *public key*)
+
+W kryptografii asymetrycznej klucz umożliwiający wykonywanie czynności, dostępu do których nie chcemy ograniczać i który z tego powodu może być dowolnie rozpowszechniany:
+
+- szyfrowanie (klucz prywatny służy do odszyfrowywania)
+- weryfikacja podpisu (klucz prywatny służy do podpisywania)
+
+### Kolizja
+
+Kolizja funkcji haszującej H to taka para różnych wiadomości m1, m2, że mają one taką samą wartość hasza, tj. *H(m1) = H(m2)*.
+Ponieważ funkcja haszująca zwraca skończenie wiele wartości, a przestrzeń argumentów jest nieskończona (w przypadku funkcji akceptujących dowolnie długie argumenty), lub przynajmniej znacznie większa od przestrzeni wyników, dla każdej funkcji haszującej jakieś kolizje istnieją.
+
+W wielu zastosowaniach zależy nam na tym, żeby nie była znana żadna kolizja funkcji haszującej. Jest to jednak bardzo silne wymaganie i często zależy nam na słabszej właściwości funkcji (od silniejszych do słabszych właściwości):
+
+- niemożliwość łatwego generowania nowych kolizji
+- niemożliwość znalezienia, dla danego m1 takiego *m2*, że *H(m1) = H(m2)*, czyli *second preimage resistance*
+- niemożliwość znalezienia, dla danego *h* takiego *m*, że *H(m) = h*, czyli *preimage resistance*
+
+- Wikipedia [Kolizja (kryptografia)](http://pl.wikipedia.org/wiki/Kolizja_%28kryptografia%29), [Hash collision](http://en.wikipedia.org/wiki/Hash_collision)
+
+### Kryptoanaliza (ang. *cryptanalysis*)
+
+Dziedzina kryptologii zajmująca się łamaniem szyfrów i słabościami systemów kryptograficznych, badane są możliwości naruszenia wszystkich zakładanych cech bezpieczeństwa - ataki na protokoły, Łamanie szyfrów, fałszowanie podpisów, naruszanie integralności wiadomości itd.; jest bardzo szybko rozwijającą się nauką i z zasady długość życia systemu kryptograficznego jest o wiele krótsza, niż oczekiwali to jego autorzy.
+
+Ważniejsze metody: brute force, kryptoanaliza liniowa, kryptoanaliza różnicowa, kryptoanaliza statystyczna.
+
+### Kryptografia (ang. *cryptography*; z greckiego *kryptós*, "ukryty" i *gráphein* "pisać")
+
+Dziedzina wiedzy zajmująca się zamianą (szyfrowaniem) informacji (w formie tekstu jawnego) w nieczytelną postać (szyfrogram).
+Pierwsze znane użycie słowa kryptografia jest Sir Thomas Browne "The Garden of Cyrus... the strange Cryptography of Gaffarel in his Starrie Booke of Heaven" 1658.
+
+### Kryptologia (ang. *cryptology*)
+
+Dziedzina wiedzy o utajnianiu informacji; składa się ze steganografii, kryptografii i kryptoanalizy.
+
+### Kryptosystem
+
+Kompletny zestaw będący wdrożeniem danego szyfru: algorytm szyfrujący, implementacje, instrukcje, procedury i sprzęt.
+
+### Kodowanie (ang. *coding*)
+
+Zamiana jednego ciągu znaków na drugi na poziomie słów lub fraz.
+
+### LAN (Local Area Network)
+
+Lokalna sieć komputerowa.
+
+### Łamanie haseł (ang. *password cracking*)
+
+Proces odzyskiwania haseł. Może służyć użytkownikowi do odzyskania zapomnianego hasła, włamywaczowi do przejęcia kontroli nad zasobami oraz administratorowi do prewencyjnego testowania siły haseł wybieranych przez użytkowników. Stosowane techniki: SE, podsłuchiwanie, keyloggery, fałszywe terminale logowania itp.
+
+Popularne programy:
+
+- [John the Ripper password cracker](http://www.openwall.com/john/)
+- [hashcat - advanced password recovery](https://hashcat.net/hashcat/)
+
+Uwaga: nieostrożne używanie technik lub programów służących do łamania haseł może spowodować problemy prawne.
+
+- [Password cracking](http://en.wikipedia.org/wiki/Password_cracking)
+
+### MAC (Message Authentication Codes)
+
+Podobny do funkcji haszujących, ale do wyliczenia haszu używany jest klucz. Jak sama nazwa wskazuje, jest stosowany do uwierzytelniania wiadomości.
+
+Algorytm MAC (*keyed hash function*) przyjmuje tajny klucz i wiadomość, a potem wytwarza MAC (tzw. znacznik - *tag*). Zadania:
+
+- chroni integralność wiadomości poprzez zapewnienie, że jeśli wiadomość zostanie zmieniona, zmieni się MAC
+- zapewnia uwierzytelnienie, bo tylko ktoś, kto zna tajny klucz, może wygenerować poprawny MAC
+
+Algorytmy MAC stworzone są z innych kryptograficznych składników, takich jak funkcje mieszające (w przypadku HMAC) lub algorytmów szyfrów blokowych (OMAC i PMAC).
+
+### Model OSI
+
+Model komunikacji sieciowej.
+Składa się z warstw:
+
+- górnych:
+  - aplikacji: użytkownik odbiera i wysyła dane
+  - prezentacji: w ruchu w dół przetwarza dane do postaci kanonicznej wymaganej, w górę usuwa niepotrzebne dane związane z protokołami sieciowymi
+  - sesji: łączy procesy użytkownika
+- dolnych
+  - transportowa: szereguje dane i dba o poprawność przesyłu
+  - sieciowa: jest odpowiedzialna tylko za drogę przesyłania danych
+  - łącza danych: zarządza parametrami warstwy fizycznej by zapewnić najlepszą jakość transmisji
+  - fizyczna: sprzęt
+
+- [Model*OSI (pl.)](http://pl.wikipedia.org/wiki/Model*OSI), [OSI*model (ang.)](http://en.wikipedia.org/wiki/OSI*model)
+
+### Niezaprzeczalność (ang. *non-repudiation*)
+
+Jedno z zadań kryptografii asymetrycznej - zapewnienie dowodu, że nastąpiło pewne działanie (np. odebranie lub wysłanie wiadomości).
+
+### Odcisk palca (ang. *fingerprint*)
+
+Skrót podpisu PGP, efekt działania funkcji haszującej.
+
+### OpenPGP
+
+Opublikowany standard (RFC 2440) programu kryptograficznego powstały, by zapewnić interoperacyjność pomiędzy programami i wtyczkami.
+Używany przez GNU Privacy Guard (GnuPG) i inne programy.
+
+### OpenSSH
+
+Zintegrowany zestaw aplikacji powstały w ramach projektu OpenBSD - udostępniana na wolnej licencji implementacja SSH.
+
+- [OpenSSH](http://openssh.com/)
+
+### OTP (One Time Pad)
+
+Szyfr, w którym jeden bit nowego, czysto przypadkowego klucza jest używany dla każdego bitu zaszyfrowanych danych. Teoretycznie nie do złamania, ale bardzo trudny w implementacji.
+
+- [One-time pad](http://en.wikipedia.org/wiki/One-time_pad)
+
+### Paradoks dnia urodzin
+
+Paradoks - w sensie niezgodności intuicją - polegający na tym, że np. dla przypadkowego zbioru 23 osób prawdopodobieństwo, że dwie z nich mają urodziny w tym samym dniu, wynosi trochę ponad 50%, a dla 60 aż 99%.
+
+Jest to jeden z klasycznych problemów rachunku prawdopodobieństwa i ma duże znaczenie w kryptografii: np. jeśli funkcje haszujące zwracają 2k możliwych odpowiedzi, to znalezienie kolizji, czyli takiego *m1* i *m2*, że *H(m1) = H(m2)* wymaga sprawdzenia jedynie 2k/2 możliwości.
+
+- [Birthday paradox](http://en.wikipedia.org/wiki/Birthday_paradox), [Paradoks dnia urodzin](http://pl.wikipedia.org/wiki/Paradoks_dnia_urodzin)
+
+### PGP (Pretty Good Privacy)
+
+Program autorstwa Phil Zimmermanna zapewniający kryptograficzną prywatność i uwierzytelnienie, w różnych swoich wersjach najczęściej używany system kryptograficzny na świecie, najbardziej zaawansowane z popularnych rozwiązań.
+
+Powstał w 1991; nazwa nawiązuje do znanego z programu radiowego sklepu spożywczego (artykuły kolonialne - *grocery*) o nazwie *Ralph's Pretty Good Grocery*, którego sloganem było, *"jeśli nie znalazłeś tego u Ralfa, najpewniej możesz się bez tego obyć"*.
+
+Wpływ PGP był tak duży, że stał się podstawą dla stworzenia standardu IETF - OpenPGP.
+
+### PKC (Public Key Certificate)
+
+Cyfrowy certyfikat jednoznacznie wiążący tożsamość elementu systemu z wartością klucza publicznego i - najczęściej - dodatkowymi informacjami. Podpisana cyfrowo struktura danych poświadczająca kto jest właścicielem klucza publicznego.
+
+### PKCS (Public Key Cryptography Standards)
+
+Specyfikacje pochodzące ze współpracy RSA Laboratories i specjalistów z całego świata mające na celu popularyzację kryptografii asymetrycznej. Opublikowane po raz pierwszy w 1991 dokumenty PKCS mają wiele referencji i implementacji.
+
+Z prac nad PKCS wyłoniło się wiele standardów (formalnych, jak i de facto), najbardziej znane to S/MIME i SSL.
+
+### PKI (Public Key Infrastructure)
+
+Infrastruktura Klucza Publicznego - system składający się z jednostek (pełniących różną rolę serwerów, agentów), które używają podpisów cyfrowych; zestaw sprzętu, oprogramowania, ludzi, polityk i procedur potrzebnych do tworzenia, zarządzania, przechowywania, dystrybucji i odwoływania podpisów cyfrowych opartych na kryptografii asymetrycznej.
+Najważniejsze funkcje PKI to:
+
+- rejestracja użytkowników i wystawianie podpisów cyfrowych
+- odwoływanie podpisów
+- archiwizacja danych niezbędnych do sprawdzenia poprawności podpisów
+
+### Podpis cyfrowy (ang. *digital signature*)
+
+Dodatkowa informacja dołączona do wiadomości służąca do weryfikacji jej źródła i (lub) integralności. Podpisy cyfrowe korzystają z kryptografii asymetrycznej - tworzona jest para kluczy, klucz prywatny i klucz publiczny - klucz prywatny służy do podpisywania wiadomości, klucz publiczny natomiast do weryfikowania podpisu.
+
+Zwykle rezultat haszu kryptograficznego; wartość danych wygenerowana przez algorytm klucza publicznego oparta na zawartości skrótu bloku danych.
+
+Najważniejszymi kryptosystemami umożliwiającymi podpisywanie cyfrowe są RSA, ElGamal i DSA. Najpopularniejsze standardy pozwalające na złożenie podpisu elektronicznego to X.509 oraz PGP.
+
+### Protokół kryptograficzny (ang. *cryptographic protocol*)
+
+Opis lub konkretny protokół realizujący funkcje związane z bezpieczeństwem i stosuje metody kryptograficzne, najbardziej rozpowszechnione protokoły kryptograficzne zabezpieczają transport danych na poziomie aplikacji i zwykle mają następujące możliwości:
+
+- uwierzytelnienie uczestnika
+- symetryczne szyfrowanie i uwierzytelnienie wiadomości
+- zabezpieczone przesyłania danych na poziomie aplikacji
+- mechanizmy niezaprzeczalności
+
+Na przykład: TLS jest protokołem zabezpieczającym połączenia HTTP, ma mechanizmy uwierzytelnienia jednostki, oparte na systemie X.509, fazę ustanowienia klucza, gdzie szyfrowanie symetryczne jest zapoczątkowane przy pomocy kryptografii asymetrycznej i funkcje transportu danych na poziomie aplikacji; wszystkie te trzy aspekty są połączone. Standard TLS nie wspiera niezaprzeczalności.
+
+- [Cryptographic protocol](http://en.wikipedia.org/wiki/Cryptographic_protocol)
+
+### Przestrzeń klucza (ang. *keyspace*)
+
+Zbiór wszystkich możliwych kombinacji dla danego rodzaju klucza. Im większa, tym trudniejszy atak BF.
+
+### RFC (Requests for Comments)
+
+Numerowane dokumenty powstałe w wyniku prac IETF, chociaż nie mają mocy prawnej, wiele z nich jest oficjalnym opisem obowiązujących standardów.
+
+- [RFC (pl.)](http://pl.wikipedia.org/wiki/RFC), [Request for Comments](http://en.wikipedia.org/wiki/Request_for_Comments)
+
+### *Russian copulation*
+
+Przygotowanie jawnego tekstu przed zaszyfrowaniem, takie, żeby utrudnić odnalezienie regularności w kryptogramach.
+
+### SASL (Simple Authentication and Security Layer)
+
+Protokół uwierzytelnienia użytkownika, najczęściej używany w połączeniach SMTP.
+
+### Sieć zaufania (ang. *web of trust*)
+
+Mechanizm potwierdzania poprawności kluczy PGP, zdecentralizowany - w przeciwieństwie do scentralizowanego PKI - i elastyczny, decyzje o zaufaniu do konkretnego podpisu pozostawia w rękach użytkownika. Polega na systemie wzajemnie potwierdzających poprawność swoich podpisów użytkowników, np. jeśli trzech częściowo zaufanych lub jeden w pełni zaufany użytkownik potwierdzi poprawność (przynależność klucza do osoby), klucz uznany jest za poprawny.
+
+
+Ważną metodą tworzenia sieci zaufania są *keysigning parties*.
+
+- [Explanation of the web of trust of PGP](http://www.rubin.ch/pgp/weboftrust.en.html)
+- Wikipedia [Web of trust](http://en.wikipedia.org/wiki/Web_of_trust)
+
+### S/MIME (Secure / Multipurpose Internet Mail Extensions)
+
+Standard szyfrowania kluczem publicznym i podpisywania e-maili kapsułkowanych w MIME; jest podobny, choć niekompatybilny z OpenPGP i starszym PGP/MIME.
+
+Zapewnia podpis cyfrowy, sprawdzanie integralności i niezaprzeczalność z dowodem pochodzenia oraz szyfrowanie. Umożliwia także zastosowanie kompresji.
+
+- [S/MIME](http://en.wikipedia.org/wiki/S/MIME)
+
+### Snifer (ang. sniffer)
+
+Program służący do analizy ruchu sieciowego, przez przechwytywanie, rejestrowanie i analizowanie pakietów przepływających w sieci. Narzędzie diagnostyczne używane przez administratorów sieci, jak i również przez włamywaczy; może służyć również zwykłym użytkownikom do sprawdzenia czy i w jaki sposób działa szyfrowany kanał komunikacji.
+
+Polska nazwa oznacza węszyciel i prawdopodobnie pochodzi od komercyjnego programu Sniffer (produkcji Network Associates, Inc.).
+
+- [Packet sniffer (eng.)](http://en.wikipedia.org/wiki/Packet_sniffer), [Sniffer (pl.)](http://pl.wikipedia.org/wiki/Sniffer)
+- [Packet Storm](https://packetstormsecurity.com/)
+- [SecTools.Org Top Network Security Tools](https://sectools.org/)
+
+Przykładowe sniffery (uwaga: nieostrożne użycie może spowodować problemy prawne):
+
+- [dsniff](https://monkey.org/~dugsong/dsniff/)
+- [EtherApe](https://etherape.sourceforge.io/)
+- [Ethereal](https://ethereal.com/)
+- [Ettercap](https://www.ettercap-project.org/)
+- [SniffIt Home Page](http://sniffit.sourceforge.net/)
+- [Snort - Network Intrusion Detection &amp; Prevention System](http://www.snort.org/)
+- [TCPDUMP/LIBPCAP public repository](http://www.tcpdump.org/)
+
+### Sól (ang. *salt*)
+
+Arbitralna wartość składająca się z przypadkowych bitów (najczęściej 12 lub więcej), unikalna dla konkretnego użytkownika. Dołączona do hasła przed wytworzeniem haszu, oznacza to, że to samo hasło da inny rezultat haszu, co utrudni atak słownikowy. Osłabia to siłę działania polegającego na uprzednim przygotowaniu i przechowaniu haszy z popularnych haseł. Sól ukrywa także używanie tego samego hasła na różnych systemach.
+
+- [Salt (cryptography)](http://en.wikipedia.org/wiki/Salt_(cryptography))
+
+### SSH (Secure Shell)
+
+Protokół służący do utworzenia tunelu między dwoma obiektami w niezabezpieczonej sieci; najczęściej używany do przeprowadzenia operacji na zdalnym komputerze.
+
+### SSL (Secure Sockets Layer) i TLS (Transport Layer Security)
+
+Protokoły zapewniające szyfrowaną łączność, uwierzytelnienie uczestników komunikacji i weryfikację integralności wiadomości działające na poziomie TCP, dzięki czemu są przezroczyste dla warstwy aplikacji. Mogą być użyte do zabezpieczenia dowolnych protokołów warstwy aplikacyjnej, najczęściej służą do tworzenia bezpiecznego kanału WWW (HTTPS) lub ochrony przesyłanych haseł (email).
+
+### Suma kontrolna (ang. *checksum*)
+
+Wczesna i prosta forma wykrywania błędów w kodzie. Najczęściej podsumowanie wartości danych w rejestrze o pewnej uzasadnionej wielkości, np. 16 bitów. Niestety powiększanie tej wielkości nie polepsza metody.
+
+Bardziej zaawansowane formy sum kontrolnych używają zarówno wartości danych, jak i ich pozycji.
+
+### Szyfr (ang. *cipher*)
+
+Składająca się z pewnej liczby przekształceń procedura zamieniająca jawny tekst w szyfrogram (i na odwrót); algorytm kryptograficzny.
+
+- każdy system używający szyfrowania - system szyfrowy
+- w ogólności, wybrana kluczem tajna transformacja pomiędzy jawnym tekstem a szyfrogramem
+- w szczególności, tajny mechanizm, lub proces który operuje na pojedynczych znakach lub bitach niezależnie od ich znaczenia (w przeciwieństwie do tajnego kodu - który operuje na słowach wyrażeniach lub sformułowaniach, które przenoszą część znaczenia).
+
+### Szyfr asymetryczny (ang. *asymmetric cryptography*)
+
+Szyfr klucza publicznego - szyfr używający innych kluczy do szyfrowania i innych do odszyfrowania danych; najczęściej jest to uzupełniająca się para kluczy: publiczny do szyfrowania i prywatny do odszyfrowania (chociaż każdy z nich może zostać użyty do szyfrowania i odszyfrowania)
+
+Jest bardzo powolny, dlatego większość szyfrów klucza publicznego jest systemami hybrydowymi mającymi zarówno składniki szyfru asymetrycznego, jak i symetrycznego, w systemach hybrydowych część asymetryczna jest używana tylko do zapewnienia klucza wiadomości sesyjnego dla szyfru symetrycznego, który tak naprawdę jest używany do ochrony danych.
+
+Rzeczywista przestrzeń klucza publicznego takiego jak RSA jest dużo mniejsza, niż mogłoby się to wydawać, 1000-bitowy komponent klucza publicznego ma siłę porównywalną z 80-bitowym kluczem tajnym, ta olbrzymie obniżenie słabości wynika z wymagania szyfrów asymetrycznych, by ich klucze były w szczególnej i rzadkiej formie, większość możliwych wartości wielkości klucza publicznego nie jest akceptowalna jako klucze.
+
+Popularne szyfry asymetryczne to RSA i ElGamal.
+
+### Szyfr jednostronny (ang. *one-way cryptography*)
+
+Używający funkcji haszującej szyfr nieodwracalnie przekształcający jawny tekst w szyfrogram (skrót).
+
+### Szyfr oparty na krzywej eliptycznej (ECC - Elliptic Curve Cryptography)
+
+Wynaleziona w 1985 niezależnie przez Neala Koblitza i Victora Millera metoda tworzenia szyfrów oparta na matematyce krzywych eliptycznych, zwolennicy tego rozwiązania twierdzą, że może tworzyć szybsze i mniejsze klucze zapewniające takie samo bezpieczeństwo jak starsze metody (jak np. RSA).
+
+- [Elliptic curve cryptography](http://en.wikipedia.org/wiki/Elliptic_curve_cryptography)
+
+### Szyfr symetryczny (ang. *symmetric cryptography*)
+
+Szyfr tajnego klucza - szyfr używający tego samego klucza do szyfrowania i odszyfrowania danych; czasem też nazywany szyfrem jednego klucza lub pojedynczego klucza. Szyfry symetryczne dzielą się na:
+
+- blokowe - szyfrują dane podzielone na grupy bitów (tzw. bloki) o określonej długości w jednym przebiegu (DES, IDEA i AES)
+- strumieniowe - szyfrują na raz jeden bit (RC4)
+
+Przykładowe szyfry symetryczne to m.in.: AES, Blowfish, DES i jego odmiany 3DES, DESX, IDEA
+
+### Szyfrogram (kryptogram) (ang. *ciphertext*)
+
+Informacja po przekształceniu za pomocą szyfru, co ma na celu zabezpieczenie oryginalnej informacji przed odczytaniem w czasie transportu lub przechowywania.
+
+Kryptografia ukrywa, informację zmieniając jawną postać w jeden z licznych możliwych szyfrogramów wybrany kluczem.
+
+### Tekst jawny (ang. *plaintext*)
+
+Informacja w oryginalnej postaci, przed zaszyfrowaniem; najczęściej oznacza czytelną formę danych, ale mogą to być również np. dane w postaci binarnej.
+
+### Token (ang. *token*)
+
+Urządzenie lub program generujące jednorazowe hasła w celu potwierdzające tożsamość użytkownika.
+
+### Uwierzytelnienie (ang. *authentication*)
+
+Jeden z celów kryptografii. Najczęściej: zapewnienie, że wiadomość została wysłana przez konkretnego autora, jest to uwierzytelnienie wiadomości, czasem dotyczy też zapewnienia integralności wiadomości.
+
+Inną formą są uwierzytelnienie indywidualnych bloków (dla transmisji danych) lub kluczy publicznych.
+
+### VPN (Virtual Private Network)
+
+Tworzona przy pomocy tuneli sieć zabezpieczonej komunikacji pomiędzy obiektami w niezabezpieczonej sieci.
+
+- [Virtual private network](http://en.wikipedia.org/wiki/Virtual_private_network)
+
+### WAN (Wide Area Network)
+
+Rozległa sieć komputerowa.
+
+### X.509
+
+Format podpisu cyfrowego, odgrywający kluczową rolę w PKI. Zgodnie z nim są zbudowane certyfikaty SSL.
+
+### Ziarno (ang. *seed*)
+
+Losowa wartość uzyskana najczęściej ze zdarzeń systemowych (lub ze sprzętowego generatora) używana przez generator liczb pseudolosowych.

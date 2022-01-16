@@ -1,0 +1,726 @@
+---
+title: "Gatsby cz. 7 - blog MDX cz. 1"
+section: "blog"
+subsection: "it"
+set: gatsby
+date: 2021-08-02
+edited: 2022-01-13
+image: ../blogimages/Gatsby_Monogram.png
+tags: react, gatsby
+description: "Markdown a MDX, programistyczne tworzenie stron z gastby-node.js i File System Route API, automatycznie generowane tagi"
+---
+
+Stały adres serii wpisów o Gatsbym - [/blog/gatsby](/blog/gatsby)
+
+### Wstęp
+
+Tworzymy bloga. W tym wpisie przedstawię jak utworzyć blog MDX z listą wpisów i tagami.
+
+I tutaj od razu pierwsze zastrzeżenie - piszę zarówno w tytule jak i w treści o blogu, ale używając tego mechanizmu tak samo można zbudować normalną stronę. Na przykład cała moja strona, z dość skomplikowaną hierarchią i wieloma rodzajami treści jest jednym systemem / instalacją Gatsby'ego, w której użyłem MDX i Gatsby Node API.
+
+### Start
+
+Plan przedstawia się następująco:
+
+- Gatsby sam tworzy strony, jak?
+- instalacja i konfiguracja MDX
+- pliki wpisów w formacie .mdx
+- dwa sposoby budowania strony:
+  - Gatsby Node APIs (gatsby-node.js)
+  - File System Route API
+- tagi, klikalne z automatycznie generowaną listą wpisów z tym tagiem
+
+Zatem zobaczmy co dla nas potrafi zrobić maszyna!
+
+### Strony generowane programistycznie
+
+W przypadku takiego bloga mamy do czynienia z programistycznie generowanymi stronami. Żeby to zadziałało trzeba złożyć razem kilka mechanizmów:
+
+- najpierw potrzebujemy jakiegoś systemu, który wyrysuje ścieżki albo inaczej mówiąc utworzy lokalizacje, któ©e fizycznie nie istnieją, w przypadku Gatsby'ego zostaną one utworzone w podczas działania serweru deweloperskiego albo w buildzie na podstawie danych tego systemu - tutaj mamy dwie możliwości i o nich za chwilę
+- wygląd zapewniają pliki layoutu (w przypadku gatsby-node.js także szablony)
+- całkiem osobno, poza katalogiem /src/pages są pliki treści, zarówno tekst jak i ilustracje (lub inne media), tekst jest w formacie Markdown: albo .md albo .mdx
+- do pobrania plików treści zostanie użyty GraphQL, tutaj mając do dyspozycji dane frontmattera pokazuje pełnię możliwości
+
+Do tworzenia ścieżek możemy użyć dwóch metod udostępnianych w Gatsbym:
+
+- **Gatsby Node APIs** (gatsby-node.js) używany od lat standard dający wiele możliwości.
+- **File System Route API**, wprowadzonego jesienią 2020; w tej chwili nie ma on możliwości filtrowania i nadaje się do stron, w którym jest tylko jedno źródło danych MDX.
+
+### Markdown i MDX
+
+Markdown jest formatem tekstowym, który jest zarówno łatwy w edycji jak i przetwarzaniu maszynowym, więcej o nim w artykule [Markdown](/it/js/markdown).
+
+Jeśli chodzi o wyświetlenie Markdowna mamy dwie możliwości:
+
+- czysty Markdown, do jego wyświetlenia używamy Remarka (rozszerzenie .md) - [remark - markdown processor powered by plugins](https://remark.js.org/).
+- MDX (rozszerzenie .mdx): procesor Markdowna dodatkowo umożliwiający umieszczenie w pliku .mdx dowolnego komponentu. Jest to połączenie możliwości JSX i prostoty Markdowna - [MDX](https://mdxjs.com/).
+
+Tutaj ze względu na większe możliwości zobaczymy jak zastosować MDX.
+
+### Instalacja MDX
+
+Pakiet npm **MDX**.
+
+```
+$ npm i gatsby-plugin-mdx @mdx-js/mdx @mdx-js/react gatsby-source-filesystem
+```
+
+Plugin **gatsby-plugin-catch-links**, w przypadku Markdowna niezbędny. Pozwala on na używanie odnośników lokalnych w plikach Markdown, bez tego tracilibyśmy atut komponentu Link. Działa bez konfiguracji, wystarczy dodać go do gatsby-config.js.
+
+```
+$ npm i gatsby-plugin-catch-links
+```
+
+Plugin **gatsby-remark-vscode** (do wyświetlenia kodu).
+
+```bash
+$ npm i gatsby-transformer-remark gatsby-remark-vscode
+```
+
+Konfigurację tego pluginu przedstawiłem we wpisie ["Gatsby cz. 5 - pluginy"](/blog/gatsby-pluginy#prezentowanie-kodu-gatsby-remark-vscode).
+
+#### Odnośniki
+
+- [MDX](https://mdxjs.com/)
+- Gatsby [Docs / Reference Guides / MDX](https://www.gatsbyjs.org/docs/mdx/) | [gatsby-plugin-mdx](https://www.gatsbyjs.com/plugins/gatsby-plugin-mdx/)
+- LekoArts Blog ["Language tabs for Gatsby's code blocks"](https://www.lekoarts.de/en/blog/language-tabs-for-gatsbys-code-blocks) | ["Adding line numbers and code highlighting to MDX code blocks"](https://www.lekoarts.de/en/blog/adding-line-numbers-and-code-highlighting-to-mdx-code-blocks)
+- Malik Gabroun ["Syntax Highlighting in Gatsby MDX"](https://malikgabroun.com/blog/syntax-highlighting-in-gatsby-mdx)
+- Sam Julien ["Up and Running with Gatsby: Markdown & MDX"](https://thinkster.io/tutorials/up-and-running-with-gatsby-markdown/)
+- Daniel Stout ["Intro to MDX in Gatsby"](https://www.digitalocean.com/community/tutorials/gatsbyjs-mdx-in-gatsby)
+- Brad Westfall ["Blogging with Gatsby & MDX"](https://reacttraining.com/blog/gatsby-mdx-blog/)
+- Johno ["Create a table of contents component for MDX in Gatsby"](https://johno.com/mdx-table-of-contents-components-in-gatsby/)
+- Scott Spence ["Convert the Gatsby default starter blog to use MDX" YT [19:26]](https://www.youtube.com/watch?v=gck4RjaX5D4)
+- David Dal Busco ["Stylish Cards and Syntax Highlighting With Gatsby"](https://medium.com/better-programming/stylish-cards-and-syntax-highlighting-with-gatsby-e2806b9cb987) | Sebastien Lorber ["Using React hooks in MDX"](https://dev.to/sebastienlorber/using-react-hooks-in-mdx-4ei6)
+- Julian​Garamendy​.dev ["Adding custom OpenGraph images to Gatsby Starter Blog"](https://juliangaramendy.dev/custom-open-graph-images-in-gatsby-blog/)
+
+Remark
+
+- [remark - markdown processor powered by plugins](https://remark.js.org)
+- [gatsby-remark-vscode](https://www.gatsbyjs.com/plugins/gatsby-remark-vscode/)
+
+PrismJS
+
+- [Niklas "Implement PrismJS in GatsbyJS"](https://dev.to/niklasmtj/implement-prismjs-in-gatsbyjs-fff)
+- ["styling markdown code snippets with prismjs"](https://stephenweiss.dev/blog/2020-01-15/syntax-highlighting-prismjs-gatsby/)
+- using-remark [Daisy Buchanan"Code and Syntax Highlighting with PrismJS"](https://using-remark.gatsbyjs.org/code-and-syntax-highlighting/)
+- [gatsby-plugin-mdx with prismjs and MDXRenderer, how? #17361](https://github.com/gatsbyjs/gatsby/issues/17361)
+
+Inne
+
+- DeckDeckGo [Highlight Code](https://docs.deckdeckgo.com/?path=/story/components-highlight-code--highlight-code/)
+- [Docusaurus](https://docusaurus.io/)
+
+### Plik MDX
+
+Na samym początku pliku .mdx jest frontmatter. Nazwa ta wywodzi się jeszcze z czasów zecerstwa. Jest to seria zdefiniowanych pól zawierających podstawowe dane o pliku, które dalej będziemy przetwarzać. To bardzo elastyczny mechanizm. Nazwy i liczba tych pól jest dowolna. Tworzymy tylko takie, które są potrzebne. Najczęściej jest to tytuł, sekcja (ewentualnie podsekcja), data wpisu, czasem też ostatniej edycji, czasem autor, ścieżka do powiązanego z wpisem obrazka i tagi. Można też tam umieścić dłuższe fragmenty tekstu jak np. streszczenie wpisu dodawane w liście wpisów. Dopuszczalne typy danych to: string, numer, bolean i data.
+
+Frontmatter i reszta pliku .mdx może wyglądać tak:
+
+**/src/blogposts/any-blogpost.mdx**
+
+```md
+---
+title: "Tytuł wpisu o Gatsbym"
+section: "blog"
+subsection: "it"
+date: 2021-07-10
+edited: 2021-07-13
+img: ../blogimages/gatsby.jpg
+tags: react, gatsby
+description: "Opis treści, wymienione najważniejsze elementy, dowolny tekst."
+---
+
+### Pierwszy podtytuł
+
+Treść. Pierwszy akapit.
+
+Drugi akapit.
+
+[Alt obrazka](ścieżka_względna_do_obrazka)
+*Opis obrazka*
+
+- pierwszy element listy nieuporządkowanej
+- drugi element listy nieuporządkowanej
+  1. pierwszy element zagnieżdżonej listy uporządkowanej
+  2. drugi element zagnieżdżonej listy uporządkowanej
+- trzeci element listy nieuporządkowanej
+
+<!-- treść zakomentowana -->
+
+>Pierwszy wiersz cytatu<br />
+>Drugi wiersz cytatu
+
+// itd.
+```
+
+W cytacie został użyty normalny tag HTML. Markdown nie ma udokumentowanego przejścia do następnej linii, a nieoficjalny `\\` nie wszędzie działa.
+
+Załóżmy, że pliki .mdx są w katalogu: /src/content/blogposts (.mdx) i /src/content/blogimages (obrazki).
+
+**Uwaga:** co do zasady wszystkie pliki treści (i tekst i media) powinniśmy trzymać poza /src/pages/. Zapobiega to rysowaniu nadmiarowych ścieżek. Powstaną tylko te, które zdefiniujemy w gastby-node.js lub File System Route API.
+
+- Treść bloga chcesz zaprezentować na stronie wygenerowanej przy pomocy szablonu i pod adresem url/blog/tytul-wpisu, a nie dodatkowo gołą treść pod adresem dajmy na to url/blogposts/tytul-wpisu (a taka ścieżka by powstała, gdyby katalog z wpisamy był wewnątrz /src/pages). Do tego w tej błędnej ścieżce mogłyby się znaleźć wpisy nieopublikowane.
+- Mniej ścieżek to krótszy czas kompilacji i łatwiejsze 404.
+
+
+### GraphQL
+
+W przypadku stron generowanych programistycznie GraphQL jest nie tylko narzędziem wymiany danych wewnątrz strony, ale podstawą budowania jej hierarchii. O ile da się zbudować stronę w Gatsbym bez GraphQL, to taki system z MDX jest już niemożliwy - tu odsyłam do wpisu ["Gatsby cz. 4 - GraphQL & obrazki"](/blog/gatsby-graphql) gdzie jest to wyjaśnione.
+
+Warto też obejrzeć dwa filmy autorstwa Artura Chmaro:
+
+- ["GatsbyJS - Pobieranie danych z GraphQL (Pokedex 🦄)" [YT 16:50]](https://www.youtube.com/watch?v=JK18MoOlBOQ) (tutaj użyto zewnętrznego API, więc był potrzebny plugin gatsby-source-graphql)
+- ["GatsbyJS - Generowanie podstron (Pokedex 🦄)" [YT 15:52]](https://www.youtube.com/watch?v=bpuUPXdEtjo) - wzmiankowana tu strona dokumentacji Gatsby'ego to ["Creating and Modifying Pages"](https://www.gatsbyjs.com/docs/creating-and-modifying-pages/)
+
+Katalogi z treścią bloga trzeba udostępnić GraphQL.
+
+**/gatsby-config.js**
+
+```js
+        `gatsby-plugin-mdx`,
+        {
+   resolve: `gatsby-source-filesystem`,
+   options: {
+       name: `blogpost`,
+       path: `${__dirname}/src/content/blogposts`,
+   },
+        },
+        {
+   resolve: `gatsby-source-filesystem`,
+   options: {
+       name: `blogimage`,
+       path: `${__dirname}/src/content/blogimages`,
+   },
+        },
+```
+
+### Gatsby Node APIs (gatsby-node.js)
+
+Jest to starszy mechanizm, bardziej rozbudowany i mający większe możliwości.
+
+#### Plik gatsby-node.js
+
+Głównym narzędziem budowania strony jest tu plik koniguracyjny gatsby-node.js.
+
+- Requestem (zapytaniem) GraphQL pobieramy wpisy (linie 9-23), tutaj to konkretne zapytanie zostało przypisane do zmiennej, dzięki temu można zrobić ich całą serię, dla kżdego rodzaju treści osobne.
+- Rezultat (wszystkie węzły powyższej zmiennej wewnątrz zapytania) przypisujemy do zmiennej, nie jest to konieczne, ale upraszcza kod jeżeli mamy więcej takich zmiennych. Jest to tablica. (linia 28)
+- Metod tablicową [Array.prototype.forEach()](https://developer.mozilla.org/pl/docs/Web/JavaScript/Reference/Global_Objects/Array/forEach) dla każdego węzła funkcją wbudowaną createPage tworzymy poszczególne strony. Tworzona jest ścieżka, pobiera się szablon i przekazuje dane z pliku .mdx do context-u. (linie 29-40)
+
+**/src/gatsby-node.js**
+
+```js {numberLines}
+const path = require(`path`);
+
+exports.createPages = ({ graphql, actions }) => {
+
+    const { createPage } = actions
+    const postTemplate = path.resolve("./src/templates/blogPostTemplate.js");
+    
+    return graphql(`	{
+    posts: allMdx(
+      filter: { fileAbsolutePath: { glob: "**/src/content/blogposts/*.mdx" } }
+      ) {
+        nodes {
+   frontmatter {
+       title
+       section
+       subsection
+       }
+   slug
+   id
+   body
+   }
+        }
+    }
+  `).then((result) => {
+        if (result.errors) {
+   throw result.errors;
+        }
+        const posts = result.data.posts.nodes;
+        posts.forEach(post => {
+   createPage({
+       path: "/blog/" + post.slug,
+       component: postTemplate,
+       ...post,
+       context: {
+       ...post.context,
+       slug: post.slug,
+       },
+   });
+        });
+    });
+};
+```
+
+- Gatsby [Gatsby Node APIs](https://www.gatsbyjs.com/docs/reference/config-files/gatsby-node/) | [Creating Pages from Data Programmatically](https://www.gatsbyjs.com/docs/programmatically-create-pages-from-data/)
+
+#### Szablon wpisu
+
+Szablony znajdują się w katalogu /src/templates. Szablon wpisu:
+
+- odbiera dane wygenerowane przez gatsby-node.js przez request graphql z końca pliku (linie 21-44)
+- i jako obiekt data propsem przekazuje do swojego wnętrza (linia 6)
+- do szablonu importowany jest layout z katalogu /src/components (linia 4) - szablon jest komponentem owijającym treść, umieszczonym w pliku layoutu.
+- import komponentu React'a MDXRenderer (linia 3), ten komponent w linii 14 odbiera treść (body) pliku .mdx i wyświetla ją.
+
+Inaczej można to opisać tak:
+
+- Zewnętrzną warstwą jest layout, w nim osadzony jest komponent szablonu, a w nim z kolei komponent MDXRenderer, który wyświetl treść pobraną przez GraphQL z pliku .mdx.
+- Dane z frontmattera i slug pełnią funkcje pomocnicze: slug zapewnia ścieżkę, frontmatter dane sterujące, różne parametry (np. tagi czy obraz nagłówka) i dane wyświetlane poza komponentem MDXRenderer takie jak tytuł czy data publikacji.
+- Środowisko danych zapewniających działanie tego mechanizmu zostało przygotowane w pliku gatsby-node.js.
+
+**/src/templates/blogPostTemplate.js**
+
+```js {numberLines}
+import React from "react";
+import { Link, graphql } from "gatsby";
+import { MDXRenderer } from "gatsby-plugin-mdx";
+import LayoutBlog from "../components/layout"
+
+const blogPage = ({ data }) => {
+
+    const { frontmatter, id, body, slug } = data.mdx;
+
+    return (
+        <LayoutBlog>
+   <Link to="/blog">blog main page</Link>
+   <h2>{frontmatter.title}</h2>
+   <MDXRenderer>{body}</MDXRenderer>
+        </LayoutBlog>
+    );
+};
+
+export default blogPage
+
+export const query = graphql`
+  query BlogPageBySlug($slug: String!) {
+   mdx( slug: { eq: $slug } ) {
+      id
+      body
+      slug
+      frontmatter {
+        title
+        section
+        subsection
+      }
+    }
+  }
+`;
+```
+
+#### Wyświetlanie obrazków w treści posta
+
+Potrzebny będzie plugin [gatsby-remark-images](https://www.gatsbyjs.com/plugins/gatsby-remark-images/)
+
+```
+npm i gatsby-remark-images gatsby-plugin-sharp
+```
+
+Przykładowa konfiguracja (w obrębie MDX):
+
+**gatsby-config.js**
+
+```js
+  {
+   resolve: `gatsby-plugin-mdx`,
+   options: {
+       extensions: [`.mdx`, `.md`],
+       gatsbyRemarkPlugins: [
+       {
+       resolve: `gatsby-remark-images`,
+          options: {
+            withWebp: true,
+            maxWidth: 900,
+            backgroundColor: false,
+            linkImagesToOriginal: true,
+            tracedSVG: true,
+            lazy: true,
+           },
+       },
+    ],
+  },
+```
+
+I teraz możemy się odwołać do obrazka używając ścieżki względnej. Trzeba tylko pamiętać by dodać ją do `gatsby-source-filesystem`.
+
+#### Strona główna bloga
+
+Działa w sposób analogiczny do powyższego szablonu. Ponieważ nie wyświetlamy tu treści żadnego wpisu różnicą jest brak komponentu MDXRenderer.
+
+Zarówno tutaj jak i w szablonie wpisu można pobrać z frontmattera informację o skojarzonej z wpisem ilustracji. Tutaj możemy wyświetlić ją jako powiązany obrazek a w szablonie wpisu umieścić go w nagłówku.
+
+**/src/pages/blog.js**
+
+```js
+import * as React from 'react'
+import {Link, graphql} from "gatsby";
+import Layout from "../components/layout"
+
+const BlogPage = ({data}) => {
+    return (
+        <Layout>
+        <h2>blog here</h2>
+   <p>Dowolny tekst.</p>
+
+<ul>
+   {data.allMdx.nodes.map(({ id, frontmatter, slug }) => (
+       <li  key={id}>
+       <Link to={`/blog/${slug}`}>{frontmatter.title}</Link>
+       </li>
+      ))}
+</ul>
+        </Layout>
+    )
+}
+
+export default BlogPage
+
+export const query = graphql`
+query AllPosts {
+     allMdx(
+      filter: { fileAbsolutePath: { glob: "**/src/blogposts/*.mdx" } }
+      ) {
+        nodes {
+   frontmatter {
+       title
+       section
+       subsection
+       date(formatString: "YYYY-MM-DD")
+       published
+       }
+   slug
+   id
+   body
+        }
+       pageInfo {
+           currentPage
+        }
+    }
+}
+`;
+```
+
+#### Podsumowanie
+
+*Et voilà !* Powinno działać. Cały schemat operacji wygląda następująco:
+
+- Używamy plików .mdx trzymanych w katalogu poza /src/pages; katalog ten musi zostać wskazany przez gatsby-source-filesystem w głównym pliku konfiguracyjnym /gatsby-config.js.
+- Dzięki powyższemu w danych GraphQL pojawiają się dane wpisów.
+- W pliku gatsby-node.js pobieramy te dane, tworzymy z nich tablicę, a z niej generujemy ścieżki.
+- Dane te pobierane są przez szablon wpisu, do którego importowany jest layout - tak powstaje strona wpisu.
+- Potrzebna jest także strona główna bloga z listą wpisów. W najprostszej wersji będzie to jeden z dwóch plików w katalogu /src/pages (drugim jest wymagany 404.js).
+
+Powyższy system najczęściej jest używany do tworzenia blogów. Ale równie dobrze może zostać zastosowany do tworzenia innych stron. Jest to przydatne, jeżeli składają się z dużej liczby dokumentów.
+
+Podstawową zaletą zastosowania MDX do stron jest łatwość i prostota edycji treści oraz generalna prostota struktury strony.
+
+Jeżeli przenosimy/tworzymy stronę z treścią w plikach .mdx, musimy się liczyć z pewnymi ograniczeniami narzucanymi przez Markdown, który ze względu na prostotę może być przetwarzany na HTML w ograniczonym zakresie. Markdown nie ma takich elementów jak div, span, lista definicyjna, klasy czy id. W przypadku MDX jest to kompensowane możliwością umieszczania komponentów.
+
+W przypadku stron z niewielką liczbą dokumentów i takich, które stawiają na efekty, najlepszym rozwiązaniem pozostaje JSX.
+
+### File System Route API
+
+Jesienią 2020 pojawiła się jeszcze jedna możliwość programistycznego tworzenia stron File System Route API. Jest on dużo prostszy i nie wymaga użycia pliku gatsby-node.js. Na razie jednak nie zastąpi gastby-node.js, bo nie ma możliwości filtrowania danych, wrzuca na tworzony schemat ścieżek całą treść .mdx, jaką znajdzie.
+
+Początek, wszystko aż do pliku gastby-node.js wygląda identycznie. Tutaj tego pliku nie potrzebujemy.
+
+File System Route API to jest natywny mechanizm Gatsby'ego i nie wymaga żadnej konfiguracji. Wystarczy, że wewnątrz /src/pages znajdą się katalogi o specyficznie sformtowanych nazwach: używają nawiasów klamrowych zawierających parametry tworzonych ścieżek.
+
+W kwestii tego jak możemy użyć tych nazw katalogów cytując klasyka "jest wiele możliwości", podałem tu przykład, który był mi potrzebny. Po inne opcje odsyłam do dokumentacji, link na końcu rozdziału.
+
+W przedstawionym w pierwszym wpisie schemacie strony do wygenerowania ścieżek i podstron wystarczy następujący schemat - z frontmattera pobierane są nazwy sekcji i podsekcji i tworzą z nich hierarchię: `https://domena/sekcja/podsekcja`.
+
+- /src/pages/index.js
+- /src/pages/404.js (oraz ewentualnie inne podstrony funkcyjne typu about, contact; ich treść to zwykły JSX)
+- /src/pages/{Mdx.frontmatter__section}/index.js
+- /src/pages/{Mdx.frontmatter\__section}/{Mdx.frontmatter__subsection}/index.js
+- /src/pages/{Mdx.frontmatter\__section}/{Mdx.frontmatter__subsection}/{mdx.slug}.js
+
+Jak widać do utworzenia dowolnej strony z sekcjami, podsekcjami mogącej zawierać dowolną liczbę dokumentów wystarczą dwa katalogi i pięć plików. A całą treść, która pojawi się na tej stronie trzymamy w jednym katalogu, w dogodnych do edycji, przejrzystych plikach .mdx. I nie ma bazy danych. Aktualizacji pluginów na stronie, itd.
+
+Do tego, używając sterowanego propsami wyświetlnia komponentów, można dowolnie wybierać dla nich wg parametrów section i subsection oraz location: layout, design i wyświetlane elementy stron, np. przypisane dla danej kategorii menu. 
+
+Tutaj nie używamy plików szablonów, cały wygląd i układ strony zawiera się w komponentach layoutu. Również używamy komponentu MDXRenderer, zarówno dla podstron z artykułami jak i dla plików indeksów poszszczególnych podsekcji.
+
+Jak już jednak zaznaczyłem ten mechanizm ma istotne ograniczenie - działa świetnie jeżeli mamy jedno źródło danych, przy czym jako źródło mam na myśli jednolitą hierarchię treści: pliki mediów, treści stron i treści indeksów mogą (powinny) być w oddzielnych katalogach. Jeśli jednak chcesz mieć więcej niż jedną hierarchię treści File System Route API pobierze wszystko i zacznie tworzyć ścieżki typu `/null/null/treść_z_innej_hierarchii`. Można łaczyć te dwa rozwiązania: gatsby-node.js i File System Route API. To nawet działa, ale ma wszystkie wady obu: mamy i gatsby-node.js i nadmiarowe ścieżki, a jako bonus nieunikniony chaos w konfiguracji.
+
+Tak się składa, że na mojej stronie w tej chwili są trzy takie hierarchie: strona, blog wojenny Festung Breslau i od niedawna drugi blog i chcę, żeby tak pozostało. Nie chcę ani kompletnie jednolitego systemu, ani trzech zupełnie oddzielnych stron i tu stary system gatsby-node.js jest optymalny, mogę mieć tyle oddzielonych od siebie stron ile zechcę, każda z oddzielną konfiguracją i to w ramach jednego systemu.
+
+#### Plik strony lub wpisu
+
+Co do zasady działania plik podstrony jest bardzo podobny. Różnice są w detalach:
+
+- zapytaniem GraphQL pobierany jest plik .mdx o nazwie ścieżki (podczas buildu Gatsby na podstawie jego nazwy te ścieżki wyrysował), dotatkowo założony jest filtr ograniczający pobieranie tylko do plików treści (linie 36-47).
+- dane z pliku .mdx jako obiekt data przekazywne są do komponentu strony (linia 7).
+- na stronie są wyświetlane bądź jako propsy (linia 27), bądź jako obiekt body umieszczane w komponencie MDXRenderer (linia 28)
+- do sterowania wyświetlaniem elementów strony można użyć albo propsów z forntmattera (linie 16-17), albo obiektu location i regexa (linie 13-14)
+- tutaj dodatkowo umiesciłem breadcrumb, m.in. dlatego że jako crumbLabel użyty jest props frontmattera (linia 25), ale też żebyśmy pamiętali, że nie jesteśmy ograniczeni w wyborze składników layoutu
+
+**/src/pages/{Mdx.frontmatter\__section}/{Mdx.frontmatter__subsection}/{mdx.slug}.js**
+
+```js {numberLines}
+import * as React from "react"
+import { graphql } from "gatsby"
+import { Breadcrumb } from 'gatsby-plugin-breadcrumb'
+import { MDXRenderer } from 'gatsby-plugin-mdx'
+import Layout from "../../../components/layout"
+
+const ArticlePage = ({ data, pageContext, location }) => {
+
+  const {
+    breadcrumb: { crumbs },
+  } = pageContext
+
+  const regex = new RegExp('(/)(.*?)/')
+  const section = location.pathname.match(regex)[2]
+  
+  const { frontmatter, id, body, slug } = data.mdx;
+  const { title, subsection } = frontmatter;
+
+  return (
+    <Layout section={section} subsection={frontmatter.subsection}>
+      <Breadcrumb
+        location={location}
+        crumbs={crumbs}
+        crumbSeparator=" / "
+        crumbLabel={frontmatter.title}
+      />
+      <h2>{frontmatter.title}</h2>
+      <MDXRenderer>{body}</MDXRenderer>
+    </Layout>
+  )
+}
+
+export default ArticlePage
+
+export const query = graphql`
+query ArticlePageSubsectionQuery($slug: String!) {
+  mdx(slug: { eq: $slug }, fileAbsolutePath: {glob: "**/src/content/pagearticles/*.mdx" }) {
+    id
+    slug
+    body
+    frontmatter {
+      title
+      section
+      subsection
+    }
+  }
+}
+`;
+```
+#### Plik indeksu działu
+
+Rózni się od pliku treści głównie zapytaniem GraphQL:
+
+- pobieramy wszystkie pliki .mdx indeksów, tutaj jako filtr zastosowany jest props frontmattera (linia 35), równie dobrze może to być jak w poprzednim przykładzie filtr ścieżki dostępu, czyli wybrany katalog
+- przekazane do komponentu strony są filtrowane i wybierny jest ten którego obiekt location jest zgodny z propsem frontmattera i potem tych danych używamy do wyświetlenia treści pliku indeksu (linie 13-14).
+
+**/src/pages/{Mdx.frontmatter\__section}/{Mdx.frontmatter__subsection}/index.js**
+
+```js {numberLines}
+import * as React from "react"
+import { graphql } from "gatsby"
+import Layout from "../../../components/layout"
+import { Breadcrumb } from 'gatsby-plugin-breadcrumb'
+import { MDXRenderer } from 'gatsby-plugin-mdx'
+
+const ArticlesPage = ({ data, pageContext, location }) => {
+    
+    const {
+        breadcrumb: { crumbs },
+    } = pageContext
+
+    const properMDX = data.allMdx.nodes.filter(item => location.pathname.includes(item.frontmatter.subsection))
+    const { frontmatter } = properMDX[0];
+
+    return (
+        <Layout section={frontmatter.section} subsection={frontmatter.subsection}>
+   
+   <Breadcrumb
+       location={location}
+       crumbs={crumbs}
+       crumbSeparator=" / "
+       crumbLabel={frontmatter.title}
+   />
+   <h2>{frontmatter.title}</h2>
+   <MDXRenderer>{properMDX[0].body}</MDXRenderer>
+        </Layout>
+    )
+}
+
+export default ArticlesPage
+
+export const query = graphql`
+    query IndexTestTrue {
+        allMdx(filter: {frontmatter: {comment: {eq: "index"}}}) {
+   nodes {
+     slug
+     frontmatter {
+       title
+       comment
+       subsection
+       section
+     }
+     body
+     id
+   }
+          }
+  }
+`;
+```
+
+- Gatsby [Announcing Gatsby’s new File System Route API](https://www.gatsbyjs.com/blog/fs-route-api/) | [File System Route API](https://www.gatsbyjs.com/docs/reference/routing/file-system-route-api/)
+- [Stu Finn "Gatsby's awesome new File System Route API"](https://dev.to/stu/gatsby-s-awesome-new-file-system-route-api-50k9)
+- [Scott Spence "Gatsby File System Route API with MDX"](https://scottspence.com/2020/11/29/gatsby-file-system-route-api/)
+
+### Tagi
+
+**Rozdział o tagach na razie umieszczam tu, ale docelowo znajdzie się on w części drugiej wpisu o blogu MDX.**
+
+Potrzebujemy tagów: łatwych w utrzymaniu, wyświetlanych z blogiem i linkujących do strony z automatycznie generowaną listą wszystkich wpisów z tym samym tagiem.
+
+Najpierw trzeba utworzyć pole tagi we frontmatterze. Można to zrobić elegancko jako tablicę ze stringami, ale jest to trudne w utrzymaniu, bo łatwo zapomnieć lub popełnić błąd. Wystarczy string, w którym tagi będą oddzielone przecinkami. Można przy tym zrobić założenie, że zawsze będziemy używać małych liter.
+
+**/src/blogposts/any-blogpost.mdx**
+
+```js
+---
+tags: tag1, tag2, tag3
+---
+```
+
+W dalszym przetwarzaniu tego pola trzeba pamiętać, żeby przekazać je w zapytaniu graphql. Założenie: mamy ten sam plik gatsby-node.js, który jest powyżej.
+
+- W gatsby-node najpierw przekazujemy ścieżkę do szablonu (o którym za chwilę).
+- Potem tworzymy tabelę tags ze stringów pobranych z pól tags. Klasyczna pętla for ma największą wydajność. Dla normalizcji można użyć metody [String.prototype.toLowerCase()](https://developer.mozilla.org/pl/docs/Web/JavaScript/Reference/Global_Objects/String/toLowerCase)
+- Mając już tabelę tags ze wszystkimi unikalnymi tagami zebranymi z requestu graphql, tworzymy ścieżki dokładnie tą samą metodą co ścieżki do wpisów blogowych. Proszę zwrócić uwagę na dodatkowy element "/tags" w ścieżce dostępu. Zapobiega to sytuacji, kiedy slug wpisu jest identyczny z tagiem. Jest to raczej mało prawdopodobne, ale jeżeli do tego dojdzie, nie dostaniemy się do wpisu.
+
+**/gatsby-node.js**
+
+```js
+
+//
+
+  const tagTemplate = path.resolve("./src/templates/blogTagListTemplate.js");
+
+//
+
+    const tags = []
+    for (let i = 0; i < posts.length; i++) {
+      const arrOfTags = posts[i].frontmatter.tags.split(",")
+      for (let j = 0; j < arrOfTags.length; j++) {
+        if (!tags.includes(arrOfTags[j].trim())) {
+          tags.push(arrOfTags[j].trim())
+        }
+      }
+    }
+
+//
+
+    tags.forEach(tag => {
+      createPage({
+        path: "/blog/tag/" + tag,
+        component: tagTemplate,
+        ...tag,
+        context: {
+          ...tag.context,
+          slug: tag,
+        },
+      });
+    });
+```
+
+Szablon strony danego tagu.
+
+- Pobieramy tag ze ścieżki
+- Na końcu pliku jest taki sam request graphql, jak na głównej stronie bloga. Wystarczy usunąć te pola, których nie będziemy potrzebowali.
+- Już po inicjalizacji tagu za jego pomocą filtrujemy dane graphql, przekazując te wpisy, które mają ten tag do nowej tablicy.
+- W efekcie mamy tablicę wpisów, które można mapować na listę.
+
+**/src/templates/blogTagListTemplate.js**
+
+```js
+
+//
+
+const blogPage = ({ data, location }) => {
+
+    const tag = location.pathname.slice(10)
+    const filteredPosts = [...data.allMdx.nodes].filter(item => item.frontmatter.tags.includes(tag))
+
+    return (
+        <LayoutBlog>
+   <article>
+       <h2>Strony z tagiem {tag}</h2>
+       <section>
+       {filteredPosts.map(({ id, frontmatter, slug }) => (
+           <li key={id}>
+      <Link to={`/blog/${slug}`}>{frontmatter.title}</Link>
+           </li>
+       ))}
+       </section>
+   </article>
+   <aside>
+       <Link to="/blog">blog main page</Link>
+   </aside>
+        </LayoutBlog>
+    );
+};
+
+export default blogPage
+
+export const query = graphql`
+query AllTags {
+     allMdx(
+      filter: { fileAbsolutePath: { glob: "**/src/blogposts/*.mdx" } }
+      sort: { order: ASC, fields: frontmatter___date }
+      ) {
+        nodes {
+   frontmatter {
+       title
+       tags
+   }
+   slug
+   id
+        }
+    }
+}
+`;
+```
+
+Na końcu dodajemy listę wpisów do szablonu wpisu blogowego
+
+**/src/templates/blogPostTemplate.js**
+
+```js
+
+//
+
+const blogPage = ({ data }) => {
+
+  const { frontmatter, id, body, slug } = data.mdx;
+  const tagsArray = [...frontmatter.tags.split(",")]
+
+//
+
+<div className="tagsDiv">
+    Tagi: <ul>
+        {tagsArray.map(tag => <li key={tag}><Link to={`/blog/tag/${tag.trim()}`}>{tag.trim()}</Link></li>)}
+    </ul>
+</div>
+
+//
+
+```
+
+W efekcie mamy sytuację, w której przy każdym wpisie pojawia się lista klikalnych tagów, każdy kieruje do automatycznie generowanej strony z listą linków wszystkich wpisów mających ten tag.
+
+### Odnośniki
+
+- Gatsby [Working with Images in Markdown Posts and Pages](https://www.gatsbyjs.com/docs/working-with-images-in-markdown/)
+- freeCodeCamp.org [#GATSBY](https://www.freecodecamp.org/news/tag/gatsby/)
+- Scott Spence ["How to Build Your Coding Blog From Scratch Using Gatsby and MDX"](https://www.freecodecamp.org/news/build-a-developer-blog-from-scratch-with-gatsby-and-mdx/)
+- Josh W Comeau [tag /Gatsby](https://www.joshwcomeau.com/tutorials/gatsby/)
+- Taylor Bantle ["Adding Pagination and Search to our Gatsby Blog"](https://www.dolthub.com/blog/2021-11-29-gatsby-search-and-pagination/)
+- \>Dilshan Kelsen_["How To Create Future Blog Posts In Gatsby"](https://dilshankelsen.com/create-future-blog-posts-in-gatsby/) | ["Adding Search Functionality To A Gatsby Site"](https://dilshankelsen.com/adding-search-functionality-to-gatsby-site/)
+- [Adding Pagination](https://www.gatsbyjs.com/docs/adding-pagination/)
