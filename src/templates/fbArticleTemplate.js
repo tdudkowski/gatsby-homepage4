@@ -31,7 +31,7 @@ export default articleFB
 
 export const query = graphql`
   query ArticleBySlug($slug: String!) {
-   mdx(fields: { slug: { eq: $slug } }) {
+   mdx(slug: { eq: $slug }) {
       body
       frontmatter {
         title

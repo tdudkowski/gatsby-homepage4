@@ -16,7 +16,7 @@ const fbTagListPage = ({ data, location }) => {
                 <ul>
                     {filteredPosts.map(({ id, frontmatter, slug }) => (
                         <li key={id}>
-                            <Link to={`/festung-breslau/${slug}`}>{frontmatter.date1945} - "{frontmatter.title}"</Link>
+                            <Link to={`/festung-breslau/blog/${slug}`}>{frontmatter.date1945} - "{frontmatter.title}"</Link>
                         </li>
                     ))}
                 </ul>

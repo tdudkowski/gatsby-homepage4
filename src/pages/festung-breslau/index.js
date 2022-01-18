@@ -66,11 +66,7 @@ query AllListsArticles($skip: Int!=0) {
                 }
               }
             }
-            fields {
-              
-              slug
-            }
-            slug
+                   slug
             }
           pageInfo {
             currentPage

@@ -62,10 +62,7 @@ query AllPosts {
               date1945
               tags
             }
-            fields {
-              slug
-            }
-            slug
+                    slug
             }
            }
   }

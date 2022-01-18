@@ -24,14 +24,14 @@ exports.createPages = ({ graphql, actions }) => {
               ) {
                 nodes {
                   slug
+                  body
+                  id
                   frontmatter {
                     title
                     comment
                     subsection
                     section
                   }
-                  body
-                  id
                 }
       }
 
@@ -40,14 +40,14 @@ exports.createPages = ({ graphql, actions }) => {
                 ) {
                   nodes {
                     slug
+                    body
+                    id
                     frontmatter {
                       title
                       comment
                       subsection
                       section
                     }
-                    body
-                    id
                   }
         }
 
@@ -56,6 +56,9 @@ exports.createPages = ({ graphql, actions }) => {
            sort: { order: DESC, fields: frontmatter___date }
           ) {
             nodes {
+            slug
+            id
+            body
               frontmatter {
                 title
                 section
@@ -63,10 +66,7 @@ exports.createPages = ({ graphql, actions }) => {
                 date
                 edited
                 tags
-                }
-            slug
-            id
-            body
+                }            
             }
           }
 
@@ -75,17 +75,15 @@ exports.createPages = ({ graphql, actions }) => {
       sort: { order: DESC, fields: frontmatter___date }
       )  {
         nodes {
-    fields {
       slug
-    }
-    frontmatter {
+      frontmatter {
       title
       date(formatString: "YYYY-MM-DD")
       relativeDate:  date(fromNow: true locale: "de-DE")
       date1945
       published
       tags
-    }
+    }    
   }
 }
 
@@ -93,11 +91,9 @@ exports.createPages = ({ graphql, actions }) => {
           filter: { fileAbsolutePath: { glob: "**/src/content/fbarticles/*.mdx" } }
           sort: { order: DESC, fields: frontmatter___date }
         )  {
-          nodes {
-      fields {
+          nodes {    
         slug
-      }
-      frontmatter {
+        frontmatter {
         title
         date(formatString: "YYYY-MM-DD")
         published
@@ -182,24 +178,24 @@ exports.createPages = ({ graphql, actions }) => {
     // MAKE FB POSTS AND ARTICLES
     fbposts.forEach(post => {
       createPage({
-        path: "/festung-breslau/blog" + post.fields.slug,
+        path: "/festung-breslau/blog/" + post.slug,
         component: fbBlogpostTemplate,
         ...post,
         context: {
           ...post.context,
-          slug: post.fields.slug,
+          slug: post.slug,
         },
       });
     });
 
     fbarticles.forEach(article => {
       createPage({
-        path: "festung-breslau/article" + article.fields.slug,
+        path: "festung-breslau/article/" + article.slug,
         component: fbArticleTemplate,
         ...article,
         context: {
           ...article.context,
-          slug: article.fields.slug,
+          slug: article.slug,
         },
       });
     });
@@ -252,12 +248,6 @@ exports.createPages = ({ graphql, actions }) => {
 exports.onCreateNode = ({ node, getNode, actions }) => {
   const { createNodeField } = actions
   if (node.internal.type === "Mdx") {
-    const value = createFilePath({ node, getNode });
-    createNodeField({
-      name: `slug`,
-      node,
-      value,
-    });
     // Create scheduled post
     const publishDate = node.frontmatter.date
     const isScheduledPost = !publishDate || (new Date(publishDate)).getTime() > Date.now()
