@@ -231,10 +231,10 @@ module.exports = {
             options: {
                 // You can add multiple tracking ids and a pageview event will be fired for all of them.
                 trackingIds: [
-                    process.env.GA_ID,  // Google Analytics / GA
-                    "GA-TRACKING_ID", // Google Analytics / GA
-                    "AW-CONVERSION_ID", // Google Ads / Adwords / AW
-                    "DC-FLOODIGHT_ID", // Marketing Platform advertising products (Display & Video 360, Search Ads 360, and Campaign Manager)
+                    process.env.GOOGLE_MEASUREMENT_ID,
+                    // "GA-TRACKING_ID", // Google Analytics / GA
+                    // "AW-CONVERSION_ID", // Google Ads / Adwords / AW
+                    // "DC-FLOODIGHT_ID", // Marketing Platform advertising products (Display & Video 360, Search Ads 360, and Campaign Manager)
                 ],
                 // This object gets passed directly to the gtag config command
                 // This config will be shared across all trackingIds
@@ -260,7 +260,6 @@ module.exports = {
                 name: `Dygresje.info Homepage`,
                 short_name: `dygresje.info`,
                 start_url: `/`,
-                id: `/`,
                 background_color: `#f7f0eb`,
                 theme_color: `#a2466c`,
                 display: `standalone`,
