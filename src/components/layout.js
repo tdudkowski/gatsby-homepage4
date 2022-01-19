@@ -2,13 +2,13 @@ import * as React from "react"
 import LayoutTurystyka from "./layout-turystyka"
 import LayoutIT from "./layout-it"
 import LayoutMisc from "./layout-misc"
-import LayoutCMS from "./layout-cms"
-import LayoutCSS from "./layout-css"
-import LayoutJS from "./layout-js"
+import LayoutCms from "./layout-cms"
+import LayoutCss from "./layout-css"
+import LayoutJs from "./layout-js"
 import LayoutKryptologia from "./layout-kryptologia"
 import LayoutWebAccessibility from "./layout-webaccessibility"
-import LayoutERR from "./layout-err"
-import SEO from "./seo"
+import LayoutErr from "./layout-err"
+import Seo from "./seo"
 import "./layout.css"
 import "./index.css"
 
@@ -36,18 +36,18 @@ const Layout = ({ data, children, section, subsection }) => {
             Layout = LayoutMisc
             break;
         default:
-            Layout = LayoutERR
+            Layout = LayoutErr
     }
 
     switch (subsection) {
         case "css":
-            Layout = LayoutCSS
+            Layout = LayoutCss
             break;
         case "cms":
-            Layout = LayoutCMS
+            Layout = LayoutCms
             break;
         case "js":
-            Layout = LayoutJS
+            Layout = LayoutJs
             break;
         case "kryptologia":
             Layout = LayoutKryptologia
@@ -61,7 +61,7 @@ const Layout = ({ data, children, section, subsection }) => {
 
     return (
         <div className="container">
-            <SEO title={headerTitle} defer={false} />
+            <Seo title={headerTitle} defer={false} />
             <Layout children={children} section={section} subsection={subsection} />
         </div>)
 }

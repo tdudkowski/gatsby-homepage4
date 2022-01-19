@@ -7,7 +7,6 @@ import LayoutFB from "../../components/layout-fb"
 
 const BlogFBList = ({ data }) => {
   const buttons = Array.from({ length: Math.ceil(data.allMdx.totalCount / 10) });
-  console.log(buttons)
   // const image = getImage(data.frontmatter.img)
 
   return (
@@ -27,9 +26,7 @@ const BlogFBList = ({ data }) => {
         </section>
       ))}
       <div className="remote">
-        <p>Na stronie jest do 10 wpisów bloga - od najnowszych:</p>
-
-        <p>Na każdej podstronie jest do dziesięciu wpisów:</p>
+        <p>Na każdej podstronie jest do 10 wpisów bloga - od najnowszych:</p>
         <ul className="fbbuttons">{buttons.map((_, i) => <li key={i}>
           <Link to={`/festung-breslau/${i + 1}`} activeClassName="paginationActive">{i + 1}</Link>
         </li>)}</ul>

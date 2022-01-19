@@ -2,9 +2,7 @@ import React from "react"
 import styled from "styled-components"
 import { Link } from "gatsby";
 import { Helmet } from 'react-helmet'
-// import { MDXRenderer } from "gatsby-plugin-mdx"
 import "./layout-fb.css"
-// import 'gatsby-remark-vscode/styles.css'
 import background from "../content/fbimages/header-blur.jpg"
 import MenuArmiaNiemiecka from "./menu-armia-niemiecka.js"
 
@@ -154,7 +152,6 @@ padding:.5rem 1rem 1rem 1rem;
 & section.post-list > h4 {display:inline-block; 
 border: 3px solid #333;
             border-width: 3px 0;
-            /* font-family: 'UnifrakturMaguntia', cursive; */
            font-size:1rem;
             padding: 10px;
             margin-left:-1rem;
@@ -167,8 +164,6 @@ border: 3px solid #333;
   padding:.5rem 1rem;
             font-weight:500;
             font-style:italic;
-            /* text-transform:uppercase;  */
-            /* font-family: 'Times New Roman', Times, serif; */
             font-family: 'Alegreya', serif;
             background-color: rgba(250,250,250,.1);
             border-bottom: 2px solid #887;
@@ -271,57 +266,16 @@ const StyledFooter = styled.footer`
 .dark & a, .dark & a:hover {background-color:transparent;}
 `;
 
-
-
-// import { useSiteMetadata } from "../hooks/useSiteMetadata";
 const shortcodes = { MenuArmiaNiemiecka }
 
-const LayoutFB = ({ children, sub, data }) => {
-
-    let menu
-
-    switch (sub) {
-        case 'post':
-            menu = <nav><ul><li><Link to="/festung-breslau">Festung Breslau - strona główna</Link></li></ul></nav>
-            break;
-        case 'article':
-            menu = <nav><ul><li><Link to="/festung-breslau">Festung Breslau - strona główna</Link></li></ul></nav>
-            break;
-        case 'subpage':
-            menu = <nav><ul><li><Link to="/festung-breslau">Festung Breslau - strona główna</Link></li></ul></nav>
-            break;
-        default:
-            menu = <nav><ul><li><Link to="/festung-breslau">Festung Breslau - strona główna</Link></li></ul></nav>
-    }
-
-    const menuArticlesArray = [{ slug: "panstwo-hitlerowskie", title: "Państwo hitlerowskie" }, { slug: "ostfront", title: "O przyczynie wojny na wschodzie" }, { slug: "stan-wojny", title: "Stan wojny na początku 1945" }, { slug: "armia-czerwona", title: "Armia Czerwona 1945" }, { slug: "drezno-bombardowanie", title: "Drezno bombardowanie 13-15 lutego 1945" }, { slug: "depesza-eisenhowera", title: "Depesza Eisenhowera (SCAF 252)" },]
-
-    const menuJapanArray = [{ slug: "japonia-opis", title: "Japonia" }, { slug: "japonia-1937-44", title: "1937-44" }, { slug: "japonia-1945", title: "1945" }, { slug: "japonia-bron", title: "Broń " }, { slug: "japonia-usa", title: "Podsumowanie" },]
-
-    // , {slug: "waffen-ss", title: "Waffen SS"}
-    // , {slug: "wroclaw-zydzi", title: "Wrocławscy Żydzi 1933-45"}
-
-    const menuArmeeArray = [{ slug: "front-niemiecki-1945", title: "Front niemiecki w Polsce w 1945" }, { slug: "armia-niemiecka", title: "Armia niemiecka 1918-45" }, { slug: "ss", title: "SS" }, { slug: "volkssturm", title: "Volkssturm" }, { slug: "wunderwaffe", title: "Wunderwaffe" }, { slug: "vergeltungswaffe", title: "Vergeltungswaffe: od V1 do V4" }, { slug: "kapitulacja", title: "Kapitulacja - Dzień Zwycięstwa" },]
-
-    const menuSlaskArray = [{ slug: "wojsko-dlnslask", title: "Wojsko na Dolnym Śląsku 1740-1945" }, { slug: "groß-rosen", title: "Obóz koncentracyjny Groß-Rosen (1940-45)" }, { slug: "klasztor-augustianow", title: "Klasztor augustianów" }, { slug: "grupa-drobnera", title: "Grupa inicjatywna Drobnera" }, { slug: "zoo", title: "Wrocławski Ogród Zoologiczny (1865 - 1945)" }, { slug: "szczepin-bitwa", title: "Bitwa pancerna na Szczepinie 18 IV 1945" },]
-
-    const menuBiosArray = [{ slug: "adolf-bertram", title: "Arcybiskup Adolf Bertram (1859-1945)" }, { slug: "hanna-reitsch", title: "Kapitan Hanna Reitsch (1912-79)" }, { slug: "iwan-polbin", title: "Generał Iwan Połbin (1905-45)" }, { slug: "sophie-scholl", title: "Sophie Scholl (1921-43)" }, { slug: "werner-molders", title: "Podpułkownik Werner Mölders (1913-41)" },]
-
-    const menuArticles = menuArticlesArray.map(article => (<li key={article.slug}><Link activeClassName="menuLinkActive" to={`/festung-breslau/article/${article.slug}`}>{article.title}</Link></li>))
-
-    const menuJapan = menuJapanArray.map(article => (<li key={article.slug}><Link activeClassName="menuLinkActive" to={`/festung-breslau/article/${article.slug}`}>{article.title}</Link></li>))
-
-    const menuArmee = menuArmeeArray.map(article => (<li key={article.slug}><Link activeClassName="menuLinkActive" to={`/festung-breslau/article/${article.slug}`}>{article.title}</Link></li>))
-
-    const menuSlask = menuSlaskArray.map(article => (<li key={article.slug}><Link activeClassName="menuLinkActive" to={`/festung-breslau/article/${article.slug}`}>{article.title}</Link></li>))
-
-    const menuBios = menuBiosArray.map(bio => (<li key={bio.slug}><Link activeClassName="menuLinkActive" to={`/festung-breslau/article/${bio.slug}`}>{bio.title}</Link></li>))
-
+const LayoutFB = ({ children }) => {
 
     return (
         <StyledContainer>
             <Helmet title="Festung Breslau 1945 | dygresje.info" defer={false}>
-                <link href="https://fonts.googleapis.com/css2?family=Alegreya:ital,wght@500&family=Roboto&display=swap" rel="stylesheet" />
+                <link rel="preconnect" href="https://fonts.googleapis.com" />
+                <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+                <link href="https://fonts.googleapis.com/css2?family=Alegreya:ital,wght@1,500&family=Roboto&display=swap" rel="stylesheet" />
             </Helmet>
             <StyledHeader>
                 <ul className="headerNavbar">
@@ -334,7 +288,6 @@ const LayoutFB = ({ children, sub, data }) => {
             </StyledHeader>
             <StyledMain>
                 <aside>
-                    {/* <h2>Menu</h2> */}
                     <h3>Impressum</h3>
                     <div className="about">
                         <p>Blog wojenny. Codzienna relacja z bitwy o Wrocław. W tle wydarzenia z całego świata.<br />
@@ -343,38 +296,8 @@ const LayoutFB = ({ children, sub, data }) => {
                     <ul>
                         <li><Link activeClassName="menuLinkActive" to="/festung-breslau/article/blog">Blog Wojenny - edycja 2022</Link></li>
                         <li><Link activeClassName="menuLinkActive" to="/festung-breslau/posts">Archiwum wpisów</Link></li>
-                        {/* <li><Link activeClassName="menuLinkActive" to="/festung-breslau/article/bibliografia">Bibliografia</Link></li> */}
-                    </ul>
-                    {/* 
-                    <h3>Artykuły</h3>
-                  
-                    <ul>
-                        {menuArticles}
-                    </ul>
-                 
-                    <h3>Wojna na Pacyfiku</h3>
-
-                    <ul>
-                        {menuJapan}
                     </ul>
 
-                    <h3>Armia niemiecka</h3>
-
-                    <ul>
-                        {menuArmee}
-                    </ul>
-
-                    <h3>Dolny Śląsk</h3>
-
-                    <ul>
-                        {menuSlask}
-                    </ul>
-
-                    <h3>Biografie</h3>
-
-                    <ul>
-                        {menuBios}
-                    </ul> */}
                 </aside>
 
                 <StyledArticle className="content-container" components={shortcodes}>{children}</StyledArticle>

@@ -1,5 +1,5 @@
 import * as React from "react"
-import styled, {createGlobalStyle} from "styled-components"
+import styled from "styled-components"
 import Navigation from "./navigation"
 import Footer from "./footer"
 import MenuIT from "./menu-it"
@@ -211,7 +211,7 @@ border:1px solid rgba(51,51,51,.9);}
   }  
 `;
 
-const StyledFooter = styled.footer`
+const StyledFooter = styled(Footer)`
     min-height: 2rem;
     display: flex;
     flex-direction: column;
@@ -288,28 +288,28 @@ width: 100%;
 
 const Layout = ({ children, section, subsection }) => {
 
-    return (
-        <>
-            <StyledHeader>
-                <Navigation />
-            </StyledHeader>
-            <StyledMain>
-                <aside>
-                    <MenuIT subsection={subsection} />
+  return (
+    <>
+      <StyledHeader>
+        <Navigation />
+      </StyledHeader>
+      <StyledMain>
+        <aside>
+          <MenuIT subsection={subsection} />
 
-                </aside>
-                <StyledArticle className="content-container">
-                    <section className="articleContent">
-                        {children}
-                    </section>
-                    <ToC />
-                </StyledArticle>
-            </StyledMain>
-            <Footer />
-            <ToTop>
-                <div><a href="#top"><button type="button">Na górę strony</button></a></div>
-            </ToTop>
-        </>)
+        </aside>
+        <StyledArticle className="content-container">
+          <section className="articleContent">
+            {children}
+          </section>
+          <ToC />
+        </StyledArticle>
+      </StyledMain>
+      <StyledFooter />
+      <ToTop>
+        <div><a href="#top"><button type="button">Na górę strony</button></a></div>
+      </ToTop>
+    </>)
 }
 
 export default Layout

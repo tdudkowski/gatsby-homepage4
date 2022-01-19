@@ -1,6 +1,4 @@
 import React from "react";
-import { Link } from "gatsby";
-import { debounce } from "lodash";
 import _ from "lodash";
 
 let hrefs = [];
@@ -63,14 +61,14 @@ const Automenu = () => {
 
     return (
         <section className="sectionAutomenu">
-            {hrefs.length ? <><hr /><h4>Spis treści:</h4></>: null}
-        <ul className="automenu">
-            {hrefs.map((href, i) => (
-                <li key={i}>
-                    <a href={"#" + href}>{titles[i]}</a>
-                </li>
-            ))}
-        </ul>
+            {hrefs.length ? <><hr /><h4>Spis treści:</h4></> : null}
+            <ul className="automenu">
+                {hrefs.map((href, i) => (
+                    <li key={i}>
+                        <a href={"#" + href}>{titles[i]}</a>
+                    </li>
+                ))}
+            </ul>
         </section>
     );
 };

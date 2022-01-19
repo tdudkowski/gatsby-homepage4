@@ -6,17 +6,6 @@ import MenuIT from "./menu-it"
 import ToC from "./toc"
 import "./layout.css"
 
-const StyledWrapper = styled.div`
-& a {color: #332}
-& a:hover {text-decoration:underline;}
-& ul {list-style-type:circle;}
-
-& a.active, & .currentInnerAnchor a, .dark & .currentInnerAnchor a {
-color: #ddc;
-background-color: #331;
-}
-`;
-
 const StyledHeader = styled.header`
 background-color:transparent;
 display:flex;
@@ -132,68 +121,24 @@ word-wrap: break-word;
 }
 `;
 
-const StyledFooter = styled.footer`
-
-& p { color:#332;}
-
-& ul {  display:flex;flex-direction: row; flex-wrap:wrap; }
-
-& ul {list-style-type: none;
-display: flex;
-flex-direction:row;
-flex-wrap:wrap;
-margin: 0;
-}
-
-& ul li {
-flex: 1;
-}
-
-& ul a, .dark & ul a  {
-display: block;
-padding: 0 1rem;
-text-decoration: none;
-background-color:rgba(51,51,10,.1);
-border-radius:5px;
-color:#554;
-max-width:9rem;
-text-align: center;
-margin:5px;
-margin-bottom:1rem;
-/* height:2rem; */
-}
-
-& ul a:hover, .dark & ul a:hover {
-text-decoration: underline;
-background-color:rgba(51,51,10,.2);
-color: #440;
-}
-
-@media (min-width:800px) {
-flex-direction: row;
-
-}
-}
-`;
-
 const Layout = ({ children, section, subsection }) => {
 
-    return (
-        <>
-            <StyledHeader>
-                <Navigation />
-            </StyledHeader>
-            <StyledMain>
-                <aside>
-                    <MenuIT subsection={subsection} />
-                    <ToC />
-                </aside>
-                <StyledArticle className="content-container">
-                    {children}
-                </StyledArticle>
-            </StyledMain>
-            <Footer />
-        </>)
+  return (
+    <>
+      <StyledHeader>
+        <Navigation />
+      </StyledHeader>
+      <StyledMain>
+        <aside>
+          <MenuIT subsection={subsection} />
+          <ToC />
+        </aside>
+        <StyledArticle className="content-container">
+          {children}
+        </StyledArticle>
+      </StyledMain>
+      <Footer />
+    </>)
 }
 
 export default Layout

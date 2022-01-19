@@ -1,17 +1,16 @@
 import * as React from "react"
 import { Link, graphql } from "gatsby"
 import LayoutBlog from "../../components/layout-blog"
-import SEO from "../../components/seo"
+import Seo from "../../components/seo"
 import backgroundImage from "../../content/blogimages/Enigma-logo.jpg"
 
 const GatsbyBlog = ({ data, location }) => {
     const headerTitle = `dygresje.info / wpisy o Gatsbym`
     const path = location.pathname
-    const { frontmatter } = data.allMdx.nodes[0];
-    const { image } = frontmatter;
+    // const { frontmatter } = data.allMdx.nodes[0];
 
     return (<LayoutBlog path={path}>
-        <SEO title={headerTitle} image={backgroundImage} />
+        <Seo title={headerTitle} image={backgroundImage} />
         <article>
             <h3>Das ist Enigma</h3>
 

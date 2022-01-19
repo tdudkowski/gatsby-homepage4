@@ -2,7 +2,7 @@ import * as React from "react"
 import { Link, graphql } from "gatsby"
 import styled from "styled-components"
 import LayoutBlog from "../../components/layout-blog"
-import SEO from "../../components/seo"
+import Seo from "../../components/seo"
 
 const StyledSection = styled.section`
 display:flex;
@@ -26,27 +26,27 @@ const StyledDiv = styled.div`
 
 const IndexBlog = ({ data, location }) => {
 
-    const headerTitle = `dygresje.info / blog - wpisy`
-    const path = location.pathname
-    const { frontmatter } = data.allMdx.nodes[0];
-    const { image } = frontmatter;
-    console.log(data.allMdx.nodes[0])
-    return (<LayoutBlog path={path}>
-        <SEO title={headerTitle} image={image.childImageSharp.gatsbyImageData.images.fallback.src} />
-        <article>
+  const headerTitle = `dygresje.info / blog - wpisy`
+  const path = location.pathname
+  const { frontmatter } = data.allMdx.nodes[0];
+  const { image } = frontmatter;
+  console.log(data.allMdx.nodes[0])
+  return (<LayoutBlog path={path}>
+    <Seo title={headerTitle} image={image.childImageSharp.gatsbyImageData.images.fallback.src} />
+    <article>
 
-            <h3>Lista wpisów:</h3>
+      <h3>Lista wpisów:</h3>
 
-            <StyledSection>
-                {data.allMdx.nodes.map(({ id, frontmatter, slug }) => (
-                    <StyledDiv key={id} background={frontmatter.image.childImageSharp.gatsbyImageData.images.fallback.src}>
-                        <Link to={`/blog/${slug}`}>{frontmatter.title}</Link>
-                    </StyledDiv>
-                ))}
-            </StyledSection>
+      <StyledSection>
+        {data.allMdx.nodes.map(({ id, frontmatter, slug }) => (
+          <StyledDiv key={id} background={frontmatter.image.childImageSharp.gatsbyImageData.images.fallback.src}>
+            <Link to={`/blog/${slug}`}>{frontmatter.title}</Link>
+          </StyledDiv>
+        ))}
+      </StyledSection>
 
-        </article>
-    </LayoutBlog>)
+    </article>
+  </LayoutBlog>)
 }
 
 export default IndexBlog

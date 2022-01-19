@@ -1,6 +1,6 @@
 import * as React from "react"
 import Layout from "../components/layout"
-import SEO from "../components/seo"
+import Seo from "../components/seo"
 import styled from "styled-components"
 
 const StyledForm = styled.form`
@@ -72,7 +72,7 @@ button.btn:hover,
 const ContactPage = () => {
     return (
         <Layout>
-            <SEO title="Kontakt" />
+            <Seo title="Kontakt" />
             <section className="section-meta">
 
                 <StyledForm action=""

@@ -1,7 +1,7 @@
 import * as React from "react"
 import { Link, graphql } from "gatsby"
 import LayoutBlog from "../../components/layout-blog"
-import SEO from "../../components/seo"
+import Seo from "../../components/seo"
 
 const GatsbyBlog = ({ data, location }) => {
     const headerTitle = `dygresje.info / wpisy o Gatsbym`
@@ -10,7 +10,7 @@ const GatsbyBlog = ({ data, location }) => {
     const { image } = frontmatter;
 
     return (<LayoutBlog path={path}>
-        <SEO title={headerTitle} image={image.childImageSharp.gatsbyImageData.images.fallback.src} />
+        <Seo title={headerTitle} image={image.childImageSharp.gatsbyImageData.images.fallback.src} />
         <article>
             <h3>Hello, Gatsby!</h3>
 

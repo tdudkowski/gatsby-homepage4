@@ -1,5 +1,5 @@
 import * as React from "react"
-import {Link} from "gatsby"
+import { Link } from "gatsby"
 import styled from "styled-components"
 import Navigation from "./navigation"
 import Footer from "./footer"
@@ -99,77 +99,25 @@ h3 {margin-top:2rem;}
 
 `;
 
-const StyledFooter = styled.footer`
-background-color: #eed;
-& ul {list-style-type: none;
-display: flex;
-flex-direction:row;
-flex-wrap:wrap;
-margin: 0;
-}
+const Layout = ({ children, subsection }) => {
 
-& ul li {
-flex: 1;
-}
-
-& ul a, .dark & ul a  {
-display: block;
-padding: 0 1rem;
-text-decoration: none;
-background-color:rgba(51,51,10,.1);
-border-radius:5px;
-color:#554;
-max-width:9rem;
-text-align: center;
-margin:5px;
-margin-bottom:1rem;
-/* height:2rem; */
-}
-
-& ul a:hover, .dark & ul a:hover {
-text-decoration: underline;
-background-color:rgba(51,51,10,.2);
-color: #440;
-}
-
-@media (min-width:800px) {
-flex-direction: row;  
-}
-`;
-
-const StyledUl = styled.ul`
-display:flex;
-flex-wrap:wrap;
-article & {list-style-type:none;}
-padding-left:0;
-
-& a {list-style-type:none;}
-
-& li {margin:1rem; flex:1;}
-
-& a {display:block; width: 5rem; padding:1rem 2rem; text-align:center; border:3px solid rgba(51,51,51,.4); text-decoration:none; font-weight:bold;}
-article & a:hover { border:3px solid rgba(51,51,51,.7); color: #331; background-color:rgba(251,251,51,.6); text-decoration:underline;}
-`;
-
-const Layout = ({ children, section, subsection }) => {
-
-    return (
-        <StyledWrapper>
-           <StyledHeader>
-               <h2><Link to="/it/cms">CMS</Link></h2>
-                <Navigation />
-            </StyledHeader>
-            <StyledMain>
-                <aside>
-                    <MenuIT subsection={subsection} />
-                    <ToC />
-                </aside>
-                <StyledArticle className="content-container">
-                    {children}
-                </StyledArticle>
-            </StyledMain>
-            <Footer />
-        </StyledWrapper>)
+  return (
+    <StyledWrapper>
+      <StyledHeader>
+        <h2><Link to="/it/cms">CMS</Link></h2>
+        <Navigation />
+      </StyledHeader>
+      <StyledMain>
+        <aside>
+          <MenuIT subsection={subsection} />
+          <ToC />
+        </aside>
+        <StyledArticle className="content-container">
+          {children}
+        </StyledArticle>
+      </StyledMain>
+      <Footer />
+    </StyledWrapper>)
 }
 
 export default Layout

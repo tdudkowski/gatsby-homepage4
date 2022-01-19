@@ -6,8 +6,7 @@ import Footer from "./footer"
 import ToC from "./toc"
 import "./layout-fb.css"
 import "./layout.css"
-import { Helmet } from "react-helmet";
-import SEO from "../components/seo";
+import Seo from "../components/seo";
 
 const StyledHeader = styled.header`
        & a > h2 {margin:0; font-size:3.5rem; text-align:center; overflow:hidden; font-family:Alegreya, sans-serif; background-color: rgba(51,51,51,.8); color: rgba(250,250,250,.6);}
@@ -60,14 +59,14 @@ const LayoutBlog = ({ children, data, path }) => {
 
     let tagsArray
     if (data !== undefined) {
-        const { frontmatter, id, body, slug } = data.mdx
+        const { frontmatter } = data.mdx
         tagsArray = [...frontmatter.tags.split(",")]
     }
     const headerTitle = `blog - strona główna`
 
     return (
         <div className="container">
-            <SEO title={headerTitle} defer={false} />
+            <Seo title={headerTitle} defer={false} />
 
             <StyledHeader>
                 <Navigation />

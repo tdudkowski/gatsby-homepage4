@@ -3,24 +3,23 @@ import { Link, graphql } from "gatsby"
 import { MDXRenderer } from "gatsby-plugin-mdx"
 import LayoutFB from "../components/layout-fb"
 import 'gatsby-remark-vscode/styles.css';
-import SEO from "../components/seo";
+import Seo from "../components/seo";
 // import { useSiteMetadata } from "../hooks/useSiteMetadata";
 
 const blogFBPost = ({ data }) => {
-  const { frontmatter, body, fields, excerpt } = data.mdx;
-  const { title: pageTitle, date, date1945, img } = frontmatter;
+  const { frontmatter, body } = data.mdx;
+  const { title: pageTitle, img } = frontmatter;
   const headerTitle = `Festung Breslau, ${frontmatter.date1945} | ${frontmatter.title}`
 
   let tagsArray
   if (data !== undefined) {
-    const { frontmatter, id, body, slug } = data.mdx
-    console.log(frontmatter.tags)
+    const { frontmatter } = data.mdx
     tagsArray = [...frontmatter.tags.split(",")]
   }
 
   return (
     <LayoutFB sub="post">
-      <SEO title={headerTitle} image={img.childImageSharp.gatsbyImageData.images.fallback.src} defer={false} />
+      <Seo title={headerTitle} image={img.childImageSharp.gatsbyImageData.images.fallback.src} defer={false} />
       <h2 className="post-header"><div>{frontmatter.date1945}</div><br /> {pageTitle}</h2>
       <p>Aktualizacja: {frontmatter.date}</p>
       <p><Link to="../../">Powrót do strony głównej Bloga</Link></p>

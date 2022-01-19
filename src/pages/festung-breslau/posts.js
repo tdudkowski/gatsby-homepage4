@@ -1,23 +1,13 @@
 import React from 'react'
 import { graphql, Link } from "gatsby"
-// import Img from "gatsby-plugin-image"
 import LayoutFB from "../../components/layout-fb"
-import SEO from "../../components/seo"
-// import BlogFBList from "../../templates/blogFBListTemplate"
+import Seo from "../../components/seo"
 
 const Posts = ({ pageContext, data }) => {
-    const {
-        breadcrumb: { crumbs },
-    } = pageContext
-    console.log("DATA ", data)
-
-    // let post = Array.from(data.allMdx)
-    // let featuredImgFluid = data.img.childImageSharp.fluid || null
-    // console.log("POST: ", post)
 
     return (
         <LayoutFB>
-            <SEO title="Festung Breslau" />
+            <Seo title="Festung Breslau" />
             <h2>Archiwum wpisów</h2>
             <ul>
                 {data.allMdx.nodes.map(({ id, frontmatter, slug }) => (
@@ -28,10 +18,6 @@ const Posts = ({ pageContext, data }) => {
                     </li>
                 ))}
             </ul>
-            <div className="remote">
-                {/* <p>Na stronie jest do 10 wpisów bloga - poprzednie wpisy: <Link to="/festung-breslau/1">[_1_]</Link> | <Link to="/festung-breslau/2">[_2_]</Link>
-                </p> */}
-            </div>
         </LayoutFB>)
 }
 
@@ -56,13 +42,13 @@ query AllPosts {
      ) {
         nodes {
             id
+            slug
             frontmatter {
               title
               date(formatString: "YYYY-MM-DD")
               date1945
               tags
             }
-                    slug
             }
            }
   }
