@@ -4,7 +4,7 @@ import LayoutBlog from "../components/layout-fb"
 
 const fbTagListPage = ({ data, location }) => {
 
-    const tag = location.pathname.slice(21)
+    const tag = decodeURI(location.pathname.slice(21))
     const path = location.pathname
     const filteredPosts = [...data.allMdx.nodes].filter(item => item.frontmatter.tags.split(", ").includes(tag))
 

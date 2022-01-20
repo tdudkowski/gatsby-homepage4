@@ -474,18 +474,21 @@ Nadejdą czasy kryptografii kwantowej i niekoniecznie będzie to oznaczało koni
 
 ### Menedżer haseł
 
-Używanie menedżera haseł na przykładzie programu KeePassXC. Założenie: potrzebujemy menedżera haseł dla notebooka, na którym są dwa systemy oepracyjne (Windows i Ubuntu) i smarfona (Android). Współdzielenie bazy danych przez Dropboxa, oraz archiwizacja. postaramy się to zrobić łagodnie, zaczynając od kluczowych elemntów systemu i niezbyt istotnych kont. Po kolei:
+Używanie menedżera haseł na przykładzie programu KeePassXC (darmowy i otwarty fork Keepass). Założenie: potrzebujemy menedżera haseł dla notebooka, na którym są dwa systemy oepracyjne (Windows i Ubuntu) i smarfona (Android). Zresztą niezależnie dla ilu komputerów i środowisk konfigurujemy manadżera, wygląda to tak samo. Użyjemy współdzielenia bazy danych przez Dropboxa oraz archiwizacji. Postaramy się to zrobić łagodnie, zaczynając od kluczowych elemntów systemu i niezbyt istotnych kont. Po kolei:
 
-- Inwentaryzacja wszystkich założonych przez nas kont, łącznie z hasłami. Wszystkich założonych, nie tylko obecnie rzeczywiście używanych. Oceniamy, które są ważne (związane z finansami, tożsamością, uwierzytelniają nas na innych serwisach). Wbrew pozorom jest to długi proses i po latach aktywności w internecie trudny do skompletowania.
-- Instalacja programu: w Ubuntu `# apt install keepassxc` (jest to niestety w momencie, w którym to piszę dość stara wersja), w Androidzie KeePassDX ze sklepu Google. Trzeba pamiętać, że oprogrammowanie związane z kryptografią i ogólnie z bezpieczeństwem musi być aktualizowane w pierwszje kolejności.
-- Zakładając, że będziemy uzywać synchronizacji pomiędzy urządzeniami jest to ostatni moment na jej utworzenie. W podlinkowanym artykule Niebezpiecznika mowa jest o trzech możliwościach: iCloud, Google Drive i Dropbox. Te dwa ostatnie są dostępne jednocześnie dla wszystkich trzech najważniejszych systemów operacyjnych. [How To Sync Ubuntu To Your Google Drive](https://helpdeskgeek.com/linux-tips/how-to-sync-ubuntu-to-your-google-drive/), [Zainstaluj Dropbox, aby w pełni wykorzystać swoje konto](https://www.dropbox.com/install-linux)
+- Inwentaryzacja wszystkich założonych przez nas kont, łącznie z hasłami. Wszystkich założonych, nie tylko obecnie rzeczywiście używanych. Oceniamy, które są ważne (związane z finansami, tożsamością, uwierzytelniają nas na innych serwisach). Wbrew pozorom jest to długi proces i po latach aktywności w internecie trudny do skompletowania. Na początek wystarczą najważniejsze i ostatnio regularnie używane przez nas konta.
+- Instalacja programu:
+  - w Ubuntu `# apt install keepassxc` (jest to niestety w momencie, w którym to piszę dość stara wersja). Trzeba pamiętać, że oprogrammowanie związane z kryptografią i ogólnie z bezpieczeństwem musi być aktualizowane w pierwszej kolejności.
+  - w Androidzie KeePassDX ze sklepu Google.
+- Zakładając, że będziemy używać synchronizacji pomiędzy urządzeniami jest to ostatni moment na jej utworzenie. W podlinkowanym artykule Niebezpiecznika mowa jest o trzech możliwościach: iCloud, Google Drive i Dropbox. Te dwa ostatnie są dostępne jednocześnie dla wszystkich trzech najważniejszych systemów operacyjnych.
+  - [How To Sync Ubuntu To Your Google Drive](https://helpdeskgeek.com/linux-tips/how-to-sync-ubuntu-to-your-google-drive/)
+  - [Zainstaluj Dropbox, aby w pełni wykorzystać swoje konto](https://www.dropbox.com/install-linux)
 - Uruchamiamy program. Na początek tworzymy bazę danych, w której będą trzymane dane logowania. Trzeba ustalić jej hasło główne i lokalizację pliku w synchronizowanym katalogu.
-- W programie tworzymy wpis, trzeba podać rozpoznawalną unikalną nazwę (tytuł) wpisu, nazwę użytkownika, hasło (można go utworzyć, podejrzeć) i url.
-- Zaczynamy od desktopa, tutaj wszystkie (lub prawie wszystkie) konta używamy w przeglądarce WWW. Wybieramy jedną, którą będziemy do nich używać. Instalujemy rozszerzenie i w jego ustawieniach łączymy z bazą danych podając jej nazwę (identyfikator), program musi być w tym czasie włączony.
+- Teraz w programie tworzymy wpis, trzeba podać rozpoznawalną unikalną nazwę (tytuł) wpisu, nazwę użytkownika, hasło (można go utworzyć, podejrzeć) i url.
+- Zaczynamy od desktopa, tutaj wszystkie (lub prawie wszystkie) konta używamy w przeglądarce WWW. Wybieramy tę, którą będziemy do nich używać. Instalujemy rozszerzenie i w jego ustawieniach łączymy z bazą danych podając jej nazwę (identyfikator), program musi być w tym czasie włączony.
 - Przy pierwszym wejściu na zdefiniowaną stronę z logowaniem zostaniemy zapytani o skojarzenie. I to naprawdę wszystko jeżeli chodzi o jedno srodowisko i utworzenie bazy danych, z której będą korzystały drugi system operacyjny oraz smartfon.
-- Wrzucamy bazę na Dropboxa, najlepiej jeśli na komputerze znajduje się w zsynchronizowanym katalogu.
-- Na smartfonie instalujemy program KeePassDX, importujemy bazę z Dropboxa (trzeba wybrać opcję Remote). Uzyskujemy do niej dostęp po wpisaniu hasła głównego. Kiedy ją widzimy to można w Ustawienia / Wypełnianie formularzy włączyć "Ustaw domyślną usługę autouzupełniania". Wtedy możemy włączyć już przeglądarkę na telefonie i uzyskamy opcję automatycznego zalogowania się.
-RZJN8wADjr!aTB`'"+BF
+- Na smartfonie instalujemy program KeePassDX, importujemy bazę z Dropboxa (trzeba wybrać opcję Remote). Za każdym użyciem programu uzyskujemy do niej dostęp po wpisaniu hasła głównego. Kiedy ją widzimy to można w Ustawienia / Wypełnianie formularzy włączyć "Ustaw domyślną usługę autouzupełniania". Wtedy możemy włączyć już przeglądarkę na telefonie i uzyskamy opcję automatycznego zalogowania się.
+
 Odnośniki:
 
 - [KeePassXC](https://keepassxc.org/)
