@@ -4,7 +4,7 @@ section: "blog"
 subsection: "historia"
 set: enigma
 date: 2021-10-04
-edited: 2022-01-11
+edited: 2022-01-20
 image: ../blogimages/Enigma-logo.jpg
 tags: kryptologia, historia
 url: https://dygresje.info/blog/enigma-po1990
@@ -489,6 +489,17 @@ Używanie menedżera haseł na przykładzie programu KeePassXC (darmowy i otwart
 - Przy pierwszym wejściu na zdefiniowaną stronę z logowaniem zostaniemy zapytani o skojarzenie. I to naprawdę wszystko jeżeli chodzi o jedno srodowisko i utworzenie bazy danych, z której będą korzystały drugi system operacyjny oraz smartfon.
 - Na smartfonie instalujemy program KeePassDX, importujemy bazę z Dropboxa (trzeba wybrać opcję Remote). Za każdym użyciem programu uzyskujemy do niej dostęp po wpisaniu hasła głównego. Kiedy ją widzimy to można w Ustawienia / Wypełnianie formularzy włączyć "Ustaw domyślną usługę autouzupełniania". Wtedy możemy włączyć już przeglądarkę na telefonie i uzyskamy opcję automatycznego zalogowania się.
 
+Przeniesienie czy archiwizacja bazy danych jest bardzo łatwa, wszak to pojedynczy plik o znanej nazwie i lokalizacji. W tym pliku są wszystkie nasze zapisane hasła. Czy to bezpieczne, czy to bezpieczniejsze niż trzymanie haseł zapisanych na papierze, albo gdzieś w kryptyczny sposób na komputerze? Tak, i to co najmniej z czterech powodów:
+
+1. Papier na wiele sposobów zawodzi, jest tu pewien problem z czytelnością, aktualizacją i organizacją danych. Tym bardziej te zastrzeżenia dotyczą zapisywania haseł w pliku. Jeżeli trzymamy je na komputerze, tracimy wszystko w momencie awarii dysku, natomiast online jest tym samym co robimy z bazą Keepassa z tą różnicą, że jest to w głupi sposób niebezpieczne. Tak samo jak używanie tego samego, lub w przewidywalny sposób modyfikowanego hasła do wszystkiego. Owszem - KeePass trzyma nasze hasła w jednym pliku i ten plik może zostać przejęty, nawet z Dropboxa czy Google Drive, ale plik ten jest kryptograficznie zabezpieczony hasłem głównym (które można zmienić w razie przejęcia, lub zmieniać regulanie). Logistycznym zyskiem z używania menedżera haseł jest przeniesienie całego ryzyka na jedno miejsce. Jest to znana w IT taktyka "single point of failure" umieszczenia ryzyka w jednym, łatwym do kontroli i zarządzania miejscu.
+2. Ponieważ menedżer haseł trzyma informację o prawidłowej domenie zapisanych usług, jesteśmy odporni na ataki polegające na podstawieniu fałszywej domeny. Po prostu w takiej sytuacji menedżer haseł nic nie podpowie, nie zaproponuje zalogowania. Chroni to nas przed sporą częścią ataków fiszingowych.
+3. Hasła wygenerowane przez menedżer haseł spełniają wszystkie wymogi bezpieczeństwa. Są unikalne dla każdego serwisu i odpowiednio trudne do złamania.
+4. Odporność na sprzętowe keyloggery czy na podejrzenie wpisywania hasła. Tu uwaga: sam menedżer haseł nie jest z oczywistych sposobów zabezpieczony przed keyloggerem. Ale podejrzenie hasła głównego nie daje bandycie dostępu do naszego konta w serwisie. Ponadto menedżer haseł można dodatkowo zabezpieczyć kluczem sprzętowym U2F.
+
+Trochę inne podejścia do zarządzania hasłami proponują takie programy jak [Spectre](https://spectre.app/) czy [LessPass | Stateless Password Manager](https://www.lesspass.com/#/).
+
+Jeszcze jedną możliwością zarządzania hasłami jest trzymanie ich w przeglądarce: [Menedżer haseł | passwords.google.com](https://passwords.google.com/), Firefox Lockwise został wyłączony.
+
 Odnośniki:
 
 - [KeePassXC](https://keepassxc.org/)
@@ -497,6 +508,7 @@ Odnośniki:
 - Zaufana Trzecia Strona ["Podstawy Bezpieczeństwa: Menedżery haseł – który wybrać i jak go używać"](https://zaufanatrzeciastrona.pl/post/podstawy-bezpieczenstwa-menedzery-hasel-ktory-wybrac-i-jak-go-uzywac/)
 - Niebezpiecznik ["KeePass — jak zacząć swoją przygodę z managerem haseł?"](https://niebezpiecznik.pl/post/keepass-jak-zaczac-swoja-przygode-z-managerem-hasel/)
 - Kacper Szurek ["Czy korzystać z Menadżera Haseł? (wady i zalety)" [YT 1:18:44]](https://www.youtube.com/watch?v=1-3iKtg50Zc)
+- Mateusz Chrobok ["Menedżer haseł, czyli kilka słów o zdrowej paranoi" [YT 25:33]](https://www.youtube.com/watch?v=uI3k2TKa6iw)
 
 ### Klucze U2F
 
@@ -509,6 +521,3 @@ Odnośniki:
 - [Laboratory (Content Security Policy / CSP Toolkit)](https://addons.mozilla.org/pl/firefox/addon/laboratory-by-mozilla/) | [Facebook Container](https://addons.mozilla.org/en-US/firefox/addon/facebook-container/)
 - [Dragon Sector](https://blog.dragonsector.pl/)
 - ["Oszuści mogą podszyć się pod bank za... dwa euro. Jak nie dać się nabrać? Ekspert wyjaśnia"](https://next.gazeta.pl/next/7,151003,27631199,oszusci-moga-podszyc-sie-pod-bank-za-dwa-euro-jak-nie-dac.html)
-
-19
-505 33 433 631 646 292 22
