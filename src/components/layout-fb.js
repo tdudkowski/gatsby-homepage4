@@ -226,8 +226,8 @@ border: 3px solid #333;
 & .remote p, & .remote li {color:#bba; padding:.2rem .5rem;}
 & .remote ul {list-style-type:circle;}
 & .remote li {margin:10px;}
-& .remote li:nth-of-type(1) a {border:1px solid rgba(200,200,200,.4); border-radius:5px; display:inline-block; padding:1px 5px; margin:.5rem 0;}
-& .remote li:nth-of-type(1) a:hover {box-shadow: 2px 2px 4px rgba(251,251,51,.4);}
+/* & .remote li:nth-of-type(1) a {border:1px solid rgba(200,200,200,.4); border-radius:5px; display:inline-block; padding:1px 5px; margin:.5rem 0;}
+& .remote li:nth-of-type(1) a:hover {box-shadow: 2px 2px 4px rgba(251,251,51,.4);} */
 
 & .post-list { background-color: rgb(68, 21, 0); color: rgb(255, 238, 204);}
 & .post-list p:nth-of-type(1) span {color:#333; background-color:rgb(255, 238, 204,.6); padding:.3rem;}
@@ -295,7 +295,7 @@ const LayoutFB = ({ children }) => {
                     </div>
                     <ul>
                         <li><Link activeClassName="menuLinkActive" to="/festung-breslau/article/blog">Blog Wojenny - edycja 2022</Link></li>
-                        <li><Link activeClassName="menuLinkActive" to="/festung-breslau/posts">Archiwum wpisów</Link></li>
+                        <li><Link activeClassName="menuLinkActive" to="/festung-breslau/posts">Lista wpisów</Link></li>
                     </ul>
 
                 </aside>

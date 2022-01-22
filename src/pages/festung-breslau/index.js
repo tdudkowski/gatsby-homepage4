@@ -7,7 +7,6 @@ import LayoutFB from "../../components/layout-fb"
 
 const BlogFBList = ({ data }) => {
   const buttons = Array.from({ length: Math.ceil(data.allMdx.totalCount / 10) });
-  // const image = getImage(data.frontmatter.img)
 
   return (
     <LayoutFB sub="post">
@@ -45,6 +44,7 @@ query AllListsArticles($skip: Int!=0) {
     limit: 10
     skip: $skip
   ) {
+    totalCount
         nodes {
             id
             excerpt(pruneLength: 750)
