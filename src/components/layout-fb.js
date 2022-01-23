@@ -270,6 +270,12 @@ const shortcodes = { MenuArmiaNiemiecka }
 
 const LayoutFB = ({ children }) => {
 
+    // , { slug: "hanna-reitsch", title: "Kapitan Hanna Reitsch (1912-79)" }, { slug: "iwan-polbin", title: "Generał Iwan Połbin (1905-45)" }, { slug: "sophie-scholl", title: "Sophie Scholl (1921-43)" }, { slug: "werner-molders", title: "Podpułkownik Werner Mölders (1913-41)" },
+
+    const menuBiosArray = [{ slug: "adolf-bertram", title: "Arcybiskup Adolf Bertram (1859-1945)" }]
+
+    const menuBios = menuBiosArray.map(bio => (<li key={bio.slug}><Link activeClassName="menuLinkActive" to={`/festung-breslau/article/${bio.slug}`}>{bio.title}</Link></li>))
+
     return (
         <StyledContainer>
             <Helmet title="Festung Breslau 1945 | dygresje.info" defer={false}>
@@ -293,10 +299,15 @@ const LayoutFB = ({ children }) => {
                         <p>Blog wojenny. Codzienna relacja z bitwy o Wrocław. W tle wydarzenia z całego świata.<br />
                             119 dni końca wojny: od 12 stycznia do 10 maja 1945.</p>
                     </div>
+
+                    <h3>Blog</h3>
                     <ul>
                         <li><Link activeClassName="menuLinkActive" to="/festung-breslau/article/blog">Blog Wojenny - edycja 2022</Link></li>
                         <li><Link activeClassName="menuLinkActive" to="/festung-breslau/posts">Lista wpisów</Link></li>
                     </ul>
+
+                    <h3>Biografie</h3>
+                    <ul>{menuBios}</ul>
 
                 </aside>
 
