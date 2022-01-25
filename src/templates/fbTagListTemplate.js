@@ -1,18 +1,20 @@
 import React from "react";
 import { Link, graphql } from "gatsby";
-import LayoutBlog from "../components/layout-fb"
+import LayoutBlog from "../components/layout-fb";
+import Seo from "../components/seo";
 
 const fbTagListPage = ({ data, location }) => {
 
     const tag = decodeURI(location.pathname.slice(21))
     const path = location.pathname
     const filteredPosts = [...data.allMdx.nodes].filter(item => item.frontmatter.tags.split(", ").includes(tag))
-
+    const headerTitle = `Festung Breslau, tag: ${tag}`
     return (
         <LayoutBlog path={path}>
+            <Seo title={headerTitle} defer={false} />
             <Link to="/festung-breslau">fb main page</Link>
             <h2>Posty z tagiem <span>{tag}</span></h2>
-            <section>
+            <section className="post">
                 <ul>
                     {filteredPosts.map(({ id, frontmatter, slug }) => (
                         <li key={id}>

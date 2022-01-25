@@ -3,8 +3,13 @@ import styled from "styled-components"
 import { Link } from "gatsby";
 import { Helmet } from 'react-helmet'
 import "./layout-fb.css"
+import { MDXProvider } from "@mdx-js/react";
 import background from "../content/fbimages/header-blur.jpg"
-import MenuArmiaNiemiecka from "./menu-armia-niemiecka.js"
+import ArmiaNiemiecka from "../components/box-armia-niemiecka.js";
+import WojnaNaPacyfiku from "../components/box-wojna-na-pacyfiku.js";
+import DolnySlask from "../components/box-dolny-slask.js";
+
+const shortcodes = { ArmiaNiemiecka, WojnaNaPacyfiku, DolnySlask }
 
 // bgcolor rgb(68, 21, 0) #441500
 // txt color rgb(255, 238, 204) #fec
@@ -266,8 +271,6 @@ const StyledFooter = styled.footer`
 .dark & a, .dark & a:hover {background-color:transparent;}
 `;
 
-const shortcodes = { MenuArmiaNiemiecka }
-
 const LayoutFB = ({ children }) => {
 
     // , { slug: "hanna-reitsch", title: "Kapitan Hanna Reitsch (1912-79)" }, { slug: "iwan-polbin", title: "Generał Iwan Połbin (1905-45)" }, { slug: "sophie-scholl", title: "Sophie Scholl (1921-43)" }, { slug: "werner-molders", title: "Podpułkownik Werner Mölders (1913-41)" },
@@ -297,7 +300,7 @@ const LayoutFB = ({ children }) => {
                     <h3>Impressum</h3>
                     <div className="about">
                         <p>Blog wojenny. Codzienna relacja z bitwy o Wrocław. W tle wydarzenia z całego świata.<br />
-                            119 dni końca wojny: od 12 stycznia do 10 maja 1945.</p>
+                            120 dni końca wojny: od 12 stycznia do 11 maja 1945.</p>
                     </div>
 
                     <h3>Blog</h3>
@@ -311,7 +314,9 @@ const LayoutFB = ({ children }) => {
 
                 </aside>
 
-                <StyledArticle className="content-container" components={shortcodes}>{children}</StyledArticle>
+                <StyledArticle className="content-container">
+                    <MDXProvider components={shortcodes}>{children}</MDXProvider>
+                </StyledArticle>
 
             </StyledMain>
             <StyledFooter>

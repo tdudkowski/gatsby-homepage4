@@ -4,7 +4,6 @@ import { MDXRenderer } from "gatsby-plugin-mdx"
 import LayoutFB from "../components/layout-fb"
 import 'gatsby-remark-vscode/styles.css';
 import Seo from "../components/seo";
-// import { useSiteMetadata } from "../hooks/useSiteMetadata";
 
 const blogFBPost = ({ data }) => {
   const { frontmatter, body } = data.mdx;
