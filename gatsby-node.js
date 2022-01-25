@@ -81,7 +81,6 @@ exports.createPages = ({ graphql, actions }) => {
       date(formatString: "YYYY-MM-DD")
       relativeDate:  date(fromNow: true locale: "de-DE")
       date1945
-      published
       tags
     }    
   }
@@ -96,7 +95,6 @@ exports.createPages = ({ graphql, actions }) => {
         frontmatter {
         title
         date(formatString: "YYYY-MM-DD")
-        published
       }
     }
   }
