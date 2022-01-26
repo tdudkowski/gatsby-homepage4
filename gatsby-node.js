@@ -95,6 +95,7 @@ exports.createPages = ({ graphql, actions }) => {
         frontmatter {
         title
         date(formatString: "YYYY-MM-DD")
+        tags
       }
     }
   }
@@ -151,17 +152,17 @@ exports.createPages = ({ graphql, actions }) => {
     });
 
     // BLOG TAGS
-    const tags = []
+    const blogtags = []
     for (let i = 0; i < blogposts.length; i++) {
       const arrOfTags = blogposts[i].frontmatter.tags.split(",")
       for (let j = 0; j < arrOfTags.length; j++) {
-        if (!tags.includes(arrOfTags[j].trim())) {
-          tags.push(arrOfTags[j].trim())
+        if (!blogtags.includes(arrOfTags[j].trim())) {
+          blogtags.push(arrOfTags[j].trim())
         }
       }
     }
 
-    tags.forEach(tag => {
+    blogtags.forEach(tag => {
       createPage({
         path: "/blog/tag/" + tag,
         component: blogTagListTemplate,
@@ -198,18 +199,40 @@ exports.createPages = ({ graphql, actions }) => {
       });
     });
 
-    // FB BLOG TAGS
-    const fbtags = []
+    // FB BLOGPOSTS TAGS
+    const fbpoststags = []
     for (let i = 0; i < fbposts.length; i++) {
       const arrOfTags = fbposts[i].frontmatter.tags.split(",")
       for (let j = 0; j < arrOfTags.length; j++) {
-        if (!fbtags.includes(arrOfTags[j].trim())) {
-          fbtags.push(arrOfTags[j].trim())
+        if (!fbpoststags.includes(arrOfTags[j].trim())) {
+          fbpoststags.push(arrOfTags[j].trim())
         }
       }
     }
 
-    fbtags.forEach(tag => {
+    // FB ARTICLES TAGS
+    const fbarticlestags = []
+    for (let i = 0; i < fbarticles.length; i++) {
+      // console.log(fbarticles[i].frontmatter.title, fbarticles[i].frontmatter.tags)
+      const arrOfTags = fbarticles[i].frontmatter.tags.split(",")
+      for (let j = 0; j < arrOfTags.length; j++) {
+        if (!fbarticlestags.includes(arrOfTags[j].trim())) {
+          fbarticlestags.push(arrOfTags[j].trim())
+        }
+      }
+    }
+
+    // SUM FB TAGS
+    const fbsumtags = [...fbpoststags]
+    for (let i = 0; i < fbpoststags.length; i++) {
+      for (let j = 0; j < fbarticlestags.length; j++) {
+        if (!fbsumtags.includes(fbarticlestags[j].trim())) {
+          fbsumtags.push(fbarticlestags[j].trim())
+        }
+      }
+    }
+
+    fbsumtags.forEach(tag => {
       createPage({
         path: "/festung-breslau/tag/" + tag,
         component: fbTagListTemplate,

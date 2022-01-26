@@ -8,8 +8,9 @@ import background from "../content/fbimages/header-blur.jpg"
 import ArmiaNiemiecka from "../components/box-armia-niemiecka.js";
 import WojnaNaPacyfiku from "../components/box-wojna-na-pacyfiku.js";
 import DolnySlask from "../components/box-dolny-slask.js";
+import SeeAlso from "../components/box-seealso.js";
 
-const shortcodes = { ArmiaNiemiecka, WojnaNaPacyfiku, DolnySlask }
+const shortcodes = { ArmiaNiemiecka, WojnaNaPacyfiku, DolnySlask, SeeAlso }
 
 // bgcolor rgb(68, 21, 0) #441500
 // txt color rgb(255, 238, 204) #fec

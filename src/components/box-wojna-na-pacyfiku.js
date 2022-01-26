@@ -17,11 +17,11 @@ const WojnaNaPacyfiku = () => {
             <p>Wojna na Pacyfiku</p>
 
             <ul>
-                <li><Link activeClassName="menuLinkActive" to="/festung-breslau/article/japonia-opis">Japonia - opis</Link></li>
-                <li><Link activeClassName="menuLinkActive" to="/festung-breslau/article/japonia-1937-44">1937-44</Link></li>
-                <li><Link activeClassName="menuLinkActive" to="/festung-breslau/article/japonia-1945">1945</Link></li>
-                <li><Link activeClassName="menuLinkActive" to="/festung-breslau/article/japonia-bron">Broń podczas wojny na Pacyfiku</Link></li>
-                <li><Link activeClassName="menuLinkActive" to="/festung-breslau/article/japonia-usa">Podsumowanie</Link></li>
+                <li><Link activeClassName="menuLinkActive" to="/festung-breslau/article/pacyfik-japonia">Japonia - opis</Link></li>
+                <li><Link activeClassName="menuLinkActive" to="/festung-breslau/article/pacyfik-1937-44">1937-44</Link></li>
+                <li><Link activeClassName="menuLinkActive" to="/festung-breslau/article/pacyfik-1945">1945</Link></li>
+                <li><Link activeClassName="menuLinkActive" to="/festung-breslau/article/pacyfik-bron">Broń podczas wojny na Pacyfiku</Link></li>
+                <li><Link activeClassName="menuLinkActive" to="/festung-breslau/article/pacyfik-podsumowanie">Podsumowanie</Link></li>
             </ul>
 
         </StyledDiv>

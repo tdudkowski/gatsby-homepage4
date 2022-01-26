@@ -1,4 +1,5 @@
 import * as React from "react"
+import { Link } from "gatsby"
 import Layout from "../components/layout"
 
 const AboutSite = () => {
@@ -20,7 +21,7 @@ const AboutSite = () => {
 
                 <p>Dział niemiecki w opublikowanym zakresie jest kompletny, może dodam jakieś miasta, czy może zarys politycznej historii Niemiec, na pewno lepsze zdjęcia. Ale to co jest to i tak za dużo, kto ma tyle czasu, żeby to czytać. Mam pomysł na serię artykułów o Berlinie i Dreźnie ale to tylko jeśli będę miał czas, żeby je napisać. Może teraz pora na Budapeszt, Wiedeń, Pragę i Paryż.</p>
                 {/*<p>Instrukcje obiektów turystycznych będą powstawać stopniowo.</p>*/}
-                <p>IT początkowo to były głównie Drupal, Mediawiki, WordPress i CSS. Do tego stara strona o XHTML i CSS2 oraz artykuł o kryptografii. W tym roku postanowiłem jednak całość czasu nauki przeznaczyć na JavaScript, React i Gatsby'ego. Dlatego część JS staje się najwazniejsza.</p>
+                <p>IT początkowo to były głównie Drupal, Mediawiki, WordPress i CSS. Do tego stara strona o XHTML i CSS2 oraz artykuł o kryptografii. W tym roku postanowiłem jednak całość czasu nauki przeznaczyć na JavaScript, React i Gatsby'ego. Dlatego część JS staje się najważniejsza.</p>
                 <p>Dział trzeci, prywatny, jak widać z braku czasu składa się głównie z dwóch zestawów odnośników, które zebrałem lurkując na Facebooku grupy związane z językiem niemieckim (którego się uczę) i francuskim (którego chciałbym się zacząć uczyć).</p>
                 <p>Ponadto:</p>
 
@@ -31,11 +32,13 @@ const AboutSite = () => {
                     <li>Starałem się nie naruszyć niczyich dóbr, jeśli jednak uważasz inaczej - proszę o kontakt.</li>
                 </ul>
 
-                <p>Pierwsza wersja powstała na Drupalu w 2018. Potem przeniosłem całą treść na Gatsby'ego (data instalacji na Netlify: 22 października 2020). Trochę w pośpiechu bo jednocześnie opuszczalem dawny hosting. Był to mój pierwszy poważniejszy kontakt z Gatsby'm, więc nie wyszło optymalnie. W międzyczasie, od stycznia do maja 2021, przeniosłem na tę stronę cały blog wojenny Festung Breslau 1945.</p>
+                <p>Pierwsza wersja powstała na Drupalu w 2018. Potem przeniosłem całą treść na Gatsby'ego (data instalacji na Netlify: 22 października 2020). Trochę w pośpiechu bo jednocześnie opuszczałem dawny hosting. Był to mój pierwszy poważniejszy kontakt z Gatsby'm, więc nie wyszło optymalnie. W międzyczasie, od stycznia do maja 2021, przeniosłem na tę stronę cały blog wojenny Festung Breslau 1945.</p>
 
-                <p>To jest już trzecia wersja (5 lipca 2021). Także Gatsby, ale tym razem treść zawarta jest w plikach .mdx w jednym katalogu, a cała strona ma o wiele prostszą strukturę, co jest o wiele łatwiejsze do utrzymania i rozwoju. Ponadto nie ma global styles, zastosowanie styli globalnych ma sens tylko w małych stronkach o jednolitym wyglądzie. Tutaj użyłem styled components.</p>
+                <p>Trzecia wersja strony wylądowała na Netlify 5 lipca 2021. Także Gatsby, ale tym razem treść zawarta jest w plikach .mdx w jednym katalogu, a cała strona ma o wiele prostszą strukturę, co jest o wiele łatwiejsze do utrzymania i rozwoju. Ponadto nie ma global styles, zastosowanie styli globalnych ma sens tylko w małych stronkach o jednolitym wyglądzie. Tutaj użyłem styled components.</p>
 
-                <p>Do zrobienia jest przede wszystkim blog. Pierwsza dłuższa seria wpisów (ok 10) będzie dotyczyła Gastby HOWTO. Druga niemieckiej maszyny szyfrującej Enigma. Poza tym:</p>
+                <p>Pzy okazji uruchomiłem blog i do września 2021 wrzuciłem dwie serie wpisów: <Link to="/blog/gatsby">Hello, Gatsby!</Link> (oczywiście! 7 wpisów) oraz <Link to="/blog/enigma">Das ist Enigma</Link> (12 wpisów). Obie serie będą miały kontynuację w 2022.</p>
+
+                <p>19 stycznia 2022 upgrade do czwartej wersji Gatsby'ego. Łatwe przeniesienie treści dzięki temu, że wszystko jest logicznie poukładane. Przy okazji ruszyła kolejna edycja bloga Festung Breslau 1945 z nowymi funkcjami.</p>
 
                 <ul>
                     <li>Zróżnicowanie designu poszczególnych działów, lepsza organizacja treści.</li>

@@ -9,6 +9,12 @@ const articleFB = ({ data }) => {
   const { title: pageTitle } = frontmatter;
   const headerTitle = `Festung Breslau 1945 | ${pageTitle}`
 
+  let tagsArray
+  if (data !== undefined) {
+    const { frontmatter } = data.mdx
+    tagsArray = [...frontmatter.tags.split(",")]
+  }
+
   return (
     <LayoutFB sub="article">
       <Seo title={headerTitle} defer={false} />
@@ -16,6 +22,10 @@ const articleFB = ({ data }) => {
       <p>Aktualizacja: {frontmatter.date}</p>
       <p><Link to="../../">Powrót do strony głównej Bloga</Link></p>
       <section className="article"><MDXRenderer>{body}</MDXRenderer>
+        <div className="tags tagsDiv">
+          <h4>Tagi:</h4>
+          <ul>{tagsArray.map(tag => <li key={tag}><Link to={`/festung-breslau/tag/${tag.trim()}`}>{tag.trim()}</Link></li>)}</ul>
+        </div>
         <hr />
         <p><Link to="../../">Powrót do strony głównej Bloga</Link></p>
       </section>
@@ -32,6 +42,7 @@ export const query = graphql`
       frontmatter {
         title
         date(formatString: "YYYY-MM-DD")
+        tags
              }
       slug
     }

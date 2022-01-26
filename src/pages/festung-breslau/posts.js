@@ -8,7 +8,7 @@ const Posts = ({ pageContext, data }) => {
     return (
         <LayoutFB>
             <Seo title="Festung Breslau" />
-            <h2>Archiwum wpisów</h2>
+            <h2>Lista wpisów</h2>
             <ul>
                 {data.allMdx.nodes.map(({ id, frontmatter, slug }) => (
                     <li key={id} className="post-list">
