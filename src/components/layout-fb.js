@@ -274,9 +274,26 @@ const StyledFooter = styled.footer`
 
 const LayoutFB = ({ children }) => {
 
-    // , { slug: "hanna-reitsch", title: "Kapitan Hanna Reitsch (1912-79)" }, { slug: "iwan-polbin", title: "Generał Iwan Połbin (1905-45)" }, { slug: "sophie-scholl", title: "Sophie Scholl (1921-43)" }, { slug: "werner-molders", title: "Podpułkownik Werner Mölders (1913-41)" },
+    // , {slug: "waffen-ss", title: "Waffen SS"}
+    // , {slug: "wroclaw-zydzi", title: "Wrocławscy Żydzi 1933-45"}
 
-    const menuBiosArray = [{ slug: "adolf-bertram", title: "Arcybiskup Adolf Bertram (1859-1945)" }]
+    const menuSlaskArray = [{ slug: "klasztor-augustianow", title: "Klasztor augustianów na Wyspie Piaskowej" }, { slug: "zoo", title: "Wrocławski Ogród Zoologiczny (1865 - 1945)" }, { slug: "wojsko-dlnslask", title: "Wojsko na Dolnym Śląsku 1740-1945" }, { slug: "gross-rosen", title: "Obóz koncentracyjny Groß-Rosen (1940-45)" }, { slug: "szczepin-bitwa", title: "Bitwa pancerna na Szczepinie 18 IV 1945" }, { slug: "grupa-drobnera", title: "Grupa inicjatywna Drobnera" },]
+
+    const menuWarArray = [{ slug: "panstwo-hitlerowskie", title: "Państwo hitlerowskie" }, { slug: "ostfront", title: "O przyczynie wojny na wschodzie" }, { slug: "armia-czerwona", title: "Armia Czerwona 1945" }, { slug: "2awp", title: "2 Armia WP" }, { slug: "drezno-bombardowanie", title: "Drezno bombardowanie 13-15 lutego 1945" }, { slug: "depesza-eisenhowera", title: "Depesza Eisenhowera (SCAF 252)" },]
+
+    const menuArmeeArray = [{ slug: "armia-niemiecka", title: "Armia niemiecka 1918-45" }, { slug: "front-niemiecki-1945", title: "Front niemiecki w Polsce w 1945" }, { slug: "ss", title: "SS" }, { slug: "volkssturm", title: "Volkssturm" }, { slug: "wunderwaffe", title: "Wunderwaffe" }, { slug: "vergeltungswaffe", title: "Vergeltungswaffe: od V1 do V4" }, { slug: "kapitulacja", title: "Kapitulacja - Dzień Zwycięstwa" },]
+
+    const menuPacyfikArray = [{ slug: "pacyfik-japonia", title: "Japonia - opis i historia" }, { slug: "pacyfik-1937-44", title: "1937-44" }, { slug: "pacyfik-1945", title: "1945" }, { slug: "pacyfik-iwo-jima", title: "Bitwa o Iwo Jimę" }, { slug: "pacyfik-bron", title: "Broń " }, { slug: "pacyfik-yanagi", title: "Misje Yanagi " }, { slug: "pacyfik-podsumowanie", title: "Podsumowanie" },]
+
+    const menuBiosArray = [{ slug: "adolf-bertram", title: "Arcybiskup Adolf Bertram (1859-1945)" }, { slug: "hanna-reitsch", title: "Kapitan Hanna Reitsch (1912-79)" }, { slug: "iwan-polbin", title: "Generał Iwan Połbin (1905-45)" }, { slug: "sophie-scholl", title: "Sophie Scholl (1921-43)" }, { slug: "werner-molders", title: "Podpułkownik Werner Mölders (1913-41)" },]
+
+    const menuSlask = menuSlaskArray.map(article => (<li key={article.slug}><Link activeClassName="menuLinkActive" to={`/festung-breslau/article/${article.slug}`}>{article.title}</Link></li>))
+
+    const menuWar = menuWarArray.map(article => (<li key={article.slug}><Link activeClassName="menuLinkActive" to={`/festung-breslau/article/${article.slug}`}>{article.title}</Link></li>))
+
+    const menuArmee = menuArmeeArray.map(article => (<li key={article.slug}><Link activeClassName="menuLinkActive" to={`/festung-breslau/article/${article.slug}`}>{article.title}</Link></li>))
+
+    const menuPacyfik = menuPacyfikArray.map(article => (<li key={article.slug}><Link activeClassName="menuLinkActive" to={`/festung-breslau/article/${article.slug}`}>{article.title}</Link></li>))
 
     const menuBios = menuBiosArray.map(bio => (<li key={bio.slug}><Link activeClassName="menuLinkActive" to={`/festung-breslau/article/${bio.slug}`}>{bio.title}</Link></li>))
 
@@ -308,11 +325,24 @@ const LayoutFB = ({ children }) => {
                     <ul>
                         <li><Link activeClassName="menuLinkActive" to="/festung-breslau/article/blog">Blog Wojenny - edycja 2022</Link></li>
                         <li><Link activeClassName="menuLinkActive" to="/festung-breslau/posts">Lista wpisów</Link></li>
+                        <li><Link activeClassName="menuLinkActive" to="/festung-breslau/article/bibliografia">Bibliografia</Link></li>
+                        <li><Link activeClassName="menuLinkActive" to="/festung-breslau/article/kalendarium">Kalendarium</Link></li>
                     </ul>
+
+                    <h3>Dolny Śląsk</h3>
+                    <ul>{menuSlask}</ul>
+
+                    <h3>Wojna</h3>
+                    <ul>{menuWar}</ul>
+
+                    <h3>Armia niemiecka</h3>
+                    <ul>{menuArmee}</ul>
+
+                    <h3>Wojna na Pacyfiku</h3>
+                    <ul>{menuPacyfik}</ul>
 
                     <h3>Biografie</h3>
                     <ul>{menuBios}</ul>
-
                 </aside>
 
                 <StyledArticle className="content-container">

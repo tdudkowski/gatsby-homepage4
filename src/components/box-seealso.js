@@ -9,9 +9,12 @@ padding:1rem;
 `;
 
 const BoxSeeAlso = ({ ...props }) => {
+
+    if (props.comment === undefined) { props.comment = "Więcej na ten temat w osobnym artykule: " }
+
     return (
         <StyledDiv>
-            Więcej na ten temat w osobnym artykule: <Link to={props.url}>{props.txt}</Link>
+            {props.comment}<Link to={props.url}>{props.txt}</Link>
         </StyledDiv>
     )
 }
