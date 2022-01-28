@@ -272,13 +272,13 @@ module.exports = {
                         "src": "src/images/maskable-icon-512.png",
                         "sizes": "192x192",
                         "type": "image/png",
-                        "purpose": "maskable"
+                        "purpose": "any maskable"
                     },
                     {
                         "src": "src/images/maskable-icon-512.png",
                         "sizes": "512x512",
                         "type": "image/png",
-                        "purpose": "maskable"
+                        "purpose": "any maskable"
                     },
                 ],
             },
