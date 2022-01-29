@@ -23,7 +23,7 @@ const BoxDolnySlask = () => {
                 <li><Link activeClassName="menuLinkActive" to="/festung-breslau/article/adolf-bertram">Biskup Adolf Bertram (1859-1945)</Link></li>
                 <li><Link activeClassName="menuLinkActive" to="/festung-breslau/article/hanna-reitsch">Kapitan Hanna Reitsch (1912-79)</Link></li>
                 <li><Link activeClassName="menuLinkActive" to="/festung-breslau/article/depesza-eisenhowera">Depesza Eisenhowera (SCAF 252)</Link></li>
-                <li><Link activeClassName="menuLinkActive" to="/festung-breslau/article/gross-rosen">Obóz koncentracyjny Groß-Rosen (1940-45)</Link></li>
+                <li><Link activeClassName="menuLinkActive" to="/festung-breslau/article/kl-gross-rosen">Obóz koncentracyjny Groß-Rosen (1940-45)</Link></li>
                 <li><Link activeClassName="menuLinkActive" to="/festung-breslau/article/grupa-drobnera">Grupa Drobnera</Link></li>
             </ul>
 

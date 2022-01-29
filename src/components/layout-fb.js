@@ -6,7 +6,7 @@ import "./layout-fb.css"
 import { MDXProvider } from "@mdx-js/react";
 import background from "../content/fbimages/header-blur.jpg"
 import ArmiaNiemiecka from "../components/box-armia-niemiecka.js";
-import WojnaNaPacyfiku from "../components/box-wojna-na-pacyfiku.js";
+import WojnaNaPacyfiku from "../components/box-pacyfik.js";
 import DolnySlask from "../components/box-dolny-slask.js";
 import SeeAlso from "../components/box-seealso.js";
 
