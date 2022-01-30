@@ -16,7 +16,7 @@ const WojnaNaPacyfiku = () => {
         <StyledDiv>
             <h4>Wojna na Pacyfiku</h4>
 
-            <ul>
+            <ul className="boxlist">
                 <li><Link activeClassName="menuLinkActive" to="/festung-breslau/article/pacyfik-japonia">Japonia - opis</Link></li>
                 <li><Link activeClassName="menuLinkActive" to="/festung-breslau/article/pacyfik-1937-44">1937-44</Link></li>
                 <li><Link activeClassName="menuLinkActive" to="/festung-breslau/article/pacyfik-1945">1945</Link></li>

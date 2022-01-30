@@ -133,13 +133,16 @@ flex-direction: row;
 
 const StyledArticle = styled.article`
 padding:.5rem 1rem 1rem 1rem;
-  li {margin:.5rem;}
+
 .dark & a {color:#f86;}
 
 & p > span.gatsby-resp-image-wrapper {display:inline-block; position:relative; border: 3px solid #ddd; padding:2rem 1rem; background-color: #111;}
 & span + em {display:inline-block; position:relative; border: 1px solid #ddd; width:100%; padding:1rem 0; padding-left:1rem; background-color: #555; margin-bottom:1rem;}
 
 & em {font-style:italic; color: rgba(255, 238, 204, .7); }
+
+& ul {margin-left: 1.5rem;}
+& ul li {margin:.5rem;}
 
 & .post, & .article { max-width: 45rem;
             background-color: rgb(68, 21, 0);
