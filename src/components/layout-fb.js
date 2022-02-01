@@ -279,7 +279,9 @@ const LayoutFB = ({ children }) => {
 
     const menuSlaskArray = [{ slug: "klasztor-augustianow", title: "Klasztor augustianów na Wyspie Piaskowej" }, { slug: "zoo", title: "Wrocławski Ogród Zoologiczny (1865 - 1945)" }, { slug: "wojsko-dlnslask", title: "Wojsko na Dolnym Śląsku 1740-1945" }, { slug: "kl-gross-rosen", title: "Obóz koncentracyjny Groß-Rosen (1940-45)" }, { slug: "szczepin-bitwa", title: "Bitwa pancerna na Szczepinie 18 IV 1945" }, { slug: "grupa-drobnera", title: "Grupa inicjatywna Drobnera" },]
 
-    const menuWarArray = [{ slug: "panstwo-hitlerowskie", title: "Państwo hitlerowskie" }, { slug: "ostfront", title: "O przyczynie wojny na wschodzie" }, { slug: "obozy-koncentracyjne", title: "Obozy koncentracyjne" }, { slug: "armia-czerwona", title: "Armia Czerwona 1945" }, { slug: "2awp", title: "2 Armia WP" }, { slug: "drezno-bombardowanie", title: "Drezno bombardowanie 13-15 lutego 1945" }, { slug: "depesza-eisenhowera", title: "Depesza Eisenhowera (SCAF 252)" }, { slug: "wegry", title: "Węgry" }, { slug: "bulgaria", title: "Bułgaria" },]
+    const menuWarArray = [{ slug: "panstwo-hitlerowskie", title: "Państwo hitlerowskie" }, { slug: "ostfront", title: "O przyczynie wojny na wschodzie" }, { slug: "obozy-koncentracyjne", title: "Obozy koncentracyjne" }, { slug: "armia-czerwona", title: "Armia Czerwona 1945" }, { slug: "2awp", title: "2 Armia WP" }, { slug: "drezno-bombardowanie", title: "Drezno bombardowanie 13-15 lutego 1945" }, { slug: "depesza-eisenhowera", title: "Depesza Eisenhowera (SCAF 252)" },]
+
+    const menuEuropaArray = [{ slug: "bulgaria", title: "Bułgaria" }, { slug: "rumunia", title: "Rumunia" }, { slug: "wegry", title: "Węgry" },]
 
     const menuArmeeArray = [{ slug: "armia-niemiecka", title: "Armia niemiecka 1918-45" }, { slug: "front-niemiecki-1945", title: "Front niemiecki w Polsce w 1945" }, { slug: "ss", title: "SS" }, { slug: "volkssturm", title: "Volkssturm" }, { slug: "wunderwaffe", title: "Wunderwaffe" }, { slug: "vergeltungswaffe", title: "Vergeltungswaffe: od V1 do V4" }, { slug: "kapitulacja", title: "Kapitulacja - Dzień Zwycięstwa" },]
 
@@ -290,6 +292,8 @@ const LayoutFB = ({ children }) => {
     const menuSlask = menuSlaskArray.map(article => (<li key={article.slug}><Link activeClassName="menuLinkActive" to={`/festung-breslau/article/${article.slug}`}>{article.title}</Link></li>))
 
     const menuWar = menuWarArray.map(article => (<li key={article.slug}><Link activeClassName="menuLinkActive" to={`/festung-breslau/article/${article.slug}`}>{article.title}</Link></li>))
+
+    const menuEuropa = menuEuropaArray.map(article => (<li key={article.slug}><Link activeClassName="menuLinkActive" to={`/festung-breslau/article/${article.slug}`}>{article.title}</Link></li>))
 
     const menuArmee = menuArmeeArray.map(article => (<li key={article.slug}><Link activeClassName="menuLinkActive" to={`/festung-breslau/article/${article.slug}`}>{article.title}</Link></li>))
 
@@ -334,6 +338,9 @@ const LayoutFB = ({ children }) => {
 
                     <h3>Wojna</h3>
                     <ul>{menuWar}</ul>
+
+                    <h3>Europa</h3>
+                    <ul>{menuEuropa}</ul>
 
                     <h3>Armia niemiecka</h3>
                     <ul>{menuArmee}</ul>
