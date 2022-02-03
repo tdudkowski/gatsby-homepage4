@@ -5,7 +5,6 @@ import LayoutBlog from "../components/layout"
 const tagListPage = ({ data, location }) => {
 
     const { frontmatter } = data.allMdx.nodes[0];
-
     const tag = location.pathname.slice(10)
     const path = location.pathname
     const filteredPosts = [...data.allMdx.nodes].filter(item => item.frontmatter.tags.split(", ").includes(tag))
@@ -31,7 +30,7 @@ const tagListPage = ({ data, location }) => {
 export default tagListPage
 
 export const query = graphql`
-query AllTags {
+query AllBlogTags {
   allMdx(
    filter: { fileAbsolutePath: { glob: "**/src/content/blogposts/*.mdx" } }
    sort: { order: ASC, fields: frontmatter___date }
