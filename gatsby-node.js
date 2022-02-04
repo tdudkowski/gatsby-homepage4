@@ -156,20 +156,21 @@ exports.createPages = ({ graphql, actions }) => {
     for (let i = 0; i < blogposts.length; i++) {
       const arrOfTags = blogposts[i].frontmatter.tags.split(",")
       for (let j = 0; j < arrOfTags.length; j++) {
-        if (!blogtags.includes(arrOfTags[j].trim())) {
-          blogtags.push(arrOfTags[j].trim())
-        }
+        const thisTag = blogtags.filter(tag => tag.name === arrOfTags[j].trim());
+        if (thisTag.length) { thisTag[0].counter += 1; }
+        else { blogtags.push({ name: arrOfTags[j].trim(), counter: 1 }) }
       }
     }
 
     blogtags.forEach(tag => {
+      console.log(tag.name)
       createPage({
-        path: "/blog/tag/" + tag,
+        path: "/blog/tag/" + tag.name,
         component: blogTagListTemplate,
-        ...tag,
+        ...tag.name,
         context: {
-          ...tag.context,
-          slug: tag,
+          ...tag.name.context,
+          slug: tag.name,
         },
       });
     });
