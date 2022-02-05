@@ -95,7 +95,6 @@ const LayoutBlog = ({ children, data, path }) => {
                                     <h4>Tagi:</h4>
                                     <ul>{tagsArray.map(tag => <li key={tag}><Link to={`/blog/tag/${tag.trim()}`}>{tag.trim()}</Link></li>)}</ul>
                                 </div>
-
                             </section>
                             <ToC />
                         </>

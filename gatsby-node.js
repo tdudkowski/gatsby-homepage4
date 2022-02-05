@@ -166,7 +166,7 @@ exports.createPages = ({ graphql, actions }) => {
       createPage({
         path: "/blog/tag/" + tag.name,
         component: blogTagListTemplate,
-        ...tag.name,
+        ...tag,
         context: {
           ...tag.name.context,
           slug: tag.name,
