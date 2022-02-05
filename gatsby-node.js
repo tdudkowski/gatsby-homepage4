@@ -163,7 +163,6 @@ exports.createPages = ({ graphql, actions }) => {
     }
 
     blogtags.forEach(tag => {
-      console.log(tag.name)
       createPage({
         path: "/blog/tag/" + tag.name,
         component: blogTagListTemplate,
