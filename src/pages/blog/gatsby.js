@@ -19,7 +19,7 @@ const GatsbyBlog = ({ data, location }) => {
             <p>Zainteresowanym Gatsbym polecam:</p>
 
             <ul>
-                <li>darmowy kurs Przeprogramowanych: <a href="https://przeprogramowani.pl/darmowy-kurs-gatsby">Gatsby - krok po kroku, od zera do gotowej aplikacji</a>, jest to seria, w tej chwili siedmiu artykułów, na pewno wartych przeczytania. Lektura obowiązkowa.</li>
+                <li>darmowy kurs Przeprogramowanych: <a href="https://przeprogramowani.pl/darmowy-kurs-gatsby">Gatsby - krok po kroku, od zera do gotowej aplikacji</a>, jest to seria, w tej chwili siedmiu artykułów, na pewno wartych przeczytania. Lektura obowiązkowa. Ponadto trzy wpisy na blogu Łukasza Zielińskiego <a href="https://lukasz-zielinski.pl/tags/gatsby-js/">3 post(ów) z tagiem “Gatsby.js”</a></li>
                 <li>artykuł na mojej stronie: <Link to="/it/js/gatsby">GatsbyJS</Link>, choć, prawdę mówiąc, po wykasowaniu / przeniesieniu zdublowanej treści niewiele tam już pozostało.</li>
             </ul>
 
