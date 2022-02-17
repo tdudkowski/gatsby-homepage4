@@ -14,7 +14,7 @@
     "@mdx-js/mdx": "^1.6.22",
     "@mdx-js/react": "^1.6.22",
     "babel-plugin-styled-components": "^2.0.2",
-    "dotenv": "^16.0.0",
+    "dotenv": "^8.6.0",
     "gatsby": "^4.5.2",
     "gatsby-plugin-breadcrumb": "^12.3.0",
     "gatsby-plugin-catch-links": "^4.5.0",
