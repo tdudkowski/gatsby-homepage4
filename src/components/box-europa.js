@@ -19,6 +19,8 @@ const Europa = () => {
             <ul className="boxlist">
                 <li><Link activeClassName="menuLinkActive" to="/festung-breslau/article/bulgaria">Bułgaria</Link></li>
                 <li><Link activeClassName="menuLinkActive" to="/festung-breslau/article/chorwacja">Chorwacja</Link></li>
+                <li><Link activeClassName="menuLinkActive" to="/festung-breslau/article/jugoslawia">Jugosławia</Link></li>
+                <li><Link activeClassName="menuLinkActive" to="/festung-breslau/article/serbia">Serbia</Link></li>
                 <li><Link activeClassName="menuLinkActive" to="/festung-breslau/article/slowacja">Słowacja</Link></li>
                 <li><Link activeClassName="menuLinkActive" to="/festung-breslau/article/rumunia">Rumunia</Link></li>
                 <li><Link activeClassName="menuLinkActive" to="/festung-breslau/article/wegry">Węgry</Link></li>
