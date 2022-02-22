@@ -36,32 +36,33 @@ Na przełomie lat 80 i 90-tych [Tim Berners-Lee](http://www.w3.org/People/Berner
 
 - serwer
 - klienta (o nazwie World Wide Web)
-- pierwszą wersję HTML (**H**yper**T**ext **M**arkup **L**anguage) język określający strukturę dokumentów, będący bardzo uproszczoną wersją SGML.
+- pierwszą wersję języka HTML (**H**yper**T**ext **M**arkup **L**anguage) język określający strukturę dokumentów, będący bardzo uproszczoną wersją SGML.
 - protokół HTTP (**H**yper**T**ext **T**ransfer **P**rotocol) umożliwiający wymianę danych hipertekstowych w sieci rozległej.
 
-Chociaż w zamierzeniu miał służyć tylko wizualnej prezentacji dokumentacji naukowej i początkowo rozwijany w gronie entuzjastów, w latach 90-tych WWW stał się obok e-maila podstawową usługą internetową. 
+Chociaż w zamierzeniu miał służyć tylko wizualnej prezentacji dokumentacji naukowej i początkowo rozwijany w gronie entuzjastów, w latach 90-tych WWW stał się obok e-maila podstawową usługą internetową, a od połowy lat 90. zdominował Internet.
 
 #### Zasada działania: protokół HTTP
 
-Jak cała reszta internetu WWW zbudowany jest w architekturze klient-serwer. 
-W tym przypadku klientem są przeglądarki internetowe (np. Firefox [[www.firefox.pl](http://www.firefox.pl/)] lub Opera [[www.opera.com](http://www.opera.com/)]), natomiast serwerem jest program, który udostępnia im dokumenty HTML przy użyciu protokołu HTTP czyli serwer WWW (np. Apache [[httpd.apache.org](http://httpd.apache.org/)]). 
+Jak większość usług internetowych WWW zbudowany jest w architekturze klient-serwer.
 
-Protokół HTTP (ang. Hypertext Transfer Protocol) jest protokołem warstwy aplikacji i stosuje połączenia na poziomie TCP do zapewnienia sekwencyjnego doręczenia wszystkich pakietów HTTP. Używa zapytań oraz odpowiedzi. 
-Aktualna definicja: RFC 2616: [faqs.org (.html)](http://www.faqs.org/rfcs/rfc2616.html), [IETF.org (.txt)](http://www.ietf.org/rfc/rfc2616.txt)  
-Zapewnia znormalizowany sposób komunikowania się komputerów. Określa postać żądań klienta i odpowiedzi serwera. Od strony klienta przesyła żądania udostępnienia dokumentów WWW oraz dane z formularzy. 
-Jest bezstanowy - to znaczy, że nie zachowuje żadnych informacji o poprzednich transakcjach z klientem. Dlatego powstały takie techniki jak "cookies" i inne metody śledzenia sesji użytkownika. 
+- klient to przeglądarka internetowa (np. [Google Chrome](https://www.google.pl/chrome/) czy [Mozilla Firefox](https://www.mozilla.org/firefox/))
+- serwer to program, który udostępnia im dokumenty WWW (najczęściej w formie HTML) przy użyciu protokołu HTTP, czyli serwer WWW (np. Apache [httpd.apache.org](http://httpd.apache.org/)). 
 
-HTTP standardowo korzysta z portu nr 80 (czasem 1080). Do sesji szyfrowanych SSL 443.
+Protokół HTTP (ang. Hypertext Transfer Protocol) jest protokołem warstwy aplikacji i stosuje połączenia na poziomie TCP do zapewnienia sekwencyjnego doręczenia wszystkich pakietów HTTP. Używa zapytań oraz odpowiedzi. Poprzednia definicja: RFC 2616: [faqs.org (.html)](http://www.faqs.org/rfcs/rfc2616.html), [IETF.org (.txt)](http://www.ietf.org/rfc/rfc2616.txt) została w 2014 zastąpiona przez szereg RFC 7230-7237. Zapewnia znormalizowany sposób komunikowania się komputerów. Określa postać żądań klienta i odpowiedzi serwera. Od strony klienta przesyła żądania udostępnienia dokumentów WWW oraz dane z formularzy.
+
+Jest bezstanowy - to znaczy, że nie zachowuje żadnych informacji o poprzednich transakcjach z klientem. Dlatego powstały takie techniki zapamiętywania stanów sesji jak ciasteczka (ang. cookies), czy localStorage.
+
+HTTP standardowo używa portu nr 80 (czasem 1080). Do sesji szyfrowanych protokołem SSL (HTTPS) 443.
 
 1. Klient wysyła zapytanie, najpierw określa adres serwera oraz żądany zasób, analizuje żądany URL dzieląc go na trzy części:
-  - określenie protokołu (najczęsciej i domyślnie: http://)
+  - określenie protokołu (najczęściej i domyślnie: http://)
   - adres serwera (najczęściej w postaci DNS, chociaż może być też IP)
   - ścieżka dostępu i nazwa dokumentu do pobrania
 2. Serwer odpowiada na to zapytanie wysyłając z powrotem do serwera, z którego pochodziło zapytanie, odpowiednie informacje.
-3. Po ustaleniu adresu i skontaktowaniu się z serwerem przeglądarka tworzy tzw. połączenie TCP, czyli kanał transmisji danych, który sam dba o integralność przesyłanych informacji i w razie wątpliwości co do poprawności transmisji zleca powtórzenie pojedynczych pakietów; dzięki temu przeglądarka nie musi kontrolować transmisji danych.
-4. Zaraz po utworzeniu połączenia TCP pomędzy przeglądarką a serwerem rozpoczyna się komunikacja oparta na protokole HTTP. Przeglądarka wysyła żądanie HTTP (request) a serwer reaguje na to odpowiedziami (response). 
-    Zapytania i odpowiedzi zaczynają się nagłowkiem, który określa rodzaj przesyłanych informacji i dopiero po nim następują właściwe dane. 
-    W nagłówkach dozwolone są jedynie znaki ASCII od 0 do 127 (więc można je symulować innym programem niż przeglądarka, co czasem jest wykorzystywane do testowania serwera), natomiast dane są przesyłane w postaci 8-bitowej.
+3. Po ustaleniu adresu i skontaktowaniu się z serwerem przeglądarka tworzy połączenie TCP, czyli kanał transmisji danych, który sam dba o integralność przesyłanych informacji i w razie wątpliwości co do poprawności transmisji zleca powtórzenie pojedynczych pakietów; dzięki temu przeglądarka nie musi kontrolować transmisji danych.
+4. Zaraz po utworzeniu połączenia TCP pomiędzy przeglądarką a serwerem rozpoczyna się komunikacja oparta na protokole HTTP. Przeglądarka wysyła żądanie HTTP (request) a serwer reaguje na to odpowiedziami (response).
+  - Zapytania i odpowiedzi zaczynają się nagłówkiem, który określa rodzaj przesyłanych informacji i dopiero po nim następują właściwe dane. 
+  - W nagłówkach dozwolone są jedynie znaki ASCII od 0 do 127 (więc można je symulować innym programem niż przeglądarka, co czasem jest wykorzystywane do testowania serwera), natomiast dane są przesyłane w postaci 8-bitowej.
 
 Elementy URL-a (Uniform Resource Locator)
 
@@ -72,27 +73,27 @@ Elementy URL-a (Uniform Resource Locator)
 - dodatkowy parametr
 - dodatkowy parametr (tzw. querystring, poprzedzony znakiem zapytania, pozwala przesłać dodatkowe parametry na podstawie których serwer buduje stronę, np. ?userid=666)
 - można także podać numer portu TCP (:80) oraz nazwę użytkownika i hasło (@user:password)
+
 ```
 adres_serwera[:numer_portu[@identyfikator_użytkownika[:hasło]]]
 ```
-elementy w nawiasach są opcjonalne, i w przypadku ich braku zostaną wybrane wartości domyślne, identyfikator użytkownika oraz hasło mają domyślnie postać pustych ciągów, ponieważ nie są wymagane dla zapewnienia komunikacji HTTP i mają znaczenie jedynie podczas logowania do zasobów chronionych hasłem, a jeśli wymagane są dla identyfikacji użytkownika przekazywane są zazwyczaj w inny sposób. HMPTODO
+
+elementy w nawiasach są opcjonalne, i w przypadku ich braku zostaną wybrane wartości domyślne, identyfikator użytkownika oraz hasło mają domyślnie postać pustych ciągów, ponieważ nie są wymagane dla zapewnienia komunikacji HTTP i mają znaczenie jedynie podczas logowania do zasobów chronionych hasłem, a jeśli wymagane są dla identyfikacji użytkownika przekazywane są zazwyczaj w inny sposób.
 
 Np. jeśli klient wyśle żądanie w postaci konkretnego adresu:
 
 ```
-    http://www.google.com/index.html
+ https://www.google.com/index.html
 ```
 
 Składające się z: określenia protokołu (_http://_), adresu (_www.google.com_) i zasobu (_index.html_). 
 Przeglądarka wyśle na ten adres zapytanie HTTP. 
 
 ```
-    GET /index.html HTTP/1.1
+ GET /index.html HTTP/1.1
 ```
 
-Jest tu i określenie nazwy dokumentu i wersji protokołu. 
-Komputery pośredniczące używają protokołu TCP/IP w celu określenia trasy oraz zagwarantowania dostarczenia zapytania. 
-Serwer odpowiada na pytanie, wysyłając następującą odpowiedź:
+Jest tu określenie nazwy dokumentu i wersji protokołu. Komputery pośredniczące używają protokołu TCP/IP w celu określenia trasy oraz zagwarantowania dostarczenia zapytania. Serwer odpowiada na pytanie, wysyłając następującą odpowiedź:
 
 ```
 HTTP/1.x 200 OK
@@ -104,15 +105,17 @@ Content lenght:...
 ...zawartość żądanego dokumentu index.html
 ```
 
-W HTTP 1.0 klient wysyła żądanie do serwera, a serwer odpowiedź do klienta. Potem połączenie jest zakończone. Tymczasem w HTTP 1.1 możliwe jest utrzymywanie ciągłeg połączenia. Dzięki temu klient wysłać żądanie i po otrzymaniu odpowiedzi wysłać dodatkowe żadania i natychmiast otrzymać odpowiedzi. Połączenie TCP nie jet przerwane dla wielokrotnych dodatkowych żądań dzięki czemu obciążenie przypadajace na pojedyncze żądanie jest dużo mniejsze. 
+W HTTP 1.0 klient wysyła żądanie do serwera, a serwer odpowiedź do klienta. Potem połączenie jest zakończone.
 
-Protokół HTTP w wersji 1.0 nie stosował sesji, każda porcja informacji wysyłana przez serwer do klienta używała oddzielnego połączenia TCP. Było to niewydajne rozwiązanie, bo stos TCP/IP w celu nawiązania każdego połączenia używa trójetapowego procesu uzgadniania połączenia TCP. HTTP/1.0 zakłada jedno żądanie i jedną odpowiedź. 
-HTTP 1.1 umożliwia nawiązywanie połaczeń nazwanych Persistent Connections, które są rodzajem stałego kanału informacyjnego pomiędzy przeglądarką a serwerem, umożliwiającego wysłanie więcej niż jednego - zwykle dwóch - żądań przed otrzymaniem odpowiedzi na poprzednie, nazywa się to _pipelining_. Zamiast przesyłać dokument HTML i wszystkie jego elementy osobnymi połączeniami, HTTP 1.1 ogranicza się do jednego połączenia TCP, którym transmitowane są wszystkie dokumenty. 
+Natomiast w HTTP 1.1 możliwe jest utrzymywanie ciągłego połączenia. Dzięki temu klient wysłać żądanie i po otrzymaniu odpowiedzi wysłać dodatkowe żądania i natychmiast otrzymać odpowiedzi. Połączenie TCP nie jet przerwane dla wielokrotnych dodatkowych żądań dzięki czemu obciążenie przypadające na pojedyncze żądanie jest dużo mniejsze. 
 
-Wykorzystywany w protokole HTTP 1.0 mechanizm BASIC-Authentication przesyła hasła w postaci niezaszyfrowanej. 
-W protokole HTTP 1.1 wprowadzono nowy mechanizm identyfikacji użytkownika o nazwie DIGEST-Authentication, w którym niezaszyfrowane hasło w ogóle nie jest przesyłane:
+Protokół HTTP w wersji 1.0 nie umożliwiał tworzenia sesji, każda porcja informacji wysyłana przez serwer do klienta używała oddzielnego połączenia TCP. Było to niewydajne rozwiązanie, bo stos TCP/IP w celu nawiązania każdego połączenia używa trójetapowego procesu uzgadniania połączenia TCP. HTTP/1.0 zakłada jedno żądanie i jedną odpowiedź.
 
-1. aby użytkownik mógł się przedstawić serwer wysyła doprzeglądarki tzw. Chellenge w postaci ciągu znakowego
+HTTP 1.1 umożliwia nawiązywanie połączeń nazwanych Persistent Connections, które są rodzajem stałego kanału informacyjnego pomiędzy przeglądarką a serwerem, umożliwiającego wysłanie więcej niż jednego - zwykle dwóch - żądań przed otrzymaniem odpowiedzi na poprzednie, nazywa się to _pipelining_. Zamiast przesyłać dokument HTML i wszystkie jego elementy osobnymi połączeniami, HTTP 1.1 ogranicza się do jednego połączenia TCP, którym transmitowane są wszystkie dokumenty. 
+
+Wykorzystywany w protokole HTTP 1.0 mechanizm BASIC-Authentication przesyła hasła w postaci niezaszyfrowanej. W protokole HTTP 1.1 wprowadzono mechanizm identyfikacji użytkownika o nazwie DIGEST-Authentication, w którym niezaszyfrowane hasło w ogóle nie jest przesyłane:
+
+1. aby użytkownik mógł się przedstawić serwer wysyła do przeglądarki tzw. Challenge w postaci ciągu znakowego
 2. do tego ciągu przeglądarka dokleja hasło po czym szyfruje za pomocą algorytmu DIGEST
 3. tak przygotowany ciąg znaków jest wysyłany do serwera
 4. serwer łączy posiadane hasło z wysłanym wezwaniem, szyfruje je, a następnie sprawdza czy to co uzyskał jest zgodne z ciągiem wysłanym przez przeglądarkę
@@ -153,7 +156,7 @@ Typowe zapytanie HTTP:
 ```
 
 - _GET / HTTP/1.1_ prośba o zwrócenie dokumentu o URI / zgodnie z protokołem HTTP 1.1
-- _Host:_ wymagany w HTTP 1.1 nagłówek Host służacy do rozpoznania hosta, jeśli serwer na jednym IP obsługuje kilka VirtualHostów
+- _Host:_ wymagany w HTTP 1.1 nagłówek Host służący do rozpoznania hosta, jeśli serwer na jednym IP obsługuje kilka VirtualHostów
 - _User-Agent:_ nazwa aplikacji klienckiej
 - _Accept:_ akceptowane (bądź nieakceptowane dla q=0) przez klienta typy plików
 - _Accept-Language:_ preferowany język strony - nagłówek przydatny przy Language negotiation
@@ -197,17 +200,17 @@ Odpowiedź serwera WWW
     tutaj zawartość dokumentu
 ```
 
-- _HTTP/1.1 200 OK_ kod odpowiedzi HTTP, w tym wypadku zakceptowanie i zwrócenie zawartości
+- _HTTP/1.1 200 OK_ kod odpowiedzi HTTP, w tym wypadku akceptacja i zwrócenie zawartości
 - _Date:_ czas serwera
 - _Server:_ opis aplikacji serwera
 - _Set-Cookie:_ nakazanie klientowi zapisania Cookie
 - _Expires:_ czas wygaśnięcia zawartości zwróconego dokumentu. Data w przeszłości zabrania umieszczenie dokumentu w cache. Jest to stara metoda zastąpiona przez Cache-Control
-- _Cache-Control:_ no-store, no-cache, must-revalidate (no-store zabrania przechowywania dokumentu na dysku, nawet gdy nie jest to cache. must-revalidate nakazuje bezwzględnie stosować się do wytycznych i sprawdzić swieżość dokumentu za każdym razem)
-- _Pragma:_ no-cache (informacje dotyczące buforownia zawartości; stara, niestandardowa metoda.)
-- _Keep-Alive:_ timeout=15, max=100 (a tu co?)
+- _Cache-Control:_ no-store, no-cache, must-revalidate (no-store zabrania przechowywania dokumentu na dysku, nawet gdy nie jest to cache. must-revalidate nakazuje bezwzględnie stosować się do wytycznych i sprawdzić świeżość dokumentu za każdym razem)
+- _Pragma:_ no-cache (informacje dotyczące buforowania zawartości; stara, niestandardowa metoda)
+- _Keep-Alive:_ timeout=15, max=100 (?)
 - _Connection:_ Keep-Alive (akceptacja połączenia Keep-Alive dla klientów HTTP/1.0; nagłówek Keep-Alive jest rozszerzeniem HTTP/1.0. W HTTP/1.1 ten nagłówek nie jest potrzebny, gdyż połączenia Keep-Alive są domyślne - zachowanie zmienia Connection: close)
 - _Transfer-Encoding:_ chunked (typ kodowania zawartości stosowanej przez serwer)
-- _Content-Type:_ text/html; charset=iso-8859-2 (typ MIME i strona kodowa zwróconego dokumetu)
+- _Content-Type:_ text/html; charset=iso-8859-2 (typ MIME i strona kodowa zwróconego dokumentu)
 - znak nowej linii (\\n) rozdziela nagłówek od zawartości dokumentu
 
 HTTP do obsługi połączeń Keep-Alive wymaga aby odpowiedź od serwera miała znaną długość (przez podanie Content-Length lub użycie Transfer-Encoding: chunked). W przeciwnym wypadku koniec odpowiedzi sygnalizuje zerwanie połączenia i Keep-Alive nie może działać.
@@ -345,10 +348,9 @@ Błędu wewnętrznego
 
 #### Historia
 
-W 1995 NSCA (National Center for Supercomputer Applications) na zlecenie rządu USA opracowało serwer NSCA HTTPd. 
-Z łat, modułów zwiększających jego możliwości powstał obecnie najpopularniejszy na świecie serwer HTTP [Apache](http://www.apache.org/) (**A*- **pa**t**che**d web server; nazwę też tłumaczy się jako _A patchy server_ co fonetycznie jest identyczne z _Apache server_). Obecnie jest rozwijany przez Apache Software Foundation. 
-Aktualna wersja 2.x nie zawiera już kodu NSCA. Ponieważ nie jest jeszcze uważana za wystarczająco stabilną, nadal powszechnie używa się wersji 1.3.x. 
-Jego dominacja na rynku serwerów WWW jest niezagrożona i wciąż rośnie, obecnie wynosi ponad 60%. Popularność serwera Apache wynika nie tylko z tego, że jest całkowicie bezpłatny dla wszelkich zastosowań. 
+W 1995 NSCA (National Center for Supercomputer Applications) na zlecenie rządu USA opracowało serwer NSCA HTTPd. Z łat, modułów zwiększających jego możliwości powstał obecnie najpopularniejszy serwer HTTP [Apache](http://www.apache.org/) (**A*- **pa**t**che**d web server; nazwę też tłumaczy się jako _A patchy server_ co fonetycznie jest identyczne z _Apache server_).
+
+Obecnie jest rozwijany przez Apache Software Foundation. Aktualna wersja 2.x nie zawiera już kodu NSCA. Jego udział w rynku światowym wynosi 25%, wyprzeda go tylko [nginx](http://nginx.org/en/). Jest całkowicie bezpłatny dla wszelkich zastosowań. 
 
 #### Cechy
 
@@ -367,10 +369,9 @@ Jego dominacja na rynku serwerów WWW jest niezagrożona i wciąż rośnie, obec
 
 #### Sposób działania
 
-Serwer po uruchomieniu najpierw odczytuje swoje pliki konfiguracyjne, a potem monitoruje określony w konfiguracji port (domyślnie 80) oczekując na pojawienie się żądania HTTP.
-Początkowo każde żadanie wywoływało uruchomienie oddzielnej kopii serwera, która j obsługiwała a potem była zamykana. Nadal można używać tego sposobu pracy - ustawienie ServerType inetd - jest on jednak mało wydajny i niezalecany. 
-Obecnie domyślny sposób pracy - ServerType standalone - polega na uruchomieniu procesu głównego na prawach roota, a następnie wywołaniu określonej w pliku konfiguracyjnym ilości procesów działających w trybie demona, mających uprawnienia użytkownika nieuprzywilejowanego. Proces główny zarządza tylko tworzeniem i wyłączaniem demonów http, których zadaniem jest obsługa żądań HTTP. 
-Zapewnia to o wiele większą wydajność i bezpieczeństwo. 
+Serwer po uruchomieniu najpierw odczytuje swoje pliki konfiguracyjne, a potem monitoruje określony w konfiguracji port (domyślnie 80) oczekując na pojawienie się żądania HTTP. Początkowo każde żądanie wywoływało uruchomienie oddzielnej kopii serwera, która j obsługiwała a potem była zamykana. Nadal można używać tego sposobu pracy - ustawienie ServerType inetd - jest on jednak mało wydajny i niezalecany.
+
+Obecnie domyślny sposób pracy - ServerType standalone - polega na uruchomieniu procesu głównego na prawach roota, a następnie wywołaniu określonej w pliku konfiguracyjnym ilości procesów działających w trybie demona, mających uprawnienia użytkownika nieuprzywilejowanego. Proces główny zarządza tylko tworzeniem i wyłączaniem demonów http, których zadaniem jest obsługa żądań HTTP. Zapewnia to o wiele większą wydajność i bezpieczeństwo. 
 
 #### Modularna budowa
 
@@ -473,7 +474,7 @@ Plik httpd.conf podzielony jest na trzy części:
 - StartServers - liczba demonów uruchomiona przy starcie serwera (domyślnie 8)
 - MaxClients - największa liczba jednoczesnych połączeń z pulą demonów (domyślnie 150)
 - MaxRequestPerChild - efektywny czas życia demonów (określany w liczbie obsługiwanych przez proces zapytań; domyślnie 1000; potem zostają zakończone)
-- Listen - nakazuje dowiązanie do określonych inerfejsów sieciowych i portów (np. 192.168.1.254:8080 powoduje dowiązanie do portu 8080 przy użyciu adresu 192.168.1.254)
+- Listen - nakazuje dowiązanie do określonych interfejsów sieciowych i portów (np. 192.168.1.254:8080 powoduje dowiązanie do portu 8080 przy użyciu adresu 192.168.1.254)
 - BindAddres - konfiguruje serwer by używał dowolnych lub określonych adresów IP w przypadku używania serwerów wirtualnych.
 - LoadModule - ładowanie modułów (DSO - Dynamic Share Objects); możliwe jest również warunkowe załadowanie modułu przez umieszczenie dyrektywy LoadModule wewnątrz bloku `<IfDefine> </IfDefine>`
 - AddModule - wczytanie modułów; możliwe jest również warunkowe wczytanie modułu przez umieszczenie dyrektywy AddModule wewnątrz bloku `<IfDefine> </IfDefine>`
