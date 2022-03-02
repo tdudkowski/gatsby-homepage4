@@ -1,0 +1,145 @@
+---
+title: "Bezpieczeństwo IT"
+comment: ""
+section: "it"
+subsection: "kryptologia"
+---
+
+### Odcinek 01 - początek [2021-02-14]
+
+Porady dotyczące ogólnie rozumianego bezpieczeństwa IT. Postaram się dodawać kolejne odcinki co dwa tygodnie.
+
+OK, zaczynamy.
+
+#### Źródła
+
+Na polskim rynku IT liczą się cztery źródła wiedzy o bezpieczeństwie IT. Ograniczenie się do polskich źródeł ma wbrew pozorom pewien sens, bo te wymienione 1) są kompetentne i działają naprawdę szybko i 2) większość fraudów, i tak ma charakter lokalny.
+
+1. [Zaufana Trzecia Strona](https://zaufanatrzeciastrona.pl/) Adama Haertle et al
+2. [Niebezpiecznik.pl](https://niebezpiecznik.pl/) stworzony przez Piotra Koniecznego, jest to pierwszy człowiek, który profesjonalnie zabrał się w Polsce za dziennikarstwo IT security.
+3. [Sekurak](https://sekurak.pl/) założyciel: Michał Sajdak, głównie bezpieczeństwo urządzeń i webaplikacji, ale są też informacje praktyczne dla zwykłego użytkownika.
+4. [Kacper Szurek](https://security.szurek.pl/) w ubiegłym roku dołączył do powyższej świętej trójcy, fenomenalny popularyzator. Dużo wiedzy o podstawach. Głównie prowadzi [kanał na YT](https://www.youtube.com/c/KacperSzurek).
+5. Już dodatkowo, głównie popularyzatorski blog [Bezpieczny Blog](https://bezpieczny.blog/).
+
+Nie musisz tego regularnie czytać, subskrybować itd. Wystarczy wiedzieć, że są to zaufane źródła.
+
+Dwa filmy raczej beletrystyczne, ale pokazują jak wygląda bezpieczeństwo od strony praktycznej, na technikalia przyjdzie czas:
+- SysOps / DevOps Polska ["[#104] Z życia cyberprzestępcy, czyli jak trudno pozostać niezłapanym złodziejem - Adam Haertle" [YT 1:22:19]](https://www.youtube.com/watch?v=EPIIILlIYXE)
+- CERT Polska [Adam Haertle "To tylko metadane" @ SECURE 2015 [YT 31:15]](https://www.youtube.com/watch?v=2UwxO0fqyog)
+
+#### Na początek
+
+No właśnie technikalia. Kilka informacji:
+
+- Czy "zielona kłódeczka" oznacza bezpieczeństwo? NIE. "Zielona kłódeczka" to potwierdzenie, że strona używa SSL (w praktyce jest to TSL, ale ciągle używa się starej nazwy), czyli specjalnego protokołu szyfrującego dane przesyłane protokołem HTTP, który zapewnia dwie rzeczy; uwierzytelnienie (strona jest tą, za którą się podaje), szyfrowania ruchu (wszystkie dane pomiędzy serwerem ze stroną a przeglądarką są szyfrowane). Wydaje się to być ok i obecnie jest standardem, ale od kilku lat certyfikat SSL jest dostępny za darmo, poza tym wydawany jest w takich ilościach, że nie ma możliwości weryfikacji klientów, a przede wszystkim - i to jest najważniejsze - jak już napisałem, poświadcza tylko to, że strona jest tą, za którą się podaje, co nie oznacza wcale, że jest tą za która ją uważamy (np. rnbank udający mbank). Inaczej mówiąc, bandyta będzie miał elegancką stronę z "zieloną kłódeczką" ale jego adres domenowy będzie przypominał stronę banku, czy też bramki płatności. Również tzw. typosquatting to tradycyjne narzędzie bandytów - jest pewne prawdopodobieństwo, że jeśli pomylimy się wpisując nazwę domenową, pod tym błędnym adresem będzie czekać na nas pułapka. Jest kilka sposobów, żeby upewnić się, że jesteśmy na tej stronie, na której myślimy, że jesteśmy. W przypadku takich usług jak banki używając smartfona najlepiej korzystać z aplikacji banku, jeżeli używamy komputera to z zapisanych odnośników (zależnie od przeglądarki tzw. zakładek, albo ulubionych), albo ręcznie wpisać adres, a przede wszystkim nie klikać w żadne linki, które dostaliśmy. Stosowanie menedżerów haseł zabezpiecza przed podstawieniem strony, bo na fałszywej stronie menedżer nie wstawi hasła. [Pasja informatyki "Czy SSL i 2FA (SMS) to dobra ochrona przed phishingiem?" YT 15:07](https://www.youtube.com/watch?v=xIXF-QP5XWA)
+- Czy można się logować do banku, poczty etc korzystając z darmowych, publicznych wifi? TAK. Choć wiele osób mówi, że nie, to prawda jest taka, że wszystkie tego typu ważne usługi używają SSL ("zielona kłódeczka") więc dane są szyfrowane. Tak, bandyta może to podsłuchać, zapisać i wszystkie te dane rozszyfrować, co zajmie miesiąc lub więcej i będzie kosztować parę tys. dolarów. A po tym czasie te informacje mogą okazać się bezużyteczne. No, cóż. No i oczywiście można pod warunkiem, że naprawdę jesteśmy połączeni z właściwą stroną - patrz punkt wyżej.
+- Co do logowania się do banku z publicznych miejsc, najczęściej dotyczy to banku i używania smartfona. Rzecz wymagałaby dłuższego wyjaśnienia, ale w skrócie: aplikacja i nic innego. Oczywiście tylko aplikacja dostarczona przez bank, oryginalna z wiarygodnego źródła, żadnych "mega multi aplikacji bankowych 100 mln pobrań". Nie używaj przeglądarki w smartfonie do łączenia się z bankiem, do tego jest aplikacja. Nie używaj potwierdzenia operacji bankowych przez SMS, potwierdzaj je przez aplikację. No i jak każda aplikacja powinna być aktualna. W ogóle SMS-y i cała struktura telekomunikacyjna jest tu mega zawodna. Podobnie jak w przypadku banku do poczty również używamy aplikacji, więc tu ryzyka związane z domeną nie istnieją.
+- Hasła - o to również baaaardzo obszerny temat, ale w skrócie: wszystkie te porady, że hasło ma 1) mieć przynajmniej jedną dużą literę, przynajmniej jeden znak specjalny i przynajmniej jedną cyfrę, 2) że powinno mieć przynajmniej 8 znaków, czyli to czego byliśmy uczeni przez lata, jest teraz OKDR. Czasy się zmieniły i moc obliczeniową można sobie kupić zdalnie np. na Amazonie i tam hashcatem potraktować zaszyfrowane hasła. Dobre hasło ma mieć tylko dwie cechy: 1) ma być dłuższe niż 15 znaków, 2) ma być unikalne *za: [FBI Tech Tuesday: Strong Passphrases and Account Protection](https://www.fbi.gov/contact-us/field-offices/phoenix/news/press-releases/fbi-tech-tuesday-strong-passphrases-and-account-protection))
+
+Dlaczego unikalność hasła jest ważna? Bo kiedy się stosuje to samo hasło do wielu serwisów, może się okazać, że z któregoś wycieknie baza kont i przez skojarzenie użytkownika (ta sama nazwa, ten sam mail) bandyta pozna albo samo hasło, albo schemat, jakiego używamy do tworzenia ich. To podstawowa metoda ataku na organizację.
+
+#### Zadanie domowe
+
+1. Wejdź na stronę [Have I Been Pwned](https://haveibeenpwned.com/), to bezpieczny i polecany serwis, a swoich danych można szukać legalnie. Sprawdź swoje adresy mailowe, dostaniesz informacje jakie wycieki ich dotyczą. 
+2. Co do adresów mailowych: w przypadku każdego z nich sprawdź czy masz włączone uwierzytelnianie dwuskładnikowe (jeśli jest dostępne), jeśli nie to włącz; zobacz też, jaka jest metoda odzyskiwania dostępu do konta jeśli ten dostęp utracisz, czasem podaje się tu maile awaryjne, na które mają być wysłane linki potwierdzające. Czy nadal używasz tych maili? Większość dostawców kasuje nieużywane konta po kilku miesiącach. Bandyta łatwo może w ten sposób je przejąć.
+3. Tu ostrzegam, że to jest czasochłonne, ale zdecydowanie warto. Sporządź listę posiadanych przez siebie kont i haseł. W pliku na komputerze, do którego tylko Ty masz dostęp, lub na papierze. Plik, tak czy inaczej, nie może mieć nazwy Hasła.txt i nie może znajdować się w Dokumenty. Wszystkie konta z podziałem na pracowe, osobiste ważne (finanse, mail) i resztę. Wiele serwisów jest uwierzytelnianych przez inne (standard OAuth) takie jak Facebook, Google, Github, to rozwiązanie jest ok, ale Facebooka należy unikać, bo co się stanie, jeżeli zostaniemy zbanowani? Więc jeżeli jakieś konto jest logowane przez zewnętrzny serwis, to piszesz np. google zamiast hasła, chodzi o to, żeby mieć naoczny przegląd Twojej tożsamości w internecie. Tylko wtedy można tym jakoś sensownie zarządzać. Za każdym razem musimy też zweryfikować metodę odzyskiwania hasła, sprawdzić czy nadal mamy dostęp do zapasowych maili podanych w ustawieniach.
+
+Myślę, że to jest dość dużo jak na początek, ale prezentacje Adama Haertle Ci się spodobają, więc będzie to jakieś ogólne wejście w tematykę.
+
+W następnym odcinku - menedżer haseł - dlaczego i jak. Tu właśnie przyda się wzmiankowana powyżej inwentaryzacja kont.
+
+### Odcinek 02 - menedżer haseł [2021-02-28]
+
+Jednym z najlepszych rozwiązań zwiększających bezpieczeństwo logowania są menedżery haseł. Są to specjalne programy trzymające hasła użytkownika w zaszyfrowanej bazie i wyręczające go w procesie logowania. Ważną właściwością jest zarządzanie przechowywanymi hasłami oraz ich generowanie. Poprawnie używany menedżer haseł zapewnia, że użytkownik będzie miał unikalne hasło do każdej usługi i żadnego z nich nie będzie znał. Co jednak w sytuacji, kiedy dysk, na którym przechowywana jest baza programu, ulegnie uszkodzeniu? Tutaj przydaje się uprzednia inwentaryzacja używanych kont i haseł oraz sposobów odzyskiwania hasła. To jest pierwszy krok. Zresztą najlepiej jest zacząć używanie menedżera haseł od dwóch - trzech mniej ważnych kont, wdrożyć się w używanie go i stopniowo dodawać kolejne. Bazę można archiwizować na nieużywanym do innych celów pendrivie.
+
+Oczywiście zawsze, kiedy jest to możliwe, należy zastosować uwierzytelnianie dwuskładnikowe i zadbać o funkcjonowanie odzyskiwania hasła (usuwać z opcji odzyskiwania stare nieużywane konta mailowe i numery telefonów). Co z odzyskiwania hasła, jeśli kod potwierdzający pójdzie na konto lub nr telefonu, do którego nie mamy dostępu?
+
+#### OAuth
+
+Jeszcze zanim przejdę do menedżera - istnieje otwarty standard autoryzujący [OAuth](https://pl.wikipedia.org/wiki/OAuth), który umożliwia twórcom danego serwisu wydzielenie procesu logowania do zewnętrznego, wiarygodnego dostawcy uwierzytelnienia. co do zasady, jeżeli jest to możliwe, powinniśmy z tego korzystać i nigdy nie powinien to być to Facebook (bo to konto najłatwiej utracić, i co wtedy?). Inni dostawcy uwierzytelnienia to: Amazon, Google, Microsoft, Twitter oraz Github (czyli znowu Microsoft). Ja używam zawsze, jeśli to jest możliwe Githuba (wszystkie serwisy IT), a jeśli nie to Google'a.
+
+W przypadku kont używających OAuth menedżer haseł nie ma sensu. Co nie znaczy, że nie powinny zostać zinwentaryzowane. Natomiast konta udostępniające tożsamość powinny być chronione menedżerem haseł, choć tu lepszym rozwiązaniem jest klucz sprzętowy U2F, no ale to zupełnie inna sprawa i o tym kiedy indziej - póki co [Sekurak "Poradnik o kluczach sprzętowych na przykładzie YubiKey 5 NFC (2FA, U2F, FIDO2)"](https://sekurak.pl/poradnik-o-kluczach-sprzetowych-na-przykladzie-yubikey-5-nfc-2fa-u2f-fido2/)
+
+#### Facebook
+
+W przypadku Facebooka trzeba wybrać w ustawieniach pięciu rzeczywistych znajomych (w: Ustawienia / Bezpieczeństwo i logowanie [ Wybierz 5 znajomych do kontaktu w przypadku utraty dostępu do konta ]), do których mamy kontakt telefoniczny. Jeśli zawiedzie prosta metoda odzyskiwania konta przez ustawiony mail, to Facebook przedstawi Ci 5 kontaktów, z których trzy muszą potwierdzić, że Ty to Ty. Jeśli nie ustawisz tam rzeczywistych znajomych, to dobierze ich losowo i nawet jeśli jakimś cudem będą tam trzy osoby, które Cię znają i masz do nich kontakt, to i tak nie będą mogły potwierdzić Twojej tożsamości, bo - uwaga - nie zostali wybrani przez Ciebie. Taki paragraf 22. Co gorsza, za każdym ponowieniem próby odzyskania konta będzie to ta sama piątka kontaktów.
+
+Tak więc, zanim dokonasz jakichkolwiek zmian w ustawieniach bezpieczeństwa konta Facebooka - wybierz tych 5 realnych kontaktów. Dodatkowo warto tam też zaznaczyć:
+
+- [ Otrzymuj powiadomienia o nierozpoznanych logowaniach ]
+- [ Używaj uwierzytelniania dwuskładnikowego.• Zapytamy o kod logowania, jeśli zauważymy próbę logowania z nieznanego urządzenia lub
+przeglądarki. ]
+- [ Autoryzowane logowania Przejrzyj listę urządzeń, na których nie musisz używać kodu do logowania ]
+
+Ponadto:
+
+- nigdy nie loguj się Facebookiem (przez OAuth) do stron, aplikacji, których nie jesteś pewien, ponieważ zawsze udostępniasz im jakieś uprawnienia do konta; raz na czas warto w ustawieniach sprawdzić jakie aplikacje mają uprawnienia i usunąć wszystkie poza tymi, które są rzeczywiście niezbędne
+- nigdy nie wpisuj loginu / hasła na stronach, które przekonują Cię, że albo są częścią Facebooka, albo potrzebują Twojego zalogowania, żeby udostępnić jakąś treść, najczęściej będą to strony z drastycznymi filmami (weryfikacja wieku), albo jakieś fałszywe konkursy
+- nigdy nie klikaj w linki, które dostałeś od kontaktów z messengera, nawet jeśli ufasz tym osobom, konto mogło być zaatakowane, bezpiecznie można kliknąć tylko jeśli z kontekstu rozmowy wprost wynika, że jest to legalny link, ale nawet wtedy lepiej sprawdzić jaki to jest link i najlepiej otworzyć go w nowym oknie incognito (jest taka opcja w menu
+kontekstowym Google Chrome)
+
+Koniecznie do obejrzenia:
+
+- Kacper Szurek ["Phishing - jak kradną konta na Facebooku" [YT 21:59]](https://www.youtube.com/watch?v=jhCDMlatyUg)
+
+#### Rodzaje menedżerów haseł
+
+Menedżery haseł z grubsza rzecz biorąc, dzielą się na: standalone, czyli pojedyncze aplikacje instalowane oddzielnie na każdym urządzeniu oraz menedżery online. Te drugie są wygodniejsze, najbardziej znanym przykładem jest [Dashlane](https://www.dashlane.com/), ale niestety nie ma tutaj sensownej darmowej opcji.
+
+Trochę inne podejścia do zarządzania hasłami proponują takie programy jak [Spectre](https://spectre.app/) czy [LessPass | Stateless Password Manager](https://www.lesspass.com/#/).
+
+Jeszcze jedną możliwością zarządzania hasłami jest trzymanie ich w przeglądarce: Google Chrome: [Menedżer haseł | passwords.google.com](https://passwords.google.com/). Analogiczna usługa Mozilli: Firefox Lockwise został wyłączony.
+
+#### KeePassXC
+
+Menadżery haseł w wersji standalone same z siebie nie umożliwiają używania tej samej bazy w różnych urządzeniach. Można jednak zainstalować ten sam program (lub pokrewne wersje) na różnych urządzeniach i dynamicznie współdzielić bazę haseł za pomocą trzeciej aplikacji. Dynamicznie, tzn. że każda zmiana w bazie (jak np. dodanie kolejnego konta) będzie od razu aplikowana na wszystkich urządzeniach. Nie jest to tak proste w użyciu jak menedżer online, ale efekt jest ten sam.
+
+Tutaj omówię zastosowanie programu KeePassXC (darmowy i otwarty fork KeePass) oraz jego pochodnych. Program ten jest polecany przez Z3S i Niebezpiecznika. Aplikacją udostępniającą bazę będzie Dropbox - jest to jedyna z polecanych aplikacji, która jest dostępna na wszystkie systemy operacyjne (Ok, jest jeszcze GDrive, ale nie chciał u mnie działać).
+
+Założenie: potrzebujemy menedżera haseł dla notebooka, na którym są dwa systemy operacyjne (Windows i Ubuntu) i smartfona (Android). Zresztą niezależnie dla ilu komputerów i środowisk konfigurujemy menedżera, wygląda to tak samo. Postaramy się to zrobić łagodnie, zaczynając od kluczowych elementów systemu i niezbyt istotnych kont. Ponadto można podzielić cały proces na dwie części: pierwsza ograniczy się do jednego urządzenia (Ubuntu), w drugiej części dodamy drugie urządzenie (Android).
+
+Przed wdrożeniem proszę przeczytać do końca i zrozumieć sens działania w całym procesie. Wszystkie niezbędne odnośniki znajdują się na końcu rozdziału.
+
+Po kolei - zaczynamy pd komputera:
+
+- Wspomniana uprzednio inwentaryzacja wszystkich założonych przez nas kont, łącznie z hasłami i metodami ich odzyskiwania. Wszystkich założonych, nie tylko obecnie rzeczywiście używanych. Oceniamy, które są ważne (związane z finansami, tożsamością, uwierzytelniają nas na innych serwisach). Wbrew pozorom jest to długi proces i po latach aktywności w internecie trudny do skompletowania. Na początek wystarczą najważniejsze i ostatnio regularnie używane przez nas konta.
+- Instalacja programu: w Ubuntu `# apt install keepassxc` (jest to niestety w momencie, w którym to piszę dość stara wersja). Trzeba pamiętać, że oprogramowanie związane z kryptografią i ogólnie z bezpieczeństwem musi być aktualizowane w pierwszej kolejności. W Windows jest zwyczajny instalator MSI.
+- Uruchamiamy program. Na początek tworzymy bazę danych, w której będą trzymane dane logowania. Trzeba ustalić jej hasło główne i lokalizację pliku. Hasło główne można łatwo zmienić, trzeba wybrać takie, które jest jednocześnie silne kryptograficznie (min 15 znaków) i łatwe do zapamiętania. Z oczywistych powodów menedżer haseł nie pomoże nam we wpisywaniu hasła do menedżera haseł. Baza może być nazwana dowolnie i może zostać umieszczona w dowolnym miejscu. Jest to pojedynczy plik, który można przenieść, zapisać na oddzielnym nośniku, albo wysłać pocztą.
+- Teraz w programie tworzymy wpis, trzeba podać rozpoznawalną unikalną nazwę (tytuł) wpisu, nazwę użytkownika, hasło (można go utworzyć, podejrzeć) i url.
+- Zaczynamy od desktopa, tutaj wszystkie (lub prawie wszystkie) konta używamy w przeglądarce WWW. Wybieramy tę, którą będziemy do nich używać (tak na marginesie: wybór nie jest wielki, będzie to albo Google Chrome do normalnego użytku, albo Tor Browser do rzeczy wymagających anonimowości). Instalujemy rozszerzenie i w jego ustawieniach łączymy z bazą danych, podając jej nazwę (identyfikator), program musi być w tym czasie włączony. Dla KeePassXC istnieją przynajmniej dwa rozszerzenia Chrome, u mnie zadziałało KeePassXC-Browser.
+- Przy pierwszym wejściu na zdefiniowaną stronę z logowaniem zostaniemy zapytani o skojarzenie. Od tej pory uruchamiamy menedżer haseł, który działa w tle i samodzielnie loguje nas do usług w przeglądarce, która ma zainstalowane dedykowane rozszerzenie połączone z bazą menedżera.
+
+Dobra, teraz krok drugi, przenosimy bazę do Dropboxa i używamy jej na Androidzie:
+
+- W podlinkowanym artykule Niebezpiecznika mowa jest o trzech możliwościach: iCloud, Google Drive i Dropbox. Te dwa ostatnie są dostępne jednocześnie dla wszystkich trzech najważniejszych systemów operacyjnych.
+  - ["How To Sync Ubuntu To Your Google Drive"](https://helpdeskgeek.com/linux-tips/how-to-sync-ubuntu-to-your-google-drive/)
+  - ["Zainstaluj Dropbox, aby w pełni wykorzystać swoje konto"](https://www.dropbox.com/install-linux)
+- Instalujemy aplikację Dropboxa na komputerze. Łączymy ją z kontem i kopiujemy plik bazy do katalogu Dropboxa.
+- W programie KeePassXc importujemy bazę z nowego miejsca. Stary plik można skasować.
+- Na smartfonie instalujemy program KeePassDX ze sklepu Google, producent Kunzisoft.
+- Importujemy bazę z Dropboxa (trzeba wybrać opcję Remote). Za każdym użyciem programu uzyskujemy do niej dostęp po wpisaniu hasła głównego. Kiedy ją widzimy to można w Ustawienia / Wypełnianie formularzy włączyć "Ustaw domyślną usługę autouzupełniania". Wtedy możemy włączyć już przeglądarkę na telefonie i uzyskamy opcję automatycznego zalogowania się.
+
+Przeniesienie czy archiwizacja bazy danych jest bardzo łatwa, wszak to pojedynczy plik o znanej nazwie i lokalizacji. W tym pliku są wszystkie nasze zapisane hasła. Czy to bezpieczne, czy to bezpieczniejsze niż trzymanie haseł zapisanych na papierze, albo gdzieś w kryptyczny sposób na komputerze? Tak, i to co najmniej z czterech powodów:
+
+1. Papier na wiele sposobów zawodzi, jest tu pewien problem z czytelnością, aktualizacją i organizacją danych. Tym bardziej te zastrzeżenia dotyczą zapisywania haseł w pliku. Jeżeli trzymamy je na komputerze, tracimy wszystko w momencie awarii dysku, natomiast online jest tym samym, co robimy z bazą KeePassa z tą różnicą, że jest to w głupi sposób niebezpieczne. Tak samo, jak używanie tego samego lub w przewidywalny sposób modyfikowanego hasła do wszystkiego. Owszem - KeePass trzyma nasze hasła w jednym pliku i ten plik może zostać przejęty, nawet z Dropboxa czy Google Drive (choć jest to bardzo mało prawdopodobne), ale plik ten jest kryptograficznie zabezpieczony hasłem głównym (które można zmienić w razie przejęcia, lub zmieniać regularnie). Logistycznym zyskiem z używania menedżera haseł jest przeniesienie całego ryzyka na jedno miejsce. Jest to znana w IT taktyka "single point of failure" umieszczenia ryzyka w jednym, łatwym do kontroli i zarządzania miejscu.
+2. Ponieważ menedżer haseł trzyma informację o prawidłowej domenie zapisanych usług, jesteśmy odporni na ataki polegające na podstawieniu fałszywej domeny. Po prostu w takiej sytuacji menedżer haseł nic nie podpowie, nie zaproponuje zalogowania. Chroni to nas przed sporą częścią ataków fiszingowych.
+3. Hasła wygenerowane przez menedżer haseł spełniają wszystkie wymogi bezpieczeństwa. Są unikalne dla każdego serwisu i odpowiednio trudne do złamania.
+4. Odporność na sprzętowe keyloggery czy na podejrzenie wpisywania hasła. Tu uwaga: sam menedżer haseł nie jest z oczywistych sposobów zabezpieczony przed keyloggerem. Ale podejrzenie hasła głównego nie daje bandycie dostępu do naszego konta w serwisie. Ponadto menedżer haseł można dodatkowo zabezpieczyć kluczem sprzętowym U2F.
+
+#### Odnośniki:
+
+- [List of password managers](https://en.wikipedia.org/wiki/List_of_password_managers)
+- [KeePassXC](https://keepassxc.org/)
+- przeglądarka: [KeePassHelper](https://add0n.com/keepass-helper.html) - [KeePassHelper Password Manager](https://chrome.google.com/webstore/detail/keepasshelper-password-ma/jgnfghanfbjmimbdmnjfofnbcgpkbegj) | [KeePassXC-Browser](https://chrome.google.com/webstore/detail/keepassxc-browser/oboonakemofpalcgghocfoadofidjkkk)
+- Android [KeePassDX](https://play.google.com/store/apps/details?id=com.kunzisoft.keepass.free) | [Keepass2Android](https://play.google.com/store/apps/details?id=keepass2android.keepass2android)
+- Zaufana Trzecia Strona ["Podstawy Bezpieczeństwa: Menedżery haseł – który wybrać i jak go używać"](https://zaufanatrzeciastrona.pl/post/podstawy-bezpieczenstwa-menedzery-hasel-ktory-wybrac-i-jak-go-uzywac/)
+- Niebezpiecznik ["KeePass — jak zacząć swoją przygodę z managerem haseł?"](https://niebezpiecznik.pl/post/keepass-jak-zaczac-swoja-przygode-z-managerem-hasel/)
+- Kacper Szurek ["Czy korzystać z Menadżera Haseł? (wady i zalety)" [YT 1:18:44]](https://www.youtube.com/watch?v=1-3iKtg50Zc)
+- Mateusz Chrobok ["Menedżer haseł, czyli kilka słów o zdrowej paranoi" [YT 25:33]](https://www.youtube.com/watch?v=uI3k2TKa6iw)
+
+Za kolejne dwa tygodnie: komunikatory, VPN i Tor.
+
+<!-- 
+## 03 VPN
+
+VPN i komunikatory -->
