@@ -17,6 +17,7 @@ const Europa = () => {
             <h4>Europa</h4>
 
             <ul className="boxlist">
+                <li><Link activeClassName="menuLinkActive" to="/festung-breslau/article/albania">Albania</Link></li>
                 <li><Link activeClassName="menuLinkActive" to="/festung-breslau/article/bulgaria">Bułgaria</Link></li>
                 <li><Link activeClassName="menuLinkActive" to="/festung-breslau/article/chorwacja">Chorwacja</Link></li>
                 <li><Link activeClassName="menuLinkActive" to="/festung-breslau/article/jugoslawia">Jugosławia</Link></li>

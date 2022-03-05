@@ -162,6 +162,8 @@ exports.createPages = ({ graphql, actions }) => {
       }
     }
 
+    const blogTagsArray = blogtags;
+
     blogtags.forEach(tag => {
       createPage({
         path: "/blog/tag/" + tag.name,
@@ -268,6 +270,7 @@ exports.createPages = ({ graphql, actions }) => {
 // ADD FIELD NODE PARAMETER FOR: 1. FB ARTICLE SLUG 2. SCHEDULING FB POSTS 
 exports.onCreateNode = ({ node, getNode, actions }) => {
   const { createNodeField } = actions
+
   if (node.internal.type === "Mdx") {
     // Create scheduled post
     const publishDate = node.frontmatter.date

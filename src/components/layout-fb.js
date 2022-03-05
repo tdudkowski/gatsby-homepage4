@@ -282,7 +282,7 @@ const LayoutFB = ({ children }) => {
 
     const menuWarArray = [{ slug: "panstwo-hitlerowskie", title: "Państwo hitlerowskie" }, { slug: "ostfront", title: "O przyczynie wojny na wschodzie" }, { slug: "obozy-koncentracyjne", title: "Obozy koncentracyjne" }, { slug: "armia-czerwona", title: "Armia Czerwona 1945" }, { slug: "2awp", title: "2 Armia WP" }, { slug: "drezno-bombardowanie", title: "Drezno bombardowanie 13-15 lutego 1945" }, { slug: "depesza-eisenhowera", title: "Depesza Eisenhowera (SCAF 252)" }, { slug: "bieguny", title: "Wojna na biegunach" },]
 
-    const menuEuropaArray = [{ slug: "bulgaria", title: "Bułgaria" }, { slug: "chorwacja", title: "Chorwacja" }, { slug: "jugoslawia", title: "Jugosławia" }, { slug: "rumunia", title: "Rumunia" }, { slug: "serbia", title: "Serbia" }, { slug: "slowacja", title: "Słowacja" }, { slug: "wegry", title: "Węgry" },]
+    const menuEuropaArray = [{ slug: "albania", title: "Albania" }, { slug: "bulgaria", title: "Bułgaria" }, { slug: "chorwacja", title: "Chorwacja" }, { slug: "jugoslawia", title: "Jugosławia" }, { slug: "rumunia", title: "Rumunia" }, { slug: "serbia", title: "Serbia" }, { slug: "slowacja", title: "Słowacja" }, { slug: "wegry", title: "Węgry" },]
 
     const menuArmeeArray = [{ slug: "armia-niemiecka", title: "Armia niemiecka 1918-45" }, { slug: "front-niemiecki-1945", title: "Front niemiecki w Polsce w 1945" }, { slug: "ss", title: "SS" }, { slug: "volkssturm", title: "Volkssturm" }, { slug: "wunderwaffe", title: "Wunderwaffe" }, { slug: "vergeltungswaffe", title: "Vergeltungswaffe: od V1 do V4" }, { slug: "kapitulacja", title: "Kapitulacja - Dzień Zwycięstwa" },]
 
