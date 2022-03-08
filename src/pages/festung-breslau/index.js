@@ -1,9 +1,17 @@
 import React from "react"
 import { Link, graphql } from "gatsby"
 import { GatsbyImage, getImage } from "gatsby-plugin-image"
+import styled from "styled-components"
 import LayoutFB from "../../components/layout-fb"
-// import SEO from "react-seo-component";
-// import { useSiteMetadata } from "../hooks/useSiteMetadata";
+
+const StyledList = styled.ul`
+display:flex;
+flex-wrap: wrap;
+& li {list-style-type: none;  padding-left:0; }
+& li a {display:block; padding:.5rem 1rem; margin:0 .5rem; text-decoration:none; text-align: center; border:none;}
+& a:hover {text-decoration:underline;}
+& a.paginationActive { background-color: #ddc; color:#333; pointer-events: none;}
+`;
 
 const BlogFBList = ({ data }) => {
   const buttons = Array.from({ length: Math.ceil(data.allMdx.totalCount / 10) });
@@ -26,9 +34,9 @@ const BlogFBList = ({ data }) => {
       ))}
       <div className="remote">
         <p>Na każdej podstronie jest do 10 wpisów bloga - od najnowszych:</p>
-        <ul className="fbbuttons">{buttons.map((_, i) => <li key={i}>
+        <StyledList>{buttons.map((_, i) => <li key={i}>
           <Link to={`/festung-breslau/${i + 1}`} activeClassName="paginationActive">{i + 1}</Link>
-        </li>)}</ul>
+        </li>)}</StyledList>
       </div>
     </LayoutFB>
   );

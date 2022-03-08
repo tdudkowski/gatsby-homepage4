@@ -1,8 +1,1 @@
 @import url('https://fonts.googleapis.com/css2?family=Alegreya&family=UnifrakturMaguntia&display=swap');
-
-
-ul.fbbuttons {display:flex; }
-ul.fbbuttons li {list-style-type: none;  padding-left:0; }
-ul.fbbuttons li a {display:block; padding:.5rem 1rem; margin:0 .5rem; text-decoration:none; text-align: center; border:none;}
-.fbbuttons a:hover {text-decoration:underline;}
-.fbbuttons a.paginationActive { background-color: #ddc; color:#333; pointer-events: none;}
