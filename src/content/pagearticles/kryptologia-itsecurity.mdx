@@ -141,26 +141,61 @@ Za kolejne dwa tygodnie: komunikatory, VPN i Tor.
 
 ### Odcinek 03 - VPN, Tor i komunikatory [2022-03-14]
 
-### Komunikatory
+#### Podstawy czyli wszystko jest WWW
 
-Pomijając i skracając całą dyskusję za i przeciw, polecić można trzy komunikatory. W tej dyskusji brane są pod uwagę trzy podstawowe parametry:
+Zwykle mówimy o tym internet - ogólnoświatowa, pozbawiona granic i centrum, sieć komputerowa sprzężona złożeniem protokołów TCP/IP. Istnieje od przełomu lat 60. i 70. Początkowo miała charakter eksperymentu wojskowego, potem służyła celom naukowym łącząc ośrodki akademickie. W latach 80. pojawiły się komputery osobiste i można było je łączyć modemami z internetem przez zwykłe łącza telefoniczne. Działały takie usługi (protokoły) jak mail, FTP, usenet.
 
-- model rozwoju: ponieważ pierwszą rzeczą, która ma tutaj znaczenie jest solidność kryptografii, czyli punkty są za otwarty model rozwoju (Open Source, gdzie nieograniczona liczba oczu może sprawdzić jakość kodu) oraz użycie otwartych, znanych i sprawdzonych standardów kryptograficznych. Tutaj więc odpadają komunikatory bardzo popularne i należące do wielkich marek (zamknięty kod) oraz Telegram (który za wszelką cenę chce przeforsować własną kryptologię).
-- model biznesowy: wielkie marki typu FB, MS, czy Google mają tutaj czyste ręce, wiadomo skąd są ich pieniądze, ale czy na pewno wiadomo co robią z danymi? Z kolei małe komunikatory muszą wykazać, że nie są opłacane pod stołem, czy wiadomo skąd są ich wszyskie pieniądzę?
-- stopień z zachowania, czyli historia wpadek: z jednej strony brak takich wpadek nie jest na nic dowodem, ale z drugiej historia problemów a tym bardziej problematycznego radzenia sobie z nimi obciąża.
+Dopiero w połowie lat 90. pojawił się World Wide Web. Przyszedł na końcu i dzięki temu, że oferował połączenie tekstu, grafiki i hipertekstowości (odnośniki) zdobył ogromną popularność i z czasem pochłonął wszystkie inne usługi. WWW podobnie jak większość usług internetowych jest zbudowana na zasadzie architektury klient-serwer (alternatywą jest peer-to-peer znany z torrenta). klient to przeglądarka użytkownika a serwer to "strona w internecie" czyli umieszczona na hostingu usługa udostępniająca dane w protokole HTTP (Hyper Tekst Transfer Protocol).
 
-Trzy komunikatory kolejno (wszystkie są darmowe bez ograniczeń):
+Pierwsza wersja protokołu HTTP była bezstanowa, tzn. nie utrzymywała danych połączenia, danych sesji. Trochę to przypominało rozmowę z człowiekiem, który pamięta tylko to co teraz się do niego mówi, ale po tym jak odpowie, wszystko zapomina. Do tego cała treść tej rozmowy była przesyłana jawnym kanałem w publicznej sieci i po drodze dane można było podsłuchać, odczytać, a nawet podmienić. Jak zwykle przy projektowaniu nowinki technicznej nikt nie pomyślał, że będą tego używać miliardy ludzi i poważne biznesy.
 
-- [Signal](https://signal.org/en/) popularny i sprawdzony, polecany przez wielu specjalistów, utrzymuje się z dotacji, w zawodach takich jak dziennikarze i prawnicy jest to standard komunikacji
-- [Briar](https://briarproject.org/) tylko na Androida, dostosowany do warunków utrudnionego dostępu do internetu, zdecentralizowany komunikator P2P, który potrafi wykorzystać Bluetooth innych smartfonów z Biarem i łączyć się przez Tor. Mała liczba użytkowników.
-- [Matrix](https://matrix.org/) protokół komunikacji w czasie rzeczywistym, w wielu aspektach przypominający dawne XMPP (choć jest zbudowany inaczej i od podstaw), jest to raczej podstawa do zbudowania czegoś własnego, a nie gotowy komunikator, ale są gotowe serwery i referencyjny komunikator.
+#### HTTP + SSL = HTTPS
+
+To musiało się zmienić, dlatego wprowadzono mechanizmy tworzenia i śledzenia sesji użytkownika - ciasteczka (cookies).
+
+Powstał protokół szyfrujący dane przesyłane HTTP - SSL (Secure Socket Layer), który już dawno nie jest używany, zastąpił go TSL, ale nadal używa się powszechnie starej nazwy. HTTP szyfrowany SSL (w praktyce TLS) to HTTPS.
+
+- nieszyfrowane połączenie: adres zaczyna się od `http://`
+- połączenie szyfrowane SSl/TSL: `https://` (jest "zielona kłódeczka")
+
+Co to oznacza w praktyce? SSL zapewnia:
+
+- Gwarancję, że jeżeli połączyliśmy się ze stroną `https://mbank.pl` to połączyliśmy się z mbank.pl, ale - uwaga! - jeżeli połączyliśmy się z `https://rnbank.pl` to połączyliśmy się ze stroną rnbank.pl. Widzisz różnicę?
+- Szyfrowanie danych - wciąż można podsłuchać przesyłane dane, wszak idą publicznym internetem, ale rozszyfrowanie ich zajmuje nieopłacalne ilości czasu i pieniędzy.
+- Dane są weryfikowane, nie ma możliwości podstawienia zmienionych informacji, jeżeli dochodzi do przekłamania, następuje ponowne żądanie, jeśli to nie przynosi rezultatu sesja jest zrywana. Co nie oznacza, że wirus nie potrafi podmienić kodu strony banku i wysłać pieniędzy na inne konto, tyle że to następuje po stronie użytkownika w jego oprogramowaniu.
+- Ciągłość sesji użytkownika. Obie strony komunikacji mają potwierdzoną tożsamość przez cały czas trwania połączenia.
+
+Niestety Chrome zdecydował się ukryć protokół z paska przeglądarki i teraz już tylko "zielona kłódeczka" jest jedynym potwierdzeniem używania HTTPS. Co gorsza po kliknięciu nie można poznać danych wystawcy certyfikatu, dostajemy tylko zapewnienie, że "połączenie jest bezpieczne". 
 
 #### VPN
 
 Otwarty standard szyfrowanego połączenia przez sieć. Ponieważ izoluje punkty końcowe, mówi się o nim "tunel".
 
+- ArubaCloud PL ["ArubaCloud- Webinar - Wszystko co chcecie wiedzieć o VPN" [YT 1:32:44]](https://www.youtube.com/watch?v=Sq6RpgXNDmU)
 - SekurakTV ["Praktyczna konfiguracja OpenVPN" [YT 1:19:15]](https://www.youtube.com/watch?v=JwJ13HXuRZs)
 
 #### Tor
 
+- ArubaCloud PL ["ArubaCloud - Webinar - Wszystko o sieci TOR" [YT 1:23:18]](https://www.youtube.com/watch?v=vL7HzXUcBfU)
+- Niebezpiecznik ["NP #004 - ten o VPN i sieci TOR" [YT 38:42]](https://www.youtube.com/watch?v=B-IGxNpIqn8)
+
+#### Komunikatory
+
+Pomijając i skracając całą dyskusję za i przeciw, polecić można trzy komunikatory. W tej dyskusji brane są pod uwagę trzy podstawowe parametry:
+
+- model rozwoju: ponieważ pierwszą rzeczą, która ma tutaj znaczenie jest solidność kryptografii, czyli punkty są za otwarty model rozwoju (Open Source, gdzie nieograniczona liczba oczu może sprawdzić jakość kodu) oraz użycie otwartych, znanych i sprawdzonych standardów kryptograficznych. Tutaj więc odpadają komunikatory bardzo popularne i należące do wielkich marek (zamknięty kod) oraz Telegram (który za wszelką cenę chce przeforsować własną kryptologię).
+- model biznesowy: wielkie marki typu Apple, FB, MS, czy Google mają tutaj czyste ręce, wiadomo skąd są ich pieniądze, choć akurat Apple czy MS nie zarabiają na dystrybucji danych użytkowników, czego nie można powiedzieć o Google, czy FB. Czy na pewno wiadomo co robią z danymi? Z kolei małe komunikatory muszą wykazać, że nie są opłacane pod stołem, czy wiadomo skąd są ich wszystkie pieniądze?
+- stopień z zachowania, czyli historia wpadek: z jednej strony brak takich wpadek nie jest na nic dowodem, ale z drugiej historia problemów, a tym bardziej problematycznego radzenia sobie z nimi obciąża.
+
+Trzy komunikatory kolejno (wszystkie są darmowe bez ograniczeń):
+
+- [Signal](https://signal.org/en/) popularny i sprawdzony, polecany przez wielu specjalistów, utrzymuje się z dotacji, w zawodach takich jak dziennikarze i prawnicy jest to standard komunikacji
+- [Briar](https://briarproject.org/) tylko na Androida, dostosowany do warunków utrudnionego dostępu do internetu, zdecentralizowany komunikator P2P, który potrafi wykorzystać Bluetooth innych smartfonów z Biarem i łączyć się przez Tor. Mała liczba użytkowników.
+- [Matrix](https://matrix.org/) protokół komunikacji w czasie rzeczywistym, w wielu aspektach przypominający dawne XMPP (choć jest zbudowany inaczej i od podstaw), jest to raczej podstawa do zbudowania czegoś własnego, a nie gotowy komunikator, ale są gotowe serwery (oprogramowanie) i referencyjny komunikator.
+
+Domyślnym wyborem więc powinien być zatem Signal.
+
 - Sekurak ["Czym jest komunikator Signal? Jakie bezpieczeństwo zapewnia? Jak z niego korzystać?"](https://sekurak.pl/czym-jest-komunikator-signal-jakie-bezpieczenstwo-zapewnia-jak-z-niego-korzystac/)
+
+Za kolejne dwa tygodnie: hasła i szyfrowanie jednostronne.
+
