@@ -137,44 +137,77 @@ Przeniesienie czy archiwizacja bazy danych jest bardzo łatwa, wszak to pojedync
 - Kacper Szurek ["Czy korzystać z Menadżera Haseł? (wady i zalety)" [YT 1:18:44]](https://www.youtube.com/watch?v=1-3iKtg50Zc)
 - Mateusz Chrobok ["Menedżer haseł, czyli kilka słów o zdrowej paranoi" [YT 25:33]](https://www.youtube.com/watch?v=uI3k2TKa6iw)
 
-Za kolejne dwa tygodnie: komunikatory, VPN i Tor.
-
 ### Odcinek 03 - VPN, Tor i komunikatory [2022-03-14]
+
+Nie chcę przedłużać, dlatego pomijam bardziej techniczne aspekty. A jest tam wiele, wiele niuansów, więc to taki z grubsza obraz. Od następnego odcinka postaram się trzymać jednego tematu.
 
 #### Podstawy czyli wszystko jest WWW
 
-Zwykle mówimy o tym internet - ogólnoświatowa, pozbawiona granic i centrum, sieć komputerowa sprzężona złożeniem protokołów TCP/IP. Istnieje od przełomu lat 60. i 70. Początkowo miała charakter eksperymentu wojskowego, potem służyła celom naukowym łącząc ośrodki akademickie. W latach 80. pojawiły się komputery osobiste i można było je łączyć modemami z internetem przez zwykłe łącza telefoniczne. Działały takie usługi (protokoły) jak mail, FTP, usenet.
+Zwykle mówimy o tym internet - ogólnoświatowa, pozbawiona granic i centrum, sieć komputerowa sprzężona złożeniem protokołów TCP/IP. Istnieje od przełomu lat 60. i 70. Początkowo miała charakter eksperymentu wojskowego. Potem służyła celom naukowym łącząc ośrodki akademickie. W latach 80. pojawiły się komputery osobiste i można było je łączyć modemami z internetem przez zwykłe łącza telefoniczne. Działały takie usługi (protokoły) jak mail, FTP, usenet.
 
 Dopiero w połowie lat 90. pojawił się World Wide Web. Przyszedł na końcu i dzięki temu, że oferował połączenie tekstu, grafiki i hipertekstowości (odnośniki) zdobył ogromną popularność i z czasem pochłonął wszystkie inne usługi. WWW podobnie jak większość usług internetowych jest zbudowana na zasadzie architektury klient-serwer (alternatywą jest peer-to-peer znany z torrenta). klient to przeglądarka użytkownika a serwer to "strona w internecie" czyli umieszczona na hostingu usługa udostępniająca dane w protokole HTTP (Hyper Tekst Transfer Protocol).
 
-Pierwsza wersja protokołu HTTP była bezstanowa, tzn. nie utrzymywała danych połączenia, danych sesji. Trochę to przypominało rozmowę z człowiekiem, który pamięta tylko to co teraz się do niego mówi, ale po tym jak odpowie, wszystko zapomina. Do tego cała treść tej rozmowy była przesyłana jawnym kanałem w publicznej sieci i po drodze dane można było podsłuchać, odczytać, a nawet podmienić. Jak zwykle przy projektowaniu nowinki technicznej nikt nie pomyślał, że będą tego używać miliardy ludzi i poważne biznesy.
+Pierwsza wersja protokołu HTTP była bezstanowa, tzn. nie utrzymywała danych połączenia, danych sesji. Trochę to przypominało rozmowę z człowiekiem, który pamięta tylko to co teraz się do niego mówi, ale po tym jak odpowie, wszystko zapomina. Do tego cała treść tej rozmowy była przesyłana jawnym kanałem w publicznej sieci i po drodze dane można było podsłuchać, odczytać, a nawet podmienić. Jak zwykle przy projektowaniu nowinki technicznej nikt nie pomyślał, że będą tego używać miliardy ludzi i poważne biznesy. WWW to pierwotnie była po prostu specyficzna i uproszczona wersja FTP. Klient wysyła żądanie dokumentu do serwera, serwer mu go wysyła.
 
 #### HTTP + SSL = HTTPS
 
-To musiało się zmienić, dlatego wprowadzono mechanizmy tworzenia i śledzenia sesji użytkownika - ciasteczka (cookies).
+To musiało się zmienić, dlatego już w pierwszej wersji tego protokołu czyli HTTP/1 wprowadzono mechanizmy tworzenia i śledzenia sesji użytkownika - pierwszym były ciasteczka (cookies). Kolejna wersja czyli HTTP/2 ma już wbudowane właściwości stanowe.
 
-Powstał protokół szyfrujący dane przesyłane HTTP - SSL (Secure Socket Layer), który już dawno nie jest używany, zastąpił go TSL, ale nadal używa się powszechnie starej nazwy. HTTP szyfrowany SSL (w praktyce TLS) to HTTPS.
+Powstał protokół szyfrujący dane przesyłane HTTP - SSL (Secure Socket Layer), który już dawno nie jest używany, zastąpił go TSL, ale nadal powszechnie używa się starej nazwy. HTTP szyfrowany SSL (w praktyce TLS) to HTTPS.
 
 - nieszyfrowane połączenie: adres zaczyna się od `http://`
-- połączenie szyfrowane SSl/TSL: `https://` (jest "zielona kłódeczka")
+- połączenie szyfrowane SSl/TSL: adres zaczyna się od `https://` (jest to też sygnalizowane "zieloną kłódeczką")
 
 Co to oznacza w praktyce? SSL zapewnia:
 
 - Gwarancję, że jeżeli połączyliśmy się ze stroną `https://mbank.pl` to połączyliśmy się z mbank.pl, ale - uwaga! - jeżeli połączyliśmy się z `https://rnbank.pl` to połączyliśmy się ze stroną rnbank.pl. Widzisz różnicę?
 - Szyfrowanie danych - wciąż można podsłuchać przesyłane dane, wszak idą publicznym internetem, ale rozszyfrowanie ich zajmuje nieopłacalne ilości czasu i pieniędzy.
-- Dane są weryfikowane, nie ma możliwości podstawienia zmienionych informacji, jeżeli dochodzi do przekłamania, następuje ponowne żądanie, jeśli to nie przynosi rezultatu sesja jest zrywana. Co nie oznacza, że wirus nie potrafi podmienić kodu strony banku i wysłać pieniędzy na inne konto, tyle że to następuje po stronie użytkownika w jego oprogramowaniu.
+- Dane są weryfikowane - zapewniona jest integralność danych, nie ma możliwości podstawienia zmienionych informacji, jeżeli dochodzi do przekłamania, następuje ponowne żądanie, jeśli to nie przynosi rezultatu sesja jest zrywana. Co nie oznacza, że wirus nie potrafi podmienić kodu strony banku i wysłać pieniędzy na inne konto, tyle że to następuje po stronie użytkownika w jego oprogramowaniu. SSL działa dopiero "na wyjściu" przeglądarki.
 - Ciągłość sesji użytkownika. Obie strony komunikacji mają potwierdzoną tożsamość przez cały czas trwania połączenia.
 
-Niestety Chrome zdecydował się ukryć protokół z paska przeglądarki i teraz już tylko "zielona kłódeczka" jest jedynym potwierdzeniem używania HTTPS. Co gorsza po kliknięciu nie można poznać danych wystawcy certyfikatu, dostajemy tylko zapewnienie, że "połączenie jest bezpieczne". 
+Niestety Chrome zdecydował się ukryć protokół z paska przeglądarki i teraz już tylko "zielona kłódeczka" jest jedynym potwierdzeniem używania HTTPS. Co gorsza po kliknięciu nie można poznać danych wystawcy certyfikatu, dostajemy tylko zapewnienie, że "połączenie jest bezpieczne".
 
-#### VPN
+#### Tryb prywatny
 
-Otwarty standard szyfrowanego połączenia przez sieć. Ponieważ izoluje punkty końcowe, mówi się o nim "tunel".
+Jest to mocno niedoceniana właściwość przeglądarki internetowej. Jeżeli z jakichś powodów nie chcemy zostawić śladów naszej aktywności w historii, buforze, ciasteczkach czy LocalStorage naszej przeglądarki wystarczy otworzyć nowe okno w trybie prywatnym, jak to się popularnie określa: porn mode. Jest to bardziej związane z prywatnością, a nie ściśle z bezpieczeństwem.
+
+To jest przydatne jeżeli korzystamy z czyjegoś komputera, albo wchodzimy na stronę co do której nie chcemy, żeby mogła mieć dostęp do danych logowania (np, żeby była izolowana od naszego Facebooka albo innej silnie profilującej strony).
+
+#### VPN (Virtual Private Network)
+
+Posiada jednocześnie kilka znaczeń: przede wszystkim jest to standard tworzenia izolowanych połączeń w publicznej sieci Internet, jest to też konkretna usługa używająca tego protokołu tworzona przez organizację (przedsiębiorstwo, urząd), firmy komercyjne oferujące ją klientom prywatnym, lub przez samych użytkowników.
+
+Jest to otwarty standard szyfrowanego połączenia przez sieć. Ponieważ izoluje punkty końcowe, mówi się o nim "tunel" i przez zestawienie takiego tunelu pomiędzy dwoma dowolnymi punktami w sieci można tworzyć bezpieczne połączenia.
+
+Nie wchodząc za bardzo w szczegóły techniczne - używać VPN czy nie? To zależy:
+
+- Jeżeli jest to wymóg pracodawcy to jak najbardziej i cieszyć się, że ktoś dba o poufność danych.
+- Jeżeli obawiamy się, że ISP będzie nas podsłuchiwał, to nie, tu wystarczy SSL, a poza tym ISP naprawdę nie ma na to czasu.
+- Jeżeli gdzieś widzisz reklamę VPN i wielce przekonujące frazesy, że po wykupieniu usługi będziesz niewidzialny jak ninja to polecam obejrzeć podlinkowaną poniżej prezentację Adama Haertle "Wszystko co chcecie wiedzieć o VPN". Okazuje się, że "darmowym VPN-om" - co jest oczywiste - nie można wierzyć, nie powinno się też wierzyć tym płatnym, szczególnie jeśli koszty usługi są podejrzanie atrakcyjne.
+- Jeżeli wiemy po co i jak postawić VPN to można to łatwo zrobić na wykupionym serwerze. To jest jedyna usługa VPN jakiej można zaufać, ma tylko tę wadę, że nie możemy fałszować lokalizacji.
+
+Zwykły użytkownik może potrzebować VPN głównie dla fałszowania lokalizacji. Zależnie bowiem od tego skąd się łączy do internetu, jakie miasto, państwo wskazuje jego IP może otrzymać ofertę podróży lub noclegu w innych cenach. Podobnie jest w przypadku usług VoD typu Netflix: chcemy korzystać z amerykańskiej oferty Netflixa? Musimy mieć IP z USA. To uzasadnia kupno usługi VPN, tyle, że nie ma nic wspólnego z bezpieczeństwem.
+
+Chcemy anonimowości (wiadomo co, ale nie wiadomo kto)? Od tego jest Tor.
 
 - ArubaCloud PL ["ArubaCloud- Webinar - Wszystko co chcecie wiedzieć o VPN" [YT 1:32:44]](https://www.youtube.com/watch?v=Sq6RpgXNDmU)
 - SekurakTV ["Praktyczna konfiguracja OpenVPN" [YT 1:19:15]](https://www.youtube.com/watch?v=JwJ13HXuRZs)
 
 #### Tor
+
+Tor jest osobną siecią WWW istniejącą w ramach internetu. Był to początkowo eksperyment armii amerykańskiej, którego celem było stworzenie internetu następnej generacji (VPN podobnie), ale obecnie rozwijany jest przez niezależną, utrzymującą się z dotacji fundację. Symbolem Tor nie bez powodu jest cebula. Każde połączenie bowiem przechodzi przez trzy serwery: pierwszy zna nasz adres i środkowego, środkowy zna tylko adresy serwerów wejściowego i wyjściowego, wyjściowy zna tylko adresy serwera środkowego i docelowego już w jawnym internecie. Są też adresy i usługi istniejące tylko wewnątrz sieci Tor.
+
+Jeszcze jakiś czas temu ta usługa była skomplikowana w konfiguracji, ale teraz jest dostępny [Tor Browser](https://www.torproject.org/download/), dedykowana dla sieci Tor przeglądarka WWW oparta na Mozilli Firefox.
+
+Połączenia sieci Tor są wykrywane w sieci publicznej i nie gwarantują bezpieczeństwa (nic nie gwarantuje). Właściciele dużej liczby serwerów Tor są w stanie wyciągnąć wiele informacji.
+
+Do czego służy sieć Tor:
+
+- do tajnej komunikacji, to jest jedna z głównych przyczyn, dla których sieć otrzymuje tak duże wsparcie od trzyliterowych agencji USA, korzystają z tego tzw. sygnaliści (whistleblower), ludzie którzy chcą przekazać ważne informacje nie ujawniając tożsamości, powszechnie stosowane w dziennikarstwie śledczym
+- do uzyskania dostępu do filtrowanych treści WWW, dysydenci w różnych reżimach mogą wejść na zakazane przez te reżimy strony i usługi - [Sekurak "W cieniu rosyjskiej cenzury… Twitter dostępny jest przez Tora"](https://sekurak.pl/w-cieniu-rosyjskiej-cenzury-twitter-dostepny-jest-przez-tora/)
+- do działalności przestępczej: jest to głównie handel narkotykami, bronią, carding, paserstwo, pornografia dziecięca itp; nie da się tego oszacować ale jest to ponad 90% a może i ponad 99% aktywności w sieci Tor
+
+Tor spowalnia połączenie, nadaje się tylko do stron typu tekst i trochę grafiki, Tor Browser domyślnie ma wyłączony JS. Przesyłanie dużych plików czy torrenty są źle widziane. Trzeba też - podobnie jak w przypadku VPN - zdawać sobie sprawę z tego, że zapewnia anonimowość tylko w ramach istniejącego połączenia. Dla przykładu: Tor Browser zapewnia połączenie z siecią tor tylko dla tej właśnie przeglądarki, jeżeli chcemy puścić tam np. komunikator czy program pocztowy to musimy użyć innego rozwiązania.
 
 - ArubaCloud PL ["ArubaCloud - Webinar - Wszystko o sieci TOR" [YT 1:23:18]](https://www.youtube.com/watch?v=vL7HzXUcBfU)
 - Niebezpiecznik ["NP #004 - ten o VPN i sieci TOR" [YT 38:42]](https://www.youtube.com/watch?v=B-IGxNpIqn8)
@@ -191,11 +224,10 @@ Trzy komunikatory kolejno (wszystkie są darmowe bez ograniczeń):
 
 - [Signal](https://signal.org/en/) popularny i sprawdzony, polecany przez wielu specjalistów, utrzymuje się z dotacji, w zawodach takich jak dziennikarze i prawnicy jest to standard komunikacji
 - [Briar](https://briarproject.org/) tylko na Androida, dostosowany do warunków utrudnionego dostępu do internetu, zdecentralizowany komunikator P2P, który potrafi wykorzystać Bluetooth innych smartfonów z Biarem i łączyć się przez Tor. Mała liczba użytkowników.
-- [Matrix](https://matrix.org/) protokół komunikacji w czasie rzeczywistym, w wielu aspektach przypominający dawne XMPP (choć jest zbudowany inaczej i od podstaw), jest to raczej podstawa do zbudowania czegoś własnego, a nie gotowy komunikator, ale są gotowe serwery (oprogramowanie) i referencyjny komunikator.
+- [Matrix](https://matrix.org/) w tej chwili raczej ciekawostka, protokół komunikacji w czasie rzeczywistym, w wielu aspektach przypominający dawne XMPP (choć jest zbudowany inaczej i od podstaw), jest to raczej podstawa do zbudowania czegoś własnego, a nie gotowy komunikator, ale są gotowe serwery (oprogramowanie) i referencyjny komunikator.
 
 Domyślnym wyborem więc powinien być zatem Signal.
 
 - Sekurak ["Czym jest komunikator Signal? Jakie bezpieczeństwo zapewnia? Jak z niego korzystać?"](https://sekurak.pl/czym-jest-komunikator-signal-jakie-bezpieczenstwo-zapewnia-jak-z-niego-korzystac/)
 
-Za kolejne dwa tygodnie: hasła i szyfrowanie jednostronne.
-
+Za kolejne dwa tygodnie: hasła i szyfrowanie jednostronne
