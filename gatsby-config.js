@@ -147,11 +147,12 @@ module.exports = {
                 // exlude: optional, include this array to overwrite paths you don't want to
                 // generate breadcrumbs for.
                 exclude: [
-                    `/dev-404-page/`,
-                    `/404/`,
-                    `/404.html`,
-                    `/offline-plugin-app-shell-fallback/`,
-                    `/blog/`,
+                    `**/dev-404-page/**`,
+                    `**/404/**`,
+                    `**/404.html`,
+                    `**/offline-plugin-app-shell-fallback/**`,
+                    `**/blog/**`,
+                    `**/festung-breslau/**`,
                 ],
                 // crumbLabelUpdates: optional, update specific crumbLabels in the path
                 crumbLabelUpdates: [
