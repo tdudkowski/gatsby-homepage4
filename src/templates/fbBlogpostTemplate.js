@@ -46,6 +46,15 @@ export const query = graphql`
         date(formatString: "YYYY-MM-DD")
         date1945
         tags
+        img {
+          childImageSharp {
+             gatsbyImageData(
+                width: 1200
+                placeholder: BLURRED
+                formats: [AUTO, WEBP]
+                )
+             }
+          }
        }
       slug
     }
