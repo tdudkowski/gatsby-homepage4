@@ -247,35 +247,43 @@ Za kolejne dwa tygodnie: hasła i szyfrowanie jednostronne
 
 O tej pory zawężam tematykę każdego odcinka, ale dzięki temu będzie dokładniej. Ten odcinek jest w zasadzie prawie ukończony, muszę jednak jeszcze przejrzeć go jeszcze parę razy, bo przyda mu się więcej przejrzystości.
 
-Hasła są najstarszym istniejącym systemem uwierzytelnienia (ang. autentication) użytkownika, który wciąż pomimo wszystkich wad jest używany. Dlaczego? Bo jest prosty. Jest przy tym łatwy do ataku i bardzo zawodny.
+Hasła są najstarszym istniejącym systemem uwierzytelnienia (ang. authentication) użytkownika, który wciąż pomimo wszystkich wad jest używany. Dlaczego? Bo jest prosty. Jest przy tym łatwy do ataku i bardzo zawodny.
 
 #### System logowania
 
 Zacznijmy jednak od tego jak to w ogóle działa.
 
 1. Mamy formularz logowania. Wpisujemy nazwę użytkownika, hasło, potem klikamy przycisk.
-2. Co się wtedy wydarza? Akcja na przycisku, albo też zwykły Enter uruchamiają działanie formularza, który wysyła dane (login i hasło) do weryfikacji.
+2. Co się wtedy wydarza? Akcja na przycisku, albo też zwykły Enter uruchamiają działanie formularza, który wysyła dane (login i hasło) do weryfikacji do zdalnego lub lokalnego systemu.
 3. Mechanizm weryfikacji może mieć różne formy ale zasadniczo jest to proces porównujący otrzymany zestaw danych z zapisem wszystkich istniejących w systemie kont z ich hasłami.
    - wpisany login porównywany jest z wszystkimi loginami (nazwami kont)
-   - kiedy odnaleziony jest identyczny, porównuje się odebrane hasło z tym przypisanym do danego konta.
+   - kiedy odnaleziony jest identyczny, porównuje się odebrane hasło z tym przypisanym do danego konta; i tutaj trochę na marginesie, ale ważna uwaga: co do zasady system nie może znać hasła użytkownika, dlaczego tak jest o tym później, tak więc hasła trzymane są (powinny być) w postaci zaszyfrowanej, jak więc porównać czy hasło przysłane w postaci jawnej jest identyczne z tym zaszyfrowanym z bazy? To proste, hasło jawne szyfruje się tym samym algorytmem i porównuje zaszyfrowane formy.
 4. I teraz mamy dwie możliwości:
    - login istnieje i hasło zgadza się z tym zapisanym w systemie, wtedy do programu odsyłana jest informacja, że uwierzytelnienie przebiegło poprawnie.
-   - jeżeli zaś danego konta nie znaleziono, lub znaleziono, ale hasło się nie zgadza, zwracany jest błąd; błąd ten już w samym mechanizmie weryfikacji powinien być sformułowany ogólnie, nie powinno się odsyłać informacji pozwalających ewentualnemu atakującemu dowiedzieć się, że dany login istnieje, ale niech spróbuje z innym hasłem.
+   - jeżeli zaś danego konta nie znaleziono, lub znaleziono, ale hasło się nie zgadza, zwracany jest błąd; błąd ten już w samym mechanizmie weryfikacji powinien być sformułowany ogólnie, nie powinno się odsyłać informacji pozwalających ewentualnemu atakującemu dowiedzieć się, że dany login istnieje, ale niech spróbuje z innym hasłem, dlatego zawsze przy pomyłce w logowaniu widzimy (powinniśmy widzieć) tylko ogólną informację, że podana nazwa konta nie istnieje, lub hasło jest niepoprawne.
 
 Lista kont, czyli nazwy użytkowników, ich uprawnienia, hasła, ewentualnie inne dane typu historia działań, wiadomości, ustawienia, etc. są trzymane albo w zwykłym pliku tekstowym, albo w bazie danych. Jest to najściślejsza tajemnica systemu.
 
-Hasła muszą być trzymane z postaci zaszyfrowanej. To niestety nie zawsze się zdarza. Co do zasady: nikt poza użytkownikiem nie może znać hasła. Ale nie chodzi tu tylko o mało prawdopodobną sytuację, kiedy to admin loguje się użytkownikiem i wyczynia na jego notabene konto niecne brewerie. Nikt normalny nie ma na to czasu. Wiadomo, że hasła są, albo przynajmniej powinny być najbardziej strzeżoną częścią systemu. Nie ma jednak systemu odpornego na atak, nie można nawet zakładać, że takowy istnieje. Trzeba brać pod uwagę prawdopodobieństwo, że wcześniej czy później każda baza z danymi użytkowników wpadnie w ręce bandytów, którzy z takich czy innych powodów ją upublicznią. Co wtedy?
+### Atak
 
-- Jeżeli hasła są trzymane w postaci jawnej system jest w całości przejęty. To oznacza, lub powinno oznaczać kompletną kompromitację i bankructwo organizacji mającej ten system.
-- Sytuacja jest zupełnie inna jeśli hasła są zaszyfrowane. Bandyci wciąż nie są bez szans. Mogą wykupić moc obliczeniową w chmurze i hashcatem przelecieć bazę haseł. Jeżeli twórcy systemu pomyśleli, ale nie do końca i zastosowali jakiś prosty algorytm szyfrujący typu MD5, a użytkownicy stosowali hasła typu '12345sierpien' (sierpien, bo co miesiąc muszą zmieniać hasło), to bardzo szybko i bardzo tanio bandyci osiągnęli ten sam pozytywny dla siebie rezultat.
-- Zgoła inaczej jest jeżeli twórcy systemu pomyśleli poprawnie i wdrożyli właściwy algorytm szyfrujący czyli bcrypt oraz założyli dobre limity na liczbę znaków, czyli minimum 15 znaków, a maksimum na tyle ile nie będzie problemem dla maszyny (bo szyfrowanie jest zasobożerne).
+Żeby zrozumieć dlaczego stosujemy takie a nie inne zasady w tworzeniu haseł trzeba wziąć pod uwagę sposoby w jakie atakujący może przejąc hasło. Najogólniej rzecz biorąc można podzielić te sposoby na trzy kategorie:
+
+- Podglądnięcie: wbrew pozorom nie jest to takie abstrakcyjne, bandyta może podejrzeć odblokowanie telefonu i aplikacji bankowej (dwa piny, w sumie 8 cyfr) i wystarczy mu przejęcie telefonu na minutę, żeby przelać wszystkie pieniądze z konta, hasła zapisane na karteczkach Post-it, na spodzie klawiatury są dostępne dla każdego kto wie gdzie ich szukać, również błędem tego typu jest logowanie się w miejscach publicznych jeśli nie upewnimy się, że klawiatura nie jest w polu widzenia kamer CCTV czy przypadkowych osób
+- Keylogger, czyli program sczytujący dane z klawiatury; może być wirusem, może też mieć formę sprzętową, najczęściej jest to urządzenie USB, czasem udające kabel zasilający lub przedłużacz ([AirDrive Forensic Keylogger Cable Pro - USB extension cable hardware keylogger with Wi-Fi and 16MB memory](https://www.amazon.co.uk/AirDrive-Forensic-Keylogger-Cable-Pro/dp/B07DCCBBHT))
+- Kradzież bazy. To jest najczęstszy scenariusz. Nie ma systemu odpornego na atak, nie można nawet zakładać, że takowy istnieje. Trzeba brać pod uwagę prawdopodobieństwo, że wcześniej czy później każda baza z danymi użytkowników wpadnie w ręce bandytów, którzy ją wykorzystają, a czasem z takich czy innych powodów upublicznią. Co wtedy?
+
+Właśnie dlatego hasła muszą być trzymane z postaci zaszyfrowanej. To niestety nie zawsze się zdarza. Co do zasady: nikt poza użytkownikiem nie może znać hasła. Ale nie chodzi tu tylko o mało prawdopodobną sytuację, kiedy to admin loguje się użytkownikiem i wyczynia na jego notabene konto niecne brewerie. Nikt normalny nie ma na to czasu. Hasła są zaszyfrowane właśnie dlatego, żeby nie mogli ich użyć bandyci.
+
+- Jeżeli hasła są trzymane w postaci jawnej system jest w całości przejęty. To oznacza, lub powinno oznaczać kompletną kompromitację i bankructwo organizacji mającej ten system. Jeżeli system do odzyskiwania haseł działa w ten sposób, że na zapytanie odsyła hasło, oznacza to, że trzyma je w postaci jawnej. To sygnał alarmowy. 
+- Sytuacja jest zupełnie inna jeśli hasła są zaszyfrowane. Niestety bandyci wciąż nie są bez szans. Mogą wykupić moc obliczeniową w chmurze i hashcatem przelecieć bazę haseł. Jeżeli twórcy systemu pomyśleli, ale niekonsekwentnie i zastosowali jakiś prosty algorytm szyfrujący typu MD5, a użytkownicy stosowali hasła typu '12345sierpien' (sierpien, bo co miesiąc muszą zmieniać hasło), to bardzo szybko i bardzo tanio bandyci osiągnęli ten sam pozytywny dla siebie rezultat.
+- Zgoła inaczej jest jeżeli twórcy systemu pomyśleli poprawnie i wdrożyli właściwy algorytm szyfrujący czyli bcrypt oraz założyli dobre limity na liczbę znaków, czyli minimum 15 znaków, a maksimum na tyle ile nie będzie problemem dla maszyny (bo szyfrowanie jest zasobożerne, a odbywa się ono za każdym logowaniem).
 - Również tę sytuację zmienić mogą sami użytkownicy jeśli mają dobrze skonstruowane hasła o właściwej długości. Wtedy, nawet jeśli są zaszyfrowane MD5 będą problemem dla hashcata i bandyci zadowolą się, jak to się mówi "nisko wiszącymi owocami", czyli hasłami typu 'buziaczek12'. Trudne hasła są o wiele bardziej kosztowne do złamania zarówno w kategoriach czasu jak i pieniędzy.
 
 Na pytanie co jest ważniejsze: poprawna architektura systemu weryfikacji haseł, czy dobre hasła użytkowników właściwą odpowiedzią jest pytanie: a co jest łatwiejsze, raz porządnie napisać program i zastosować właściwy algorytm, czy przekonać / zmusić użytkowników do właściwej polityki haseł?
 
 #### Bezpieczne hasło
 
-Tu jeszcze jedna rzecz wymaga wyjaśnienia: załóżmy, że deweloperzy stworzyli poprawny system, zastosowali szyfrowanie trzymanych w bazie haseł bcryptem. Przy logowaniu użytkownik wpisuje hasło w postaci jawnej. Jak zatem system porównuje otrzymaną z logowania jawną frazę hasła z zaszyfrowanym hasłem z bazy? To proste: hasło otrzymane od logującego się użytkownika szyfruje tym samym szyfrem i dopiero wtedy je porównuje. System również nie zna jawnego hasła. Bcrypt celowo jest tak zaprojektowany, żeby zabierać jak najwięcej mocy obliczeniowej. 
+Tu jeszcze jedna rzecz wymaga wyjaśnienia: załóżmy, że deweloperzy stworzyli poprawny system, zastosowali szyfrowanie trzymanych w bazie haseł bcryptem. Przy logowaniu użytkownik wpisuje hasło w postaci jawnej. Jak zatem system porównuje otrzymaną z logowania jawną frazę hasła z zaszyfrowanym hasłem z bazy po zaszyfrowaniu jej tym samym szyfrem i dopiero wtedy je porównuje. System również nie zna jawnego hasła. Bcrypt celowo jest tak zaprojektowany, żeby zabierać jak najwięcej mocy obliczeniowej. 
 
 Ma to utrudnić działanie bandytom, ale skutkiem tego jest to, że dla systemu szyfrowanie baaardzo długich haseł również jest czasochłonne. Trzeba się zabezpieczyć przed atakiem [Long password denial of service](https://www.acunetix.com/vulnerabilities/web/long-password-denial-of-service/), który polega na wysłaniu tak długiej frazy hasła, że proces skonsumuje cały RAM. Jaka więc powinna być maksymalna dozwolona długość hasła? Odpowiedź z 2008 [Should I impose a maximum length on passwords?](https://stackoverflow.com/questions/98768/should-i-impose-a-maximum-length-on-passwords) "Setting the upper bound to something like 256 chars seems overly generous by today's standards". To dotyczy MD5 czy SHA1. Obecnie zaś [OWASP Cheat Sheet Series - Authentication Cheat Sheet](https://cheatsheetseries.owasp.org/cheatsheets/Authentication_Cheat_Sheet.html): "Maximum password length should not be set too low, as it will prevent users from creating passphrases. A common maximum length is 64 characters due to limitations in certain hashing algorithms". Czyli jak zwykle: "to zależy".
 
@@ -288,8 +296,8 @@ Bezpiecznym i łatwym do zapamiętania kompromisem jest 20. I tu pojawia się ko
 
 Jeżeli jednak z jakichś powodów nie chcemy / nie możemy używać menedżera haseł trzeba wiedzieć o hasłach jeszcze dwie rzeczy:
 
-- muszą być unikalne
-- powinny być trudne kryptograficznie
+- muszą być unikalne (to jest bardzo ważne)
+- powinny być trudne kryptograficznie (jeżeli hasło ma odpowiednią długość to jest mniej ważne)
 
 Dlaczego te trzy cechy hasła: długość, unikalność i trudność kryptograficzna są ważne? Wiemy, że atakujący nie jest w stanie zdobyć hasła przez uparty brute force w oknie logowania. Niezależnie od tego jak zabezpieczony mamy system musimy uznać, że jest możliwe iż baza danych z danymi użytkowników wpadnie w ręce bandytów. Hasło będzie zaszyfrowane. Im będzie dłuższe i trudniejsze kryptograficznie tym więcej czasu i pieniędzy będą potrzebowali na złamanie go. Nie mają nieograniczonych funduszy, a przy pewnych parametrach długości i trudności kryptograficznej można uznać hasło za praktycznie nie do złamania.
 
@@ -348,3 +356,7 @@ Trochę chaosu, żeby potem zrobić porządek.
 - [urlscan.io - URL and website scanner](https://urlscan.io/)
 - [Gophish - Open Source Phishing Framework](https://getgophish.com/)
 - [kgretzky / evilginx2](https://github.com/kgretzky/evilginx2)
+- [BrowserLeaks - Web Browser Fingerprinting - Browsing Privacy](https://browserleaks.com/)
+- [What browser? My browser? Is my browser out of date?](https://www.whatismybrowser.com/)
+- [Cover Your Tracks - A Project of the Electronic Frontier Foundation](https://coveryourtracks.eff.org/)
+- [Web SQL Database](https://en.wikipedia.org/wiki/Web_SQL_Database)
