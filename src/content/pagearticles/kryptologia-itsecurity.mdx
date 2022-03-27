@@ -5,7 +5,11 @@ section: "it"
 subsection: "kryptologia"
 ---
 
+### Intro
+
 Porady dotyczące ogólnie rozumianego bezpieczeństwa IT. Postaram się dodawać kolejne odcinki co dwa tygodnie.
+
+To co jest na końcu za linią poziomą proszę traktować jak brudnopis.
 
 ### 01 - początek [2022-02-14]
 
@@ -13,16 +17,21 @@ OK, zaczynamy.
 
 #### Źródła
 
-Na polskim rynku IT liczą się kilka źródeł wiedzy o bezpieczeństwie IT. Ograniczenie się do polskich źródeł ma wbrew pozorom pewien sens, bo te wymienione 1) są kompetentne i działają naprawdę szybko i 2) większość fraudów, i tak ma charakter lokalny.
+Na polskim rynku IT liczy się kilka źródeł wiedzy o bezpieczeństwie IT. Ograniczenie się do polskich źródeł ma wbrew pozorom pewien sens, bo te wymienione 1) są kompetentne i działają naprawdę szybko i 2) większość fraudów, i tak ma charakter lokalny.
 
-1. [Zaufana Trzecia Strona](https://zaufanatrzeciastrona.pl/) Adam Haertle et al
+Przede wszystkim trzy branżowe portale (jednocześnie firmy prowadzące działalność szkoleniową i usługową w zakresie bezpieczeństwa IT):
+
+1. [Zaufana Trzecia Strona](https://zaufanatrzeciastrona.pl/) Adam Haertle et al.
 2. [Niebezpiecznik.pl](https://niebezpiecznik.pl/) stworzony przez Piotra Koniecznego, jest to pierwszy człowiek, który profesjonalnie zabrał się w Polsce za dziennikarstwo IT security.
 3. [Sekurak](https://sekurak.pl/) założyciel: Michał Sajdak, głównie bezpieczeństwo urządzeń i webaplikacji, ale są też informacje praktyczne dla zwykłego użytkownika.
+
+Popularyzacja:
+
 4. [Kacper Szurek](https://security.szurek.pl/) cztery lata temu dołączył do powyższej świętej trójcy, fenomenalny popularyzator. Dużo wiedzy o podstawach. Głównie prowadzi [kanał na YT](https://www.youtube.com/c/KacperSzurek).
 5. [Mateusz Chrobok](https://www.youtube.com/c/MateuszChrobok)
 6. [Bezpieczny Blog](https://bezpieczny.blog/).
 
-Nie musisz tego regularnie czytać, subskrybować itd. Wystarczy wiedzieć, że są to zaufane źródła. Pierwsze trzy to poważne witryny informacyjne i jednocześnie firmy prowadzące działalność szkoleniową i usługową w zakresie bezpieczeństwa IT, pozostałę trzy to popularyzatorzy.
+Nie musisz tego regularnie czytać, subskrybować itd. Wystarczy wiedzieć, że są to zaufane źródła.
 
 N początek dwa filmy raczej beletrystyczne, ale wprowadzają w tematykę cyberprzestępczości i pokazują jak wygląda bezpieczeństwo od strony praktycznej, na technikalia przyjdzie czas:
 - SysOps / DevOps Polska ["[#104] Z życia cyberprzestępcy, czyli jak trudno pozostać niezłapanym złodziejem - Adam Haertle" [YT 1:22:19]](https://www.youtube.com/watch?v=EPIIILlIYXE)
@@ -243,9 +252,9 @@ Domyślnym wyborem więc powinien być zatem Signal.
 
 Za kolejne dwa tygodnie: hasła i szyfrowanie jednostronne
 
-### Hasła \[brudnopis]
+### Hasła [2022-03-28]
 
-O tej pory zawężam tematykę każdego odcinka, ale dzięki temu będzie dokładniej. Ten odcinek jest w zasadzie prawie ukończony, muszę jednak jeszcze przejrzeć go jeszcze parę razy, bo przyda mu się więcej przejrzystości.
+O tej pory zawężam tematykę każdego odcinka, ale dzięki temu będzie dokładniej.
 
 Hasła są najstarszym istniejącym systemem uwierzytelnienia (ang. authentication) użytkownika, który wciąż pomimo wszystkich wad jest używany. Dlaczego? Bo jest prosty. Jest przy tym łatwy do ataku i bardzo zawodny.
 
@@ -254,10 +263,10 @@ Hasła są najstarszym istniejącym systemem uwierzytelnienia (ang. authenticati
 Zacznijmy jednak od tego jak to w ogóle działa.
 
 1. Mamy formularz logowania. Wpisujemy nazwę użytkownika, hasło, potem klikamy przycisk.
-2. Co się wtedy wydarza? Akcja na przycisku, albo też zwykły Enter uruchamiają działanie formularza, który wysyła dane (login i hasło) do weryfikacji do zdalnego lub lokalnego systemu.
+2. Akcja na przycisku (albo też zwykły Enter) uruchamiają działanie formularza, który wysyła dane (login i hasło) do weryfikacji do zdalnego lub lokalnego systemu (usługi).
 3. Mechanizm weryfikacji może mieć różne formy ale zasadniczo jest to proces porównujący otrzymany zestaw danych z zapisem wszystkich istniejących w systemie kont z ich hasłami.
    - wpisany login porównywany jest z wszystkimi loginami (nazwami kont)
-   - kiedy odnaleziony jest identyczny, porównuje się odebrane hasło z tym przypisanym do danego konta; i tutaj trochę na marginesie, ale ważna uwaga: co do zasady system nie może znać hasła użytkownika, dlaczego tak jest o tym później, tak więc hasła trzymane są (powinny być) w postaci zaszyfrowanej, jak więc porównać czy hasło przysłane w postaci jawnej jest identyczne z tym zaszyfrowanym z bazy? To proste, hasło jawne szyfruje się tym samym algorytmem i porównuje zaszyfrowane formy.
+   - kiedy odnaleziony jest identyczny, porównuje się odebrane hasło z tym przypisanym do danego konta; i tutaj trochę na marginesie, ale ważna uwaga: co do zasady system nie może znać hasła użytkownika - dlaczego tak jest o tym później - tak więc hasła trzymane są (powinny być) w postaci zaszyfrowanej, jak więc porównać czy hasło przysłane w postaci jawnej jest identyczne z tym zaszyfrowanym z bazy? To proste, hasło jawne szyfruje się tym samym algorytmem i porównuje zaszyfrowane formy. Tak więc proses logowania zawiera w sobie szyfrowanie.
 4. I teraz mamy dwie możliwości:
    - login istnieje i hasło zgadza się z tym zapisanym w systemie, wtedy do programu odsyłana jest informacja, że uwierzytelnienie przebiegło poprawnie.
    - jeżeli zaś danego konta nie znaleziono, lub znaleziono, ale hasło się nie zgadza, zwracany jest błąd; błąd ten już w samym mechanizmie weryfikacji powinien być sformułowany ogólnie, nie powinno się odsyłać informacji pozwalających ewentualnemu atakującemu dowiedzieć się, że dany login istnieje, ale niech spróbuje z innym hasłem, dlatego zawsze przy pomyłce w logowaniu widzimy (powinniśmy widzieć) tylko ogólną informację, że podana nazwa konta nie istnieje, lub hasło jest niepoprawne.
@@ -270,40 +279,63 @@ Lista kont, czyli nazwy użytkowników, ich uprawnienia, hasła, ewentualnie inn
 
 - Podglądnięcie: wbrew pozorom nie jest to takie abstrakcyjne, bandyta może podejrzeć odblokowanie telefonu i aplikacji bankowej (dwa piny, w sumie 8 cyfr) i wystarczy mu przejęcie telefonu na minutę, żeby przelać wszystkie pieniądze z konta, hasła zapisane na karteczkach Post-it, na spodzie klawiatury są dostępne dla każdego kto wie gdzie ich szukać, również błędem tego typu jest logowanie się w miejscach publicznych jeśli nie upewnimy się, że klawiatura nie jest w polu widzenia kamer CCTV czy przypadkowych osób
 - Keylogger, czyli program sczytujący dane z klawiatury; może być wirusem, może też mieć formę sprzętową, najczęściej jest to urządzenie USB, czasem udające kabel zasilający lub przedłużacz ([AirDrive Forensic Keylogger Cable Pro - USB extension cable hardware keylogger with Wi-Fi and 16MB memory](https://www.amazon.co.uk/AirDrive-Forensic-Keylogger-Cable-Pro/dp/B07DCCBBHT))
+- Podsłuchanie, służą do tego sniffery takie jak np. [Wireshark](https://www.wireshark.org/), [tcpdump](https://pl.wikipedia.org/wiki/Tcpdump), czy [Snort](https://www.snort.org/) było to łatwe w połączeniach HTTP nieużywających szyfrowania SSL, szyfrowanie połączenia czy to przy pomocy SSL czy vPN zabezpiecza przed tym; przy użyciu [Aircrack-ng "Tutorial: How to Crack WPA/WPA2"](https://www.aircrack-ng.org/doku.php?id=cracking_wpa) można włamać się do sieci wifi używającej PSK (pre-shared keys).
 - Kradzież bazy. To jest najczęstszy scenariusz. Nie ma systemu odpornego na atak, nie można nawet zakładać, że takowy istnieje. Trzeba brać pod uwagę prawdopodobieństwo, że wcześniej czy później każda baza z danymi użytkowników wpadnie w ręce bandytów, którzy ją wykorzystają, a czasem z takich czy innych powodów upublicznią. Co wtedy?
 
-Właśnie dlatego hasła muszą być trzymane z postaci zaszyfrowanej. To niestety nie zawsze się zdarza. Co do zasady: nikt poza użytkownikiem nie może znać hasła. Ale nie chodzi tu tylko o mało prawdopodobną sytuację, kiedy to admin loguje się użytkownikiem i wyczynia na jego notabene konto niecne brewerie. Nikt normalny nie ma na to czasu. Hasła są zaszyfrowane właśnie dlatego, żeby nie mogli ich użyć bandyci.
+To właśnie dlatego hasła muszą być trzymane z postaci zaszyfrowanej. To niestety nie zawsze się zdarza. Co do zasady: nikt poza użytkownikiem nie może znać hasła. Ale nie chodzi tu tylko o mało prawdopodobną sytuację, kiedy to admin loguje się użytkownikiem i wyczynia na jego notabene konto niecne brewerie. Nikt normalny nie ma na to czasu. Hasła są zaszyfrowane właśnie dlatego, żeby nie mogli ich użyć bandyci.
 
 - Jeżeli hasła są trzymane w postaci jawnej system jest w całości przejęty. To oznacza, lub powinno oznaczać kompletną kompromitację i bankructwo organizacji mającej ten system. Jeżeli system do odzyskiwania haseł działa w ten sposób, że na zapytanie odsyła hasło, oznacza to, że trzyma je w postaci jawnej. To sygnał alarmowy. 
-- Sytuacja jest zupełnie inna jeśli hasła są zaszyfrowane. Niestety bandyci wciąż nie są bez szans. Mogą wykupić moc obliczeniową w chmurze i hashcatem przelecieć bazę haseł. Jeżeli twórcy systemu pomyśleli, ale niekonsekwentnie i zastosowali jakiś prosty algorytm szyfrujący typu MD5, a użytkownicy stosowali hasła typu '12345sierpien' (sierpien, bo co miesiąc muszą zmieniać hasło), to bardzo szybko i bardzo tanio bandyci osiągnęli ten sam pozytywny dla siebie rezultat.
-- Zgoła inaczej jest jeżeli twórcy systemu pomyśleli poprawnie i wdrożyli właściwy algorytm szyfrujący czyli bcrypt oraz założyli dobre limity na liczbę znaków, czyli minimum 15 znaków, a maksimum na tyle ile nie będzie problemem dla maszyny (bo szyfrowanie jest zasobożerne, a odbywa się ono za każdym logowaniem).
+- Sytuacja jest zupełnie inna jeśli hasła są zaszyfrowane. Niestety bandyci wciąż nie są bez szans. Mogą wykupić moc obliczeniową w chmurze i [hashcatem](https://hashcat.net/hashcat/) przelecieć bazę haseł. Jeżeli twórcy systemu pomyśleli, ale niekonsekwentnie i zastosowali jakiś prosty algorytm szyfrujący typu MD5, a użytkownicy stosowali hasła typu '12345sierpien' (sierpien, bo co miesiąc muszą zmieniać hasło), to bardzo szybko i bardzo tanio bandyci osiągnęli ten sam pozytywny dla siebie rezultat.
+- Zgoła inaczej jest jeżeli twórcy systemu pomyśleli poprawnie i wdrożyli właściwy algorytm szyfrujący czyli [bcrypt](https://www.openwall.com/crypt/) oraz założyli dobre limity na liczbę znaków, czyli minimum 15 znaków
 - Również tę sytuację zmienić mogą sami użytkownicy jeśli mają dobrze skonstruowane hasła o właściwej długości. Wtedy, nawet jeśli są zaszyfrowane MD5 będą problemem dla hashcata i bandyci zadowolą się, jak to się mówi "nisko wiszącymi owocami", czyli hasłami typu 'buziaczek12'. Trudne hasła są o wiele bardziej kosztowne do złamania zarówno w kategoriach czasu jak i pieniędzy.
 
 Na pytanie co jest ważniejsze: poprawna architektura systemu weryfikacji haseł, czy dobre hasła użytkowników właściwą odpowiedzią jest pytanie: a co jest łatwiejsze, raz porządnie napisać program i zastosować właściwy algorytm, czy przekonać / zmusić użytkowników do właściwej polityki haseł?
 
-#### Bezpieczne hasło
+No dobrze, ale skoro o tym mowa jakie cechy powinny posiadać dobre hasła? Powinny być:
 
-Tu jeszcze jedna rzecz wymaga wyjaśnienia: załóżmy, że deweloperzy stworzyli poprawny system, zastosowali szyfrowanie trzymanych w bazie haseł bcryptem. Przy logowaniu użytkownik wpisuje hasło w postaci jawnej. Jak zatem system porównuje otrzymaną z logowania jawną frazę hasła z zaszyfrowanym hasłem z bazy po zaszyfrowaniu jej tym samym szyfrem i dopiero wtedy je porównuje. System również nie zna jawnego hasła. Bcrypt celowo jest tak zaprojektowany, żeby zabierać jak najwięcej mocy obliczeniowej. 
+- silne kryptograficznie, czyli przede wszystkim długie, a po drugie (to ma mniejsze znaczenie) złożone
+- unikalne
 
-Ma to utrudnić działanie bandytom, ale skutkiem tego jest to, że dla systemu szyfrowanie baaardzo długich haseł również jest czasochłonne. Trzeba się zabezpieczyć przed atakiem [Long password denial of service](https://www.acunetix.com/vulnerabilities/web/long-password-denial-of-service/), który polega na wysłaniu tak długiej frazy hasła, że proces skonsumuje cały RAM. Jaka więc powinna być maksymalna dozwolona długość hasła? Odpowiedź z 2008 [Should I impose a maximum length on passwords?](https://stackoverflow.com/questions/98768/should-i-impose-a-maximum-length-on-passwords) "Setting the upper bound to something like 256 chars seems overly generous by today's standards". To dotyczy MD5 czy SHA1. Obecnie zaś [OWASP Cheat Sheet Series - Authentication Cheat Sheet](https://cheatsheetseries.owasp.org/cheatsheets/Authentication_Cheat_Sheet.html): "Maximum password length should not be set too low, as it will prevent users from creating passphrases. A common maximum length is 64 characters due to limitations in certain hashing algorithms". Czyli jak zwykle: "to zależy".
+#### Bezpieczne hasło czyli siła kryptograficzna hasła
 
-Natomiast dużo łatwiej jest odpowiedzieć jaka powinna być minimalna długość hasła.
+Obowiązkowy XKCD [Password Strength](https://xkcd.com/936/). Siła kryptograficzna frazy hasła określa stopień entropii, który znacząco rośnie z każdym znakiem więcej. Zależy to również od tego jaki to jest znak, jedna cyfra to 10 możliwości, litera w US-ASCII to 26 możliwości, tak więc hasła składające się z samych cyfr (np. piny) są słabsze niż tej samej długości hasła, na które składać się mogą litery, lub litery i cyfry. Tak więc na siłę kryptograficzną hasła składają się dwa czynniki:
 
-- ["FBI Tech Tuesday: Strong Passphrases and Account Protection" [2021]](https://www.fbi.gov/contact-us/field-offices/phoenix/news/press-releases/fbi-tech-tuesday-strong-passphrases-and-account-protection): 15
-- ["How long should your password be? The data behind a safe password length policy." [2020]](https://www.lmgsecurity.com/how-long-should-your-password-be-a-technical-guide-to-a-safe-password-length-policy/): 16
+- długość
+- złożoność
+
+#### Długość hasła
+
+Ta kwestia składa się z dwóch części:
+
+- jaka powinna być minimalna długość hasła, czyli jakie minimum powinni narzucić / sugerować projektanci systemów.
+- jakie powinno być maksimum długości hasła i czy w ogóle jakieś powinno być.
+
+Na to pierwsze pytanie jest łatwo odpowiedzieć:
+
+- ["FBI Tech Tuesday: Strong Passphrases and Account Protection" [2021]](https://www.fbi.gov/contact-us/field-offices/phoenix/news/press-releases/fbi-tech-tuesday-strong-passphrases-and-account-protection): 15 znaków
+- ["How long should your password be? The data behind a safe password length policy." [2020]](https://www.lmgsecurity.com/how-long-should-your-password-be-a-technical-guide-to-a-safe-password-length-policy/): 16 znaków
 
 Bezpiecznym i łatwym do zapamiętania kompromisem jest 20. I tu pojawia się kolejny problem: jak zapamiętać dwudziestoznakowe hasło? A konkretnie jak zapamiętać kilkanaście okołodwudziestoznakowych haseł? Przynajmniej kilkanaście bo z tylu różnych serwisów korzystamy. Rozwiązaniem jest oczywiście menedżer haseł, który zdejmuje z nas problem zapamiętania dowolnej liczby haseł o dowolnej liczbie znaków, do tego skonstruowanych bez troski o mnemonikę, za to maksymalnie trudnych kryptograficznie.
 
-Jeżeli jednak z jakichś powodów nie chcemy / nie możemy używać menedżera haseł trzeba wiedzieć o hasłach jeszcze dwie rzeczy:
+Zanim o dobrej konstrukcji hasła - odpowiedzmy na drugie pytanie: jakie jest maksimum?
 
-- muszą być unikalne (to jest bardzo ważne)
-- powinny być trudne kryptograficznie (jeżeli hasło ma odpowiednią długość to jest mniej ważne)
+Bcrypt celowo jest tak zaprojektowany, żeby zabierać jak najwięcej mocy obliczeniowej. Ma to utrudnić działanie bandytom, ale skutkiem tego jest to, że dla systemu szyfrowanie baaardzo długich haseł również jest czasochłonne. Trzeba się zabezpieczyć przed atakiem [Long password denial of service](https://www.acunetix.com/vulnerabilities/web/long-password-denial-of-service/), który polega na wysłaniu tak długiej frazy hasła, że proces skonsumuje cały RAM. Odpowiedź z 2008 [Should I impose a maximum length on passwords?](https://stackoverflow.com/questions/98768/should-i-impose-a-maximum-length-on-passwords) "Setting the upper bound to something like 256 chars seems overly generous by today's standards". To dotyczy MD5 czy SHA1. Obecnie zaś [OWASP Cheat Sheet Series - Authentication Cheat Sheet](https://cheatsheetseries.owasp.org/cheatsheets/Authentication_Cheat_Sheet.html): "Maximum password length should not be set too low, as it will prevent users from creating passphrases. A common maximum length is 64 characters due to limitations in certain hashing algorithms". Czyli jak zwykle: "to zależy". Maksimum nie jest żadną sugestią dla użytkownika, jest zabezpieczeniem systemu przed atakiem.
 
-Dlaczego te trzy cechy hasła: długość, unikalność i trudność kryptograficzna są ważne? Wiemy, że atakujący nie jest w stanie zdobyć hasła przez uparty brute force w oknie logowania. Niezależnie od tego jak zabezpieczony mamy system musimy uznać, że jest możliwe iż baza danych z danymi użytkowników wpadnie w ręce bandytów. Hasło będzie zaszyfrowane. Im będzie dłuższe i trudniejsze kryptograficznie tym więcej czasu i pieniędzy będą potrzebowali na złamanie go. Nie mają nieograniczonych funduszy, a przy pewnych parametrach długości i trudności kryptograficznej można uznać hasło za praktycznie nie do złamania.
+#### Złożoność hasła
 
-To jest oczywiste. A dlaczego musi być unikalne? Na stronie [Have I Been Pwned](https://haveibeenpwned.com/) możemy sprawdzić czy nasz adres mailowy został ujawniony podczas któregoś z wycieków. Bandyci korzystają z podobnych serwisów, ale udostępniających odpłatnie o wiele większą ilość informacji, mogą więc dostać nasze stare hasło z jakiegoś serwisu, o którym użytkownik już dawno zapomniał i użyć go do ataku. Jeżeli używamy tego samego hasła wszędzie dajemy bandytom klucze do wszystkich kont. Jeżeli używamy wszędzie podobnego wzorca tworzenia hasła ułatwiamy im dorobienie sobie tych kluczy.
+Wynika z zakresu znaków dozwolonych we frazie hasła. Hasła składające się z samych cyfr (10 możliwości na pozycję) są słabsze, łatwiejsze do złamania, niż hasła składające się z samych liter (minimum 26 możliwości na pozycję), te zaś będą słabsze niż hasła, na które składać się mogą litery, cyfry i znaki specjalne (ponad 36 możliwości na pozycję).
 
-No dobrze, ale co to znaczy "trudne kryptograficznie"? Dobrą radę daje tu podlinkowany powyżej artykuł FBI: zamiast krótkich haseł o dużej złożoności powinniśmy stosować łatwe do zapamiętania sekwencje słów i dodatkowych znaków utrudniających złamanie go, ale długość hasła jest ważniejsza niż jego złożoność. Przykładem do naśladowania jest 'TechTuesday2021Strengthen!'.
+Do tej złożoności odwoływała się reguła, której uczono nas przez lata, że każde hasło powinno zawierać przynajmniej jedną literę dużą i małą, przynajmniej jedną cyfrę i przynajmniej jeden znak specjalny. To rzeczywiście pomagało kiedy hasła były krótkie i zanim pojawiły się takie programy jak hashcat. Obecnie ma to jednak o wiele mniejsze znaczenie, bo jak to wykazano w XKCD 11-znakowe "haxorskie" hasło (Tr0ub4dor&3) ma ok 28 bitów entropii (dokładny wynik zależy od sposobu kodowania znaków), podczas kiedy łatwy do zapamiętania ciąg czterech słów w sumie 25 znaków samymi małymi literami ma ok 44 bitów entropii.
+
+Dobrą radę daje tu podlinkowany powyżej artykuł FBI: zamiast krótkich haseł o dużej złożoności powinniśmy stosować łatwe do zapamiętania sekwencje słów i dodatkowych znaków utrudniających złamanie go, ale długość hasła jest ważniejsza niż jego złożoność. Przykładem do naśladowania jest 'TechTuesday2021Strengthen!'.
+
+#### Unikalność hasła
+
+Dlaczego musi być unikalne? Na stronie [Have I Been Pwned](https://haveibeenpwned.com/) możemy sprawdzić czy nasz adres mailowy został ujawniony podczas któregoś z wycieków. Bandyci korzystają z podobnych serwisów, ale udostępniających odpłatnie o wiele większą ilość informacji, mogą więc dostać nasze stare hasło z jakiegoś serwisu, o którym użytkownik już dawno zapomniał i użyć go do ataku.
+
+Jeżeli używamy tego samego hasła wszędzie dajemy bandytom klucze do wszystkich kont.
+
+Jeżeli używamy wszędzie podobnego wzorca tworzenia hasła ułatwiamy im dorobienie sobie tych kluczy.
 
 #### Błędy
 
@@ -335,12 +367,18 @@ Jeżeli dany serwis umożliwia logowanie za pomocą protokołu autoryzacji dost�
 
 #### Odnośniki
 
+- [Hasło (kryptografia)](https://pl.wikipedia.org/wiki/Has%C5%82o_(kryptografia))
 - ["OAuth 2.0 – jak działa / jak testować / problemy bezpieczeństwa"](https://sekurak.pl/oauth-2-0-jak-dziala-jak-testowac-problemy-bezpieczenstwa/)
 - [hashcat - advanced password recovery](https://hashcat.net/hashcat/)
 - [bcrypt password hashing ("password encryption") for your software and your servers](https://en.wikipedia.org/wiki/Bcrypt)
 - Wikipedia [List of the most common passwords](https://en.wikipedia.org/wiki/List_of_the_most_common_passwords) | [Wikipedia:10,000 most common passwords](https://en.wikipedia.org/wiki/Wikipedia:10,000_most_common_passwords)
+- [Sekurak "Bezpieczeństwo sieci Wi-Fi – część 1 (wstęp)""](https://sekurak.pl/bezpieczenstwo-sieci-wi-fi-czesc-1/)
+
+W następnym odcinku: Przeglądarka cz. 1 ciasteczka
 
 ---
+
+### Przeglądarka cz. 1 ciasteczka
 
 ### Odnośniki różne
 
