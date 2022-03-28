@@ -210,6 +210,9 @@ Chcemy anonimowości (wiadomo co, ale nie wiadomo kto)? Od tego jest Tor.
 - Mateusz Chrobok ["Jak (i po co) wybrać VPN?" [YT 10:58]](https://www.youtube.com/watch?v=87u0matbDPU)
 - SekurakTV ["Praktyczna konfiguracja OpenVPN" [YT 1:19:15]](https://www.youtube.com/watch?v=JwJ13HXuRZs)
 - Liron Segev ["STOP using a VPN - You don't really need it!" [YT 5:54]](https://www.youtube.com/watch?v=lDTi16UOCi8)
+- [Demise of ThatOnePrivacySite](https://www.reddit.com/r/VPN/comments/mxeova/demise_of_thatoneprivacysite/) - [BitWrecker / Archived-VPN-Comparison-Spreadsheet](https://github.com/BitWrecker/Archived-VPN-Comparison-Spreadsheet)
+- [Privacy Tools: Encryption Against Mass Surveillance](https://www.privacytools.io/) - [privacytools / blog.privacytools.io](https://github.com/privacytools/blog.privacytools.io)
+- Wirecutter ["The Best VPN Service"](https://www.nytimes.com/wirecutter/reviews/best-vpn-service/)
 
 #### Tor
 
@@ -252,7 +255,7 @@ Domyślnym wyborem więc powinien być zatem Signal.
 
 Za kolejne dwa tygodnie: hasła i szyfrowanie jednostronne
 
-### Hasła [2022-03-28]
+### 04 - Hasła [2022-03-28]
 
 O tej pory zawężam tematykę każdego odcinka, ale dzięki temu będzie dokładniej.
 
@@ -298,10 +301,12 @@ No dobrze, ale skoro o tym mowa jakie cechy powinny posiadać dobre hasła? Powi
 
 #### Bezpieczne hasło czyli siła kryptograficzna hasła
 
-Obowiązkowy XKCD [Password Strength](https://xkcd.com/936/). Siła kryptograficzna frazy hasła określa stopień entropii, który znacząco rośnie z każdym znakiem więcej. Zależy to również od tego jaki to jest znak, jedna cyfra to 10 możliwości, litera w US-ASCII to 26 możliwości, tak więc hasła składające się z samych cyfr (np. piny) są słabsze niż tej samej długości hasła, na które składać się mogą litery, lub litery i cyfry. Tak więc na siłę kryptograficzną hasła składają się dwa czynniki:
+Obowiązkowy XKCD [Password Strength](https://xkcd.com/936/). Siłę kryptograficzna frazy hasła określa stopień entropii, który znacząco rośnie z każdym znakiem więcej. Zależy to również od tego jaki to jest znak, jedna cyfra to 10 możliwości, litera w US-ASCII to 26 możliwości, tak więc hasła składające się z samych cyfr (np. piny) są słabsze niż tej samej długości hasła, na które składać się mogą litery, lub litery i cyfry.
 
-- długość
-- złożoność
+Tak więc na siłę kryptograficzną hasła składają się dwa czynniki:
+
+- długość (liczba znaków)
+- złożoność (przestrzeń możliwości znaku)
 
 #### Długość hasła
 
@@ -344,12 +349,12 @@ Przez lata byliśmy uczeni, że hasła powinny posiadać dwie cechy:
 - być dłuższe niż 8 znaków
 - posiadać przynajmniej jeden znak specjalny, przynajmniej jedną dużą i jedną małą literę, przynajmniej jedną cyfrę
 
-Jest to na tyle bałamutne, że najlepiej o tym wszystkim zapomnieć. Szczególnie ta pierwsza porada jest bez sensu, uczy bowiem, że 8, no może 9 znaków wystarczy. Druga może ma sens jako zalecenie, ale ważniejsza jest unikalność haseł. Lepsze są dwudziestoznakowe, unikalne hasła składające się z samych małych liter niż jedno |-!@x0rskie stosowane wszędzie.
+Jest to na tyle bałamutne, że najlepiej o tym wszystkim zapomnieć. Szczególnie ta pierwsza porada jest bez sensu, uczy bowiem, że 8, no może 9 znaków wystarczy. Druga może ma sens jako zalecenie, ale przecież ważniejsza jest unikalność haseł. Lepsze są dwudziestoznakowe, unikalne hasła składające się z samych małych liter niż jedno |-!@x0rskie stosowane wszędzie.
 
 Ze strony administratorów, czy też działów IT pojawiały się 2 kolejne błędne wymogi:
 
 - hasła nadmiernie skomplikowane powodowały zapisywanie ich np. na karteczkach pod klawiaturą, co mogło być wykorzystane przez atakujących
-- regularna zmiana haseł prowadziła do haseł typu 'Adam!grudzien', po którym następowało 'Adam!styczen'.
+- regularna zmiana haseł prowadziła do haseł typu 'Adam!grudzien', po którym następowało 'Adam!styczen'; częsta zmiana hasła obniża jego jakość
 
 Jakie jest rozwiązanie tych problemów, relatywnie proste i darmowe? Oczywiście menedżer haseł. Dojrzałe organizacje stosują klucze U2F, no ale to już zupełnie inny temat.
 
@@ -365,6 +370,10 @@ Zawsze jeżeli jest dostępne 2FA - uwierzytelnianie dwuskładnikowe - powinniś
 
 Jeżeli dany serwis umożliwia logowanie za pomocą protokołu autoryzacji dostępu [OAuth](https://pl.wikipedia.org/wiki/OAuth) powinniśmy z tego skorzystać. Umożliwia on logowanie się do różnych usług za pomocą zewnętrznych zaufanych serwisów takich jak Google, Facebook, Twitter, Amazon, Microsoft, czy GitHub. O ile jest to tylko możliwe powinno się unikać Facebooka, bo to konto najłatwiej jest stracić. Ja do wszystkich serwisów IT loguję się GitHubem, a do reszty Googlem. Google ma tę zaletę, że jeżeli w jakimś serwisie założyliśmy konto klasycznie na nazwę użytkownika i hasło oraz jako maila podaliśmy gmaila, to można się tak samo zalogować Oauth Googla - automatycznie zaloguje nas na nasze konto.
 
+Czy to wszystko było skomplikowane? Weź pod uwagę, że zupełnie pominąłem opis bardzo specyficznego szyfru używanego do szyfrowania haseł - szyfrowanie jednostronne, czyli tzw. skrót kryptograficzny aka hasz. Więcej na ten temat w artykule [Kryptografia jednostronna](/it/kryptologia/kryptologia-jednostronna).
+
+To teraz weź pod uwagę jak relatywnie nieskomplikowane jest wdrożenie menedżera haseł.
+
 #### Odnośniki
 
 - [Hasło (kryptografia)](https://pl.wikipedia.org/wiki/Has%C5%82o_(kryptografia))
@@ -373,20 +382,51 @@ Jeżeli dany serwis umożliwia logowanie za pomocą protokołu autoryzacji dost�
 - [bcrypt password hashing ("password encryption") for your software and your servers](https://en.wikipedia.org/wiki/Bcrypt)
 - Wikipedia [List of the most common passwords](https://en.wikipedia.org/wiki/List_of_the_most_common_passwords) | [Wikipedia:10,000 most common passwords](https://en.wikipedia.org/wiki/Wikipedia:10,000_most_common_passwords)
 - [Sekurak "Bezpieczeństwo sieci Wi-Fi – część 1 (wstęp)""](https://sekurak.pl/bezpieczenstwo-sieci-wi-fi-czesc-1/)
+- [gry-online.pl "Tak szybko można złamać Twoje hasło w 2022 roku"](https://www.gry-online.pl/hardware/tak-szybko-mozna-zlamac-twoje-haslo-w-2022-roku/z22166c) | [hivesystems.io "Are Your Passwords in the Green?"](https://www.hivesystems.io/blog/are-your-passwords-in-the-green)
 
 W następnym odcinku: Przeglądarka cz. 1 ciasteczka
 
 ---
 
-### Przeglądarka cz. 1 ciasteczka
+### Przeglądarka cz. 1 ciasteczka \[brudnopis]
+
+#### Powstanie
+
+Jak już powyżej pisałem protokół WWW czyli HTTP jest bezstanowy, czyli nie zachowuje sesji, składa się z serii requestów (żądań) ze strony klienta (w tym wypadku przeglądarki), które dla serwera są ze sobą niepowiązane. Każdy request jest zupełnie oddzielnym żądaniem i odpowiedzią.
+
+A przecież bez sesji, bez potwierdzenia tożsamości klienta (w sensie oprogramowania klienckiego) nie można trzymać stanu zalogowania, przeprowadzić transakcji, przedstawić / użyć / zmodyfikować danych użytkownika. Dlatego wprowadzenie możliwości zachowania sesji (stanu) było jednym z pierwszych właściwości, które trzeba było dodać po upowszechnieniu się WWW.
+
+#### Historia
+
+Po raz pierwszy ciasteczka pojawiły się z wersją 0.9beta przeglądarki Mosaic Netscape w październiku 1994. Ich twórca Lou Montulli w 1995 wystąpił o patent i otrzymał go w 1998. Co interesujące od samego początku były kontrowersyjnym wynalazkiem, ponad rok ich istnienie było zupełną tajemnicą, przeglądarka akceptowała je zawsze, a użytkownik nie miał żadnej metody by je sprawdzić. Opinia publiczna dowiedziała się o nich dopiero w lutym 1995 i dwukrotnie w latach 1996 i 1997 były przedmiotem badań U.S. Federal Trade Commission.
+
+Dopiero w kwietniu 1995 powstała grupa robocza IETF poświęcona rozwijaniu publicznego standardu cookies. Pierwszym takim standardem był RFC 2109 opublikowany w lutym 1997, w październiku 2000 zastąpił go RFC 2965, zastąpiony dopiero w kwietniu 2011 przez RFC 6265.
+
+#### Właściwości
+
+Plik tekstowy.
+
+#### Odnośniki
+
+- [Cookiebot CMP | GDPR, ePrivacy and CCPA compliant cookies](https://www.cookiebot.com/en/)
+- [Ghostery](https://www.ghostery.com/)
+- [OWASP Cheat Sheet Series - Session Management / Cookies](https://cheatsheetseries.owasp.org/cheatsheets/Session_Management_Cheat_Sheet.html#cookies)
+- [WSTG - Latest |  4-Web Application Security Testing > 06-Session Management Testing > Testing for Cookies Attributes](https://owasp.org/www-project-web-security-testing-guide/latest/4-Web_Application_Security_Testing/06-Session_Management_Testing/02-Testing_for_Cookies_Attributes)
+- Dawid Balut ["Błędy Bezpieczeństwa w Mechanizmach Autoryzacji i Uwierzytelniania #04 #DawidBalutTraining" [YT 16:50]](https://www.youtube.com/watch?v=yWOjg2_TO2s&list=PLswBolcRPQPEHjYZzMGjMP3qmuKLOjWut&index=4)
+
+#### Przeglądarka
+
+- [Device Info](https://www.deviceinfo.me/)
+- [BrowserLeaks - Web Browser Fingerprinting - Browsing Privacy](https://browserleaks.com/)
+- [What browser? My browser? Is my browser out of date?](https://www.whatismybrowser.com/)
+- [Cover Your Tracks - A Project of the Electronic Frontier Foundation](https://coveryourtracks.eff.org/)
+- [Web SQL Database](https://en.wikipedia.org/wiki/Web_SQL_Database)
 
 ### Odnośniki różne
 
 Trochę chaosu, żeby potem zrobić porządek.
 
-- [Device Info](https://www.deviceinfo.me/)
 - [Cock.li E-mail Hosting](https://cock.li/)
-- [gry-online.pl "Tak szybko można złamać Twoje hasło w 2022 roku"](https://www.gry-online.pl/hardware/tak-szybko-mozna-zlamac-twoje-haslo-w-2022-roku/z22166c) | [hivesystems.io "Are Your Passwords in the Green?"](https://www.hivesystems.io/blog/are-your-passwords-in-the-green)
 - ["Android z ważną aktualizacją dla Ukrainy – ostrzeże on przed śmiercią spadającą z nieba"](https://android.com.pl/news/470398-android-ostrzeze-przed-nalotami/)
 - [NirSoft](https://www.nirsoft.net/)
 - [Bellingcat](https://www.bellingcat.com/)
@@ -394,7 +434,18 @@ Trochę chaosu, żeby potem zrobić porządek.
 - [urlscan.io - URL and website scanner](https://urlscan.io/)
 - [Gophish - Open Source Phishing Framework](https://getgophish.com/)
 - [kgretzky / evilginx2](https://github.com/kgretzky/evilginx2)
-- [BrowserLeaks - Web Browser Fingerprinting - Browsing Privacy](https://browserleaks.com/)
-- [What browser? My browser? Is my browser out of date?](https://www.whatismybrowser.com/)
-- [Cover Your Tracks - A Project of the Electronic Frontier Foundation](https://coveryourtracks.eff.org/)
-- [Web SQL Database](https://en.wikipedia.org/wiki/Web_SQL_Database)
+
+PL
+
+- [Informatyk Zakładowy](https://informatykzakladowy.pl/)
+- [Kapitan Hack - Bezpieczeństwo IT](https://kapitanhack.pl/)
+- [NF.sec &#8211; Linux Security Blog](https://nfsec.pl/)
+- [random:seed – twoje źródło entropii](https://randomseed.pl/)
+- [pi3 blog](http://blog.pi3.com.pl/)
+- [Posts | IT Security blog](https://wojciechregula.blog/post/)
+- [CERT Orange](https://cert.orange.pl/)
+- [Security News - Reverse engineering, ochrona oprogramowania.](https://www.secnews.pl/)
+- [OpenSecurity.pl &#8902; ...ponieważ bezpieczeństwo to kwestia świadomości zagrożeń](https://opensecurity.pl/)
+- [Fundacja Bezpieczna Cyberprzestrzeń](https://www.cybsecurity.org/pl/)
+- [SQ5BPF notes &#8211; radio, electronics, security, silly hacks](https://lipkowski.com/) radio
+- [gynvael.coldwind//vx](https://gynvael.coldwind.pl/)
