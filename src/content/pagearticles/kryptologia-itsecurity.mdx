@@ -375,6 +375,8 @@ Zawsze jeżeli jest dostępne 2FA - uwierzytelnianie dwuskładnikowe - powinniś
 
 Jeżeli dany serwis umożliwia logowanie za pomocą protokołu autoryzacji dostępu [OAuth](https://pl.wikipedia.org/wiki/OAuth) powinniśmy z tego skorzystać. Umożliwia on logowanie się do różnych usług za pomocą zewnętrznych zaufanych serwisów takich jak Google, Facebook, Twitter, Amazon, Microsoft, czy GitHub. O ile jest to tylko możliwe powinno się unikać Facebooka, bo to konto najłatwiej jest stracić. Ja do wszystkich serwisów IT loguję się GitHubem, a do reszty Googlem. Google ma tę zaletę, że jeżeli w jakimś serwisie założyliśmy konto klasycznie na nazwę użytkownika i hasło oraz jako maila podaliśmy gmaila, to można się tak samo zalogować Oauth Googla - automatycznie zaloguje nas na nasze konto.
 
+Nieoczekiwanym zagrożeniem może się okazać logowanie na nasze serwisy z obcych urządzeń. Przeglądarka potrafi zachować dane logowania. W takiej sytuacji trzeba pamiętać, żeby używać trybu anonimowego w przeglądarce i nie pozwolić jej zapisać żadnych danych.
+
 Czy to wszystko było skomplikowane? Weź pod uwagę, że zupełnie pominąłem opis bardzo specyficznego szyfru używanego do szyfrowania haseł - szyfrowanie jednostronne, czyli tzw. skrót kryptograficzny aka hasz. Więcej na ten temat w artykule [Kryptografia jednostronna](/it/kryptologia/kryptologia-jednostronna).
 
 Skomplikowane? To teraz weź pod uwagę, że biorąc pod uwagę korzyści wdrożenie menedżera haseł jednak nie jest aż tak skomplikowane.
