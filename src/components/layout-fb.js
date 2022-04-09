@@ -280,6 +280,8 @@ const LayoutFB = ({ children }) => {
 
     const menuSlaskArray = [{ slug: "klasztor-augustianow", title: "Klasztor augustianów na Wyspie Piaskowej" }, { slug: "zoo", title: "Wrocławski Ogród Zoologiczny (1865 - 1945)" }, { slug: "wojsko-dlnslask", title: "Wojsko na Dolnym Śląsku 1740-1945" }, { slug: "kl-gross-rosen", title: "Obóz koncentracyjny Groß-Rosen (1940-45)" }, { slug: "szczepin-bitwa", title: "Bitwa pancerna na Szczepinie 18 IV 1945" }, { slug: "grupa-drobnera", title: "Grupa inicjatywna Drobnera" },]
 
+    const menuBerlinArray = [{ slug: "berlin-opis", title: "Berlin do 1945" }, { slug: "berlin-1945", title: "Berlin w 1945" },]
+
     const menuWarArray = [{ slug: "panstwo-hitlerowskie", title: "Państwo hitlerowskie" }, { slug: "ostfront", title: "O przyczynie wojny na wschodzie" }, { slug: "obozy-koncentracyjne", title: "Obozy koncentracyjne" }, { slug: "armia-czerwona", title: "Armia Czerwona 1945" }, { slug: "2awp", title: "2 Armia WP" }, { slug: "drezno-bombardowanie", title: "Drezno bombardowanie 13-15 lutego 1945" }, { slug: "depesza-eisenhowera", title: "Depesza Eisenhowera (SCAF 252)" }, { slug: "bieguny", title: "Wojna na biegunach" },]
 
     const menuEuropaArray = [{ slug: "albania", title: "Albania" }, { slug: "bulgaria", title: "Bułgaria" }, { slug: "chorwacja", title: "Chorwacja" }, { slug: "jugoslawia", title: "Jugosławia" }, { slug: "rumunia", title: "Rumunia" }, { slug: "serbia", title: "Serbia" }, { slug: "slowacja", title: "Słowacja" }, { slug: "wegry", title: "Węgry" },]
@@ -291,6 +293,8 @@ const LayoutFB = ({ children }) => {
     const menuBiosArray = [{ slug: "adolf-bertram", title: "Arcybiskup Adolf Bertram (1859-1945)" }, { slug: "hanna-reitsch", title: "Kapitan Hanna Reitsch (1912-79)" }, { slug: "iwan-polbin", title: "Generał Iwan Połbin (1905-45)" }, { slug: "sophie-scholl", title: "Sophie Scholl (1921-43)" }, { slug: "werner-molders", title: "Podpułkownik Werner Mölders (1913-41)" },]
 
     const menuSlask = menuSlaskArray.map(article => (<li key={article.slug}><Link activeClassName="menuLinkActive" to={`/festung-breslau/article/${article.slug}`}>{article.title}</Link></li>))
+
+    const menuBerlin = menuBerlinArray.map(article => (<li key={article.slug}><Link activeClassName="menuLinkActive" to={`/festung-breslau/article/${article.slug}`}>{article.title}</Link></li>))
 
     const menuWar = menuWarArray.map(article => (<li key={article.slug}><Link activeClassName="menuLinkActive" to={`/festung-breslau/article/${article.slug}`}>{article.title}</Link></li>))
 
@@ -337,14 +341,17 @@ const LayoutFB = ({ children }) => {
                     <h3>Dolny Śląsk</h3>
                     <ul>{menuSlask}</ul>
 
+                    <h3>Berlin</h3>
+                    <ul>{menuBerlin}</ul>
+
                     <h3>Wojna</h3>
                     <ul>{menuWar}</ul>
 
-                    <h3>Europa</h3>
-                    <ul>{menuEuropa}</ul>
-
                     <h3>Armia niemiecka</h3>
                     <ul>{menuArmee}</ul>
+
+                    <h3>Europa</h3>
+                    <ul>{menuEuropa}</ul>
 
                     <h3>Wojna na Pacyfiku</h3>
                     <ul>{menuPacyfik}</ul>
