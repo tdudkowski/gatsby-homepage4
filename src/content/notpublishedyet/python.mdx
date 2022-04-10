@@ -1,0 +1,166 @@
+---
+title: "Python notatki"
+section: "it"
+subsection: "python"
+---
+
+Lekcja 2: #opis lekcji nr 2 Kilka slow o nauce programowania. Jak uczyc sie programowania? Błedy
+
+Lekcja 3: charakter języka i zastosowania, wysoko niskopoziomowosc, instalacja
+
+Lekcja 4: działania matematyczne, zmienne
+
+Lekcja 5: srodowisko, ISE, PyChar, wirtualne środowiskom
+
+Lekcja 6 podstawowe funkcje wbudowabe input, in print; konwersja; floor :2f round; logika
+
+Moduł 2
+
+Lekcja 7: Typy złożone – wprowadzenie: Co to jest typ złożony? Jakie poznamy typy złożone? Wyjaśnienie: mutowalne / niemutowalne Range – zakres liczb
+
+Lekcja 8: Cechy dobrej tupli. Deklaracja i odwoływanie się do elementów. Operator : oraz wycinanie elementów. Przydatne funkcje Sortowanie Wypakowywanie elementów. Operator in.
+
+Lekcja 9 troche takie tablice Cechy dobrej listy Mutowalność listy Usuwanie wartości z listy
+
+Lekcja 10. Do czego służy pętla, czym jest indeks, break continue Budowa pętli Kilka przydatnych funkcji
+
+Lekcja 11. Stringi, praca z tekstem Przydatne funkcje Zadania 🙂
+
+- Lekcja 12 Cechy dobrego słownika Deklaracja Kilka przydatnych funkcji Jak iterować po słowniku Operator in
+
+Lekcja 13 Deklaracja zbioru Operatory dostępne dla zbiorów Zadanka 🙂
+
+#### Typy proste
+
+-  int - float - bool
+
+#### Kolekcje
+
+Tuple i listy są indeksowane przez [0], stringi też
+
+| Nazwa | Funkcja | Ważna kolejność | Mutowalność | Indeksacja |  
+| --- | --- | --- | --- | --- |  
+| Tupla/Krotka | tuple() | TAK | NIE | liczba |  
+| Lista | list() | TAK | TAK | liczba |  
+| Zbiór | set() | NIE | TAK | nie da się |  
+| Słownik | dict() | NIE | TAK | tekst - klucz |  
+| String | str() | TAK | NIE | liczba |  
+
+Uwaga, fragment video dotyczący wycinania. Wszystkie te [1:2:3] i [-1] i inne dotyczą wszystkich typów indeksowanych poprzez liczby.
+
+Tupla / Krotka To jest ta najprostsza struktura. Nie da się jej zmienić, głównie służy do transportowania kilku wartości. Nie da się do niej nic dodać, usunąć. Można tylko z niej czytać. a = (1,2,3) len(a) wszystkie od końca [::-1] tuple(reversed(a)) średnia z 10 ostatnich wartości sum(numbers[-10:]) / len(numbers[-10:]) można dodawać i mnożyć tuple rozpakowywanie przez \_ operator in może byc wiele typow danych moga byc nawiasy okragle, ale nie musza tupla jest domyslna
+
+Lista troche tablice konwencja nazywania rzeczownik l mn może byc wiele typow danych, ale przyjelo sie ze jest jeden musza byc nawiasy kwadratowe zachowuje kolejność mutowalna (string niemutowalny) te same operacje co na tuplach lista.append("dododania") na koncu dodaje lista.remove("dousuniecia") del lista[index] zmienia indeksy value = input("Podaj liczbę: ") values.append(value) max min zadziała Jak ja się uczyłem tego zagadnienia to przyjąłem, że lista jest taka sama jak tupla. Z tą różnicą, że tutaj można dodawać nowe elementy i je usuwać. W przypadku list najczęściej używam funkcji .append() by dodawać nowy element na jej końcu. Występuje praktycznie w każdym przykładzie gdy pobieram dane od użytkownika i dodaje coś np. w pętli. a = [1, 2, 3]
+
+Zbiór Osobiście używam ich tylko w przypadku gdy potrzebuję unikatowych elementów(bez duplikatów) lub gdy potrzebuję wykonywać operatorów na zbiorach. Tych, które kojarzysz z matematyki. Taki jak część wspólna, różnica itp. (Zadania z jabłkami, gruszkami itp :)) Aby dodać coś do zbioru używamy funkcji .add() {/\* a = {1, 2, 3} \*/}
+
+Słownik To jest taki specjalny twór, gdzie wartości nie są podpisywane liczbami tylko tekstem. Łatwo to sobie skojarzyć jako, że coś tłumaczymy na coś. Wyobraź sobie np. słownik zawierający polskie i angielskie nazwy dni tygodnia. jeśli chcesz wyświetlić “piątek” to wypisujesz weekdays[‘friday’] i to wyświetli Ci właśnie taką wartość. mutowalny dict() wyciaga sie przez character.keys() i character.values() {/\* a = {‘jeden’: 1, ‘dwa’: 2} \*/} Wartości pobieramy za pomocą a[‘jeden’] lub a.get(‘jeden’)
+
+String To jest zwykły tekst. Potrafisz powiedzieć jaka litera znajduje się na pierwszej pozycji, ostatniej lub w środku. Jedyna różnica jest taka, że tutaj pierwsza pozycja ma indeks [0]. Nie możesz nic dodawać, ani zmieniać bo jest to typ niemutowalny. a = ‘Abrakadabra’ metody na tekście string.split(', ') daje liste, alementy listy można łaczyć ''.join.(lista)
+
+Zbiór operatory logiczne set() wartości unikatowe bez indeksacji nawiasy klamrowe .add()
+
+pętla jesli 0 elementow nie wykona sie dwukropek i wciecie continue przechodzi do kolejnej iteracji break kończy
+
+#### Inne
+
+bytearray bytes complex ellipsis NoneType NotImplementedType range
+
+### Odnośniki
+
+- [Real Python Tutorials](https://realpython.com/) Real Python [YT (107)]
+- geeksforgeeks.org [Python Programming Language](https://www.geeksforgeeks.org/python-programming-language/)
+- scrimba [Learn Python for free](https://scrimba.com/learn/python)
+- [Python 101](https://python101.readthedocs.io/pl/latest/)
+- [PY4E-PL | Python dla wszystkich](https://py4e.pl/book)
+- [ml-tooling / best-of-web-python Best-of Web Development with Python](https://github.com/ml-tooling/best-of-web-python)
+- JournalDev [Python Tutorials](https://www.journaldev.com/python)
+- Priyesh Sinha ["140 Python Projects with Source Code"](https://medium.datadriveninvestor.com/140-python-projects-with-source-code-fa12c9e2aeac)
+
+#### Narzędzia
+
+- [PyPI · The Python Package Index](https://pypi.org/)
+- [Python Tutor - Visualize Python, Java, JavaScript, C, C++, Ruby code execution](http://pythontutor.com/visualize.html#mode=edit)
+- [Python Online Compiler & Interpreter - Replit](https://replit.com/languages/python3)
+- [PyCharm](https://www.jetbrains.com/pycharm/)
+- ["Introduction to Data Visualization in Python"](https://www.datacamp.com/courses/introduction-to-data-visualization-with-python) free course
+
+### Kursy
+
+- Brooke Giles ["Python Tutorial - Python GUI Programming - Python GUI Examples (Tkinter Tutorial)"](https://morioh.com/p/f3bdfe6286ee)
+- Kacper Sieradziński ["Python - podstawy w 60 minut" [YT 58:47]](https://www.youtube.com/watch?v=_Eo33C1VfbI)
+- codelando ["Kurs Python w 8 godzin od podstaw" [YT 8:25:52]](https://www.youtube.com/watch?v=uSUgx_m3yb8)
+- Academind ["Python Tutorial for Beginners - Learn Python by Building a Blockchain & Cryptocurrency" [YT 2:09:16]](https://www.youtube.com/watch?v=KARxDX5DTgY)
+- Jak nauczyć się programowania ["Python - podstawy w 2h" [YT 2:09:47]](https://www.youtube.com/watch?v=BBu6ZoAHIwI)
+- freeCodeCamp.org ["Naucz się Pythona - Pełny kurs dla początkujących" [YT 4:26:51]](https://www.youtube.com/watch?v=rfscVS0vtbw) | ["Python for Everybody - Full University Python Course" [YT 13:40:09]](https://www.youtube.com/watch?v=8DvywoWv6fI) | ["Python Project Tutorial - Your First Python Project" [1:02:34]](https://www.youtube.com/watch?v=_ZqAVck-WeM) | ["Intermediate Python Programming Course" [5:55:46]](https://www.youtube.com/watch?v=HGOBQPFzWKo) | ["Python Tutorials" [YT playlist 25 filmów]](https://www.youtube.com/playlist?list=PLWKjhJtqVAbnqBxcdjVGgT3uVR10bzTEB) | ["12 Beginner Python Projects - Coding Course" [3:00:28]](https://www.youtube.com/watch?v=8ext9G7xspg) | ["Six Quick Python Projects" [YT 1:03:47]](https://www.youtube.com/watch?v=SqvVm3QiQVk) | ["Python Basics with Sam" [YT playlist 14 filmów]](https://www.youtube.com/playlist?list=PLWKjhJtqVAbkmRvnFmOd4KhDdlK1oIq23) | ["Python Tutorial for Beginners" [YT 2:52;12]](https://www.youtube.com/watch?v=8124kv-632k) | ["Python API Development - Comprehensive Course for Beginners" [YT 19:00:26]](https://www.youtube.com/watch?v=0sOvCWFmrtA) | ["Backend Web Development with Python - Full Course"](https://www.freecodecamp.org/news/backend-web-development-with-python-full-course/)
+- Clever Programmer ["Python Artificial Intelligence Tutorial - AI Full Course for Beginners in 9 Hours [2021]" [YT 8:57:27]](https://www.youtube.com/watch?v=XIrOM9oP3pA) | ["Python Full Course for Beginners [Tutorial] 2019 | by Clever Programmer" [YT 4:59:18]](https://www.youtube.com/watch?v=Mu1I89BeKxM) | ["Python Tutorial for Beginners - Full Course in 11 Hours [2020]" [YT 11:00:08]](https://www.youtube.com/watch?v=4F2m91eKmts) | ["Python for absolute beginners 2019 - TIC TAC TOE project (+Special Appearance!)" [1:05:03]](https://www.youtube.com/watch?v=BHh654_7Cmw)
+- Kanał o Wszystkim ["Kurs Python - Programowanie" [YT playlist 38 filmów]](https://www.youtube.com/playlist?list=PL6aekdNhY7DBGiMXnmBYjImq_vW32QftK)
+- Davidd That's Me ["Learn Python For Beginners 2021" [YT playlist 14 filmów]](https://www.youtube.com/playlist?list=PLz-0BiySzeQWQbbNFXmwnXn0shzDXtwVo)
+- [Programming with Mosh "Python Tutorials for Beginners - Learn Python Online" [YT 2:52:53]](https://www.youtube.com/watch?v=yE9v9rt6ziw)
+- TechWorld with Nana ["Python Tutorial for Beginners - Learn Python in 5 Hours [FULL COURSE]" [5:31:29]](https://www.youtube.com/watch?v=t8pPdKYpowI)
+- Aleksa Tamburkovski ["The Complete Python Hacking Course: Beginner To Advance! (2021)" [4:15:38]](https://www.youtube.com/watch?v=0NQ2aMxBYNE)
+
+#### YT
+
+- freeCodeCamp.org ["Tkinter Course - Create Graphic User Interfaces in Python Tutorial" [YT 5:37:30]](https://www.youtube.com/watch?v=YXPyB4XeYLA) | ["Web Scraping with Python - Beautiful Soup Crash Course" [1:08:22]](https://www.youtube.com/watch?v=XVv6mJpFOb0) | ["OpenCV Python Course - Learn Computer Vision and AI" [YT 3:00:25]](https://www.youtube.com/watch?v=P4Z8_qe2Cu0) | ["OpenCV Course - Full Tutorial with Python" [YT 3:41:41]](https://www.youtube.com/watch?v=oXlwWbU8l2o) | ["Code a Snake Game with Python and Pygame 🐍 - Tutorial" [1:35:53]](https://www.youtube.com/watch?v=8dfePlONtls)
+- [Python Simplified [YT (20)]](https://www.youtube.com/c/PythonSimplified)
+- Tech With Tim [playlisty](https://www.youtube.com/channel/UC4JX40jDee_tINbkjycV4Sg/playlists)
+- Corey Schafer [playlisty](https://www.youtube.com/c/Coreyms/playlists)
+- Keith Galli [playlisty](https://www.youtube.com/c/KGMIT/playlists)
+- Jak nauczyć się programowania ["Python - 5 projektów w 2h" [YT 1:52:17]](https://www.youtube.com/watch?v=EFaPsPwPJAY)
+- Industrial IT and Automation ["Python for Control Engineering" [YT 1:07:15]](https://www.youtube.com/watch?v=Hxx0k752LBA)
+- Corey Schafer ["10 Python Tips and Tricks For Writing Better Code" [YT 39:20]](https://www.youtube.com/watch?v=C-gEQdGVXbk) | ["Python Tutorial: re Module - How to Write and Match Regular Expressions (Regex)" [YT 53:17]](https://www.youtube.com/watch?v=K8L6KVGG-7o)
+- Jack of Some ["Python Tutorials" [YT playlist 11 filmów]](https://www.youtube.com/playlist?list=PLd_Oyt6lAQ8TSlFn9SQ0_laovTHzf3JeX)
+
+### Machine Learning
+
+- [Dylan Iqbal "A Complete Machine Learning Project Walk-Through in Python"](https://morioh.com/p/b56ae6b04ffc)
+- Stanford ["Lecture 1 | Machine Learning (Stanford)" [YT 1:08:39]](https://www.youtube.com/watch?v=UzxYlbK2c7E) | ["Lecture 2 | Machine Learning (Stanford)" [YT 1:16:15]](https://www.youtube.com/watch?v=5u4G23_OohI)
+- MIT OpenCourseWare ["11. Introduction to Machine Learning" [YT 51:30]](https://www.youtube.com/watch?v=h0e2HAPTGF4)
+- TensorFlow ["Machine Learning Zero to Hero (Google I/O'19)" [YT 35:32]](https://www.youtube.com/watch?v=VwVg9jCtqaU)
+- freeCodeCamp.org ["PyTorch for Deep Learning - Full Course / Tutorial" [YT 9:41:39]](https://www.youtube.com/watch?v=GIsg-ZUy0MY) | ["Deep Learning with PyTorch Course - December 2020" [YT playlist 4 filmy]](https://www.youtube.com/playlist?list=PLWKjhJtqVAbm5dir5TLEy2aZQMG7cHEZp) | ["Scikit-learn Crash Course - Machine Learning Library for Python" [2:09:22]](https://www.youtube.com/watch?v=0B5eIE_1vpU)
+
+#### YT Data Science
+
+- freeCodeCamp.org ["Data Analysis with Python Course - Numpy, Pandas, Data Visualization" [YT 9:56:22]](https://www.youtube.com/watch?v=GPVsHOlRBBI)| ["Data Analysis with Python - Full Course for Beginners (Numpy, Pandas, Matplotlib, Seaborn)" [YT 4:22:15]](https://www.youtube.com/watch?v=r-uOLxNrNk8)  | ["Data Analysis with Python Course" [YT playlist 6 filmów]](https://www.youtube.com/playlist?list=PLWKjhJtqVAblvI1i46ScbKV2jH1gdL7VQ) | ["Python for Bioinformatics - Drug Discovery Using Machine Learning and Data Analysis" [YT 1:42:53]](https://www.youtube.com/watch?v=jBlTQjcKuaY) | ["Build 12 Data Science Apps with Python and Streamlit - Full Course" [YT 3:11:52]](https://www.youtube.com/watch?v=JwSS70SZdyM) | ["Python NumPy Tutorial for Beginners" [YT 58:09]](https://www.youtube.com/watch?v=QUT1VHiLmmI) | ["Python for Data Science - Course for Beginners (Learn Python, Pandas, NumPy, Matplotlib)" [YT 12:19:51]](https://www.youtube.com/watch?v=LHBE6Q9XlzI) 
+
+#### Bazy danych
+
+- [teclado "Introduction to working with databases in Python" [YT 53:16]](https://www.youtube.com/watch?v=TY6RDEG9bhw)
+
+#### Django
+
+- freeCodeCamp.org ["Build Three Django Projects - Python Course" [YT 2:01:05]](https://www.youtube.com/watch?v=qPtScmB8CgA) | ["Python Django Web Framework - Full Course for Beginners" [YT 2:45:40]](https://www.youtube.com/watch?v=F5mRW0jo-U4) | ["How to Build an E-commerce Website with Django and Python" [YT 4:22:11]](https://www.youtube.com/watch?v=YZvRrldjf1Y) | ["Django 3 Course - Python Web Framework (+ pandas, matplotlib, & more)" [7:00:05]](https://www.youtube.com/watch?v=04L0BbAcCpQ) | ["Python Microservices Web App (with React, Django, Flask) - Full Course" [YT 2:16:05]](https://www.youtube.com/watch?v=0iB5IPoTDts) | [Beau Carnes "Learn Django 3 and Start Creating Websites With Python"](https://www.freecodecamp.org/news/learn-django-3-and-start-creating-websites-with-python/) | [Beau Carnes "Django for Everybody - Learn the Popular Python Framework from Dr. Chuck"](https://www.freecodecamp.org/news/django-for-everybody-learn-the-popular-python-framework-from-dr-chuck/)
+- Academind ["Python Django Course for Beginners 2021 - Learn Django from Scratch in this 100% Free & Tutorial!" [YT 4:02:32]](https://www.youtube.com/watch?v=t7DrJqcUviA)
+
+#### Flask
+
+- freeCodeCamp.org ["Learn Flask for Python - Full Tutorial" [YT 46:58]](https://www.youtube.com/watch?v=Z1RJmh_OqeA) | ["Flask Course - Python Web Application Development" [YT 6:21:03]](https://www.youtube.com/watch?v=Qr4QMBUPxWo)
+
+#### W Pythonie
+
+- [qutebrowser](https://www.qutebrowser.org/index.html)
+
+#### Inne
+
+- UnityCoin ["Clean Code - Uncle Bob / Lesson 1" [YT 1:48:41]](https://www.youtube.com/watch?v=7EmboKQH8lM) | ["Clean Code - Uncle Bob / Lesson 2" [YT 1:06:00]](https://www.youtube.com/watch?v=2a_ytyt9sf8)
+- freeCodeCamp.org [Jessica Wilkins "460 Free Textbooks – Math, Science, and More [Online PDF for College and High School]"](https://www.freecodecamp.org/news/free-textbooks-math-science-and-more-online-pdf-for-college-and-high-school/)
+- Database: ["Database Design Course - Learn how to design and plan a database for beginners" [YT 8:07:19]](https://www.youtube.com/watch?v=ztHopE5Wnpc) | ["Database Systems - Cornell University Course (SQL, NoSQL, Large-Scale Data Analysis)" [YT 17:07:41]](https://www.youtube.com/watch?v=4cWkVbC2bNE)
+- ["Computer Science Concept" [YT playlist 17 filmów]](https://www.youtube.com/playlist?list=PLWKjhJtqVAbn5emQ3RRG8gEBqkhf_5vxD) | ["User Authentication in Web Apps (Passport.js, Node, Express)" [YT 6:13:28]](https://www.youtube.com/watch?v=F-sFp_AvHc8) | | ["Data Visualization with D3.js - Full Tutorial Course" [YT 12:57:36]](https://www.youtube.com/watch?v=_8V5o2UHG0E) | ["Build Your First Blockchain App Using Ethereum Smart Contracts and Solidity" [1:31:06]](https://www.youtube.com/watch?v=coQ5dg8wM2o) | ["Mathematics" [YT playlist 6 filmów]](https://www.youtube.com/playlist?list=PLWKjhJtqVAbl5SlE6aBHzUVZ1e6q1Wz0v) | ["Typography for Designers - Full Course from Treehouse" [YT 2:04:10]](https://www.youtube.com/watch?v=agbh1wbfJt8)
+- ["Java Beginner Course - Get Started Coding with Java!" [1:33:55]](https://www.youtube.com/watch?v=7WiJGTPuVeU)
+- [The Net Ninja "Screencasting Tutorial" [YT playlist 10 filmów]](https://www.youtube.com/playlist?list=PL4cUxeGkcC9hKBg2mU8Hat4-NedlubC3C)
+
+
+#### Docker
+
+- Academind ["Docker - Complete Tutorial [Docker For Everyone In 2 Hours]" [YT 2:16:30]](https://www.youtube.com/watch?v=d-PPOS-VsC8)
+- TechWorld with Nana ["Docker Tutorial for Beginners [Full Course in 3 Hours]" [2:46:14]](https://www.youtube.com/watch?v=3c-iBn73dDE&feature=youtu.be)
+
+#### Algorytmy
+
+- [geeksforgeeks.org](https://www.geeksforgeeks.org/)
+- [CodeChef](https://www.codechef.com/)
+- [CP-Algorithms](https://cp-algorithms.com/)
+- [Codeforces](https://codeforces.com/)
+- Kanał o Wszystkim ["Algorytmy - Programowanie" [YT playlist 5 filmów]](https://www.youtube.com/playlist?list=PL6aekdNhY7DAK6UraEDhxhMng89wrO9y9)
+- freeCodeCamp.org ["Dynamic Programming - Learn to Solve Algorithmic Problems & Coding Challenges" [YT 5:10:01]](https://www.youtube.com/watch?v=oBt53YbR9Kk) | ["Algorithms and Data Structures - Full Course for Beginners from Treehouse" [YT 5:22:08]](https://www.youtube.com/watch?v=8hly31xKli0) | ["Algorithms Course - Graph Theory Tutorial from a Google Engineer" [6:44:39]](https://www.youtube.com/watch?v=09_LlHjoEiY)
