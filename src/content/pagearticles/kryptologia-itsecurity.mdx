@@ -210,7 +210,9 @@ Chcemy anonimowości (wiadomo co, ale nie wiadomo kto)? Od tego jest Tor.
 - Mateusz Chrobok ["Jak (i po co) wybrać VPN?" [YT 10:58]](https://www.youtube.com/watch?v=87u0matbDPU)
 - SekurakTV ["Praktyczna konfiguracja OpenVPN" [YT 1:19:15]](https://www.youtube.com/watch?v=JwJ13HXuRZs)
 - Liron Segev ["STOP using a VPN - You don't really need it!" [YT 5:54]](https://www.youtube.com/watch?v=lDTi16UOCi8)
+- Wydawnictwo Naukowe PWN ["Security PWNing Conference 2017 – Kacper Szurek" [YT 31:27]](https://www.youtube.com/watch?v=omtxggcFLuo)
 - [Demise of ThatOnePrivacySite](https://www.reddit.com/r/VPN/comments/mxeova/demise_of_thatoneprivacysite/) - [BitWrecker / Archived-VPN-Comparison-Spreadsheet](https://github.com/BitWrecker/Archived-VPN-Comparison-Spreadsheet)
+- AdminAkademia ["Podstawy usługi VPN (Virtual Private Network) i coś niecoś o TOR" [YT playlist 10 filmów]](https://www.youtube.com/playlist?list=PL144PdtmXQoo1FAoQjhGrj1V0PwW2KPGj)
 - [Privacy Tools: Encryption Against Mass Surveillance](https://www.privacytools.io/) - [privacytools / blog.privacytools.io](https://github.com/privacytools/blog.privacytools.io)
 - Wirecutter ["The Best VPN Service"](https://www.nytimes.com/wirecutter/reviews/best-vpn-service/)
 
@@ -400,9 +402,11 @@ W następnym odcinku: Przeglądarka cz. 1 ciasteczka
 
 ---
 
-### Przeglądarka cz. 1 ciasteczka \[brudnopis]
+### Brudnopis
 
 Wygląda na to, że jednak nie dam razy zamknąć sprawy ciasteczek do poniedziałku, zrobię je przez najbliższe dwa tygodnie razem ze storage'm przeglądarki. No trudno.
+
+### Przeglądarka cz. 1 ciasteczka
 
 #### Powstanie
 
@@ -420,8 +424,44 @@ Dopiero w kwietniu 1995 powstała grupa robocza IETF poświęcona rozwijaniu pub
 
 Plik tekstowy.
 
+### Zastosowanie
+
+- tworzenie sesji
+- trzymanie ustawień, personalizacja
+- śledzenie
+
+#### Zombie cookie
+
+- [Zombie cookie](https://en.wikipedia.org/wiki/Zombie_cookie)
+
+#### Evercookie
+
+- [Evercookie](https://en.wikipedia.org/wiki/Evercookie)
+
+### Ataki
+
+- XSS cross-site scripting [Sekurak "Czym jest XSS?"](https://sekurak.pl/czym-jest-xss/)
+- XST cross-site tracing
+- CSRF cross-site request forgery
+
+#### Flagi
+
+Podczas tworzenia ciasteczka 
+
+- Expires określona parametrem [Date](https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Date) data usunięcia ciasteczka
+- Max-Age określony w sekundach czas życia ciasteczka, jeżeli wynik się różni od Expires, Max-Age decyduje, brak określenia czasu ekspiracji oznacza, że ciasteczko zostanie skasowane z końcem sesji - jest to tzw. session cookie, określony czas tworzy persistent cookie
+- Domain definicja domeny, jeżeli została określona to dotyczy również subdomen, jeżeli nie to tylko bieżaca domena bez subdomen
+- Path ścieżka, która musi istnieć na serwerze, żeby wysłać ciasteczko
+- Secure zostanie wysłane do hosta tylko w połączeniu HTTPS cp zabezpiecza przed MITM i XSS (secure cookie), choć wciąż możliwe są ataki XST (cross-site tracing) i CSRF (cross-site request forgery)
+- HttpOnly zabezpiecza przed JS w ataku XSS
+- SameSite (wprowadzony przez Google w 2016, ponieważ jest nieoficjalny implementacje mogą się różnić i zmieniać), ten sam host nie jest traktowany jak identyczne połączenie jeżeli różni się rodzajem połączenia (HTTP i HTTPS)
+  - Strict, wysłany jest tylko do hosta pochodzenia, co ma zabezpieczać przed CSRF
+  - Lax, tak samo jak wtedy kiedy parametr nie jest ustawiony, dopuszcza inną domenę, ale tylko żądanie GET (POST uważany jest za niebezpieczny)
+  - None, wymaga flagi Secure
+
 #### Odnośniki
 
+- MDN [Using HTTP cookies](https://developer.mozilla.org/en-US/docs/Web/HTTP/Cookies) | [Set-Cookie](https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Set-Cookie)
 - [Cookiebot CMP | GDPR, ePrivacy and CCPA compliant cookies](https://www.cookiebot.com/en/)
 - [Secure-Cookie](https://secure-cookie.io/)
 - Sec Team Blog ["Remote Code Execution on a Facebook server"](https://blog.scrt.ch/2018/08/24/remote-code-execution-on-a-facebook-server/)
@@ -471,6 +511,9 @@ Plik tekstowy.
 - Professor Messer ["Cookies, Header Manipulation, and Session Hijacking - CompTIA Security+ SY0-401: 3.5" [YT 11:02]](https://www.youtube.com/watch?v=eDui1JX49zc)
 - Feross ["CS 253 Web Security" YT playlist 19 filmów](https://www.youtube.com/playlist?list=PL1y1iaEtjSYiiSGVlL1cHsXN_kvJOOhu-)
 
+
+### Przeglądarka cz. 2 Global / Local / Web Storage
+
 #### Przeglądarka
 
 - [Device Info](https://www.deviceinfo.me/)
@@ -478,13 +521,6 @@ Plik tekstowy.
 - [What browser? My browser? Is my browser out of date?](https://www.whatismybrowser.com/)
 - [Cover Your Tracks - A Project of the Electronic Frontier Foundation](https://coveryourtracks.eff.org/)
 - [Web SQL Database](https://en.wikipedia.org/wiki/Web_SQL_Database)
-
-### Klucze U2F
-
-- Niebezpiecznik ["Klucze U2F – pytania i odpowiedzi. Dlaczego hakerzy ich nienawidzą i dlaczego warto z nich korzystać?"](https://niebezpiecznik.pl/post/klucze-u2f-pytania-i-odpowiedzi/)
-- Sekurak ["Poradnik o kluczach sprzętowych na przykładzie YubiKey 5 NFC (2FA, U2F, FIDO2)"](https://sekurak.pl/poradnik-o-kluczach-sprzetowych-na-przykladzie-yubikey-5-nfc-2fa-u2f-fido2/)
-- Kacper Szurek ["Jak używać YubiKey? Co to jest 2FA/U2F/FIDO2?" [2:11:55]](https://www.youtube.com/watch?v=uku-G_COA7U)
-- AdminAkademia ["W jaki sposób i do czego wykorzystać YubiKey w praktyce ;-) Część 1." [YT 1:47:54]](https://www.youtube.com/watch?v=Bs_BPCW6Wwg) | ["W jaki sposób i do czego wykorzystać YubiKey w praktyce ;-) Część 2." [Yt 2:33:55]](https://www.youtube.com/watch?v=-6X3ku-TwkM) | ["Wykorzystanie Yubikey z urządzeniami mobilnymi, oraz podsumowanie podcyklu ;-)" [YT 1:15:26]](https://www.youtube.com/watch?v=ViPgYr8TMHk) | [Black Hat (YT 190)](https://www.youtube.com/c/BlackHatOfficialYT)
 
 ### Odnośniki różne
 
@@ -500,6 +536,13 @@ Trochę chaosu, żeby potem zrobić porządek.
 - [Laboratory (Content Security Policy / CSP Toolkit)](https://addons.mozilla.org/pl/firefox/addon/laboratory-by-mozilla/) | [Facebook Container](https://addons.mozilla.org/en-US/firefox/addon/facebook-container/)
 - ["Oszuści mogą podszyć się pod bank za... dwa euro. Jak nie dać się nabrać? Ekspert wyjaśnia"](https://next.gazeta.pl/next/7,151003,27631199,oszusci-moga-podszyc-sie-pod-bank-za-dwa-euro-jak-nie-dac.html)
 - ["WaitList.dat File on Your Windows Machine? Immediate Red Flag!"](https://www.beyondtrust.com/blog/entry/waitlist-dat-file-windows-machine-immediate-red-flag)
+
+Klucze U2F
+
+- Niebezpiecznik ["Klucze U2F – pytania i odpowiedzi. Dlaczego hakerzy ich nienawidzą i dlaczego warto z nich korzystać?"](https://niebezpiecznik.pl/post/klucze-u2f-pytania-i-odpowiedzi/)
+- Sekurak ["Poradnik o kluczach sprzętowych na przykładzie YubiKey 5 NFC (2FA, U2F, FIDO2)"](https://sekurak.pl/poradnik-o-kluczach-sprzetowych-na-przykladzie-yubikey-5-nfc-2fa-u2f-fido2/)
+- Kacper Szurek ["Jak używać YubiKey? Co to jest 2FA/U2F/FIDO2?" [2:11:55]](https://www.youtube.com/watch?v=uku-G_COA7U)
+- AdminAkademia ["W jaki sposób i do czego wykorzystać YubiKey w praktyce ;-) Część 1." [YT 1:47:54]](https://www.youtube.com/watch?v=Bs_BPCW6Wwg) | ["W jaki sposób i do czego wykorzystać YubiKey w praktyce ;-) Część 2." [Yt 2:33:55]](https://www.youtube.com/watch?v=-6X3ku-TwkM) | ["Wykorzystanie Yubikey z urządzeniami mobilnymi, oraz podsumowanie podcyklu ;-)" [YT 1:15:26]](https://www.youtube.com/watch?v=ViPgYr8TMHk) | [Black Hat (YT 190)](https://www.youtube.com/c/BlackHatOfficialYT)
 
 HTTP i SSL / TLS
 
