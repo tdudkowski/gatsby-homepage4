@@ -422,7 +422,17 @@ Dopiero w kwietniu 1995 powstała grupa robocza IETF poświęcona rozwijaniu pub
 
 #### Właściwości
 
-Plik tekstowy.
+Jest to plik tekstowy składający się z:
+
+- nazwy
+- flag
+- klucza
+
+Co interesujące RFC wyraźnie mówi, że oprogramowanie użytkownika (przeglądarka) musi przygotować wymagania przynamniej 4096 bajtów na ciasteczko, przynamniej 50 plików cookie na domenę i przynajmniej 3 tys. cookies w ogóle, to w przypadku rozmiaru ciasteczka owo przynajmniej stało się w implementacji we wszystkich przeglądarkach maksymalnym rozmiarem ciasteczka licząc wszystkie znaki z nazwy, flag i klucza razem wziętych. Ma to sens z tego powodu, że większa wielkość nigdy nie jest potrzebna.
+
+Chrome 95 wprowadził sztywny limit na wielkość ciasteczka 4096 bitów a długość któregokolwiek z atrybutów na 1024 bity. Tych samych limitów używa Mozilla Firefox. Czasem można się spotkać z informacją, że 4096 bitów to maksymalny rozmiar wszystkich ciasteczek na daną domenę. Ani Chrome ani Firefox takiego limitu nie mają.
+
+RFC zaleca użycie przez serwer jak najmniejszej ich liczby. Zwykle na domenę przypada od kilku do kilkunatu cookies co powinno wystaczać dla analityki i uwierzytelnienia. Zaleca się aby górny limit to było 30 do 50 ciasteczek. Są jednak takie serwery związane z reklamami, które używają tysięcy ciasteczek (słownie: tysięcy).
 
 ### Zastosowanie
 
@@ -466,6 +476,7 @@ Odnośniki
 
 #### Odnośniki
 
+- [RFC 6265 - HTTP State Management Mechanism](https://datatracker.ietf.org/doc/html/rfc6265)
 - MDN [Using HTTP cookies](https://developer.mozilla.org/en-US/docs/Web/HTTP/Cookies) | [Set-Cookie](https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Set-Cookie)
 - [Cookiebot CMP | GDPR, ePrivacy and CCPA compliant cookies](https://www.cookiebot.com/en/)
 - [Secure-Cookie](https://secure-cookie.io/)
