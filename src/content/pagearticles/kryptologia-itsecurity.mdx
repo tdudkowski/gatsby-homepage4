@@ -428,31 +428,76 @@ Jest to plik tekstowy składający się z:
 - flag
 - klucza
 
-Co interesujące RFC wyraźnie mówi, że oprogramowanie użytkownika (przeglądarka) musi przygotować wymagania przynamniej 4096 bajtów na ciasteczko, przynamniej 50 plików cookie na domenę i przynajmniej 3 tys. cookies w ogóle, to w przypadku rozmiaru ciasteczka owo przynajmniej stało się w implementacji we wszystkich przeglądarkach maksymalnym rozmiarem ciasteczka licząc wszystkie znaki z nazwy, flag i klucza razem wziętych. Ma to sens z tego powodu, że większa wielkość nigdy nie jest potrzebna.
+Co interesujące aktualne RFC wyraźnie mówi, że oprogramowanie użytkownika (przeglądarka) musi przygotować wymagania przynamniej 4096 bajtów na ciasteczko, przynamniej 50 plików cookie na domenę i przynajmniej 3 tys. cookies w ogóle, to w przypadku rozmiaru ciasteczka owo przynajmniej stało się w implementacji we wszystkich przeglądarkach maksymalnym rozmiarem ciasteczka licząc wszystkie znaki z nazwy, flag i klucza razem wziętych. Ma to sens z tego powodu, że większa wielkość nigdy nie jest potrzebna.
 
-Chrome 95 wprowadził sztywny limit na wielkość ciasteczka 4096 bitów a długość któregokolwiek z atrybutów na 1024 bity. Tych samych limitów używa Mozilla Firefox. Czasem można się spotkać z informacją, że 4096 bitów to maksymalny rozmiar wszystkich ciasteczek na daną domenę. Ani Chrome ani Firefox takiego limitu nie mają.
+Co więcej Chrome 95 wprowadził sztywny limit na wielkość ciasteczka 4096 bitów a długość któregokolwiek z atrybutów na 1024 bity. Tych samych limitów używa Mozilla Firefox. Czasem można się spotkać z informacją, że 4096 bitów to maksymalny rozmiar wszystkich ciasteczek na daną domenę. Ani Chrome ani Firefox takiego limitu nie mają.
 
 RFC zaleca użycie przez serwer jak najmniejszej ich liczby. Zwykle na domenę przypada od kilku do kilkunatu cookies co powinno wystaczać dla analityki i uwierzytelnienia. Zaleca się aby górny limit to było 30 do 50 ciasteczek. Są jednak takie serwery związane z reklamami, które używają tysięcy ciasteczek (słownie: tysięcy).
 
-### Zastosowanie
+Po stronie serwera trzymane są wygenerowane ciasteczka wraz z ustawieniami i hostorią. Dzięki temu nie trzeba się logować. Ciasteczko jest powiązane z domeną pochodzenia. 
 
-- tworzenie sesji
+Ciasteczko jednoznacznie identyfikuje użytkownika, co oznacza, że jeżeli zostanie przechwycone atakujący może przejąć konto ze wszystkimi skutkami. Nie musi w tym celu znać ani loginu ani hasła użytkownika.
+
+W HTTP ciasteczka przesyłane są otwartym tekstem, można je było podsłuchać, dlatego wprowadzono flagę Secure zastrzeżoną tylko dla HTTPS. Chroni to przed podsłuchem. 
+
+XSS nieautoryzownay kod JS na stronie wstrzyknięty na stronę rpzez atakujacego, koszystajac z powiazania z domena mozna ukrasc ciasteczko. Dlatego wprowadzono HHTRTPOnly nie mozna jej uksrasc z posiomu JS. Chroni przed XSS
+
+SRSF atak formularzem na stronie atakującego. Formularz może wykonać czynności spoza własnej domeny, przeglądarka atakowanego rozpozna tę domenę i dołączy do akcji formularza pasujące do niej ciasteczka. W ten sposób bez żadnej akcji ofiary samo wejście na stronę podstawioną rpzez atakujacego może dojść do dowolnej i uwierzytelnionej operacji jakiej można dokonać formularzem: zmiana maila, hasła, likwidacja konta, itd.
+
+Można się zabezpieczyc używajac nagłówków automatycznie dolaczenych przez przegladarke Origin (nazwa domeny z ktorej nastapilo zadanie) i referer (oprocz pełen adres podstrony zainicjoaala zadanie). Mozna odrzucic zadania spoza wlasciwej domeny.
+
+losowa wartosc inna dla kazdego uzytkownika i czesto zmieniana z kazdymz zadaniem
+do formularza dołączane jest uktyte pole z losowo wygeneroanym tokenem, po wyslaniu dokumentu serwer sprawdza zawartosc tego pola porwonujac z wygenerowana przez siebie wartoscia, jesli sie zgadzaja to zadanie jest prawiddlowe i jest obslugiwane dalej.
+
+Brak tu standaryzacji i latwo zapmniec
+
+dlatego flaga samesite
+strict nie dolaczy ciasteczka jesli domena sie rozni, bazujac na pochdozeniu zadania
+ale odnosniki tworzony a href jest zadaniem GET do witryny ktorej adres jest w tagu href, jest ok w obrebie jednej domeny 
+co jesli do innej origin nie zgodzi sie pochodzenie zapytania origin bedzie inny a uset nie zostanie zalogowany bo ciasteczka nie zpstana dolaczone, np. z obcej stony na fb nie zosatniemy zalogowani, wtedy samesite lax 
+czy nie lepiej pozwolic na spoza origin jesli wykonywane jest zadanie GET 
+tu chodzi takze o prywatnosc, sluza do identyfikacji i sledzenia 
+np polub jezeli jestesmy zalogowani dowolna witryna moze wyslac tozasamosc uzytkowika i wtedy jest sdledzony 
+lax nie tylko do zewnetrznego serwer ale zmiana wymaga zmiany top-level-navigation w przypadku ahref wiec kod przyciksu ktory przeciez nie zmienia adreesu bo pochodzi z fb nie przywola ciasteczek sledzacych
+bezpieczne get head trace
+rewolucja wlaczyc ciasteczka samesite lax automaycznie dla wszystkich ktore nie sa oznaczone inaczej
+
+dlatego tez w formularzach nie powinno sie stosowac metody get, bezpieczna jest tylko post
+
+Tworzenie cookies
+
+- JS Document.cookie
+- host Set-cookie header
+
+cross origin resource share 
+nikt nie wystawia api na geet
+
+#### Zastosowanie
+
+- tworzenie sesji (zalogowanie, uwierzytelnienie użytkownika)
 - trzymanie ustawień, personalizacja
-- śledzenie
+- śledzenie third-party-cookies
 
 #### Zombie cookie
 
+etag random number; cache
+
 - [Zombie cookie](https://en.wikipedia.org/wiki/Zombie_cookie)
+- [ETag](https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/ETag)
 
 #### Evercookie
 
 - [Evercookie](https://en.wikipedia.org/wiki/Evercookie)
 
-### Ataki
+#### Ataki
 
-- XSS cross-site scripting [Sekurak "Czym jest XSS?"](https://sekurak.pl/czym-jest-xss/)
+kradzież i csrf
+
+- XSS cross-site scripting [Sekurak "Czym jest XSS?"](https://sekurak.pl/czym-jest-xss/) [Cross-site scripting](https://portswigger.net/web-security/cross-site-scripting) [Virtual Forge an Onapsis Company "XSS - Cross Site Scripting Explained" [YT 7:23]](https://www.youtube.com/watch?v=cbmBDiR6WaY) [Web Dev Simplified "How To Prevent The Most Common Cross Site Scripting Attack" [YT 4:55]](https://www.youtube.com/watch?v=ns1LX6mEvyM) [Loi Liang Yang "Cross-Site Scripting (XSS) Explained And Demonstrated!" [YT 8:54]](https://www.youtube.com/watch?v=1Hr4_r2xQXY) [Loi Liang Yang "Cross-Site Scripting (XSS) Explained And Demonstrated By A Pro Hacker!" [YT 9:30]](https://www.youtube.com/watch?v=PPzn4K2ZjfY) [Jesse Campos - Chef Secure "Hacking Websites With Cross-Site Scripting (XSS Attack Basics)" [YT 6:13]](https://www.youtube.com/watch?v=9kaihe5m3Lk) [Cybergrid "How To Scan A Web Application for XSS Vulnerability - Bug Hunting" [YT 3:08]](https://www.youtube.com/watch?v=W4VN1u2lv2U) [intigriti "Find XSS the easy way! Dalfox - Hacker Tools" [YT 7:08]](https://www.youtube.com/watch?v=m64aviF1Two) [CISEC "DOM-based XSS" [YT 20:30]](https://www.youtube.com/watch?v=A5faK0BC8cE) [F5 DevCentral "2017 OWASP Top 10: Cross-Site Scripting (XSS)" [YT 11:26]](https://www.youtube.com/watch?v=IuzU4y-UjLw) [Bugcrowd "Bugcrowd University - Cross Site Scripting (XSS)" [YT 24:49]](https://www.youtube.com/watch?v=gkMl1suyj3M) [KacperSzurekEN "XSS Polyglot" [YT 6:00]](https://www.youtube.com/watch?v=Havdj8CWngY) [Academind "Running a XSS Attack + How to defend" [YT 15:08]](https://www.youtube.com/watch?v=oEFPFc36weY) [SilverHack "Cross-Site Scripting (XSS) Explained And Exploited" [YT 32:34]](https://www.youtube.com/watch?v=ZmNlFNsty9o) [Jesse Campos - Chef Secure "The 12 Exploits of XSS-mas" [YT 33:29]](https://www.youtube.com/watch?v=d84SP5r6n9c)
 - XST cross-site tracing
-- CSRF cross-site request forgery
+- CSRF cross-site request forgery [Cross-site request forgery (CSRF)](https://portswigger.net/web-security/csrf) [PwnFunction "Cross-Site Request Forgery (CSRF) Explained" [YT 14:10]](https://www.youtube.com/watch?v=eWEgUcHPle0) [Troy Hunt "Understanding CSRF, the video tutorial edition" [YT 29:27]](https://www.youtube.com/watch?v=hW2ONyxAySY) [Computerphile "Cross Site Request Forgery - Computerphile" [YT 9:19]](https://www.youtube.com/watch?v=vRBihr41JTo) [LiveOverflow "CSRF Introduction and what is the Same-Origin Policy? - web 0x04" [YT 10:24]](https://www.youtube.com/watch?v=KaEj_qZgiKY)
+
+get request tylko do odczytu powinny byc, link to get request
 
 #### Flagi
 
@@ -463,7 +508,7 @@ Podczas tworzenia ciasteczka
 - Domain definicja domeny, jeżeli została określona to dotyczy również subdomen, jeżeli nie to tylko bieżaca domena bez subdomen
 - Path ścieżka, która musi istnieć na serwerze, żeby wysłać ciasteczko
 - Secure zostanie wysłane do hosta tylko w połączeniu HTTPS cp zabezpiecza przed MITM i XSS (secure cookie), choć wciąż możliwe są ataki XST (cross-site tracing) i CSRF (cross-site request forgery)
-- HttpOnly zabezpiecza przed JS w ataku XSS
+- HttpOnly zabezpiecza przed JS w ataku XSS, tworzone jest tylko po stronie serwera i przeglądarka nie może go czytać przez document.cookie
 - SameSite (wprowadzony przez Google w 2016, ponieważ jest nieoficjalny implementacje mogą się różnić i zmieniać), ten sam host nie jest traktowany jak identyczne połączenie jeżeli różni się rodzajem połączenia (HTTP i HTTPS)
   - Strict, wysłany jest tylko do hosta pochodzenia, co ma zabezpieczać przed CSRF
   - Lax, tak samo jak wtedy kiedy parametr nie jest ustawiony, dopuszcza inną domenę, ale tylko żądanie GET (POST uważany jest za niebezpieczny)
@@ -506,12 +551,14 @@ Odnośniki
 - Rahul Ahire ["Using HttpOnly cookies in React & Node | Storing JWT Tokens or SessionID Securel" [YT 36:13]](https://www.youtube.com/watch?v=a5Krfkfl9MM)
 - webTalkTO ["Episode 2 - 🍪 SameSite cookie explained (including chrome 80 changes)" [YT 1:40:44]](https://www.youtube.com/watch?v=dWtQFaVtZvk)
 
-### Security Coockies
+#### Security Coockies
 
+- Kirk Jackson ["Same-origin policy: The core of web security @ OWASP Wellington" [YT 1:04:42]](https://www.youtube.com/watch?v=zul8TtVS-64)
 - PwnFunction ["Cross-Site Scripting (XSS) Explained" [YT 11:26]](https://www.youtube.com/watch?v=EoaDgUgS6QA)
 - Academind ["Running a XSS Attack + How to defend" [YT 15:03]](https://www.youtube.com/watch?v=oEFPFc36weY)
 - HakerEduPL ["Kurs Web Application Pentesting" [YT playlist 27 filmów]](https://www.youtube.com/playlist?list=PLe18tvImRSTRbffDg4wIGMy7KmMQ1QI45) - ["#5 Wprowadzenie do ciasteczek w PHP i ataków (cookies) | Kurs Web Application Pentesting" [YT 11:00]](https://www.youtube.com/watch?v=KY3xLlF78Yg) | ["#6 Kradniemy PHP cookies z phpsessid... czyli Cookie Cadger, Wireshark i Ettercap | WEP" [YT 19:26]](https://www.youtube.com/watch?v=ex7P8R6EsEM) | ["#15 Atak XSS i kradzież cookies, czyli session hijacking w praktyce" [YT 20:26]](https://www.youtube.com/watch?v=LTTngoPBYBQ)
 - John Hammond ["TryHackMe! Advent of Cyber 3 - HTTP Cookies & Authentication Bypasses - "Day 2"" [YT 32:40]](https://www.youtube.com/watch?v=8XYtpv-3-No)
+- Hussein Nasser ["1 Hour of Popular Web Attacks (XSS, CSRF, SSRF, SQL Injection, MIME Sniffing, Smuggling and more!)" [YT 1:18:38]](https://www.youtube.com/watch?v=pdC3H8SX-F4)
 - ["Flaw in Western Digital My Cloud exposes the content to hackers"](https://securityaffairs.co/wordpress/76344/hacking/western-digital-my-cloud-flaw-2.html)
 - Motasem Hamdan ["Admin Access By Cookie Manipulation | TryHackMe Advent of Cyber 1 Day 1" [YT 13:46]](https://www.youtube.com/watch?v=PMN5ydNlo1k)
 - Feross ["Web Security - Lecture 02 - HTTP, Cookies, Sessions" [YT 1:17:49]](https://www.youtube.com/watch?v=zhnQFQ2qFtA)
@@ -526,6 +573,7 @@ Odnośniki
 - Devoxx ["#backtobasics HTTP cookies by Hubert SABLONNIÈRE" [YT 49:31]](https://www.youtube.com/watch?v=y6mwekHkgVQ)
 - Professor Messer ["Cookies, Header Manipulation, and Session Hijacking - CompTIA Security+ SY0-401: 3.5" [YT 11:02]](https://www.youtube.com/watch?v=eDui1JX49zc)
 - Feross ["CS 253 Web Security" YT playlist 19 filmów](https://www.youtube.com/playlist?list=PL1y1iaEtjSYiiSGVlL1cHsXN_kvJOOhu-)
+- MIT OpenCourseWare ["9. Securing Web Applications" [1:22:07]](https://www.youtube.com/watch?v=WlmKwIe9z1Q)
 
 
 ### Przeglądarka cz. 2  Local / Web Storage
@@ -536,7 +584,7 @@ Odnośniki
 - freeCodeCamp.org ["cookies vs localStorage vs sessionStorage - Beau teaches JavaScript" [YT 9:04]](https://www.youtube.com/watch?v=AwicscsvGLg)
 - ["Local storage vs. Session storage. Czym są i jak ich używać?"](https://bedekodzic.pl/localstorage/)
 - Wikipedia [Web storage](https://en.wikipedia.org/wiki/Web_storage)
-- MDN [Web Storage API](https://developer.mozilla.org/en-US/docs/Web/API/Web_Storage_API) | [Window.sessionStorage](https://developer.mozilla.org/en-US/docs/Web/API/Window/sessionStorage)
+- MDN [Web Storage API](https://developer.mozilla.org/en-US/docs/Web/API/Web_Storage_API) | [Window.sessionStorage](https://developer.mozilla.org/en-US/docs/Web/API/Window/sessionStorage) | [Window.localStorage](https://developer.mozilla.org/en-US/docs/Web/API/Window/localStorage) | [IndexedDB API](https://developer.mozilla.org/en-US/docs/Web/API/IndexedDB_API)
 - javascript.info [LocalStorage, sessionStorage](https://javascript.info/localstorage)
 - [A Primer on the Different Types of Browser Storage](https://css-tricks.com/a-primer-on-the-different-types-of-browser-storage/)
 - web.dev [Web storage overview](https://web.dev/web-storage/)
