@@ -137,6 +137,7 @@ padding:.5rem 1rem 1rem 1rem;
 
 .dark & a {color:#f86;}
 
+& p {font-family: "Noto Sans", sans-serif; line-height:1.3rem; font-size:1rem; color:#dda;}
 & p > span.gatsby-resp-image-wrapper {display:inline-block; position:relative; border: 3px solid #ddd; padding:2rem 1rem; background-color: #111;}
 & span + em {display:inline-block; position:relative; border: 1px solid #ddd; width:100%; padding:1rem 0; padding-left:1rem; background-color: #555; margin-bottom:1rem;}
 
