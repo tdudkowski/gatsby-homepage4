@@ -137,7 +137,7 @@ padding:.5rem 1rem 1rem 1rem;
 
 .dark & a {color:#f86;}
 
-& p, & li {font-family: "Noto Sans", sans-serif; line-height:1.2rem; font-size:1rem; color:#eec;}
+& p, & li {font-family: "Muli", sans-serif; line-height:1.3rem; color:rgba(255, 238, 204, .7);}
 & p > span.gatsby-resp-image-wrapper {display:inline-block; position:relative; border: 3px solid #ddd; padding:2rem 1rem; background-color: #111;}
 & span + em {display:inline-block; position:relative; border: 1px solid #ddd; width:100%; padding:1rem 0; padding-left:1rem; background-color: #555; margin-bottom:1rem;}
 
@@ -198,15 +198,15 @@ border: 3px solid #333;
 
 & ul {  list-style-type: circle;}
 
-& blockquote { position: relative;
-            color: rgba(255, 238, 204, .7);
-            font-style:italic;
+& blockquote { position: relative;            
         margin-left:1rem;}
+& blockquote p {font-style:italic;
+    color: rgba(255, 238, 204, .5);}
 
 & blockquote::before { position: absolute;
 content: '"';
                        /* content: open-quote; */
-                       color: rgba(255, 238, 204, .5);
+                       color: rgba(255, 238, 204, .4);
             left: -1.5rem;
             top:-1rem;
             font-size: 5rem;
