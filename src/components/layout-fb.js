@@ -281,7 +281,7 @@ const LayoutFB = ({ children }) => {
 
     const menuSlaskArray = [{ slug: "klasztor-augustianow", title: "Klasztor augustianów na Wyspie Piaskowej" }, { slug: "zoo", title: "Wrocławski Ogród Zoologiczny (1865 - 1945)" }, { slug: "wojsko-dlnslask", title: "Wojsko na Dolnym Śląsku 1740-1945" }, { slug: "kl-gross-rosen", title: "Obóz koncentracyjny Groß-Rosen (1940-45)" }, { slug: "szczepin-bitwa", title: "Bitwa pancerna na Szczepinie 18 IV 1945" }, { slug: "grupa-drobnera", title: "Grupa inicjatywna Drobnera" },]
 
-    const menuBerlinArray = [{ slug: "berlin-opis", title: "Berlin do 1945" }, { slug: "berlin-1945", title: "Berlin w 1945" },]
+    const menuBerlinArray = [{ slug: "berlin-opis", title: "Berlin do 1945" }, { slug: "berlin-1945", title: "Bitwa o Berlin" },]
 
     const menuWarArray = [{ slug: "panstwo-hitlerowskie", title: "Państwo hitlerowskie" }, { slug: "ostfront", title: "O przyczynie wojny na wschodzie" }, { slug: "obozy-koncentracyjne", title: "Obozy koncentracyjne" }, { slug: "armia-czerwona", title: "Armia Czerwona 1945" }, { slug: "2awp", title: "2 Armia WP" }, { slug: "drezno-bombardowanie", title: "Drezno bombardowanie 13-15 lutego 1945" }, { slug: "depesza-eisenhowera", title: "Depesza Eisenhowera (SCAF 252)" }, { slug: "bieguny", title: "Wojna na biegunach" },]
 
