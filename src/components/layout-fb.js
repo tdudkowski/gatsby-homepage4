@@ -200,7 +200,7 @@ border: 3px solid #333;
 
 & blockquote { position: relative;            
         margin-left:1rem;}
-& blockquote p {font-style:italic;
+& blockquote p, & blockquote li {font-style:italic;
     color: rgba(255, 238, 204, .5);}
 
 & blockquote::before { position: absolute;
