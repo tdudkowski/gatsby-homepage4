@@ -4,7 +4,7 @@ section: "blog"
 subsection: "it"
 set: gatsby
 date: 2021-07-28
-edited: 2022-01-13
+edited: 2022-05-06
 image: ../blogimages/Gatsby_Monogram.png
 tags: react, gatsby
 description: "Najbardziej potrzebne pluginy: dostęp do plików, obrazki, SEO, breadcrumb itd."
@@ -210,52 +210,29 @@ Tutaj mamy dane strony i adres obrazka przesłany z frontmattera. Źródłem tyc
 
 - [gatsby-plugin-react-helmet](https://www.gatsbyjs.com/plugins/gatsby-plugin-react-helmet/)
 
-### Analityka Google Analytics: gatsby-plugin-google-gtag
+### Analityka Google Analytics: gatsby-plugin-google-tagmanager
 
-To jest plugin, który zastąpił dotychczasowe, poprzednie pluginy Google Analytics.
+Najpopularniejsza usługa analityczna, darmowa i dobra. Ostatnio Google porzuciło dawną wersję na rzecz Google Analytics 4. Jest to poważna zmiana i wymaga zmiany zarówno konfiguracji na stronie usługi jak i samego pluginu. Jeżeli nie potrzebujemy danych historycznych najlepiej dotychczasową usługę usunąć, utworzyć ją na nowo, stary plugin odinstalować i usunąć jego konfigurację z gatsby-config.js. Można też w razie potrzeby włączyć istniejącą dotąd usługę w skład nowej.
 
-```
-npm i gatsby-plugin-google-gtag
-```
+Niezależnie od tego jakiego pluginu używaliśmy do tej pory, dla Google Analytics 4 jedynym właściwym pluginem jest gatsby-plugin-google-tagmanager. Wszystkie inne pluginy tej usługi należy usunąć, a ten zainstalować. Szczegółowa instrukcja w podlinkowanym poniżej filmie. Jego autor wyjaśnia również konfigurację dołączającą dotychczas używaną usługę do Google Analytics 4.
 
-Tutaj mam okazję zaprezentować większy kawałek pliku gatsby-config.js. Identyfikator usługi Analytics lepiej jest ukryć w pliku .env.
-
-- Na początku pliku mamy wskazanie ścieżki do pliku .env.
-- Niżej w eksporcie modułów zadeklarowany jest moduł dotenv.
-- Na końcu zadeklarowany identyfikator usługi jako zmienna środowiskowa.
-
-**/gatsby-config.js**
+W najprostszej konfiguracji wygląda to tak:
 
 ```js
-require("dotenv").config({
-    path: `.env`,
-})
-
-module.exports = {
-    siteMetadata: {
-// sitemetadata
-    },    
-    plugins: [
-        "dotenv",
         {
-            resolve: `gatsby-plugin-google-gtag`,
-                 trackingIds: [
-                    process.env.GA_ID,  // Google Analytics / GA
-                ],
-                gtagConfig: {                    
-                    anonymize_ip: true,
-                    cookie_expires: 0,
-                },
+            resolve: "gatsby-plugin-google-tagmanager",
+            options: {
+              id: process.env.GOOGLE_TAGMANAGER_ID,
+              includeInDevelopment: false,
             },
-        },
-    ],
-}
+          },
 ```
 
 Pliku env co do zasady nie wysyłamy na GitHuba ani inne publiczne miejsce. Musi zostać dodany do .gitignore. Wszyscy dostawcy usług online umożliwiają wpisanie tych parametrów na stronie podczas uploadu aplikacji.
 
 Przeglądanie lokalnego builda dodaje się do statystyk.
 
+- Guiding Digital ["How to Add Google Analytics 4 to a Gatsby Site Using Google Tag Manager" [YT 17:09]](https://www.youtube.com/watch?v=wX9euOw4mGY)
 - [gatsby-plugin-google-gtag](https://www.gatsbyjs.com/plugins/gatsby-plugin-google-gtag/)
 
 ### CSS: Styled Components: gatsby-plugin-styled-components

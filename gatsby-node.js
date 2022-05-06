@@ -3,6 +3,8 @@
 const { createFilePath } = require(`gatsby-source-filesystem`);
 const path = require(`path`);
 
+const showBlogTags = (x) => {console.log(x); return x;}
+
 // MAIN FUNCTION
 exports.createPages = ({ graphql, actions }) => {
   const { createPage } = actions
@@ -162,7 +164,7 @@ exports.createPages = ({ graphql, actions }) => {
       }
     }
 
-    const blogTagsArray = blogtags;
+    // const blogTagsArray = blogtags;
 
     blogtags.forEach(tag => {
       createPage({
@@ -263,7 +265,7 @@ exports.createPages = ({ graphql, actions }) => {
         },
       });
     });
-
+    showBlogTags(blogtags)
   });
 };
 

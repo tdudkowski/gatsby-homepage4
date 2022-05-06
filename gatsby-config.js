@@ -229,34 +229,36 @@ module.exports = {
             },
         },
         {
-            resolve: `gatsby-plugin-google-gtag`,
+            resolve: "gatsby-plugin-google-tagmanager",
             options: {
-                // You can add multiple tracking ids and a pageview event will be fired for all of them.
-                trackingIds: [
-                    process.env.GOOGLE_MEASUREMENT_ID,
-                    process.env.GA_ID,  // Google Analytics / GA
-                    // "GA-TRACKING_ID", // Google Analytics / GA
-                    // "AW-CONVERSION_ID", // Google Ads / Adwords / AW
-                    // "DC-FLOODIGHT_ID", // Marketing Platform advertising products (Display & Video 360, Search Ads 360, and Campaign Manager)
-                ],
-                // This object gets passed directly to the gtag config command
-                // This config will be shared across all trackingIds
-                gtagConfig: {
-                    optimize_id: "OPT_CONTAINER_ID",
-                    anonymize_ip: true,
-                    cookie_expires: 0,
-                },
-                // This object is used for configuration specific to this plugin
-                pluginConfig: {
-                    // Puts tracking script in the head instead of the body
-                    head: false,
-                    // Setting this parameter is also optional
-                    respectDNT: true,
-                    // Avoids sending pageview hits from custom paths
-                    exclude: ["/preview/**", "/do-not-track/me/too/"],
-                },
+              id: process.env.GOOGLE_TAGMANAGER_ID,        
+              // Include GTM in development.
+              //
+              // Defaults to false meaning GTM will only be loaded in production.
+              includeInDevelopment: false,
+        
+              // datalayer to be set before GTM is loaded
+              // should be an object or a function that is executed in the browser
+              //
+              // Defaults to null
+              // defaultDataLayer: { platform: "gatsby" },
+        
+              // Specify optional GTM environment details.
+              // gtmAuth: "YOUR_GOOGLE_TAGMANAGER_ENVIRONMENT_AUTH_STRING",
+              // gtmPreview: "YOUR_GOOGLE_TAGMANAGER_ENVIRONMENT_PREVIEW_NAME",
+              // dataLayerName: "YOUR_DATA_LAYER_NAME",
+        
+              // Name of the event that is triggered
+              // on every Gatsby route change.
+              //
+              // Defaults to gatsby-route-changeS
+              // routeChangeEventName: "YOUR_ROUTE_CHANGE_EVENT_NAME",
+              // Defaults to false
+              // SSenableWebVitalsTracking: true,
+              // Defaults to https://www.googletagmanager.com
+              // selfHostedOrigin: "YOUR_SELF_HOSTED_ORIGIN",
             },
-        },
+          },
         {
             resolve: `gatsby-plugin-manifest`,
             options: {
