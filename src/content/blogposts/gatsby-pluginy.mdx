@@ -228,7 +228,17 @@ W najprostszej konfiguracji wygląda to tak:
           },
 ```
 
-Pliku env co do zasady nie wysyłamy na GitHuba ani inne publiczne miejsce. Musi zostać dodany do .gitignore. Wszyscy dostawcy usług online umożliwiają wpisanie tych parametrów na stronie podczas uploadu aplikacji.
+Pliku .env co do zasady nie wysyłamy na GitHuba ani inne publiczne miejsce. Musi zostać dodany do .gitignore. Trzeba doinstalować dotenv. Linkujemy do niego na samej górze gatsby-config.js:
+
+```js
+require("dotenv").config({ path: `.env`, })
+```
+
+Wszyscy dostawcy usług online umożliwiają wpisanie zmiennych środowiskowych w ustawieniach strony / aplikacji (np. Netlify: Site settings / Build & deploy / Environment variables). Tutaj pamiętajmy, że:
+- dodajemy identyfikator tagu a nie usługi GA
+- w konfiguracji parametrów środowiskowych usługi wpisujemy go w cudzysłowie
+- adblocker, jak sama nazwa wskazuje, blokuje także usługę śledzenia przez GA4 (w każdym razie jedyny adblocker jaki ma sens, czyli [uBlock Origin](https://chrome.google.com/webstore/detail/ublock-origin/cjpalhdlnbpafiamejdnhcphjbkeiagm?hl=en))
+- gatsby-plugin-google-tagmanager działa tylko dla Gatsby v4 w górę, trójka niestety musi pozostać przy starej usłudze Google Analytics, która zostanie zamknięta w lipcu 2023
 
 Przeglądanie lokalnego builda dodaje się do statystyk.
 
