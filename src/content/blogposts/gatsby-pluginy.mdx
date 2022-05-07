@@ -4,7 +4,7 @@ section: "blog"
 subsection: "it"
 set: gatsby
 date: 2021-07-28
-edited: 2022-05-06
+edited: 2022-05-07
 image: ../blogimages/Gatsby_Monogram.png
 tags: react, gatsby
 description: "Najbardziej potrzebne pluginy: dostęp do plików, obrazki, SEO, breadcrumb itd."
@@ -212,9 +212,11 @@ Tutaj mamy dane strony i adres obrazka przesłany z frontmattera. Źródłem tyc
 
 ### Analityka Google Analytics: gatsby-plugin-google-tagmanager
 
-Najpopularniejsza usługa analityczna, darmowa i dobra. Ostatnio Google porzuciło dawną wersję na rzecz Google Analytics 4. Jest to poważna zmiana i wymaga zmiany zarówno konfiguracji na stronie usługi jak i samego pluginu. Jeżeli nie potrzebujemy danych historycznych najlepiej dotychczasową usługę usunąć, utworzyć ją na nowo, stary plugin odinstalować i usunąć jego konfigurację z gatsby-config.js. Można też w razie potrzeby włączyć istniejącą dotąd usługę w skład nowej.
+Najpopularniejsza usługa analityczna, darmowa i dobra. Ostatnio Google porzuciło dawną wersję na rzecz Google Analytics 4. Jest to poważna zmiana i wymaga zmiany zarówno konfiguracji na stronie usługi jak i samego pluginu. Jeżeli nie potrzebujemy danych historycznych najlepiej dotychczasową usługę usunąć, utworzyć ją na nowo, stary plugin odinstalować i usunąć jego konfigurację z gatsby-config.js. Można też w razie potrzeby włączyć istniejącą dotąd usługę w skład nowej. W niektórych wypadkach może trzeba jeszcze jakiś czas równolegle obu wersji.
 
-Niezależnie od tego jakiego pluginu używaliśmy do tej pory, dla Google Analytics 4 jedynym właściwym pluginem jest gatsby-plugin-google-tagmanager. Wszystkie inne pluginy tej usługi należy usunąć, a ten zainstalować. Szczegółowa instrukcja w podlinkowanym poniżej filmie. Jego autor wyjaśnia również konfigurację dołączającą dotychczas używaną usługę do Google Analytics 4.
+Niezależnie od tego jakiego pluginu używaliśmy do tej pory, dla Google Analytics 4 jedynym właściwym pluginem jest gatsby-plugin-google-tagmanager. Jeżeli sytuacja na to pozwala wszystkie inne pluginy tej usługi należy usunąć, a ten zainstalować. Szczegółowa instrukcja w podlinkowanym poniżej filmie. Jego autor wyjaśnia również konfigurację dołączającą dotychczas używaną usługę do Google Analytics 4.
+
+Ogólnie rzecz biorąc proces ten polega na tym, że w analytics.google.com tworzymy usługę GA4, podłączamy do niego strumień danych. Autor filmu nie wspomina o tym, ale warto również podłączyć Search Console. Potem tworzymy (jeżeli jeszcze nie ma) konto na Google Tag Manager i dla każdej oddzielnej strony osobny kontener, a w tym kontenerze właściwy tag powiązany z wyzwalaczem (triggerem). Natomiast folder kontenera ma powiązanie z GA4.
 
 W najprostszej konfiguracji wygląda to tak:
 
@@ -228,19 +230,22 @@ W najprostszej konfiguracji wygląda to tak:
           },
 ```
 
-Pliku .env co do zasady nie wysyłamy na GitHuba ani inne publiczne miejsce. Musi zostać dodany do .gitignore. Trzeba doinstalować dotenv. Linkujemy do niego na samej górze gatsby-config.js:
+Inaczej niż jest to zaprezentowane na filmie proponuję od razu zastosować wpisanie identyfikatora to pliku .env, którego co do zasady nie wysyłamy na GitHuba ani żadne inne publiczne miejsce. Musi zostać dodany do .gitignore. Trzeba doinstalować dotenv. Linkujemy do niego na samej górze gatsby-config.js:
 
 ```js
 require("dotenv").config({ path: `.env`, })
 ```
 
-Wszyscy dostawcy usług online umożliwiają wpisanie zmiennych środowiskowych w ustawieniach strony / aplikacji (np. Netlify: Site settings / Build & deploy / Environment variables). Tutaj pamiętajmy, że:
-- dodajemy identyfikator tagu a nie usługi GA
-- w konfiguracji parametrów środowiskowych usługi wpisujemy go w cudzysłowie
-- adblocker, jak sama nazwa wskazuje, blokuje także usługę śledzenia przez GA4 (w każdym razie jedyny adblocker jaki ma sens, czyli [uBlock Origin](https://chrome.google.com/webstore/detail/ublock-origin/cjpalhdlnbpafiamejdnhcphjbkeiagm?hl=en))
-- gatsby-plugin-google-tagmanager działa tylko dla Gatsby v4 w górę, trójka niestety musi pozostać przy starej usłudze Google Analytics, która zostanie zamknięta w lipcu 2023
+Wszyscy dostawcy usług online umożliwiają wpisanie zmiennych środowiskowych w ustawieniach strony / aplikacji (np. Netlify: Site settings / Build & deploy / Environment variables).
 
-Przeglądanie lokalnego builda dodaje się do statystyk.
+Tutaj pamiętajmy, że:
+- zmienną środowiskową jest identyfikator tagu (GTM) a nie usługi GA
+- w konfiguracji parametrów środowiskowych usługi online wpisujemy go bez cudzysłowu, natomiast w pliku .env w cudzysłowie
+- adblocker, jak sama nazwa wskazuje, blokuje także usługę śledzenia przez GA4 (w każdym razie jedyny adblocker jaki ma sens, czyli [uBlock Origin](https://chrome.google.com/webstore/detail/ublock-origin/cjpalhdlnbpafiamejdnhcphjbkeiagm?hl=en)), na czas testów trzeba go wyłączyć
+- plugin gatsby-plugin-google-tagmanager działa tylko dla Gatsby v4 w górę, trójka niestety musi pozostać przy starej usłudze Google Analytics, która zostanie zamknięta w lipcu 2023
+- dotenv jak na chwilę kiedy to piszę (2022-05-07) musi pozostać w wersji max 8.6.0, z jakiegoś powodu jest to najwyższa wersja jaką Gatsby może skonsumować
+
+Przeglądanie lokalnego builda dodaje się do statystyk. W GTM można go testować tak samo jak wersję online.
 
 - Guiding Digital ["How to Add Google Analytics 4 to a Gatsby Site Using Google Tag Manager" [YT 17:09]](https://www.youtube.com/watch?v=wX9euOw4mGY)
 - [gatsby-plugin-google-gtag](https://www.gatsbyjs.com/plugins/gatsby-plugin-google-gtag/)
