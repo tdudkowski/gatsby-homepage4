@@ -24,7 +24,7 @@ Pakiety instaluje się z promptem umieszczonym w katalogu głównym strony.
 - gatsby-source-filesystem / dostęp do plików
 - gatsby-plugin-image / obrazki
 - gatsby-plugin-react-helmet / SEO, tagi meta w nagłówku
-- gatsby-plugin-google-gtag / Analityka Google'a
+- gatsby-plugin-google-tagmanager / Google Analytics 4
 - gatsby-plugin-styled-components / CSS styled-components
 - gatsby-remark-vscode / prezentacja kodu
 - gatsby-plugin-sitemap / sitemap.xml
@@ -212,16 +212,18 @@ Tutaj mamy dane strony i adres obrazka przesłany z frontmattera. Źródłem tyc
 
 ### Analityka Google Analytics: gatsby-plugin-google-tagmanager
 
+**Uwaga: aktualizacja maj 2022**
+
 Najpopularniejsza usługa analityczna, darmowa i dobra. Ostatnio Google porzuciło dawną wersję czyli Universal Analytics na rzecz Google Analytics 4. W lipcu 2023 Universal zostanie zamknięta. Jest to poważna zmiana i przejście na GA4 wymaga zmiany zarówno konfiguracji na stronie usługi jak i samego pluginu.
 
 W tej sytuacji mamy cztery możliwości do wyboru:
 
 - używamy równolegle UA i GA4, przez pozostały czas stopniowo przerzucając analitykę na nowszą wersję sługi
 - ruszamy z nową usługą integrując poprzednią wersję jako źródło danych
-- uruchamiamy GA4, a stara usługa idzie do kosza
+- uruchamiamy GA4, a stara usługa idzie do kosza - i jeżeli tylko jest to możliwe jest to najlepsza opcja
 - zmieniamy dostawcę usługi
 
-Jeżeli nie potrzebujemy danych historycznych najlepiej dotychczasową usługę usunąć, utworzyć ją na nowo, stary plugin odinstalować i usunąć jego konfigurację z gatsby-config.js. Niezależnie od tego jakiego pluginu używaliśmy do tej pory, dla Google Analytics 4 jedynym właściwym pluginem jest gatsby-plugin-google-tagmanager. Jeżeli sytuacja na to pozwala wszystkie inne pluginy tej usługi należy usunąć, a ten zainstalować. Szczegółowa instrukcja w podlinkowanym poniżej filmie. Jego autor wyjaśnia również konfigurację dołączającą dotychczas używaną usługę do Google Analytics 4.
+Jeżeli nie potrzebujemy danych historycznych najlepiej dotychczasową usługę usunąć, utworzyć ją na nowo, stary plugin odinstalować i usunąć jego konfigurację z gatsby-config.js. Niezależnie od tego jakiego pluginu używaliśmy do tej pory, dla Google Analytics 4 jedynym właściwym jest gatsby-plugin-google-tagmanager. Jeżeli sytuacja na to pozwala wszystkie inne pluginy tej usługi należy usunąć, a ten zainstalować. Szczegółowa instrukcja w podlinkowanym poniżej filmie. Jego autor wyjaśnia również konfigurację dołączającą dotychczas używaną usługę do Google Analytics 4.
 
 Ogólnie rzecz biorąc proces ten polega na tym, że w analytics.google.com tworzymy usługę GA4, podłączamy do niego strumień danych. Autor filmu nie wspomina o tym, ale warto również podłączyć Search Console. Potem tworzymy (jeżeli jeszcze nie ma) konto na Google Tag Manager i dla każdej oddzielnej strony osobny kontener, a w tym kontenerze właściwy tag powiązany z wyzwalaczem (triggerem). Natomiast folder kontenera ma powiązanie z GA4.
 
