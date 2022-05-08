@@ -223,7 +223,14 @@ W tej sytuacji mamy cztery możliwości do wyboru:
 - uruchamiamy GA4, a stara usługa idzie do kosza - i jeżeli tylko jest to możliwe jest to najlepsza opcja
 - zmieniamy dostawcę usługi
 
-Jeżeli nie potrzebujemy danych historycznych najlepiej dotychczasową usługę usunąć, utworzyć ją na nowo, stary plugin odinstalować i usunąć jego konfigurację z gatsby-config.js. Niezależnie od tego jakiego pluginu używaliśmy do tej pory, dla Google Analytics 4 jedynym właściwym jest gatsby-plugin-google-tagmanager. Jeżeli sytuacja na to pozwala wszystkie inne pluginy tej usługi należy usunąć, a ten zainstalować. Szczegółowa instrukcja w podlinkowanym poniżej filmie. Jego autor wyjaśnia również konfigurację dołączającą dotychczas używaną usługę do Google Analytics 4.
+Jeżeli nie potrzebujemy danych historycznych najlepiej dotychczasową usługę usunąć, utworzyć ją na nowo, stary plugin odinstalować i usunąć jego konfigurację z gatsby-config.js.
+
+Mamy dwa pluginy do wyboru:
+
+- gatsby-plugin-google-gtag - starszy i mniej popularny, możliwy do zastosowania również z Universal Analytics, jest to poprzednio polecany przeze mnie plugin, wystarczy utworzyć usługę GA4 i wpisać identyfikator, można bez żadnych zmian używać równolegle obu usług
+- gatsby-plugin-google-tagmanager - nowszy i wymagający zastosowania usługi Google Tag Manager połączonej z Google Analytics, ma prawie dwa razy więcej pobrań
+
+Tutaj zajmę się tym drugim pluginem. Szczegółowa instrukcja w podlinkowanym poniżej filmie Guiding Digital. Jego autor wyjaśnia również konfigurację dołączającą dotychczas używaną usługę do Google Analytics 4.
 
 Ogólnie rzecz biorąc proces ten polega na tym, że w analytics.google.com tworzymy usługę GA4, podłączamy do niego strumień danych. Autor filmu nie wspomina o tym, ale warto również podłączyć Search Console. Potem tworzymy (jeżeli jeszcze nie ma) konto na Google Tag Manager i dla każdej oddzielnej strony osobny kontener, a w tym kontenerze właściwy tag powiązany z wyzwalaczem (triggerem). Natomiast folder kontenera ma powiązanie z GA4.
 
@@ -258,7 +265,9 @@ Pamiętajmy że:
 
 Przeglądanie lokalnego builda dodaje się do statystyk. W GTM można go testować tak samo jak wersję online.
 
-- Guiding Digital ["How to Add Google Analytics 4 to a Gatsby Site Using Google Tag Manager" [YT 17:09]](https://www.youtube.com/watch?v=wX9euOw4mGY)
+- Guiding Digital ["How to Add Google Analytics 4 to a Gatsby Site Using Google Tag Manager" [YT 17:09]](https://www.youtube.com/watch?v=wX9euOw4mGY) | ["GatsbyJS & GA4: Upgrading a Gatsby Site to Google Analytics 4" [YT 12:36]](https://www.youtube.com/watch?v=Dwi99jtl3Fs)
+- A Designer Who Codes ["How to get Google Analytics 4 to work with Gatsby // gatsby-plugin-google-gtag" [YT 7:19]](https://www.youtube.com/watch?v=A9rCUVCB6hw)
+- Analytics Mania - Google Tag Manager & Analytics ["Google Analytics 4 Tutorial for Beginners (2022)" [YT 1:10:53]](https://www.youtube.com/watch?v=cN1Jcfxi4qs) | ["Google Tag Manager Tutorial for Beginners (2022)" [YT 1:33:27]](https://www.youtube.com/watch?v=u_x5lVJMKZ0)
 - [gatsby-plugin-google-gtag](https://www.gatsbyjs.com/plugins/gatsby-plugin-google-gtag/)
 
 ### CSS: Styled Components: gatsby-plugin-styled-components

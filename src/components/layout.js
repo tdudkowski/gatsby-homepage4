@@ -61,7 +61,7 @@ const Layout = ({ data, children, section, subsection }) => {
 
     return (
         <div className="container">
-            <Seo title={headerTitle} defer={false} />
+            {/* <Seo title={headerTitle} defer={false} /> */}
             <Layout children={children} section={section} subsection={subsection} />
         </div>)
 }
