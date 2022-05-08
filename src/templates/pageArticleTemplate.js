@@ -24,7 +24,6 @@ const articlePage = ({ data, pageContext, location }) => {
       />
 
       <h2>{frontmatter.title}</h2>
-      <h3>test</h3>
 
       <MDXRenderer>{body}</MDXRenderer>
 
