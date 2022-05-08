@@ -270,7 +270,7 @@ module.exports = {
                 display: `standalone`,
                 description: `Dygresje.info - Tadeusz Dudkowski Homepage`,
                 lang: `pl`,
-                // icon: `src/images/maskable-icon-512.png`,
+                icon: `src/images/maskable-icon-512.png`,
                 icons: [
                     {
                         "src": "favicon.ico",
