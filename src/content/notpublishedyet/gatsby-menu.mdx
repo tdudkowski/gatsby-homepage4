@@ -64,7 +64,7 @@ Jest to podstawowe, typowe stylowanie menu w modelu CSS Flexbox zapewniające uk
 
 Wymogi:
 
-- [Loadable Components](https://loadable-components.com/) zadaniem tego modułu jest code splitting, czyli podział wykonywanych skryptów JS tak, żeby można było załadować menu dopiero po jego utworzeniu, w przeciwnym razie po załadowaniu strony byłby to pusty element i pojawiłby sie dopiero po przeładowaniu.
+- [Loadable Components](https://loadable-components.com/) zadaniem tego modułu jest code splitting, czyli podział wykonywanych skryptów JS tak, żeby można było załadować menu dopiero po jego utworzeniu, w przeciwnym razie po załadowaniu strony byłby to pusty element i pojawiłby sie dopiero po przeładowaniu. `npm i @loadable/component`
 - [styled-components](https://styled-components.com/) dynamiczny CSS odpowiedzialny za animację hamburgera.
 
 Instalacja obu modułów opisana jest na powyższych stronach, w Gatsby'm przebiega bez zmian. Tylko Styled Components trzeba dodać do `gatsby-config.js`. Szczegóły są opisane we wpisie [Gatsby cz. 3 - CSS](/blog/gatsby-css).
@@ -76,8 +76,9 @@ Tak wygląda komponent hamburgera:
 ```js {numberLines}
 import React, { useState } from "react"
 import styled from "styled-components"
-import loadable from "@loadable/component";
-const Menu = loadable(() => import("./menu"));
+// import loadable from "@loadable/component";
+// const Menu = loadable(() => import("./menu"));
+import Menu from "./menu"
 
 const Navigation = styled.nav`
 @media (max-width: 699px) {
@@ -151,20 +152,21 @@ const Hamburger = styled.div`
   }
 `
 
-const MenuHamburger1 = () => {
+const MenuHamburger = () => {
     const [navbarOpen, setNavbarOpen] = useState(false)
+   
     return (
         <Navigation className="menu-hamburger">
             <Toggle onClick={() => setNavbarOpen(!navbarOpen)} >
 {navbarOpen ? <Hamburger open /> : <Hamburger />}
             </Toggle>
-            {navbarOpen ? (<Navbox onClick={() => setNavbarOpen(false)}> <NavbarLinks /> </Navbox>
+            {navbarOpen ? (<Navbox onClick={() => setNavbarOpen(false)}> <Menu /> </Navbox>
             ) : (
-<Navbox open> <NavbarLinks />  </Navbox>)}
+<Navbox open> <Menu />  </Navbox>)}
         </Navigation>
     )
 }
-export default MenuHamburger1
+export default MenuHamburger
 ```
 
 Po kolei:
@@ -336,7 +338,7 @@ Na samym początku trzeba się zastanowić jak ma wyglądać mechanika menu w fo
 
 Rozwiązaniem jest submenu (menu drugiego rzędu).
 
-Najprościej zrobić to tak jak jest w menu [Adobe](https://www.adobe.com/), po kliknięciu submenu rozwija się przesuwając resztę menu w dół. To jest dobre rozwiązanie jeśli submenu nie ma wielu elementów.
+Najprościej zrobić to tak jak jest w menu [Adobe](https://www.adobe.com/), po kliknięciu submenu rozwija się przesuwając resztę menu w dół i zamykając ewentualnie poprzednio otwarte sumbenu. Jest to harmonijka. To jest dobre rozwiązanie jeśli submenu nie ma wielu elementów.
 
 Bardziej ambitne i zaawansowane jest takie, które nasuwa się na rozwiniętego Hamburgera i tak samo się zachowuje, żeby je schować trzeba kliknąć iksa: jest to Hamburger w Hamburgerze. Przykładem może być menu zastosowane na stronie [Atlassian](https://www.atlassian.com/).
 

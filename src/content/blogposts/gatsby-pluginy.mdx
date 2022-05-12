@@ -509,3 +509,74 @@ Jeżeli używamy MDX wygląda to tak samo, tyle że w pliku szablonu strony /src
 ```
 
 - [gatsby-plugin-breadcrumb](https://www.gatsbyjs.com/plugins/gatsby-plugin-breadcrumb/)
+
+### Podsumowanie
+
+Oto - moim zdaniem - niezbędny, a w każdym razie podstawowy pakiet pluginów do zainstalowania praktycznie zawsze po tym jak już zainstalujemy Gatsby'ego i utworzymy zasadniczą strukturę plików:
+
+```js
+npm i gatsby-source-filesystem gatsby-plugin-image gatsby-plugin-sharp gatsby-transformer-sharp gatsby-plugin-react-helmet react-helmet gatsby-plugin-google-tagmanager gatsby-plugin-sitemap dotenv gatsby-plugin-styled-components styled-components babel-plugin-styled-components
+```
+
+Zapewnia dostęp do katalogów poza /src/pages, obsługę plików graficznych, SEO, analitykę, ukrycie zmiennych środowiskowych i styled-components.
+
+Startowy /gatsby-config.js może wyglądać tak:
+
+```js
+require("dotenv").config({ path: `.env`, })
+
+module.exports = {
+    siteMetadata: {
+        title: `Title here`,
+        siteUrl: "https://anyvalidurl.com/",
+    },
+    pathPrefix: "/path-of-github-repo",
+    plugins: [
+        `gatsby-plugin-image`,
+        `gatsby-plugin-sharp`,
+        `gatsby-transformer-sharp`,
+        `gatsby-plugin-react-helmet`,
+        `gatsby-plugin-styled-components`,
+        {
+            resolve: `gatsby-source-filesystem`,
+            options: {
+                name: `images`,
+                path: `${__dirname}/src/images`,
+            },
+        },
+        {
+            resolve: "gatsby-plugin-google-tagmanager",
+            options: {
+              id: process.env.GOOGLE_TAGMANAGER_ID,
+              includeInDevelopment: false,
+            },
+        },
+                {
+            resolve: "gatsby-plugin-sitemap",
+            options: {
+                query: `{
+                    allSitePage {
+                       nodes {
+                         path
+                         }
+                    }
+                    site {
+                      siteMetadata {
+                        siteUrl
+                      }
+                    }
+                  }
+              `,
+                resolvePages: ({
+                    allSitePage: { nodes },
+                }) => {
+                    return nodes.map(path => { return { ...path } })
+                },
+                serialize: ({ path }) => { return { url: path } },
+            },
+        },
+    ],
+}
+```
+
+W powyższym pliku wartość siteUrl jest placeholderem i podczas budowy strony musi być po prostu poprawnym adresem URL. Mapę strony wygeneruje dopiero build. Plik .env nie jest niezbędny do uruchomienia strony.
