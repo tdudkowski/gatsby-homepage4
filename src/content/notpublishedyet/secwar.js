@@ -6,7 +6,7 @@ import Seo from "../../components/seo"
 const GatsbyBlog = ({ data, location }) => {
     const headerTitle = `dygresje.info / sec.w@ar`
     const path = location.pathname
-    const { frontmatter } = data.allMdx.nodes[0] || null;
+    const { frontmatter } = data.allMdx.nodes[0];
     const { image } = frontmatter;
 
     return (<LayoutBlog path={path}>
