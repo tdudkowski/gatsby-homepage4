@@ -11,7 +11,7 @@ const GatsbyBlog = ({ data, location }) => {
 
     return (<LayoutBlog path={path}>
         <Seo title={headerTitle} image={image.childImageSharp.gatsbyImageData.images.fallback.src} />
-        <article>
+        
             <h3>Hello, Gatsby!</h3>
 
             <p>Bloga rozpoczynam serią wpisów o <a href="https://www.gatsbyjs.com/">Gatsbym</a>, popularnym i coraz popularniejszym frameworku Reacta.</p>
@@ -64,7 +64,6 @@ const GatsbyBlog = ({ data, location }) => {
 
             <p>Postaram się też odróżniać, kiedy używamy mechanizmów Gatsby'ego, kiedy samego Reacta, a kiedy jest to sam JS.</p>
 
-        </article>
     </LayoutBlog >)
 }
 //^.(\bgatsby\b)?.$

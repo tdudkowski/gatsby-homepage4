@@ -29,7 +29,7 @@ flex-direction: column;
     font-style: italic;
     margin-left:-0.5rem;}
   & article {background: url(${props => props.background}) no-repeat 80% 3rem; background-size:50px; overflow-x:hidden;}
-  & article h2 { font-family:Alegreya, sans-serif; font-size:2.5rem; color:#333; background-color: rgba(255,255,255,.9)}
+  & article h2 { font-family:Alegreya, sans-serif; font-size:2.5rem; color:#333; background-color: rgba(255,255,255,.9); display:inline-block;}
   & article h2 span {font-size:3rem; color:#666; border-bottom:3px dotted #666;}
   & article h3 { font-family:Alegreya, sans-serif; border-bottom:1px solid #ddc; margin: 2rem 0; font-size:2rem; color:#444;}
   & article h4 { font-size:1.3rem; color:#110;}
@@ -48,10 +48,10 @@ aside .tagsDiv ul a {display:block; margin: 0 1rem; padding:.5rem;}
   @media (min-width:900px) {
     flex-direction: row-reverse;
 & aside {flex-basis: 22rem}
-& article {flex:1; padding:1rem; width:calc(100vw - 23rem);  background-size:200px;}
+& article {flex:1; padding:1rem; width:calc(100vw - 24rem);  background-size:200px;}
 }
 @media (min-width:1300px) {
-& article {width:calc(1300px - 23rem); }
+& article {width:calc(1300px - 24rem); }
 }
 `;
 
@@ -74,20 +74,16 @@ const LayoutBlog = ({ children, data, path }) => {
             </StyledHeader>
             <StyledMain background={data ? data.mdx.frontmatter.image.childImageSharp.gatsbyImageData.images.fallback.src : null}>
                 <aside>
-                    {path === "/blog/" || path === "/blog" ?
-                        <section>
+                     <section>
+                     {path === "/blog/" || path === "/blog" ?  null :  <p><Link to="/blog">strona główna bloga</Link></p> }
+                           <h3>Menu - serie wpisów</h3>
                             <ul>
-                                <li><Link to="/blog/gatsby">seria wpisów o Gatsbym</Link></li>
-                                <li><Link to="/blog/enigma">seria wpisów o Enigmie</Link></li>
-                            </ul></section> :
-                        <section>
-                            <h3>Menu</h3>
-                            <ul>
-                                <li><Link to="/blog">strona główna bloga</Link></li>
-                                <li><Link to="/blog/gatsby">seria wpisów o Gatsbym</Link></li>
-                                <li><Link to="/blog/enigma">seria wpisów o Enigmie</Link></li>
+                                <li><Link to="/blog/gatsby">Hello, Gatsby!</Link></li>
+                                <li><Link to="/blog/enigma">Das ist Enigma</Link></li>
+                                <li><Link to="/blog/webdev">Webdev everythink</Link></li>
+                                {/* <li><Link to="/blog/secwar">sec.w@r</Link></li> */}
                             </ul>
-                        </section>}
+                        </section>
                     {data === undefined ? null :
                         <>
                             <section>

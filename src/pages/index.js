@@ -49,7 +49,7 @@ const IndexPage = ({ section }) => {
             <IndexSubHeader>
                 <ul>
                     <li className="blogHeader">
-                        <Link to="/blog">Blog</Link>:  <Link to="/blog/gatsby">Hello Gatsby</Link>,  <Link to="/blog/enigma">Das ist Enigma</Link>
+                        <Link to="/blog">Blog</Link>:  <Link to="/blog/gatsby">Hello Gatsby</Link>,  <Link to="/blog/enigma">Das ist Enigma</Link>,  <Link to="/blog/webdev">Webdev</Link>
                     </li>
                     <li>
                         <Link to="/festung-breslau">Festung Breslau 1945 täglich / ostatnie 120 dni wojny</Link>
@@ -66,7 +66,7 @@ const IndexPage = ({ section }) => {
                         src="https://www.facebook.com/plugins/page.php?href=https%3A%2F%2Fwww.facebook.com%2Fdygresje.info&tabs=timeline&width=400&height=500&small_header=true&adapt_container_width=true&hide_cover=false&show_facepile=true&appId"
                         title="facebook"
                         className="facebook"
-                        width="400"
+                        width="100%"
                         height="500"
                         style={{ border: "none", overflow: "hidden" }}
                         scrolling="no"

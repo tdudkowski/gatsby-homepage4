@@ -11,8 +11,8 @@ const GatsbyBlog = ({ data, location }) => {
 
     return (<LayoutBlog path={path}>
         <Seo title={headerTitle} image={backgroundImage} />
-        <article>
-            <h3>Das ist Enigma</h3>
+        
+                    <h3>Das ist Enigma</h3>
 
             <p>Druga seria wpisów na dotyczy niemieckiej maszyny szyfrującej Enigma. Chciałem wyjaśnić kontekst w jakim powstała i jakie miała znaczenie i cóż... część historyczna zamieniła się w opracowanie historii kryptologii większej części XX wieku. W rezultacie główny temat serii - Enigma - nieco zeszła z pierwszego planu.</p>
 
@@ -57,7 +57,6 @@ const GatsbyBlog = ({ data, location }) => {
 
             <p>Bagatela LOL. Kiedy? Mam nadzieję, że jeszcze w 2022.</p>
 
-        </article>
     </LayoutBlog >)
 }
 //^.(\bgatsby\b)?.$

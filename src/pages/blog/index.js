@@ -33,8 +33,7 @@ const IndexBlog = ({ data, location }) => {
 
   return (<LayoutBlog path={path}>
     <Seo title={headerTitle} image={image.childImageSharp.gatsbyImageData.images.fallback.src} />
-    <article>
-
+    
       <h3>Lista wpisów:</h3>
 
       <StyledSection>
@@ -44,8 +43,7 @@ const IndexBlog = ({ data, location }) => {
           </StyledDiv>
         ))}
       </StyledSection>
-
-    </article>
+      
   </LayoutBlog>)
 }
 
