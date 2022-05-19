@@ -3,7 +3,7 @@ import { Link, graphql } from "gatsby"
 import LayoutBlog from "../../components/layout-blog"
 import Seo from "../../components/seo"
 
-const GatsbyBlog = ({ data, location }) => {
+const GatsbyWebdevBlog = ({ data, location }) => {
     const headerTitle = `dygresje.info / webdev everythink`
     const path = location.pathname
     const { frontmatter } = data.allMdx.nodes[0];
@@ -13,7 +13,7 @@ const GatsbyBlog = ({ data, location }) => {
         <Seo title={headerTitle} image={image.childImageSharp.gatsbyImageData.images.fallback.src} />
              <h3>Webdev everythink</h3>
 
-<p>Ponieważ dotychczasowe dwa cykle na tym blogu wciąż nie są dokończone, jest to najlepszy czas, żeby wprowadzić dwa kolejne. Pierwszym będzie seria wpisów o ogólnie rozumianym webdevelopmencie (jakkolwiek to słowo nie brzmi po polsku, jesteśmy na nie skazani, choćby z racji braku dobrego polskiego odpowiednika). Dotyczyć będzie zarówno frontendu jak i backendu. Ponieważ obie te rzeczy są ze sobą ściśle powiązane zdecydowałem się ich nie rozdzielać.</p>
+<p>Ponieważ dotychczasowe dwa cykle na tym blogu wciąż nie są dokończone, jest to najlepszy czas, żeby wprowadzić dwa kolejne. Pierwszym będzie seria wpisów o ogólnie rozumianym webdevelopmencie (jakkolwiek to słowo nie brzmi po polsku, jesteśmy na nie skazani, choćby z racji braku dobrego polskiego odpowiednika). Dotyczyć będzie zarówno frontendu jak i backendu. Ponieważ obie te rzeczy są ze sobą ściśle powiązane zdecydowałem się ich nie rozdzielać. Uprzedzając pytania - błąd w tytule jest celowy.</p>
 
 <p>W tym momencie jest tylko jeden wpis. Kiedy pojawią się następne - nie wiem.</p>
 
@@ -29,8 +29,8 @@ const GatsbyBlog = ({ data, location }) => {
             
     </LayoutBlog >)
 }
-//^.(\bgatsby\b)?.$
-export default GatsbyBlog
+
+export default GatsbyWebdevBlog
 
 export const query = graphql`
         query AllWebdevBlogPosts {

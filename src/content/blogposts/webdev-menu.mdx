@@ -37,10 +37,10 @@ JavaScript może zostać uruchomiony dopiero po załadowaniu strony, więc może
 
 Wciąż dwie rzeczy są do zrobienia:
 
-- Hamburger wysuwa menu w animacji zsynchronizowanej z animacją samego Hamburgera, natomiast chowanie menu odbywa się nagle. Tutaj niestety musiałem wyłączyć regułę 'transition` (a ściśle rzecz biorąc przenieść ją do akcji `.open ~ .menu-list`) bo pojawił się bardzo niepożądany efekt przy przejściu przez breakpoint z wyższej rozdzielczości - menu pojawiało się rozwinięte i chowało się animacją.
+- Hamburger wysuwa menu w animacji zsynchronizowanej z animacją samego Hamburgera, natomiast chowanie menu odbywa się nagle. Tutaj niestety musiałem wyłączyć regułę 'transition' (a ściśle rzecz biorąc przenieść ją do akcji `.open ~ .menu-list`) bo pojawił się bardzo niepożądany efekt przy przejściu przez breakpoint z wyższej rozdzielczości - menu pojawiało się rozwinięte i chowało się animacją.
 - Hamburger z MegaMenu v2 - można jeszcze coś zrobić z przeliczaniem wysokości dokumentu. Nie jest to takie ważne, bo jest to dodatkowy element artykułu.
 
-Rozwiązaniem pierwszego może być propozycja ["Pure CSS Hamburger menu shows up when resizing viewport before disappearing"](https://localcoder.org/pure-css-hamburger-menu-shows-up-when-resizing-viewport-before-disappearing), czyli dodanie funkcji [IIFE](https://developer.mozilla.org/en-US/docs/Glossary/IIFE):
+Rozwiązaniem pierwszego może być propozycja ["Pure CSS Hamburger menu shows up when resizing viewport before disappearing"](https://localcoder.org/pure-css-hamburger-menu-shows-up-when-resizing-viewport-before-disappearing), czyli dodanie funkcji [IIFE](https://developer.mozilla.org/en-US/docs/Glossary/IIFE), która przy każdym resizie na chwilę (w tym wypadku na 0,1 s) wyłącza działanie 'transition':
 
 ```js
 (function () {
@@ -68,7 +68,9 @@ body.stop-transition .menu-list {
 }
 ```
 
-Działa, można przełożyć `transition: all 0.3s linear;` z '.open~.menu-list' do '.menu-list'. Ale szukam jakiegoś prostszego rozwiązania.
+Działa, można przełożyć `transition: all 0.3s linear;` z warunku '.open~.menu-list' do samego '.menu-list'.
+
+Jednak szukam jakiegoś prostszego rozwiązania.
 
 ### Layout strony
 
@@ -407,11 +409,11 @@ JavaScript jak poprzednio przełącza klasę `.open` dla Hamburgera. Drugim dzia
 
 Tutaj kod jest dużo bardziej rozbudowany.
 
-Zacznijmy od końca. Tak jak poprzednio przy przejściu do wyższych rozdzielczości trzeba odebrać klasę .open i to zarówno całemu menu (31) jak i wszystkim submenu (32-34). Pętla z licznikiem jest może prymitywna, ale zapewnia wydajność.
+Zacznijmy od końca. Tak jak poprzednio przy przejściu do wyższych rozdzielczości trzeba odebrać klasę .open i to zarówno całemu menu (34) jak i wszystkim submenu (35-37). Pętla z licznikiem jest może prymitywna, ale zapewnia wydajność.
 
-Przełączenie .open dla samego menu funkcją listToggle wiąże się z wyłączeniem .open dla wszystkich submenu, również robionym w pętli (18-23).
+Przełączenie .open dla samego menu funkcją listToggle wiąże się z wyłączeniem .open dla wszystkich submenu, również robionym w pętli (21-26).
 
-Zupełnie nowym elementem jest funkcja sublistToggle (4-16), która na samym początku jest ograniczona w działaniu do rozdzielczości mobilnej (5). W drugim kroku wyłączamy .open jeżeli już jest i kończymy funkcję (8), co zapewnia naturalne działanie otwórz / zamknij. Jeżeli zaś kliknięte submenu jest zamknięte, to najpierw zamykamy wszystkie inne (10-12) a potem przez toggle (14; równie dobrze może być add) włączamy klasę .open.
+Zupełnie nowym elementem jest funkcja sublistToggle (4-19), która na samym początku jest ograniczona w działaniu do rozdzielczości mobilnej (5). W drugim kroku wyłączamy .open jeżeli już jest i kończymy funkcję (8-11), co zapewnia naturalne działanie otwórz / zamknij. Jeżeli zaś kliknięte submenu jest zamknięte, to najpierw zamykamy wszystkie inne (13-15) a potem przez toggle (17; równie dobrze może być add) włączamy klasę .open.
 
 JS:
 
@@ -423,7 +425,10 @@ const sublistToggle = (e) => {
     if (window.visualViewport.width<800)  {
     const clickedItemClasslist = e.path[0].children[1].classList
     // COLLAPSE IF EXPANDED
-    if (clickedItemClasslist.contains('open')) {clickedItemClasslist.remove("open"); return;}
+    if (clickedItemClasslist.contains('open')) {
+        clickedItemClasslist.remove("open");
+        return;
+        }
     // ACCORDION
     for (let i = 0; i < sublistToggler.children.length; i++) {
         sublistToggler.children[i].children[1].classList.remove("open")
