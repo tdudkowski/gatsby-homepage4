@@ -39,18 +39,19 @@ const GatsbyBlog = ({ data, location }) => {
 
             <h3>Co dalej?</h3>
 
-            <p>W ciągu dwóch tygodni napisałem / dopracowałem siedem wpisów, które były już wcześniej w różnym stopniu gotowe, w tym dwa kompletnie od zera. To było interesujące, ale czekają inne obowiązki, m.in. <a href="/blog/enigma">ruszyłem z cyklem wpisów o Enigmie</a>. Dlatego nastąpiła dłuższa przerwa. Możliwe, że w w tym roku jeszcze pojawią się kolejne wpisy.</p>
+            <p>W lipcu i sierpniu 2021 w ciągu dwóch tygodni napisałem / dopracowałem siedem wpisów, które były już wcześniej w różnym stopniu gotowe, w tym dwa kompletnie od zera. To było interesujące, ale potem nastąpiły inne obowiązki, m.in. <Link to="/blog/enigma">ruszyłem z cyklem wpisów o Enigmie</Link>. Dlatego nastąpiła dłuższa przerwa.</p>
+            
+            <p>Teraz w maju 2022 dodałem wpis o menu i w tym roku pojawią się kolejne wpisy, które jak sądzę zamkną ten cykl aż do czasu kiedy / jeśli w architekturze Gatsby'ego pojawia się poważne zmiany.</p>
 
             <p>Plan jest dość płynny, ale na tę chwilę przedstawia się następująco:</p>
 
             <ul>
-                <li>Blog cz. 2. dodatkowe elementy: paginacja, poprzedni / następny, publikacja danego dnia, komentarze...</li>
-                <li>Menu, kilka rozwiązań RWD: Hamburger, Dropdown i Mega Menu.</li>
+                <li>Blog cz. 2: chmura tagów, paginacja, poprzedni / następny, automatyczna publikacja danego dnia, komentarze...</li>
                 <li>Headless CMS: Wordpress, Drupal, Strapi i inne.</li>
                 <li>Integracje, szablony, PWA, SSR itp. itd.</li>
             </ul>
 
-            <p>Docelowo powinno wyjść pomiędzy 10 a 15 wpisów i w tej formule seria powinna się zamknąć do lata 2022. Oczywiście w miarę rozwoju Gatsby'ego będą się pojawiać nowości i dopóki będę zainteresowany tym frameworkiem, treść będzie aktualizowana.</p>
+            <p>Docelowo powinno wyjść około 12 wpisów i w tej formule seria powinna się zamknąć do jesieni 2022. Oczywiście w miarę rozwoju Gatsby'ego będą się pojawiać nowości i dopóki będę zainteresowany tym frameworkiem, treść będzie aktualizowana.</p>
 
             <p>Możliwe, że z czasem będę przenosił treść z wpisu do wpisu; może w ogóle inaczej to zorganizuję. Więc wszystko może się zmienić, ale w razie gdyby jakaś informacja zniknęła z dotychczasowego miejsca - ten adres: `https://dygresje.info/blog/gatsby` zostaje i nie ulegnie zmianie.</p>
 
@@ -66,7 +67,7 @@ const GatsbyBlog = ({ data, location }) => {
 
     </LayoutBlog >)
 }
-//^.(\bgatsby\b)?.$
+
 export default GatsbyBlog
 
 export const query = graphql`

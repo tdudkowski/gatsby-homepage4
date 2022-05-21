@@ -1,12 +1,12 @@
 import * as React from "react"
 import Layout from "../components/layout"
+
 const AboutMe = () => {
 
     return (
         <Layout>
             <section className="section-meta">
                 <h2>Tadeusz Dudkowski / O mnie</h2>
-
                 <h3>IT</h3>
 
                 <ul>

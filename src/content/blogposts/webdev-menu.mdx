@@ -4,9 +4,9 @@ section: "blog"
 subsection: "it"
 set: webdev
 date: 2022-05-19
-edited:
+edited: 2022-05-21
 image: ../blogimages/code-optimised.png
-tags: CSS, RWD
+tags: css, rwd, hamburger, js, javascript
 url: https://dygresje.info/blog/webdev-menu
 description: "Nawigacja i formularze to dwa najbardziej wymagające elementy frontendu. Większość wejść na stronę jest z urządzeń mobilnych - jak zrobić nowoczesne, responsywne menu i to zachowując prostotę kodu. RWD, Hamburger, Rozwijane menu (dropdown menu) i menu blokowe (Mega Menu)."
 ---
@@ -15,17 +15,21 @@ Stały adres serii wpisów o IT - [/blog/webdev](/blog/webdev)
 
 ### Wstęp
 
-Niniejszy wpis powstał przy okazji opracowania wpisu ["Gatsby cz. 8 - menu"](/blog/gatsby). Uznałem, że dobrze byłoby odseparować sam mechanizm opisywanych tam rozwiązań menu od rozwiązań typowych dla Gatsby'ego i Reacta i wykonać je w czystym HTML + CSS z minimalnym dodatkiem vanilla JavaScriptu. Dzięki temu łatwiej będzie je zrozumieć i ewentualnie w razie potrzeby dostosować do innych frameworków czy kontekstów technologicznych niż Gatsby.
+Niniejszy wpis powstał przy okazji opracowania wpisu ["Gatsby cz. 8 - menu"](/blog/gatsby-menu). Uznałem, że dobrze byłoby odseparować sam mechanizm opisywanych tam rozwiązań menu od rozwiązań typowych dla Gatsby'ego i Reacta i wykonać je w czystym HTML + CSS z minimalnym dodatkiem vanilla JavaScriptu. Dzięki temu łatwiej będzie je zrozumieć i ewentualnie w razie potrzeby dostosować do innych frameworków czy kontekstów technologicznych niż Gatsby.
 
 W takiej prezentacji najważniejsza jest prostota i przejrzystość samej mechaniki menu. Dlatego wygląd jest sprawą drugorzędną i jest opisany minimalną liczbą reguł. Zostaną zastosowane tylko dwie wersje rozdzielczości: dla telefonu i dla komputera, będzie więc tylko jeden breakpoint.
 
-Opiszę te same wersje menu, które znajdą się we wzmiankowanym wpisie o menu w Gatsby'm:
+Wpis ten obejmie tylko kwestie RWD i mechaniki menu, natomiast resztę, czyli np. zastosowanie glifów lub sprite'ów CSS do nadania menu przejrzystości pozostawiam czytelnikom.
+
+Od kilku lat większość wejść na strony WWW jest z urządzeń mobilnych, dlatego zaczniemy od sprawy podstawowej dla responsive web design (dalej: RWD) czyli tzw. hamburgera. Jest to rozpoznawalna przez użytkowników formuła menu polegająca na umieszczeniu skrótu do menu w typowej postaci trzech równoległych kresek (stąd określenie) umieszczonych w roku ekranu. Dzięki temu menu nie zajmuje miejsca, a po kliknięciu albo rozwija się w dół, albo wysuwa się z boku.
+
+Opiszę te same wersje menu, które znajdą się we wzmiankowanym wpisie o menu w Gatsbym:
 
 - najprostsze płaskie menu mające dwie wersje: pionową dla małych rozdzielczości i poziomą dla większych.
 - płaskie menu z Hamburgerem w wersji dla małych rozdzielczości.
 - Dropdown z Hamburgerem.
 - Mega Menu z Hamburgerem.
-- j.w. z tym, że w małej rozdzielczości submenu będzie wyjeżdżać w sposób podobny do Hamburgera.
+- j.w. z tym że w małej rozdzielczości submenu będzie wyjeżdżać w sposób podobny do Hamburgera.
 
 Wszystkie przedstawione tu modele są udostępnione na CodePen: [Menu - solutions](https://codepen.io/collection/JGKezQ?cursor=ZD0wJm89MCZwPTEmdj00).
 
@@ -274,9 +278,9 @@ HTML:
 </header>
 ```
 
-CSS jest tu podobny do płaskiego menu z poprzedniego przykładu z tym, że kontener menu ma ustawioną pozycję relative (3), dzięki czemu można do niego pozycjonować listę z elementami menu absolutnie (9) i co umożliwia umieszczenie jej poza ekranem z parametrami `width:100%; left:-100%;`.
+CSS jest tu podobny do płaskiego menu z poprzedniego przykładu, z tym że kontener menu ma ustawioną pozycję relative (3), dzięki czemu można do niego pozycjonować listę z elementami menu absolutnie (9) i co umożliwia umieszczenie jej poza ekranem z parametrami `width:100%; left:-100%;`.
 
-Kluczowym elementem mechanizmu jest zastosowanie selektora rodzeństwa `.open ~ .menu-list` (20) - otóż klasę `.open` zmieniamy tylko w Hamburgerze, a dzięki temu selektorowi możemy animować listę zmieniając left na zero. Identyczne parametry transition zapewniają, że animacja Hamburgera i menu jest synchroniczna.
+Kluczowym elementem mechanizmu jest zastosowanie selektora rodzeństwa `.open ~ .menu-list` (20) - otóż klasę `.open` zmieniamy tylko w Hamburgerze, a dzięki temu selektorowi możemy animować listę, zmieniając 'left' na zero. Identyczne parametry transition zapewniają, że animacja Hamburgera i menu jest synchroniczna.
 
 Poniższy CSS ma charakter referencyjny - żeby nie powiększać listingów ponad miarę, powtarzające się reguły w następnym menu reguły oznaczę komentarzem `/* tak samo jak w przykładzie referencyjnym */`.
 
@@ -317,7 +321,7 @@ Poniższy CSS ma charakter referencyjny - żeby nie powiększać listingów pona
 
 I tutaj wreszcie mamy JavaScript: pobranie elementu z DOM-u (1) i na kliknięcie włączenie akcji przełączającej klasę w tym elemencie (2). Można to zrobić w jednej linii, ale tak jest bardziej przejrzyste.
 
-Dodałem też funkcję usuwającą klasę .open przy zmianie rozdzielczości do powyżej breakpointa (5-8). Ponieważ w rozdzielczości desktopowej Hamburger jest ukryty JS może działać tylko w małej rozdzielczości.
+Dodałem też funkcję usuwającą klasę .open przy zmianie rozdzielczości do powyżej breakpointa (5-8). Ponieważ w rozdzielczości desktopowej Hamburger jest ukryty, JS może działać tylko w małej rozdzielczości.
 
 JS:
 
@@ -336,9 +340,9 @@ window.addEventListener('resize', closeExpanded);
 
 ### Dropdown menu z Hamburgerem
 
-HTML dalej jest - i pozostanie - tak prosty jak to tylko jest możliwe. Lista Dropdown znajduje się w elemencie listy nadrzędnej, ale poza (zaraz po) odnośnikiem.
+HTML dalej jest - i pozostanie - tak prosty, jak to tylko jest możliwe. Lista Dropdown znajduje się w elemencie listy nadrzędnej, ale poza (zaraz po) odnośnikiem.
 
-Tutaj trzeba podjąć pierwsze wykluczające decyzje dotyczące tego jak ma się zachowywać menu. Wykluczające dlatego, że trzeba wyłączyć pewne możliwości. Tutaj zakładam, że dla rozdzielczości desktopowej lepszym tzn. wygodniejszym dla użytkownika rozwiązaniem jest akcja na najechanie kursorem (:hover) i brak akcji na kliknięcie. Natomiast dla urządzeń mobilnych najechanie jest prawie zawsze złym rozwiązaniem i tu pozostaje tylko kliknięcie (pacnięcie). Wadą takiego połączenia jest jego niespójność.
+Tutaj trzeba podjąć pierwsze wykluczające decyzje dotyczące tego, jak ma się zachowywać menu. Wykluczające dlatego, że trzeba wyłączyć pewne możliwości. Tutaj zakładam, że dla rozdzielczości desktopowej lepszym tzn. wygodniejszym dla użytkownika rozwiązaniem jest akcja na najechanie kursorem (pseudoklasa `:hover`) i brak akcji na kliknięcie. Natomiast dla urządzeń mobilnych najechanie jest prawie zawsze złym rozwiązaniem i tu pozostaje tylko kliknięcie (pacnięcie). Wadą takiego połączenia jest jego niespójność.
 
 HTML:
 
@@ -409,11 +413,11 @@ JavaScript jak poprzednio przełącza klasę `.open` dla Hamburgera. Drugim dzia
 
 Tutaj kod jest dużo bardziej rozbudowany.
 
-Zacznijmy od końca. Tak jak poprzednio przy przejściu do wyższych rozdzielczości trzeba odebrać klasę .open i to zarówno całemu menu (34) jak i wszystkim submenu (35-37). Pętla z licznikiem jest może prymitywna, ale zapewnia wydajność.
+Zacznijmy od końca. Tak jak poprzednio przy przejściu do wyższych rozdzielczości trzeba odebrać klasę .open i to zarówno całemu menu (34), jak i wszystkim submenu (35-37). Pętla z licznikiem jest może prymitywna, ale zapewnia wydajność.
 
 Przełączenie .open dla samego menu funkcją listToggle wiąże się z wyłączeniem .open dla wszystkich submenu, również robionym w pętli (21-26).
 
-Zupełnie nowym elementem jest funkcja sublistToggle (4-19), która na samym początku jest ograniczona w działaniu do rozdzielczości mobilnej (5). W drugim kroku wyłączamy .open jeżeli już jest i kończymy funkcję (8-11), co zapewnia naturalne działanie otwórz / zamknij. Jeżeli zaś kliknięte submenu jest zamknięte, to najpierw zamykamy wszystkie inne (13-15) a potem przez toggle (17; równie dobrze może być add) włączamy klasę .open.
+Zupełnie nowym elementem jest funkcja sublistToggle (4-19), która na samym początku jest ograniczona w działaniu do rozdzielczości mobilnej (5). W drugim kroku wyłączamy '.open' jeżeli już jest i kończymy funkcję (8-11), co zapewnia naturalne działanie otwórz / zamknij. Jeżeli zaś kliknięte submenu jest zamknięte, to najpierw zamykamy wszystkie inne (13-15), a potem przez toggle (17; równie dobrze może być add) włączamy klasę .open.
 
 JS:
 
@@ -464,7 +468,7 @@ window.addEventListener('resize', closeExpanded);
 
 ### Mega Menu z Hamburgerem
 
-Czasem, jeżeli trzeba przedstawić większą liczbę elementów menu, stosuje się bardziej zaawansowaną formę - menu blokowe, po angielsku najczęściej określane jako Mega Menu. Terminologia jest jest jak to zwykle w tak dynamicznej branży raczej zwyczajowa, zwykle się stosuje te nazwy które się zwykle stosuje, heh. Ale Mega Menu to najczęściej stosowane określenie, jakoś odnoszące się do obszerności. 
+Czasem, jeżeli trzeba przedstawić większą liczbę elementów menu, stosuje się bardziej zaawansowaną formę - menu blokowe, po angielsku najczęściej określane jako Mega Menu. Terminologia jest jak to zwykle w tak dynamicznej branży raczej zwyczajowa, zwykle się stosuje te nazwy, które się zwykle stosuje, heh. Ale Mega Menu to najczęściej stosowane określenie, jakoś odnoszące się do obszerności.
 
 Zobaczmy jak to rozwiązało [Adobe](https://www.adobe.com/) - po kliknięciu w element nadrzędny pokazuje się cały blok menu.
 
@@ -474,7 +478,7 @@ Po przejściu do rozdzielczości mobilnej menu chowa się w Hamburger, który kl
 
 Spróbujmy zrobić coś podobnego, korzystając z dotychczasowego kodu i upraszczając mechanikę do jednego stopnia operacji, tzn. po kliknięciu w element głównego menu rozwiną się wszystkie listy / elementy danego submenu. Wbrew pozorom jest to bardzo proste do zrobienia.
 
-HTML, żeby nie komplikować załóżmy, że wszystkie elementy submenu są listami:
+HTML, żeby nie komplikować, załóżmy że wszystkie elementy submenu są listami:
 
 ```html {numberLines}
 <header>
@@ -568,7 +572,7 @@ CSS:
 }
 ```
 
-Jak widać są to różnice bardzo niewielkie jak dla tak tak odmiennej konstrukcji menu i poza jednym wyjątkiem dotyczą stylowania menu w większej rozdzielczości.
+Jak widać, są to różnice bardzo niewielkie jak dla tak odmiennej konstrukcji menu i poza jednym wyjątkiem dotyczą stylowania menu w większej rozdzielczości.
 
 A JavaScript? Jest ten sam jak w poprzednim przykładzie.
 
@@ -576,7 +580,7 @@ A JavaScript? Jest ten sam jak w poprzednim przykładzie.
 
 ### Mega Menu z Hamburgerem v2
 
-W tej wersji mamy do czynienia z inną mechaniką submenu, które zamiast rozwijać się jak akordeon będzie wyjeżdżało z boku, w tym wypadku z prawej strony.
+W tej wersji mamy do czynienia z inną mechaniką submenu, które zamiast rozwijać się jak akordeon, będzie wyjeżdżało z boku, w tym wypadku z prawej strony.
 
 HTML jak w poprzednim przykładzie.
 
