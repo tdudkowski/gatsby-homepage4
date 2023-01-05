@@ -1,0 +1,252 @@
+---
+title: "Kryptoanaliza"
+comment: ""
+section: "it"
+subsection: "kryptologia"
+---
+
+### Zadanie
+
+Kryptoanaliza (Cryptanalysis z greckiego *kryptós*, "ukryty", i *analyein*, "rozwiązać") jest badaniem metod otrzymania znaczenia treści zaszyfrowanej wiadomości, bez dostępu do tajnej informacji, która normalnie jest do tego wymagana. Najczęściej chodzi o znalezienie tajnego klucza. Mówiąc nietechnicznie: jest to praktyka łamania kodu (*codebreaking* lub *cracking the code*).
+
+Oznacza także nie tylko próby ujawnienia treści zaszyfrowanych wiadomości, ale również złamanie bezpieczeństwa algorytmów i protokołów kryptograficznych. Zwykle wyklucza ataki, które nie są skierowane na rzeczywiste słabości kryptografii: metody takie jak przekupstwo, fizyczne wymuszenie, kradzież, keylogging itp. Chociaż te typy ataków są ważne w bezpieczeństwie informacji i obecnie są bardziej efektywne niż tradycyjna kryptoanaliza.
+
+Wprawdzie cel jest ten sam, metody i techniki zmieniły się drastycznie, zwiększając złożoność od metod wymagających pióra i papieru poprzez maszyny takie jak Enigma, aż po współczesne metody komputerowe. Nawet rezultaty kryptografii się zmieniły - nie jest już możliwy nieograniczony sukces w łamaniu szyfrów. Istnieje hierarchiczna klasyfikacja, określająca co składa się na atak.
+W połowie lat 70. pojawiła się nowa klasa kryptografii - asymetryczna, metody jej łamania są całkowicie odmienne i zwykle polegają na rozwiązywaniu czysto matematycznych problemów. Najbardziej znanym jest faktoryzacja liczb całkowitych.
+
+Może wyglądać na naturalnego przeciwnika kryptologii i do pewnego stopnia tak jest. Można widzieć ich rywalizację w historii kryptografii. Jednak bardziej precyzyjne będzie interpretowanie ich ról jako uzupełniających się - gruntowne zrozumienie kryptoanalizy jest konieczne do stworzenia bezpiecznej kryptografii.
+
+Trzeba przeanalizować co atakujący może wiedzieć i zrobić, by dowiedzieć się, jaka jest tajna wiadomość, np. czy ma dostęp tylko do szyfrogramów, czy może dowiedzieć się lub odgadnąć jakieś korespondujące z nim jawne teksty; lub czy może wybrać jakiś arbitralny jawny tekst do zaszyfrowania (ciphertext only, znany jawny tekst, wybrany jawny tekst). Te scenariusze traktują wszystkie szyfry jako abstrakcyjne czarne skrzynki.
+
+Inne ataki są bazowane na implementacji szyfru, jeśli jest dostęp np. do TEMPEST lub zużycia mocy można złamać szyfry nie do złamania innymi metodami.
+
+Jeśli kryptosystem używa klucza lub hasła, narażony jest na BF. Często jest to najsłabszy punkt takiego systemu. Analiza liniowa lub różnicowa dotyczy kryptografii symetrycznej. Jeśli kryptografia polega na trudnych problemach matematycznych, algorytmy zadań takich jak faktoring stają się potencjalnymi narzędziami kryptoanalizy.
+
+### Podział ataków
+
+Charakterystyka ataków.
+
+Różnią się w możliwościach i jakim są zagrożeniem dla kryptosystemów, *certificational weakness* jest przykładem teoretycznego ataku, który prawdopodobnie nie znajdzie zastosowania w realnym świecie. Praktyczne znaczenie ataku jest zależne od odpowiedzi na poniższe trzy pytania:
+
+- Jaka wiedza i możliwości są potrzebne jako warunek wstępny? (co jest potrzebne do ataku?)
+- Ile dodatkowej tajnej wiedzy można wywnioskować? (czego można się dowiedzieć?)
+- Jaki wysiłek jest wymagany? (jaka jest złożoność obliczeniowa?)
+
+Uprzednia wiedza - scenariusze dla kryptoanalizy.
+
+Kryptoanaliza może zostać przeprowadzona pod pewną ilością założeń, co do tego, ile może zostać zaobserwowane lub odkryte o atakowanym systemie. Podstawowym punktem startowym jest założenie, że ogólny algorytm jest znany. Jest to zasada Shannona "*wróg zna system*". Jest to praktyczne i uzasadnione przypuszczenie, ponieważ z historii znana jest olbrzymia ilość tajnych algorytmów, które zostały szerzej poznane (szpiegostwo, zdrada lub odwrotna inżynieria) - czasem na skutek prostej dedukcji np. szyfr Lorenza, japoński PURPLE i wiele klasycznych mechanizmów.
+
+Inne założenia:
+
+- Znany szyfrogram (*Ciphertext-only*): atakujący ma dostęp do zbioru szyfrogramów lub kodowanych tekstów.
+- Znany jawny tekst (*Known-plaintext*): ma zestaw szyfrogramów i korespondujących z nimi jawnych tekstów.
+- Wybrany jawny tekst (wybrany szyfrogram) (*Chosen-plaintext (chosen-ciphertext)*): atakujący może otrzymać szyfrogram (jawny tekst) odpowiadający wybranemu przez niego jawnemu tekstowi (szyfrogramowi).
+- (*Adaptive chosen-plaintext*): jak w powyższym, z tym że atakujący może wybrać następny jawny tekst na podstawie informacji z poprzednich szyfrowań (analogicznie *Adaptive chosen ciphertext attack*).
+- (*Related-key attack*): jak w *chosen-plaintext attack*, poza tym, że atakujący może otrzymać szyfrogramy z dwóch różnych kluczy; klucze są nieznane, ale związek pomiędzy nimi jest znany, np. różnią się jednym bitem.
+
+Te rodzaje ataków różnią się łatwością zastosowania, ale pomimo tego kryptografowie przyjmują najbardziej ostrożne stanowisko i zakładają najgorszy przypadek w czasie projektowania algorytmów, uzasadniając to tym, że jeśli mechanizm będzie bezpieczny nawet wobec nierealnych zagrożeń, to powinien być odporny również na prawdziwą kryptoanalizę. To założenie często jest bardziej realistyczne, niż mogłoby to na pierwszy rzut oka wyglądać. W przykładzie ataku ze znanym jawnym tekstem: kryptoanalityk może się dowiedzieć lub domyślić najbardziej prawdopodobnej części jawnego tekstu (np. zaszyfrowany list zaczynający się od słów "Dear Sir" lub sesja komputerowa zaczynająca się od "LOGIN:"). Atak z wybranym jawnym tekstem jest mniej prawdopodobny, ale czasem możliwy: można zmusić do przekazania znanej wiadomości w zaszyfrowanej formie. *Related key atak* jest głównie teoretyczny, ale może wystąpić w niektórych sytuacjach, np. kiedy używa się szyfrów blokowych do tworzenia funkcji haszujących.
+
+Klasyfikacja sukcesu.
+
+Rezultat kryptografii może się różnić także przydatnością, np. kryptograf Lars Knudsen (1998) dokonał klasyfikacji różnych typów ataków na szyfry blokowe według ilości i jakości odkrytych tajnych wiadomości:
+
+- całkowite złamanie (*Total break*) - atakujący wywnioskował tajny klucz.
+- ogólne poznanie (*Global deduction*) - atakujący ujawnia funkcjonalny odpowiednik algorytmu (*functionally equivalent algorithm*) szyfrującego i rozszyfrującego, ale nie poznaje klucza.
+- lokalne poznanie (*Instance (local) deduction*) - atakujący odkrywa dodatkowe jawne teksty (lub szyfrogramy) uprzednio nieznane.
+- wywnioskowanie informacji (*Information deduction*) - atakujący pozyskuje trochę informacji Shannona o jawnych tekstach (lub szyfrogramach) uprzednio nieznanych.
+- rozpoznanie algorytmu (*Distinguishing algorithm*) - atakujący jest w stanie odróżnić szyfr od szumu.
+
+Stosuje się to też do ataków na inne typy algorytmów kryptograficznych.
+
+Złożoność.
+
+Ataki mogą być także scharakteryzowane przez ilość wymaganych zasobów:
+
+- Czas - ilość "podstawowych operacji" jakie muszą być wykonane (podstawowe instrukcje komputerowe takie jak dodanie, XOR, przesunięcie itp. lub całe metody szyfrujące).
+- Pamięć - ilość pamięci wymagana do przeprowadzenia ataku.
+- Dane - wymagana ilość/wielkość jawnych tekstów i szyfrogramów.
+
+W akademickiej kryptografii słabość lub złamanie mechanizmu jest wyraźnie zdefiniowane. Bruce Schneier podsumowuje to tak:
+
+>Złamanie szyfru oznacza po prostu znalezienie słabości w szyfrze, która może zostać wykorzystana ze złożonością mniejszą niż BF, nieważne, że BF może wymagać 2128 operacji, atak wymagający 2110 operacji może być uważany za złamanie... mówiąc inaczej, złamaniem może być nawet certyfikacyjna słabość, dowód, że szyfr nie działa z reklamowaną sprawnością (Schneier, 2000).
+
+Kryptoanaliza kryptografii asymetrycznej:
+
+Bezpieczeństwo tych szyfrów zależy od czysto matematycznych problemów, więc oczywiste jest rozwijanie metod rozwiązania tych problemów. Jeśli zostanie odnaleziony jakiś udoskonalony algorytm i rozwiąże problem, narażony jest cały mechanizm. Np. bezpieczeństwo mechanizmu wymiany kluczy Diffie-Hellman zależało od trudności wyliczenia dyskretnego algorytmu. W 1983 Don Coppersmith znalazł obliczeniowo wykonalny sposób odnalezienia dyskretnych logarytmów i w ten sposób dał kryptoanalizie narzędzie do złamania kryptosystemu Diffie-Hellmana.
+
+Algorytm RSA pozostaje niezłamany, jego bezpieczeństwo zależy (częściowo) od trudności faktoryzacji liczb całkowitych - przełom w tej dziedzinie będzie miał wpływ na bezpieczeństwo RSA. W 1980 do złamania był 50-cyfrowy numer w 1012 krokach, do 1984 można było złamać 75-cyfrowy numer w 1012 krokach, postęp w technice komputerowej oznaczał także, że operacje te mogły zostać przeprowadzone dużo szybciej, prawo Moore'a przewiduje dwukrotne przyśpieszenie procesora w ciągu trzech lat.
+
+Inną różnicą wobec ataków na szyfry symetryczne jest to, że kryptoanaliza ma możliwość zrobienia użytku z wiedzy pozyskanej z klucza publicznego.
+
+Kryptoanaliza kwantowa.
+
+Komputery kwantowe są potencjalnym narzędziem w kryptoanalizie, ponieważ stany kwantowe mogą istnieć w superpozycji (np. splątanie), możliwy jest nowy paradygmat obliczeniowy i jeśli taki komputer zostanie zbudowany, równoległe obliczenia staną się normą i pewne aspekty kryptografii ulegną zmianie.
+
+Ponieważ komputer kwantowy będzie mógł przeprowadzić bardzo szybkie przeszukiwania BF, długości klucza będą musiały być dużo większe.
+
+Zwiększona moc obliczeniowa umożliwi ataki inne niż BF przeciwko obecnie odpornym szyfrom lub klasom algorytmów. Dla przykładu nie cały postęp w faktoryzacji wynika z rozwoju algorytmów, część była możliwa dzięki rozwojowi mocy obliczeniowej, a komputery kwantowe mogą znacząco zwiększyć możliwości faktoryzacji.
+
+To, czego nie można przewidzieć to przełom teoretyczny wymagający komputerów kwantowych, który umożliwiłby obecnie niepraktyczne (lub nawet nieznane) ataki.
+
+### Przykłady ataków
+
+#### Brute force BF
+
+Atak siłowy aka atak pełnego przeglądu: najprostsza forma ataku polegająca na wypróbowaniu wszystkich dających się przewidzieć możliwości aż do osiągnięcia sukcesu, czyli odzyskania jawnego tekstu, z którego powstał szyfrogram; przeszukanie całej przestrzeni klucza (*"keyspace"*). W większości przypadków odzyskanie jawnego tekstu nie jest równoważne ze złamaniem szyfru (czyli nie jest metodą odzyskania jawnych tekstów wszystkich szyfrogramów), zakończony sukcesem atak BF po prostu dostarcza jawne teksty zaszyfrowane konkretnym kluczem, chociaż może zapewnić wskazówki do dalszej kryptoanalizy.
+
+Generalnie rzecz biorąc, szyfr uważany jest za bezpieczny, jeśli nie ma mniej kosztownych (w kategoriach czasu, mocy obliczeniowej itp.) metod niż BF; Claude Shannon określił to terminem *"work factor"*. Ponieważ nie zostało to dowiedzione matematycznie dla żadnego innego szyfru niż OTP, więc najprawdopodobniej szyfr uznany dzisiaj za dobry, może się okazać niebezpieczny w niedalekiej przyszłości.
+
+Jeśli klucze były wybrane naprawdę losowo lub są przeszukiwane losowo, jawny tekst będzie dostępny przeciętnie po połowie wszystkich wypróbowanych kluczy. Założeniem leżącym u podstaw BF jest oczywiście, że algorytm szyfru jest znany.
+
+Po raz pierwszy wyraził to Auguste Kerckhoffs - podstawową zasadą kryptografii jest, że bezpieczeństwo w całości musi być zawarte w kluczu (*"security must reside only in the key"*), w czasach WWII Shannon wyraził to w stwierdzeniu "wróg zna system" (*'the enemy knows the system'*). Ze względu na dużą ilość dobrze rozpoznanych szyfrów, których szczegóły projektowe stały się z różnych powodów znane, była to doskonała rada dla kryptografów. Jednakże tylko kilka krajów opublikowało algorytmy używane do ochrony tajemnic państwowych.
+
+Algorytmy symetryczne.
+
+Od 2002 szyfry symetryczne używające kluczy o długości poniżej 64 bitów były bardziej lub mniej podatne na atak BF; np. DES powszechnie używany szyfr używający 56-bitowego klucza został złamany przez EFF w 1998, a później został złamany RC5 (używający klucza 64-bitowego). Dla aplikacji wymagających długotrwałego bezpieczeństwa uważa się, że rozsądne minimum długości klucza jest 256 bitów.
+
+Ale nawet jeśli używane są 256-bitowe lub dłuższe klucze dobrze zaprojektowanych szyfrów (jak AES), atak BF jest możliwy, jeśli klucze nie zostały wygenerowane we właściwy sposób. Wiele programów komercyjnych (lub na licencji shareware) dumnie reklamuje bezpieczeństwo kluczy wygenerowanych przy pomocy wymyślonych przez użytkownika haseł. Ponieważ użytkownicy rzadko używają kluczy o właściwej entropii, te systemy są w praktyce łatwe do złamania. Niektóre produkty nawet ograniczają maksymalną liczbę znaków, jaką użytkownik może wprowadzić do długości poniżej właściwej frazy hasła. Oto przykłady haseł lub frazy haseł, które mogą zapewnić 128-bitowe bezpieczeństwo, jeśli są wytworzone przypadkowo i trzymane w tajemnicy:
+
+- litery jednakowej wielkości (potrzebne 28 znaków): sqrnf oikas ocmpe vflte krbqa jwf
+- litery różnych wielkości, numery i znaki specjalne (potrzebne 20 znaków): iTb.\\ /&/-} it/P; ^+22q
+- fraza hasła wygenerowana przy pomocy diceware (potrzebne 10 słów): serf bare gd jab weld hum jf sheet gallop neve
+
+Prawie nikt nie używa haseł tej złożoności, jednym rozwiązaniem jest zaakceptowanie mniejszej siły, 16-literowe lub 6 słów diceware zapewnia 75-bitowe bezpieczeństwo, wystarczające do ochrony przed najpotężniejszymi agencjami kryptoanalitycznymi.
+
+Częściowym rozwiązaniem jest użycie KDF (Key Derivation Function), które przetwarza hasło w klucz za pomocą serii przekształceń matematycznych, co znacznie utrudnia atak BF. W praktyce ta technika dodaje 10 do 20 bitów siły do hasła, dostatecznie by można było używać łatwych do zrozumienia haseł, ale zbyt mało by zabezpieczyć krótkie hasła używane przez większość ludzi. Niestety niewiele produktów bezpieczeństwa używa tej technologii.
+
+Dobrym rozwiązaniem jest przechowywanie losowo generowanych haseł o pełnej mocy w zabezpieczonym przed sfałszowaniem tokenie, chronionym wewnętrznie przez hasło lub PIN.
+
+Algorytmy asymetryczne.
+
+Jeśli chodzi o algorytmy asymetryczne, sytuacja jest bardziej skomplikowana i zależy od konkretnego algorytmu szyfrowania.
+
+- [Brute force attack](http://en.wikipedia.org/wiki/Brute_force_attack)
+
+#### Atak słownikowy
+
+W kryptoanalizie oznacza odkrycie hasła poprzez wypróbowywanie listy prawdopodobnych możliwości, często listy słów ze słownika. To odróżnia go od ataku brute force, gdzie wypróbowywane są wszystkie możliwości. Np. można próbować odgadnąć hasło w komputerze w kraju anglojęzycznym, szyfrując każde z listy angielskich słów i porównując każde zaszyfrowanie z przechowywanymi zaszyfrowanymi wersjami haseł użytkowników. Użytkownicy często wybierają niewłaściwe hasło (łatwe do odgadnięcia lub złamania). Ponieważ słowniki większości ludzkich języków (nawet tych już nieużywanych) są teraz łatwo dostępne w internecie, użycie mało znanych języków obcych (np. słów maoryjskich) już nie chroni przed atakiem słownikowym.
+
+Metodą pozwalająca na znaczne zwiększenie skuteczności takiego ataku jest zaszyfrowanie i przechowywanie listy zaszyfrowanych haseł posortowanych według zaszyfrowanej "wartości". Wymaga to dużej pamięci i często jest czasochłonne, ale dzięki temu atak jest właściwie natychmiastowy, co jest szczególnie efektywne, jeśli na raz łamie się dużą listę haseł.
+
+Solenie może zmusić zaszyfrowany słownik do osobnego przeliczania przy każdym znalezionym haśle.
+
+Przykład ataku słownikowego z WWII, kiedy brytyjscy kryptoanalitycy pracujący nad niemieckimi wiadomościami szyfrowanymi Enigmą używali niemieckiego słowa "eins" jako części słownikowego ataku, słowo to pojawiało się w 90% wszystkich wiadomości szyfrowanych Enigmą, a klawiatura Enigmy nie miała cyfr (więc niektórzy mogliby to zakwalifikować jako atak ze znanym jawnym tekstem).
+
+Clifford Stoll "The Cuckoo's Egg" - relacja z ataku słownikowego na zaszyfrowane hasła przechowywane w pliku passwd w systemie uniksowym. Współpracował z nim Robert Morris, który wprowadził KDF.
+
+- [Dictionary attack](http://en.wikipedia.org/wiki/Dictionary_attack)
+
+#### MITM (man in the middle)
+
+Atak polegający na podszywaniu się pod jedną ze stron komunikacji; wygląda to tak: Alice chce połączyć się z Bobem, Mallory śledzi kanał łączności i podaje się za Boba (np. modyfikując dane DNS lub wysyłając swój adres w odpowiednim momencie), przekazuje swój klucz publiczny jako klucz Boba i jednocześnie nawiązuje połączenie z Bobem, a otrzymane od niego dane przekazuje Alicji; uczestniczy więc w transmisji jako niewidzialny element, przechwytując hasła i inne tajne dane. Metoda ta nie wymaga ani znajomości hasła, ani łamania szyfru.
+
+```
+Alice <-[klucz Alicji]- -[klucz Mallory'ego 1]-> Mallory <-[klucz Mallory'ego 2]- -[klucz Boba]-> Bob
+```
+
+Zabezpieczenia: procedury certyfikacyjne, śledzenie opóźnień, używanie równocześnie kilku kanałów łączności.
+
+#### Atak przez powtórzenie (*replay attack*)
+
+Pewna poprawna informacja - np. przechwycona podsłuchem - jest w złych intencjach powtórnie wysyłana przez napastnika w celu uzyskania dostępu; najczęściej dotyczy to haseł.
+
+- [Replay attack](http://en.wikipedia.org/wiki/Replay_attack)
+
+#### Ze znanym szyfrogramem (*known ciphertext attack*)
+
+Sytuacja gdzie atakujący dysponuje tylko szyfrogramem. Atak jest udany, jeśli związany z nim jawny tekst jest odczytany lub jeszcze lepiej, jeśli odkryty jest klucz. Możliwość uzyskania jakiejkolwiek informacji z szyfrogramu jest także uważana za sukces, np. jeśli utrzymywany jest ciągły ruch danych dobrze, jeśli można odróżnić prawdziwe wiadomości od fałszywych. Nawet sama informacja, że pozorny szum zawiera szyfrogramy, może być pomocą dla napastnika.
+W historii kryptografii wczesne szyfry były systematycznie łamane przy użyciu wyłącznie szyfrogramu.
+
+Istnieje wiele technik analizy statystycznej - np. analiza częstotliwościowa *frequency analysis*. Mechaniczne szyfrowanie urządzeniami podobnymi do Enigmy uczyniło takie ataki dużo trudniejszymi. Jednakże wady Enigmy (konstrukcyjne i błędy w użyciu), pozwoliło polskim i brytyjskim kryptografom na przeprowadzenie skutecznego ataku ze znanym szyfrogramem.
+
+Wprowadzenie elektroniki i komputerów do kryptografii utrudniło takie ataki, ponieważ wszystkie współczesne szyfry są przed nimi chronione już na etapie projektowania - testowanie nowego szyfru zajmuje wiele lat i składa się także z wyczerpujących testów dużych ilości szyfrogramu poddanych próbom czy czymkolwiek się różnią pod względem statystycznym od przypadkowego szumu.
+
+Nieprawidłowe użycie szyfrów lub zastosowanie niepewnej wartości algorytmów, które nie były przedmiotem skrupulatnych badań naraża system:
+
+- wczesne wersje Microsoft PPTP virtual private network używały tego samego klucza dla nadawcy i odbiorcy (a późniejsze miały inne problemy)
+- szyfry mające za małą przestrzeń klucza są przedmiotem ataku BF ograniczonego tylko do szyfrogramu polegającego po prostu na wypróbowaniu wszystkich możliwych kluczy. Wszystko, co jest potrzebne to możliwość odróżnienia prawidłowego jawnego tekstu od przypadkowego szumu, co nie jest problemem w przypadku języków naturalnych. Szyfry dodatkowo osłabia fakt, że użytkownicy rzadko haseł choćby zbliżonych do entropii przestrzeni klucza.
+
+- [Ciphertext-only attack](http://en.wikipedia.org/wiki/Ciphertext-only_attack)
+
+#### Atak ze znanym tekstem jawnym (*known plaintext attack*)
+
+Atak na bezpieczeństwo szyfru, w którym znane jest jedna lub więcej par tekstu jawnego i odpowiadającego mu szyfrogramu; jedyną brakującą rzeczą jest klucz.
+
+W Bletchley Park usiłowano zmusić Niemców do wyprodukowania wiadomości ze znanym jawnym tekstem. Znane jawne teksty nazywano ściągami (ang. *cribs*) a mechanizmy zmuszania Niemców do wyprodukowania ich "ogrodnictwem" (ang. *"gardening"*).
+
+- [Known-plaintext attack](http://en.wikipedia.org/wiki/Known-plaintext_attack)
+
+#### Atak urodzinowy (*birthday attack*)
+
+Typ ataku wykorzystujący paradoks urodzin.
+
+Podpisy cyfrowe mogą być podatne na taki atak: wiadomość *m* jest zwykle podpisana przez pierwsze przetworzenie *f(m)*, gdzie f jest kryptograficzną funkcją haszującą i wtedy używa się pewnego klucza prywatnego, żeby podpisać *f(m)*. Załóżmy, że Bob chce oszukać Alice, żeby podpisała oszukańczą umowę. Bob przygotowuje poprawny kontrakt *m* i oszukańczy *m'*. Odnajduje pewną ilość miejsc, które mogą zostać zmienione bez zmiany znaczenia (umieszcza przecinki, spacje, puste wiersze itp.). Tworzy dużą ilość wariacji *m*, które wszystkie są poprawnymi umowami, w ten sam sposób tworzy dużą liczbę wariacji oszukańczej umowy *m'*. Wtedy stosuje funkcję haszującą do wszystkich tych umów, tak aby odnaleźć wersje *m* i *m'*, które mają tę samą wartość haszu *f(m) = f(m' )*. Kiedy już taką znajdzie daje Alice poprawną wersję umowy *m* do podpisu. Wtedy może ten podpis dołączyć go do oszukańczej umowy. Poprawny podpis zaświadcza, że Alice podpisała oszukańczą umowę.
+
+Atak urodzinowy może zostać również zastosowany do przeliczenia logarytmów dyskretnych. Załóżmy, że *x* i *y* są elementami pewnej grupy i *y* jest potęgą od *x*. Chcemy znaleźć wykładnik *x*, który daje *y*. Atak urodzinowy przelicza *xr* dla wielu losowo wybranych liczb całkowitych *r* i przelicza *yx-s* dla wielu losowo wybranych liczb całkowitych *s*. Po jakimś czasie można znaleźć trafienie *xr = yx-s*, które oznacza *y = xr+s*.
+
+Jeśli grupa ma *n* elementów, wtedy najprostsza metoda wypróbowywania wszystkich wykładników zabiera przeciętnie około *n/2* kroków, atak urodzinowy jest znacząco szybszy i zabiera przeciętnie niewiele ponad *2√n*.
+
+- [Birthday attack](http://en.wikipedia.org/wiki/Birthday_attack)
+
+#### Atak z wybranym tekstem jawnym (ang. *chosen plaintext attack*)
+
+Zakłada, że atakujący ma możliwość wybrania dowolnego tekstu jawnego do zaszyfrowania i otrzymania odpowiadającego mu szyfrogramu, celem takiego ataku jest pozyskanie dalszych informacji, najczęściej tajnego klucza.
+
+Z pozoru wygląda na zupełnie nierealistyczny model, jest nieprawdopodobne, żeby atakujący zmusił człowieka do zaszyfrowania dużych ilości jawnego tekstu, który jest wybrany przez atakującego. Jednakże współczesna kryptografia jest zaimplementowana w oprogramowaniu i sprzęcie, ma wiele zastosowań, w których tego typu atak jest łatwy do przeprowadzenia.
+
+Można wyróżnić dwie formy ataku:
+
+- seryjny (ang. *batch chosen-plaintext attack*) - atakujący wybiera wszystkie jawne teksty przed zaszyfrowaniem
+- adaptacyjny (ang. *adaptive chosen-plaintext attack*) - analiza szyfrogramów z kolejno wybieranych jawnych tekstów, wybierane są na podstawie informacji uzyskiwanych z analizy poprzednich szyfrogramów
+
+Każdy szyfr odporny na ten rodzaj ataku jest również odporny na atak ze znanym tekstem jawnym oraz atak ze znanym szyfrogramem. Konwencjonalne szyfry symetryczne są często wrażliwe na taki atak, np. kryptoanaliza różnicowa szyfrów blokowych.
+
+Pewnym rodzajem tego ataku było "ogrodnictwo" (technika używana przez brytyjskich kryptografów w czasie WWII).
+
+- [Chosen plaintext attack](http://en.wikipedia.org/wiki/Chosen_plaintext_attack)
+
+#### Atak z wybranym szyfrogramem (ang. *chosen ciphertext attack*)
+
+Atakujący wybiera szyfrogram i powoduje jego odszyfrowanie nieznanym kluczem. Dla samo-synchronizującego się szyfru strumieniowego, taki atak może być przydatny, jeśli klucz użyty do zaszyfrowania każdego bajtu zależy od poprzedniego szyfrogramu. Możliwe jest użycie tego ataku, żeby dostać wybraną wiadomość podpisaną RSA, jeśli wiadomości są podpisane bez haszowania.
+
+Pewną wersją tego ataku jest wysłanie dużej liczby szyfrogramów do odszyfrowania, użycie tego odszyfrowania do wybrania następnych szyfrogramów i stopniowo ujawnienia informacji o zaszyfrowanej wiadomości lub samym kluczu szyfrującym. Te ataki mogą zostać przeprowadzone przeciwko różnym mechanizmom klucza publicznego, włączając w to RSA. Można temu zapobiec, stosując właściwe użycie haszowania i sprawdzanie redundancji.
+
+- [Chosen ciphertext attack](http://en.wikipedia.org/wiki/Chosen_ciphertext_attack)
+
+#### Socjotechnika / SE (Social Engineering)
+
+W dziedzinie bezpieczeństwa komputerowego oznacza sprawianie przez oszustwo, by ludzie ujawniali istotne dane o systemie komputerowym. Powszechnie spotykany w internecie.
+
+Inżynieria społeczna to zestaw metod mających na celu uzyskanie niejawnych informacji przez oszusta. Przykładem może być sytuacja, w której cracker podszywa się pod inną osobę i usiłuje przekonać pracownika firmy, żeby podał mu swoje hasła. Dzięki temu może włamać się do systemu. Skuteczność inżynierii społecznej opiera się na ufności ofiar oraz ich niewystarczającej wiedzy informatycznej.
+
+Ataki SE są bardzo powszechne i są sposobem na zaatakowanie systemów odpornych na inne rodzaje ataków - np. na komputery nie połączone z internetem. 
+
+Powszechny - i uzasadniony - pogląd pośród ekspertów w tej dziedzinie głosi, że użytkownicy są najsłabszym ogniwem procedur bezpieczeństwa.
+
+Popularnym współcześnie przykładem ataku SE jest użycie załączników e-mail, które zawierają złowrogi ładunek (np. taki, który z komputera ofiary wysyła olbrzymie ilości spamu). Po tym, jak producenci programów pocztowych i webmaili wyłączyli automatyczne uruchamianie załączników, użytkownicy muszą sami je uruchamiać i wielu tak czyni.
+
+Być może najprostszym, ale wciąż skutecznym atakiem jest przekonanie użytkownika, że jest się administratorem i prosząc go o hasło w celach administracyjnych. Użytkownicy internetu ciągle dostają wiadomości z żądaniem haseł lub informacji o kartach kredytowych w celu 'ustawienia konta', 'przedłużenia ustawień' lub innych działań nazywanych fiszingiem.
+
+Użytkownicy muszą być regularnie pouczani, żeby nigdy nie ujawniać istotnych informacji ludziom podającym się za administratora. Tak naprawdę administratorzy w ogóle nie potrzebują znać hasła użytkowników do przeprowadzenia zadań administracyjnych. Ale nawet naiwne oszustwo może okazać się zbędne - w badaniu Infosurvey 90% pracowników biurowych dało swoje hasła w zamian za tani długopis.
+
+Nawet najlepsze algorytmy kryptografii nie uchronią ludzi przed ich własną niewiedzą. Posługując się inżynierią społeczną, można np. przekonać jednego z użytkowników ebanku, że jest się pracownikiem działu bezpieczeństwa. Wystarczy wysłać mu e-mail z linkiem do strony łudząco podobnej do bankowej. Użytkownik wchodzi na nią, wpisuje swoje hasła i można pozbawić go wszystkich pieniędzy.
+
+Mówi się, że tylko wyłączony komputer jest odporny na atak. Jednak wystarczy zadzwonić o 2:00 AM do ochroniarzy. Udajemy przez telefon ważnego prezesa firmy i przekonujemy ich, żeby włączyli ten komputer. Potem instruujemy ich jak zainstalować naszego trojana i firmowy intranet jest już nasz.
+
+Stosowanie technik inżynierii społecznej jest przestępstwem ściganym przez prawo polskie. Podszywanie się pod inną osobę oraz przejmowanie danych niejawnych jest zagrożone karą pozbawienia wolności. Instytucje publiczne oraz firmy muszą wprowadzać systemy weryfikacji tożsamości. Konieczne jest uczenie zasad bezpieczeństwa nie tylko pracowników działu informatycznego, ale również wszystkich innych.
+
+- [Social engineering (computer security)](http://en.wikipedia.org/wiki/Social_engineering_(computer_security))
+
+Dlaczego to działa?
+
+- władza: większość ludzi ma tendencję do wykonywania poleceń pochodzących od kierownictwa, socjotechnik może wmówić ofierze, że jest szefem lub wykonuje ważne dla niego zadanie, działa na jego polecenie
+- sympatia: ludzie okazują chęć do współpracy / pomocy, jeśli spotykają kogoś sympatycznego lub mającego podobne podejście do życia, pozory bliskości (pomocny w przyszłej karierze, dobrze się prezentujący człowiek)
+- wzajemność: socjotechnik może wmówić ofierze, że pomógł jej, chroniąc przed kłopotami, wykonał jakąś pożyteczną dla niej pracę (chociaż wcale nie musiał); np. informatyk, który pomaga usunąć nowego wirusa
+- konsekwencja: jeśli wcześniej ogłosiło się poparcie w jakiejś sprawie, wykonało już jeden drobiazg ciężko nagle się wycofać (instruktor polityki bezpieczeństwa)
+- przyzwolenie społeczne - jeśli inni już coś zrobili to my też (ankieter przemycający kilka istotnych pytań w ankiecie)
+- rzadka okazja - np. pierwszych 300 osób, które założą konto na jakiejś tam stronie, ma szansę wygrać nagrodę i podają dla wygody taką samą nazwę użytkownika i hasło
+
+Podstawowym działaniem jest zdobywanie informacji uwierzytelniających, które pozwolą uzyskać fałszywą tożsamość i używając jej zmuszenie ofiary do określonego działania [Inżynieria społeczna (informatyka) (pl.)](http://pl.wikipedia.org/wiki/Inżynieria_społeczna_(informatyka))
+
+- Kacper Szurek ["Security awareness - socjotechnika" [YT 1:34:13]](https://www.youtube.com/watch?v=j9dknd0By7M)
+- Derren Brown ["Derren Brown - The Heist | FULL EPISODE" [YT 48:32]](https://www.youtube.com/watch?v=HDtMMsFoHuY)

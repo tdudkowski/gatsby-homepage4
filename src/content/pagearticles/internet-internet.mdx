@@ -1,0 +1,211 @@
+---
+title: "Internet"
+comment: ""
+section: "it"
+subsection: "internet"
+---
+
+Internet - sposób funkcjonowania
+
+### Organizacyjnie
+
+Internet jest to jak sama nazwa (międzysieć) wskazuje sieć łącząca wiele sieci.
+Poszczególne sieci są przyłączone w hierarchicznej strukturze, mniejsze sieci są częściami większych struktur. Przy takiej topologii przyłączenie nowej sieci jest proste i wymaga tylko uzgodnienia z osobami zarządającymi siecią do której się przyłącza. Dzięki właściwościom stosu protokołół TCP/IP przyłączanie i odłączanie kolejnych segmentów nie wpływa na działanie pozostałych fragmentów internetu, ani nie wymaga żadnych zmian w konfiguracji komputerów znajdujących się w odległych podsieciach.
+
+Internet jako całość nie ma żadnej władzy, zarządu ani właściciela.
+Na najwyższym poziomie jest zbiorem połączonych ze sobą sieci szkieletowych. Każda z nich ma swojego właściciela (z reguły jest to jakaś firma telekomunikacyjna, bo musi mieć możliwość budowania łącz dalekiego zasięgu), który ustala panujące w niej reguły, ale jego władza jest ograniczona do własnej sieci.
+Generalną zasadą jest, że "mniejszy płaci większemu". Jeśli łaczą sie podobne sieci nic nie płacą lub rozliczają się w oparciu o róznice ruchu w obu kierunkach, ale sieci miejskie płacą krajowym, instytycje sieciom miejskim itd. Właściciel każdej sieci lokalnej może nią zarządzać według swojego uznania uwzgledniając warunki umowy ze swoim ISP (np. zakaz przyłączania dalszych sieci)
+
+Choć nie ma władzy jednak pewne rzeczy muszą być centralnie koordynowane, np. rozdział adresów IP, musi zapewniać ich niepowtarzalność w skali całego internetu. Ktoś też musi ustalać standardy internetowe.
+Zagadnieniami takimi zajmują się wyłonione ze społeczności internetowej specjalne rady, komitety i grupy robocze.
+
+Najstarszym takim ciałem jest IAB (Internet Architecture Board), która powstała - jako Internet Control Configuration Board - jeszcze pod patronatem ARPA w 1979 i miała koordynować prace nad wprowadzaniem w sieci ARPANET protokołów TCP/IP.
+Gdy w 1983 ARPANET zamienił się w Internet zmieniła nazwę na Internet Activities Board i jej zadaniem było nadzorowanie całości zagadnień związanych z rozwojem technicznym internetu i chociaż rok póżniej internet przestał być zarządzany przez ARPA nadal funkcjonowała na mocy zwyczaju.
+W 1986 IAB wyłoniła dwie nowe, również nieformalne organizacje:
+
+- IETF (Internet Engineering Task Force) - której zadaniem jest bezpośrednia techniczna praca nad protokołami internetowymi
+- IRTF (Internet Research Task Force) - zajmująca się bardziej dalekosiężnymi projektami badawczymi związanymi z internetem
+
+W 1992 powstało ISOC (_Internet Society_) Jej podstawowym celem było ułatwienie korzystania i przybliżenie technologii internetowych, ale docelowo stała się odpowiedzialna za rozwijanie standardów i technlogii umożliwiających rozwój internetu.
+Zostało założone w 1991 roku przez grupę osób z wieloletnim doświadczeniem w pracy na rzecz IETF. Głównym, pierwotnym celem ISOC-u było wsparcie pracy IETF i pokrewnych nieformalnych grup specjalistów zajmujących się rozwojem Internetu. Ze względu na całkowicie nieformalny charakter IETF miała poważne problemy przy organizowaniu swoich zjazdów i opłacaniu sekretariatu. Osoby zaangażowane w prace IETF nie chciały regulować statusu prawnego tego ciała, z obawy, że zabije to ideę tej nieformalnej instytucji.
+Z pewnego punktu widzenia to z ISOC wyłonił się IETF - prawa autorskie do wszystkich IETF RFC ma ISOC (chociaż są dostępne bez opłat i ograniczeń). W innej perspektywy ISOC wyrosło z IETF by wspierać całość jego prac w zorganizowany sposób a nie taki zadaniowy jak funkcjonuje IETF.
+
+IAB pod obecną już nazwą została włączona w jej struktury władz.
+Większość wysiłków standaryzacyjnych idzie przez IETF i IAB. Niektóre funkcje obu organizacji są wspierane przez dzielone zasoby znane jako Sekretariat (Secretariat).
+
+Obecnie IAB wybierana jest przez zarząd ISOC spośród kandydatur proponowanych przez IETF i pełni funkcje ciała doradczego dla ISOC oraz nadzorczego dla IETF, która nadal jest luźną grupą bez formalnego członkostwa stanowi siłę napędową rozwoju internetu, bo w jej dyskusjach powstają nowe pomysły dotyczące sieci.
+Z chwilą gdy osiągną status proponowanego standardu, podlegają zatwierdzeniu przez IAB i publikacji jako dokumenty RFC (_Request For Comments_) - ta nazwa wywodzi się z czasów wczesnego ARPANET-u, kiedy zatrudnieni przy budowie sieci informatycy zaczęli spisywać swoje uwagi i propozycje dla współpracowników w postaci pierwszych RFC nie mających jeszcze formalnego standardu. Obecnie treść dokumentów RFC określa podstawy funkcjonowania internetu.
+
+RFC są przeglądane przez ekspertów i zostają oznaczone według pewnej klasyfikacji:
+
+Required
+funkcje, które muszą zostać zaimplementowane w każdym stosie TCP/IP, niezależnie od platformy i systemu
+
+Recommended
+funkcje, które powinny być częścią każdego systemu opartego na TCP/IP, ale ich implementacja nie jest konieczna; najczęściej są implementowane ze względu na swoją przydatność
+
+Elective
+mogą być zaimplementowane ale nie są konieczne do poprawnej pracy
+
+Limited Use
+przeznaczone do celów specjalnych, nie wykorzystuje się ich do normalnego użytkowania, często tworzone w celu testów
+
+Not recommended
+standardy, które nie powinny zostać zaimplementowane
+
+Kiedy dokument przejdzie poszczególne ścieżki (Proposed Sandard, Draft Standard, Internet Standard) zostanie mu nadany RFC, który już nie jest później zmieniany. Jeśli zachodzi konieczność zmian w dokumencie publikowane jest uaktualnienie (weryfikacja) z nowym numerem. Ważna jest weryfikacja lub dokument później opublikowany (z większym numerem).
+IAB publikuje kwartalną notatkę IAB Official Protocol Standard, która weryfikuje RFC (podaje najnowsze wersje) aktualnie obowiązujących standardów.
+
+Z upoważnienia IAB rozdziałem adresów zajmuje się IANA a jej ramieniem wykonawczym jest InterNIC utworzona w 1993 przez AT&T i Network Solutions przy częściowym udziale finansowym NSF.
+Poza przydziałem numerów IP operatorom sieci szkieletowych zajmuje się utrzymywaniem głównych serwerów nazw oraz rejestracją poddomen użytkowników w gTLD (przedtem zajmowało się tym SRI NIC z Stanford Research Institute).
+InterNIC rozdziela grupy adresów pomiędzy operatorów sieci szkieletowych, którzy rozdzielają je pomiędzy operatorów mniejszych sieci itd. dzięki czemu zapewniona jest unikalność adresów pomiędzy wszystkimi komputerami w internecie. Na mocy umów z InterNIC (lub odpowiadającymi mu instytucjami w innych częściach świata, w Europie jest to RIPE) działają także instytucje administrujące adresami krajowymi.
+
+### Instytucje
+
+ISOC (Internet Society)
+
+Naczelny organ Internetu. Jego zadania to promocja i upowszechnianie dostępu do sieci, zapewnienie otwartego rozwóju. Jego członkowie spotykają się na konferencji raz w roku. Dla rozwiązania problemów technicznych powołuje rozmaite Task Forces.
+Powierzono mu zadanie ustanawiania norm technicznych obowiązujących w internecie oraz podejmowania decyzji o kluczowym znaczeniu i nadawania podlegającym jej organizacjom prestiżowych i jednoznacznie identyfikowalnych adresów WWW. W pewnym sensie reprezentuje użytkowników Internetu przed rządowymi agencjami odpowiedzialnymi za nadzór nad Internetem w poszczególnych krajach.
+Zgodnie z RFC 1602 określającym relacje między ISOC i IETF, ISOC wspiera IETF w tych wszystkich działaniach, które wymagają osobowości prawnej oraz pomaga w oficjalnych kontaktach między IETF i agencjami rządowymi, ale nie ma prawa w jakikolwiek sposób wypływać na tok prac podejmowanych w IETF.
+Po pewnym czasie jednak Internet Society zaczęła żyć własnym życiem i oprócz współpracy z IETF rozwinęła szereg innych działań. Obecnie ISOC organizuje wiele konferencji, z których nasłynniejsza jest ogólnoświatowa konferencja INET, wydaje 4 czasopisma elektroniczne, "opiekuje się" IETF i IANA, oraz przyznaje doroczne nagrody im. Jona Postela.
+Internet Society utrzymuje się z dobrowolnych datków swoich członków oraz z dotacji czynionych przez firmy i organizacje.
+Internet Society jest stowarzyszeniem całkowicie otwartym i demokratycznym. Może do niego przystąpić każda osoba fizyczna. Dla osób fizycznych nie ma żadnych opłat członkowskich. Wystarczy wypełnić deklarację członkowską dostępną na stronie www ISOC-u i wyrazić chęć należenia. Do Internet Society mogą też przystępować całe przedsiębiorstwa i organizacje.
+Władzą Internet Society jest jego Rada. Prezydium (Board of Trustees) to najwyższe gremium decyzyjne w składające się z 15 członków.
+Jej członkowie wybierani są na trzyletnią kadencję przez oddziały regionalne, wspierające ISOC firmy oraz członków IETF. Rada powołuje Zarząd, którego przewodniczący oraz szef sekretariatu są oficjalnie zatrudnieni, a reszta pracuje społecznie. Oprócz tego ISOC zatrudnia kilkanaście osób w swoich dwóch biurach - w USA i w Szwajcarii oraz opłaca działalność sekretariatów IETF i IANA, a także zespół redakcyjny dokumentów RFC.
+Prawnie Internet Society jest amerykańską organizacją edukacyjną non-profit zarejestrowaną w sądzie miejskim miasta Washington. Istnieje oddział polski: Internet Society Poland.
+
+IAB (Internet Architecture Board)
+
+"Okrągły stół" ekspertów od Internetu. Tutaj zapadają decyzje o najważniejszych standardach internetowych przygotowanych przez Task Forces.
+
+IETF (Internet Engineering Task Force)
+
+ITEF opracowuje standardy internetu. Składa się z rozmaitych grup roboczych zajmujących się aplikacjami, zarządzaniem, routingiem. Zadaniem jest rozwój i promocja standardów internetowych. Jest to otwarta, w całości składająca się z wolontariuszy organizacją, bez formalnego członkostwa ani wymagań wobec biorących udział w pracach.
+Jest zorganizowana w dużą liczbę grup roboczych, każda z nich zajmuje się jakaś określonym zagadnieniem. Razem AD z IETF Chair tworzą IESG (Internet Engineering Steering Group), który jest odpowiedzialny za całość prac IETF.
+Całościowo jest nadzorowany przez IAB, który jest odpowiedzialny przed ISOC.
+W początkch lat 90-tych IETF była chwalona przez prasę komputerową za szybkość, otwartość i szczupłość w porówaniu z powolnymi i opasłymi biurokratycznymi ciałami w rodzaju International Organization for Standardization i ITU-T. W okolicach 1993 stało się jasne, że internet stanie się potężnym i ważnym medium oraz, że wysiłki OSI zmierzają właściwie donikąd. Wtedy wielu specjalistów przyłączyło się do IETF, grupy robocze rozrosły się a ich prace zwolniły.
+Najbardziej jaskrawym przykładem tego problemu był moment kiedy Tim Berners-Lee stał się szefem W3C by osobiście przewodzić rozwojem standardów WWW, jak to później wyjaśnił w książce "Weaving the Web" stał się sceptykiem po wielu posiedzeniach IETF kiedy każdy zabierał głos a właściwie nic nie zostało zrobione.
+
+IRTF (Internet Research Task Force)
+
+Odpowiedzialny za perspektywiczny rozwój technicznych standardów internetowych.
+
+W3C (World Wide Web Consortium)
+
+Odpowiedzialne za standardy i rozwój WWW. Przewodniczącym jest Tim Berners-Lee.
+"gdy dojdziemy do punktu, w którym warunkiem odczytania strony będzie posiadanie określonego oprogramowania, wówczas World Wide Web przestanie być ogólnodostępny".
+
+IANA (Internet Assigned Numbers Authority)
+
+Najwyższa z organizacji odpowiedzialnych za przyznawanie nazw w Internecie. Działa na zlecenie ISOC i FNC. IANA przydziela swym organizacjom podrzędnym przestrzenie nazw (na przykład ".pl"), którymi zarządzają one samodzielnie. Całą tą pracę wykonywał kiedyś jeden człowiek - Jon Postel.
+IANA jest kontrolowana przez ICANN (Internet Corporation for Assigned Names and Numbers), ale ostateczną kontrolę nad _DNS root zone_ ma United States Department of Commerce.
+IANA deleguje lokalnych rejestratorów adresów IP - Regional Internet Registries (RIR). Każdy RIR przydziela adresy dla innego obszaru świata, zbiorowo tworzą część Numbers Resource Organization utworzonej w celu reprezentacji ich interesy oraz zapewnienia globalnej koordynacji działań.
+IANA deleguje alokację większych obszarów adresowych IPv4 (zwykle /8 lub więcej na raz) a każdy RIR działa już zgodnie ze swoją polityką, zwykle deleguje przypisanie mniejszych przestrzeni adresów IP (np. /19 /20).
+
+inne:
+
+- Federal Networking Council (FNC): odpowiedzialna za przydzielanie domen organizacjom rządowym, edukacyjnym i wojskowym (adresy internetowe z sufiksami ".gov", ".mil" i ".edu").
+- Asian Pacific Network Information Center (APNIC): Odpowiedzialny za nadawanie adresów internetowych (nazw domen) w obszarze azjatyckim.
+- Reseau IP Européen (RIPE): Odpowiedzialny za adresy internetowe w Europie i obszarach przyległych (między innymi adresy internetowe z końcówką ".pl", ".at" i ".fr").
+- InterNIC (Internet Network Information Center): Odpowiedzialny za domeny nie związane z konkretnym krajem, jak ".com", ".net", ".org". Był ciałem zarządzajacym przydziałem adresów IP, teraz zajmuje się tym ICANN
+- NASK: Naukowa i Akademicka Sieć Komputerowa odpowiedzialna za nadawanie nazw w polskiej domenie ".pl". Działa na zlecenie RIPE.
+- Internet Ad Hoc Committee: Opracowuje obecnie propozycję reformy w systemie międzynarodowych domen najwyższego poziomu (top level).
+
+### Technicznie
+
+Podstawowym wymogiem jaki wojsko postawiło przed siecią jest decentralizacja, dlatego współczesny internet jest związkiem wielu sieci istniejących w obrębie ustalonej wspólnymi standardami struktury. Ideą takiego rozwiązania było, żeby każdy komputer mógł nawiązać połączenie z każdym niezależnie od tego jak bardzo zróżnicowane są sieci do których należą.
+
+Kluczowym elementem tej struktury są rutery łączące sieci - są to mechanizmy zajmujące się przesyłaniem pakietów danych z jednej sieci do drugiej. Mogą miec postać sprzętową lub być programami funkcjonującymi w systemie operacyjnym. Część z nich jest połączona na stałe z internetem, inne nawiązują połączenie w razie potrzeby.
+Dzięki możliwości przekierowania drogi rutowania (np. w razie awarii) internet spełnił zadanie postawione przez wojsko - może funkcjonować pomimo uszkodzenia podsieci.
+
+Koncepcja ogólnoświatowej sieci zawdzięcza swoją uniwersalność temu, że pozwala na połączenie ze sobą podsieci o zupełnie odmiennych strukturach i typach okablowania (Ethernet, Token Ring, ATM, ISDN itd), zapewnia łączność pomiedzy różnymi systemami operacyjnymi i osprzętem sieciowym. Na te różnice składają się różne sposoby kodowania fizycznych adresów sieciowych, inne maksymalne wielkości pakietów danych oraz różne metody dołączania sum kontrolnych.
+Warunki współpracy określają uniwersalne standardy, które dbają by odmienne właściwości poszczególnych podsieci były przezroczyste dla aplikacji sieciowych - zajmuje się tym warstwa sieciowa i transportowa czyli TCP/IP
+
+Protokół IP definiuje 20-bajtowy nagłówek, który umieszczony przed właściwymi danymi pełni funkcję etykiety adresowej, oprócz adresu nadawcy i odbiorcy zawiera informacje dodatkowe: długość pakietu suma kontrolna i tzw. licznik stacji (TTL).
+
+Adres IP to 4-bajtowy numer składający się z:
+
+- Net-ID: identyfikuje sieć do której należy dany host; tą częścią zarządza IANA, co gwarantuje ich unikatowość
+- Host-ID: identyfikuje host w obrębie sieci lokalnej; nadawany jest przez administratora podsieci
+
+Ten podział jest podstawowym warunkiem sprawnego kierowania ruchem pakietów IP (tzw. ruting), gdy host wysyła pakiet już na początku dzięki porównaniu Net-ID jest w stanie określić czy adresat jest w tej samej sieci lokalnej. Jeśli nie to wysyła pakiet do rutera, który określa najlepszą drogę według tabeli rutingu składającej się z uaktualnianych ciągle danych jakie wymieniają między sobą rutery.
+Z punktu widzenia rutera wysłanie pakietu oznacza umieszczenie ich w odpowiedniej dla danej sieci ramce. Ponieważ żadna sieć nie jest w stanie na poziomie warstwy pakietowej obsługiwać pakietów IP przesyłki muszą zostać umieszczone w ramkach specyficznych dla danego protokołu. Dzięki temu nie będą się odróżniały od standardowych pakietów danej sieci.
+Ponieważ często zdarza się sytuacja, że pakiety IP są zbyt duże by je w całości przesłać w ramkach, ważnym elementem protokołu IP jest mechanizm fragmentacji danych. Jeśli sytuacja tego wymaga rutery mogą podzielić pakiet IP na kilka specyficznych dla danej sieci przesyłek i wysłać je kolejno. W nagłówku IP są pola pozwalające odpowiednio je złożyć.
+
+Wysyłany jest specjalny pakiet ARP Broadcast skierowany do wszystkich urządzeń w danej sieci. Każde z nich sprawdza czy zawarty w nim adres IP odpowiada własnemu numerowi i jeśli się zgadza odpowiada. Jeśli żadna nie odpowie oznacza to, że dany adres nie jest znany w tej sieci i jego transmisja zostaje przerwana.
+Ruch w sieci jest kontrolowany przez ICMP jego pakiety są priorytetowe. Określa sposób tworzenia i wymiany informacji sterujących pomiędzy ruterami lub ruterami i hostami. Np. jakiś ruter może ogłosić, że dana podsieć jest przeciążona i ruch należy skierować inną drogą, może na zapytanie ICMP przesłać informację o numerze Net-ID aktualnej podsieci lub jej masce.
+Z protokołu ICMP korzysta ping, popularna funkcja za pomocą której można sprawdzić obecność zdalnego hosta i zmierzyć czas transmisji nadawanych do niego pakietów.
+
+Aby dokonać identyfikacji konkretnej aplikacji, do której kierowane są pakiety TCP używa tzw. portów, których funkcję pełni 16-bitowa liczba. Najważniejszą informacją zawartą w nagłówku TCP jest identyfikator portu adresata i nadawcy. Gdy oprogramowanie sieciowe otrzyma pakiet TCP lub UDP może za pomocą numeru portu rozpoznać do jakiej aplikacji należy dana przesyłka.
+Większość aplikacji musi mieć pewność, że dana przesyłka dotarła do celu dlatego TCP korzysta z pomocy sum kontrolnych, numerów bloków oraz potwierdzeń do odbiorcy. Wszystkie przesyłki które nie dotarły do adresata lub uległy przekłamaniu są nadawane ponownie. Dopiero gdy określona liczba prób nie odniesie skutku transmisja jest przerywana a nadawca informowany o jej niepowodzeniu.
+
+Transmisja przy pomocy np. PPP wymaga dodatkowych protokołów, choćby po to by zaznaczyć gdzie pakiety IP się zaczynają i kończą (ponieważ poprzez modem są transmitowane bajt po bajcie).
+Najprostszym i najstarszym jest SLIP, który na końcu każdego pakietu IP dołącza odpowiedni bajt rozpoznawczy. Trochę lepszą jego wersją jest CSLIP, który nie przesyła całych nagłowków IP a tylko różnice pomiędzy nimi.
+Obecnie powszechnie używany jest PPP. Wykorzystuje do przesyłania danych nie tylko specjalną ramkę, ale otwiera również specjalny kanał komunikacyjny dla obu końców łącza co umożliwia:
+
+- sprawdzenie haseł
+- uzgodnienie opcji szyfrowania
+- podłączenie kilku łączy w celu przyspieszenia transmisji
+- przesyłanie pakietów z innych sieci niż IP (tunneling)
+- przypisywanie dynamicznego numeru hostowi inicjującemu połączenie
+
+Żeby przyłączyć się do internetu trzeba skorzystać z usług ISP, którym jest firma mająca wykupione podłączenie do niego i zajmująca się jego komercyjnym udostępnianiem.
+
+### Usługi
+
+BBS
+
+Wdzwaniana usługa udostępniania plików.
+
+E-mail
+
+Poczta elektroniczna
+
+Gopher (ang. świstak)
+
+Przodek WWW, wprawdzie samo WWW powstało wcześniej jednak zanim się rozwinęły odpowiednie programy Gopher przeżył krótki okres świetności.
+Umożliwia przeglądanie zasobów sieci przez prosty hierarchicznie skonstruowany system menu.
+Zapewnia dostęp do plików (graficznych, tekstowych, dźwiękowych), baz danych jak i system poszukiwania informacji (Veronica).
+Wyparty przez znacznie prostsze w użyciu i mające większe możliwości WWW.
+
+Fidonet
+
+W pełni amatorska sieć BBS-ów udostępnianych przez użytkowników.
+FTN Fidonet Technology Network.
+
+Finger
+
+Prosta usługa umożliwiająca sprawdzenie kto jest aktualnie zalogowany na serwerze internetowym.
+
+FTP
+
+Kopiowanie plików między komputerami
+Sieciowe archiwa FTP
+
+IRC (Internet Relay Chat)
+
+Interfejs natychmiastowej komunikacji tekstowej - sieciowe pogawędki w czasie rzeczywistym. Powstała by umożliwić kontakt w czasie rzeczywistym. Ostatnio wyparty przez czaty WWW oraz IM
+Rozmowy na IRC-u toczą się na tzw. kanałach, z których każdy ma swoją nazwę określającą tematykę (#polska, #wroclaw #pecet #sex)
+Trzeba połączyć się z serwerem za pomocą klienta IRC (np. irssi) i przyłączyć się do, któregoś z otwartych kanałów (są też dostępne za hasłem i ukryte) używająć unikalnego nicku.
+Uprzywilejowany użytkkownik, tzw. op (od "operator") może zmieniać tryb pracy kanału, temat, wyrzucać użytkowników, lub banować ich.
+
+Listy dyskusyjne
+
+Usługa bazująca na swoistym systemie dystrybucji emaila, umożliwia publiczną dyskusję za pośrednictwem listserwerów.
+
+Telnet
+
+Umożliwia pracę na zdalnym serwerze.
+
+Usenet
+
+Grupy dyskusyjne.
+
+WAIS (Wide Area Information Server - serwer informacji w sieciach rozległych)
+
+Umożliwiał przeszukiwanie rozproszonych baz danych za pomocą prostego interfejsu.
+Wyparty przez WWW.
+
+WWW (World Wide Web)
+
+Dokumenty hipertekstowe, najpopularniejsza usługa internetu.

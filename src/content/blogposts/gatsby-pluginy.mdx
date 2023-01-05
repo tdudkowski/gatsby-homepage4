@@ -1,0 +1,587 @@
+---
+title: "Gatsby cz. 5 - pluginy"
+section: "blog"
+subsection: "it"
+set: gatsby
+date: 2021-07-28
+edited: 2022-12-17
+image: ../blogimages/Gatsby_Monogram.png
+tags: react, gatsby
+description: "Najbardziej potrzebne pluginy: dostęp do plików, obrazki, SEO, breadcrumb itd."
+url: https://dygresje.info/blog/gatsby-pluginy
+---
+
+Stały adres serii wpisów o Gatsbym - [/blog/gatsby](/blog/gatsby)
+
+### Wstęp
+
+W tym wpisie omówię kilka podstawowych pluginów, w większości przypadków są niezbędne, lub przynajmniej bardzo potrzebne. Szczegóły dotyczące instalacji i umieszczenia deklaracji w pliku /gatsby-config.js są w podanych linkach do pluginów.
+
+W kilku przypadkach pokażę jak powinna wyglądać konfiguracja.
+
+Pakiety instaluje się z promptem umieszczonym w katalogu głównym strony.
+
+- gatsby-source-filesystem / dostęp do plików
+- gatsby-plugin-image / obrazki
+- gatsby-plugin-react-helmet / SEO, tagi meta w nagłówku
+- gatsby-plugin-google-tagmanager / Google Analytics 4
+- gatsby-plugin-styled-components / CSS styled-components
+- gatsby-remark-vscode / prezentacja kodu
+- gatsby-plugin-sitemap / sitemap.xml
+- gatsby-plugin-breadcrumb / breadcrumbs
+
+### Dostęp do plików: gatsby-source-filesystem
+
+To jest plugin do tego stopnia niezbędny, że w sumie dziwi mnie, że nie jest zintegrowany z frameworkiem. W przypadku niektórych pluginów w ogóle się nie wspomina, że "a i weź jeszcze zainstaluj source-filesystem", raczej zakłada się, że już jest.
+
+Wskazuje on Gatsby'emu ścieżki dostępu do plików poza katalogiem pages i jak widać poniżej dwie podstawowe opcje to nazwa i ścieżka dostępu. Dla każdej ścieżki wypisuje się osobny resolve. Wskazane katalogi muszą istnieć.
+
+Najczęściej dotyczy to katalogu z obrazkami, jeżeli mamy jakieś inne pliki mediów, np. filmy, pliki dźwiękowe, .svg to zaleca się stworzenie katalogu /assets, który zawiera je wszystkie.
+
+**/gatsby-config.js**
+
+```js
+        {
+            resolve: `gatsby-source-filesystem`,
+            options: {
+                name: `article`,
+                path: `${__dirname}/src/articles`,
+            },
+        },
+        {
+            resolve: `gatsby-source-filesystem`,
+            options: {
+                name: `image`,
+                path: `${__dirname}/src/images`,
+            },
+        },
+```
+
+- [gatsby-source-filesystem](https://www.gatsbyjs.com/plugins/gatsby-source-filesystem/)
+
+
+### Obrazki: gatsby-plugin-image
+
+Plugin, który zastąpił przedtem używany gatsby-image. Dokładny opis używania we wpisie [Gatsby cz. 4 - GraphQL & obrazki](/blog/gatsby-graphql).
+
+W zasadzie jest możliwe umieszczanie obrazków bez żadnego z tych pluginów, ale - najkrócej mówiąc - nie warto próbować.
+
+```
+npm i gatsby-plugin-image gatsby-plugin-sharp gatsby-source-filesystem gatsby-transformer-sharp
+```
+
+- [gatsby-plugin-image](https://www.gatsbyjs.com/plugins/gatsby-plugin-image/)
+
+### SEO: gatsby-plugin-react-helmet
+
+Użytkownicy Reacta znają dobrze pakiet react-helmet, który umożliwia wpisanie tagów meta i innych parametrów do nagłówka strony. To jest wersja dla Gatsby'ego.
+
+```
+npm i gatsby-plugin-react-helmet react-helmet
+```
+
+Potem tworzymy komponent seo.js.
+
+I teraz - uwaga - długi listing całego pliku komponentu SEO, którego używam. Różni się trochę od przedstawionego w instrukcji, wg mnie jest czytelniejszy i łatwiejszy w edycji. Jednym z powodów dla którego go wklejam, są wysokie wymagania Twittera. W czasie kiedy to piszę (lipiec 2021), obrazek musi mieć min 1200 px szerokości (po co?) i musi być wskazany ścieżką bezwzględną. Ponadto zakładam, że obrazek powinien być, ale może go zabraknąć, dlatego w propTypes nie jest wymagany.
+
+**/src/components/seo.ja**
+
+```js
+import React from "react"
+import PropTypes from "prop-types"
+import { Helmet } from "react-helmet"
+import { useStaticQuery, graphql } from "gatsby"
+
+function SEO({ description, lang, meta, title, image, location }) {
+    const pageTitle = title;
+    const { site } = useStaticQuery(
+        graphql`
+      query {
+        site {
+          siteMetadata {
+            title
+            description
+            author
+            image
+            siteUrl
+          }
+        }
+      }
+    `
+    )
+
+    const twitterImage = site.siteMetadata.siteUrl + image
+    const metaDescription = description || site.siteMetadata.description
+    const metaTitle = title || site.siteMetadata.title
+
+    return (
+        <Helmet
+            htmlAttributes={{ lang }}
+            title={`${title} || ${pageTitle}`}
+            titleTemplate={`${site.siteMetadata.title} ${metaTitle}`}
+            image={`${image}`}
+            meta={[
+                {
+                    name: `description`,
+                    content: metaDescription,
+                },
+                {
+                    property: `og:title`,
+                    content: title,
+                },
+                {
+                    property: `og:description`,
+                    content: metaDescription,
+                },
+                {
+                    property: `og:type`,
+                    content: `website`,
+                },
+                {
+                    property: "og:image",
+                    content: image,
+                },
+                {
+                    name: `twitter:card`,
+                    content: `summary`,
+                },
+                {
+                    name: `twitter:creator`,
+                    content: site.siteMetadata.author,
+                },
+                {
+                    name: `twitter:title`,
+                    content: title,
+                },
+                {
+                    name: `twitter:description`,
+                    content: metaDescription,
+                },
+                {
+                    property: "twitter:image:src",
+                    content: twitterImage,
+                },
+            ].concat(meta)}
+        />
+    )
+}
+
+SEO.defaultProps = {
+    lang: `pl`,
+    meta: [],
+    description: ``,
+    title: "",
+    image: null,
+}
+
+SEO.propTypes = {
+    description: PropTypes.string,
+    lang: PropTypes.string,
+    meta: PropTypes.arrayOf(PropTypes.object),
+    title: PropTypes.string.isRequired,
+    image: PropTypes.string,
+}
+
+export default SEO
+```
+
+Potem taki komponent importujemy do pliku strony, layoutu, czy szablonu i przekazujemy do niego propsy. Może wyglądać to tak:
+
+```js
+import React from "react";
+import { Link, graphql } from "gatsby";
+import Layout from "../components/layout"
+import SEO from "../components/seo";
+//
+
+const blogPage = ({ data }) => {
+
+   const { frontmatter, id, body, slug } = data.mdx;
+   const { title: pageTitle, date, edited, image } = frontmatter;
+   const headerTitle = `Tytuł strony wpisany na stałe: ${frontmatter.title}`
+
+   return (
+      <Layout data={data} path={path}>
+         <SEO title={headerTitle} image={image.childImageSharp.gatsbyImageData.images.fallback.src} defer={false} />
+//
+```
+
+Tutaj mamy dane strony i adres obrazka przesłany z frontmattera. Źródłem tych danych mogą być również propsy przesłane w komponencie layoutu.
+
+- [gatsby-plugin-react-helmet](https://www.gatsbyjs.com/plugins/gatsby-plugin-react-helmet/)
+
+### Analityka Google Analytics: gatsby-plugin-google-tagmanager
+
+**Uwaga: aktualizacja maj 2022, zmiana wersji na GA4**
+
+Najpopularniejsza usługa analityczna, darmowa i dobra. Ostatnio Google porzuciło dawną wersję czyli Universal Analytics na rzecz Google Analytics 4. W lipcu 2023 Universal zostanie zamknięta. Jest to poważna zmiana i przejście na GA4 wymaga zmiany zarówno konfiguracji na stronie usługi jak i samego pluginu.
+
+W tej sytuacji mamy cztery możliwości do wyboru:
+
+- używamy równolegle UA i GA4, przez pozostały czas stopniowo przerzucając analitykę na nowszą wersję sługi
+- ruszamy z nową usługą integrując poprzednią wersję jako źródło danych
+- uruchamiamy GA4, a stara usługa idzie do kosza - i jeżeli tylko jest to możliwe jest to najlepsza opcja
+- zmieniamy dostawcę usługi
+
+Jeżeli nie potrzebujemy danych historycznych najlepiej dotychczasową usługę usunąć, utworzyć ją na nowo, stary plugin odinstalować i usunąć jego konfigurację z gatsby-config.js.
+
+Mamy dwa pluginy do wyboru:
+
+- gatsby-plugin-google-gtag - starszy i mniej popularny, możliwy do zastosowania również z Universal Analytics, jest to poprzednio polecany przeze mnie plugin, wystarczy utworzyć usługę GA4 i wpisać identyfikator, można bez żadnych zmian używać równolegle obu usług
+- gatsby-plugin-google-tagmanager - nowszy i wymagający zastosowania usługi Google Tag Manager połączonej z Google Analytics, ma prawie dwa razy więcej pobrań
+
+Tutaj zajmę się tym drugim pluginem. Szczegółowa instrukcja w podlinkowanym poniżej filmie Guiding Digital. Jego autor wyjaśnia również konfigurację dołączającą dotychczas używaną usługę do Google Analytics 4.
+
+Ogólnie rzecz biorąc proces ten polega na tym, że w analytics.google.com tworzymy usługę GA4, podłączamy do niego strumień danych. Autor filmu nie wspomina o tym, ale warto również podłączyć Search Console. Potem tworzymy (jeżeli jeszcze nie ma) konto na Google Tag Manager i dla każdej oddzielnej strony osobny kontener, a w tym kontenerze właściwy tag powiązany z wyzwalaczem (triggerem). Natomiast folder kontenera ma powiązanie z GA4.
+
+Potem możemy zainstalować i skonfigurować plugin. W najprostszej postaci wygląda to tak:
+
+```js
+npm i gatsby-plugin-google-tagmanager dotenv
+```
+
+**/gatsby-config.js**
+
+```js
+        {
+            resolve: "gatsby-plugin-google-tagmanager",
+            options: {
+              id: process.env.GOOGLE_TAGMANAGER_ID,
+              includeInDevelopment: false,
+            },
+          },
+```
+
+Inaczej niż jest to zaprezentowane na podlinkowanym filmie proponuję od razu zastosować wpisanie identyfikatora to pliku .env, którego co do zasady nie wysyłamy na GitHuba, ani żadne inne publiczne miejsce. Musi zostać dodany do .gitignore. Trzeba doinstalować dotenv. Linkujemy do niego na samej górze gatsby-config.js:
+
+```js
+require("dotenv").config({ path: `.env`, })
+```
+
+Wszyscy dostawcy usług online umożliwiają wpisanie zmiennych środowiskowych w ustawieniach strony / aplikacji. W Netlify jest to: Site settings / Build & deploy / Environment variables.
+
+Pamiętajmy że:
+- zmienną środowiskową jest identyfikator tagu (GTM) a nie usługi GA4
+- w konfiguracji parametrów środowiskowych usługi online wpisujemy go bez cudzysłowu, natomiast w pliku .env w cudzysłowie
+- adblocker, jak sama nazwa wskazuje, blokuje także usługę śledzenia przez GA4 (w każdym razie jedyny adblocker jaki ma sens, czyli [uBlock Origin](https://chrome.google.com/webstore/detail/ublock-origin/cjpalhdlnbpafiamejdnhcphjbkeiagm?hl=en)), na czas testów trzeba go wyłączyć
+- plugin gatsby-plugin-google-tagmanager działa tylko dla Gatsby v4 w górę, trójka niestety musi pozostać przy starej usłudze Google Analytics, która zostanie zamknięta w lipcu 2023
+- dotenv jak na chwilę kiedy to piszę (2022-05-07) musi pozostać w wersji max 8.6.0, z jakiegoś powodu jest to najwyższa wersja jaką Gatsby może skonsumować
+
+Przeglądanie lokalnego builda dodaje się do statystyk. W GTM można go testować tak samo jak wersję online.
+
+- Guiding Digital ["How to Add Google Analytics 4 to a Gatsby Site Using Google Tag Manager" [YT 17:09]](https://www.youtube.com/watch?v=wX9euOw4mGY) | ["GatsbyJS & GA4: Upgrading a Gatsby Site to Google Analytics 4" [YT 12:36]](https://www.youtube.com/watch?v=Dwi99jtl3Fs)
+- A Designer Who Codes ["How to get Google Analytics 4 to work with Gatsby // gatsby-plugin-google-gtag" [YT 7:19]](https://www.youtube.com/watch?v=A9rCUVCB6hw)
+- Analytics Mania - Google Tag Manager & Analytics ["Google Analytics 4 Tutorial for Beginners (2022)" [YT 1:10:53]](https://www.youtube.com/watch?v=cN1Jcfxi4qs) | ["Google Tag Manager Tutorial for Beginners (2022)" [YT 1:33:27]](https://www.youtube.com/watch?v=u_x5lVJMKZ0)
+- [gatsby-plugin-google-tagmanager](https://www.gatsbyjs.com/plugins/gatsby-plugin-google-tagmanager/)
+- [gatsby-plugin-google-gtag](https://www.gatsbyjs.com/plugins/gatsby-plugin-google-gtag/)
+
+### CSS: Styled Components: gatsby-plugin-styled-components
+
+W przypadku małych stron wystarczą style globalne lub po prostu importowane do layoutu. Ale przy większych projektach prawie zawsze najlepszym rozwiązaniem jest Styled Components.
+
+Więcej o Styled Components w Gatsbym: [Gatsby cz. 3 - CSS # Styled Components](/blog/gatsby-css#styled-components)
+
+```
+npm i gatsby-plugin-styled-components styled-components babel-plugin-styled-components
+```
+
+- [gatsby-plugin-styled-components](https://www.gatsbyjs.com/plugins/gatsby-plugin-styled-components/)
+- [styled-components](https://styled-components.com/)
+
+### Prezentowanie kodu: gatsby-remark-vscode
+
+Tutaj jest wiele możliwości. Przede wszystkim zależy to od tego, czy treść strony umieszczamy w plikach JSX, czy w Markdownie.
+
+W przypadku JSX wygląda to tak:
+
+- PrismJS
+- Highlight
+- Backtiki i nawiasy klamrowe wymagają znaku ucieczki.
+
+**/src/pages/any-page-with-code.js**
+
+```js
+import * as React, { useEffect } from 'react'
+import Prism from "prismjs"
+import "../../../styles/prism.css"
+
+const PageWithCode = () => {
+
+  useEffect(() => {
+    Prism.highlightAll()
+  }, [])
+
+  return (
+    <LayoutJS>
+      <p>treść:</p>
+
+      <pre>
+        <code className="language-javascript">
+          {`
+ npm i express -S
+  `}
+        </code>
+      </pre>
+```
+
+W przypadku Markdowna najlepszym rozwiązaniem jest wzmiankowany tu gatsby-remark-vscode.
+
+```
+npm i gatsby-remark-vscode
+```
+
+A co jeżeli zdecydowaliśmy się na MDX? Jak sama nazwa wskazuje, gatsby-remark-vscode jest pluginem Remarka i jego konfiguracja wg instrukcji nie zadziała. To są dwa oddzielne procesory.
+
+Rozwiązanie jest proste, wystarczy zadeklarować ten moduł wewnątrz deklaracji MDX, tak jak to jest zaprezentowane poniżej:
+
+**/gatsby-config.js**
+
+```js
+       {
+            resolve: `gatsby-plugin-mdx`,
+            options: {
+                extensions: [".mdx", ".md"],
+                gatsbyRemarkPlugins: [
+                       {
+                        resolve: `gatsby-remark-vscode`,
+                        options: {
+                            theme: {
+                                default: 'Default Dark+',
+                            },
+                            inlineCode: {
+                                marker: '•',
+                                theme: {
+                                    default: 'Default Light+',
+                                }
+                            }
+                        },
+                    },
+                ],
+            },
+        },
+```
+
+Niestety jest to community plugin, nie został jeszcze zaktualizowany do Gatsby v4. ["Gatsby 4: Type with name "GRVSCCodeSpan" does not exists #174"](https://github.com/andrewbranch/gatsby-remark-vscode/issues/174). Jak jednak widać w wątku zgłoszenia błędu nieoceniony Wes Bos podał tymczasowe, ale działające w pełni rozwiązanie, dla powyższej konfiguracji wygląda następująco:
+
+**gatsby-config.js**
+
+```js
+       {
+            resolve: `gatsby-plugin-mdx`,
+            options: {
+                extensions: [`.mdx`, `.md`],
+                remarkPlugins: [
+                    [require('gatsby-remark-vscode').remarkPlugin, {
+                        theme: {
+                                default: 'Default Dark+',
+                            },
+                        },
+                        inlineCode: {
+                            marker: '•',
+                            theme: {
+                                    default: 'Default Light+',
+                                }
+                        }
+                    }]
+                ],
+            },
+        },
+```
+
+- [gatsby-remark-vscode](https://www.gatsbyjs.com/plugins/gatsby-remark-vscode/)
+- [MDX](https://mdxjs.com/)
+- [remark - markdown processor powered by plugins](https://remark.js.org/)
+
+### Sitemap - gatsby-plugin-sitemap
+
+Rzecz niezbędna dla SEO.
+
+**/gatsby-config.js**
+
+```js
+        {
+            resolve: "gatsby-plugin-sitemap",
+            options: {
+                query: `{
+                    allSitePage {
+                       nodes {
+                         path
+                         }
+                    }
+                    site {
+                      siteMetadata {
+                        siteUrl
+                      }
+                    }
+                  }
+              `,
+                resolvePages: ({
+                    allSitePage: { nodes },
+                }) => {
+                    return nodes.map(path => { return { ...path } })
+                },
+                serialize: ({ path }) => { return { url: path } },
+            },
+        },
+```
+
+Prosty dokument XML jest dostępny pod adresem `domain/sitemap/sitemap-0.xml`
+
+- [gatsby-plugin-sitemap](https://www.gatsbyjs.com/plugins/gatsby-plugin-sitemap/) | [Creating a Sitemap](https://www.gatsbyjs.com/docs/how-to/adding-common-features/creating-a-sitemap/)
+- Josh W Comeau ["Generate an SEO-Friendly Sitemap for your Gatsby Site"](https://www.joshwcomeau.com/gatsby/seo-friendly-sitemap/)
+
+### Breadcrumb: gatsby-plugin-breadcrumb
+
+Instalacja
+
+```
+npm i gatsby-plugin-breadcrumb
+```
+
+Konfiguracja dla układu treści opisanego w pierwszym wpisie.
+
+**/gatsby-config.js**
+
+```js
+        {
+            resolve: `gatsby-plugin-breadcrumb`,
+            options: {
+                useAutoGen: true,
+                autoGenHomeLabel: `Strona główna`,
+                exclude: [
+                    `/404/`,
+                    `/blog/`,
+                ],
+                // crumbLabelUpdates: optional, update specific crumbLabels in the path
+                crumbLabelUpdates: [
+                    {
+                        pathname: '/turystyka',
+                        crumbLabel: 'Turystyka'
+                    },
+                    {
+                        pathname: '/turystyka/brandenburgia',
+                        crumbLabel: 'Brandenburgia'
+                    },
+                    {
+                        pathname: '/turystyka/saksonia',
+                        crumbLabel: 'Saksonia'
+                    },
+                    {
+                        pathname: '/it',
+                        crumbLabel: 'IT'
+                    },
+                                        {
+                        pathname: '/it/js',
+                        crumbLabel: 'JavaScript'
+                    },
+                                        {
+                        pathname: '/it/css',
+                        crumbLabel: 'CSS'
+                    },
+                ],
+                trailingSlashes: false,
+            },
+        },
+```
+
+W przypadku JSX:
+
+**/src/pages/any-page-with-breadcrumb.js**
+
+```js
+import * as React from 'react'
+import { Breadcrumb } from 'gatsby-plugin-breadcrumb'
+
+const PageWithBreadcrumb = ({ pageContext }) => {
+	const {
+		breadcrumb: { crumbs },
+	} = pageContext
+
+	return (
+		<Layout>
+			<Breadcrumb
+				location={location}
+				crumbs={crumbs}
+				crumbSeparator=" / "
+				crumbLabel="Tytuł do wrzucenia w breadcrumb"
+			/>
+```
+
+Jeżeli używamy MDX wygląda to tak samo, tyle że w pliku szablonu strony /src/templates/articleTemplate.js z tą różnicą, że crumbLabel najlepiej jest zadeklarować z frontmattera:
+
+```js
+        crumbLabel={frontmatter.title}
+```
+
+- [gatsby-plugin-breadcrumb](https://www.gatsbyjs.com/plugins/gatsby-plugin-breadcrumb/)
+
+### Podsumowanie
+
+Oto - moim zdaniem - niezbędny, a w każdym razie podstawowy pakiet pluginów do zainstalowania praktycznie zawsze po tym jak już zainstalujemy Gatsby'ego i utworzymy zasadniczą strukturę plików:
+
+```js
+npm i gatsby-source-filesystem gatsby-plugin-image gatsby-plugin-sharp gatsby-transformer-sharp gatsby-plugin-react-helmet react-helmet gatsby-plugin-google-tagmanager gatsby-plugin-sitemap dotenv gatsby-plugin-styled-components styled-components babel-plugin-styled-components
+```
+
+Zapewnia dostęp do katalogów poza /src/pages, obsługę plików graficznych, SEO, analitykę, ukrycie zmiennych środowiskowych i styled-components.
+
+Startowy /gatsby-config.js może wyglądać tak:
+
+```js
+require("dotenv").config({ path: `.env`, })
+
+module.exports = {
+    siteMetadata: {
+        title: `Title here`,
+        siteUrl: "https://anyvalidurl.com/",
+    },
+    pathPrefix: "/path-of-github-repo",
+    plugins: [
+        `gatsby-plugin-image`,
+        `gatsby-plugin-sharp`,
+        `gatsby-transformer-sharp`,
+        `gatsby-plugin-react-helmet`,
+        `gatsby-plugin-styled-components`,
+        {
+            resolve: `gatsby-source-filesystem`,
+            options: {
+                name: `images`,
+                path: `${__dirname}/src/images`,
+            },
+        },
+        {
+            resolve: "gatsby-plugin-google-tagmanager",
+            options: {
+              id: process.env.GOOGLE_TAGMANAGER_ID,
+              includeInDevelopment: false,
+            },
+        },
+                {
+            resolve: "gatsby-plugin-sitemap",
+            options: {
+                query: `{
+                    allSitePage {
+                       nodes {
+                         path
+                         }
+                    }
+                    site {
+                      siteMetadata {
+                        siteUrl
+                      }
+                    }
+                  }
+              `,
+                resolvePages: ({
+                    allSitePage: { nodes },
+                }) => {
+                    return nodes.map(path => { return { ...path } })
+                },
+                serialize: ({ path }) => { return { url: path } },
+            },
+        },
+    ],
+}
+```
+
+W powyższym pliku wartość siteUrl jest placeholderem i podczas budowy strony musi być po prostu poprawnym adresem URL. Mapę strony wygeneruje dopiero build. Plik .env nie jest niezbędny do uruchomienia strony.

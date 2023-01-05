@@ -1,0 +1,174 @@
+---
+title: "Enigma cz. 3 - kryptologia międzywojnia"
+section: "blog"
+subsection: "historia"
+set: enigma
+date: 2021-08-13
+edited: 2021-08-30
+image: ../blogimages/Enigma-logo.jpg
+tags: enigma, kryptologia, wwi, wwii
+url: https://dygresje.info/blog/enigma-miedzywojnie
+description: "Kontekst historyczny. Ogólna historia kryptologii w okresie międzywojennym, OTP i maszyny rotorowe."
+---
+
+Stały adres serii wpisów o Enigmie - [/blog/enigma](/blog/enigma)
+
+Okres pomiędzy wojnami światowymi odznaczył się dwoma najważniejszymi rzeczami:
+
+- Szyfr Vernama (OTP)
+- maszyny rotorowe
+
+Zacznijmy od pierwszej, bo w tej kwestii panuje pewne pomieszanie terminów używanych potem w opisie niektórych maszyn szyfrujących.
+
+### Szyfr Vernama (OTP)
+
+Najczęściej pojęcia szyfr Vernama i OTP (one-time-pad) stosuje się zamiennie. Nie jest to jednak tak do końca jednoznaczne.
+
+Gilbert Sandford Vernam (1890-1960) to amerykański inżynier wynalazca. W 1914 ukończył Worcester Polytechnic Institute, potem pracował dla AT&T Bell Labs.
+
+- w 1917 wymyślił polialfabetyczny (używający wielu wzorców przekształceń) szyfr strumieniowy.
+- 22 lipca 1919 przyznany [U.S. Patent 1,310,719](https://patents.google.com/patent/US1310719A/en) (złożony 13 września 1918) na przypominające OTP szyfrowanie danych wykonujące XOR z zapisanej przypadkowym danymi tamy na znakach wpisanych z klawiatury w kodzie Baudota (dodanie modulo 26 jednego znaku tekstu jawnego i znaku jednorazowego klucza). Pierwotna idea Vernama to była zapętlona taśma dalekopisowa, co nie było dobrym rozwiązaniem.
+- Vernam opisuje w artykule w AIEE journal w lutym 1926 użycie dwóch zapętlonych taśm o niejednakowej długości ok. 2 m, co miało zapewniać baaardzo długi okres kryptograficzny, ale samo istnienie powtarzalności jest sprzeczne z ideą OTP
+- Ta idea nie jest nowa - już w 1885 sformułował ją amerykański kryptolog Frank Miller: [Steven M. Bellovin "Frank Miller: Inventor of the One-Time Pad"](http://www.cs.columbia.edu/~CS4HS/talks/FrankMillerOneTimePad.pdf)
+- Dopiero później wprowadzono ideę jednorazowego klucza - teoretycznie nieskończenie długiego ciągu całkowicie przypadkowych danych pozbawionych okresu krytpograficznego, czyli powtarzalności. Joseph Mauborgne udowodnił, że jeżeli klucz jest całkowicie przypadkowy, szyfr jest matematycznie nie do złamania.
+
+Pomieszanie pojęć wynika z tego, że "szyfr Vernama" czasem oznacza szyfr strumieniowy, czasem zapętlony klucz dalekopisu, ale najczyściej OTP, choć jak widać, Vernam samego OTP nie wymyślił, tym bardziej nie on udowodnił jego siłę.
+
+Jakkolwiek sama idea szyfru, który nie da się złamać, brzmi bardzo atrakcyjnie, to szereg warunków, które trzeba spełnić, sprawia, że rzecz jest bardzo trudna do praktycznej realizacji:
+
+- potrzebny jest klucz zawierający kompletnie przypadkowe dane
+- klucz musi być dłuższy niż wiadomość
+- muszą go posiadać obie strony komunikacji i musi pozostać ich tajemnicą, bo każdy kto go posiada, może odczytać wiadomość
+- nigdy nie może zostać użyty ponownie ani w całości, ani w części
+
+Najważniejszym problemem jest dystrybucja kluczy. Inną trudnością jest samo generowanie przypadkowych i niepowtarzalnych sekwencji znaków, sowieci zatrudniali maszynistki z zasłoniętymi oczami, które na maszynie wystukiwały serie przypadkowych znaków. Nawet zapewnienie dyscypliny użytkowników potrafi nastręczyć trudności.
+
+Choć Vernam miał na myśli dalekopis to powstały uproszczone aplikacje OTP zdatne do użytku polowego.
+
+Kryptolodzy niemieckiego MSZ: Werner Kuntze, Rudolf Schauffler i Erich Langlotz zaproponowali jednorazowe bloczki szyfrowe. Na 50 stronach zapisano tablice każda ma 48 pięciocyfrowych liczb. Najpierw przekształcano tekst jawny w ciąg cyfr, potem dodawano do nich cyfry klucza (modulo 10). Odszyfrowanie to samo tylko w drugą stronę. W latach 1921–1923 takie bloki wprowadzono do użytku w niemieckiej korespondencji dyplomatycznej.
+
+Używano również bloczków z literami, wtedy i klucz i tekst jawny zamieniano na dwucyfrowe liczby, potem je dodawano (modulo 26).
+
+Cryptographically-secure pseudorandom number generator, SPRNG.
+
+- [Szyfr z kluczem jednorazowym](https://pl.wikipedia.org/wiki/Szyfr_z_kluczem_jednorazowym)
+- Crypto Museum [One-Time Pad OTP](https://www.cryptomuseum.com/crypto/otp/index.htm)
+
+### Maszyny rotorowe
+
+Okres międzywojenny został zdominowany elektromechanicznymi maszynami rotorowymi.
+
+Istniały trzy niezależne linie rozwojowe:
+
+- **Hebern** (USA)
+- **Hagelin** (Szwecja, od 1940 Szwajcaria)
+- Scherbius (niemiecka **Enigma**)
+
+Analiza słabości konstrukcji Heberna oraz informacje o europejskich urządzeniach sprawiły, że William F. Friedman skonstruował maszynę **SIGABA** używaną przez US Army od 1940. Nie złamana. Była utajniona aż do 2001, więc pomimo technicznej doskonałości nie wpłynęła na inne konstrukcje.
+
+### Hebern Rotor Machine
+
+Edward Hugh Hebern (USA, patent 1917) słaba maszyna bez sukcesu komercyjnego.
+
+Udało mu się sprzedać ogólnie ok. 100 maszyn, w tym 12 dla US Navy. Ostatecznie biznes zbankrutował mimo intensywnej promocji. Jak się później okazało spory udział w tej klęsce miał Wiliam Friedman, który ocenił ją bardzo negatywnie.
+
+### Hagelin
+
+Tak naprawdę to Damm/Hagelin, ponieważ inicjatywa i początek biznesu to Arvid Gerhard Damm, ale finalnie w jego wykonaniu rzecz była skazana na porażkę. Jego dzieło kontynuował i w sukces przekuł Boris Hagelin. Obaj byli Szwedami. Tutaj podobnie jak w przypadku Painvina mamy wiele sprzecznych ze sobą wersji, ale będę się trzymał tego, co napisał David Kahn, bo jest to udokumentowane i spójne.
+
+Arvid Gerhard Damm: uzdolniony inżynier i konstruktor, jego pierwsza maszyna szyfrująca powstała w 1914 (Cryptotyper), 1916 współzałożyciel Aktiebolaget Cryptograph, w której inwestorami byli Emmanuel Nobel (bratanek tego Nobla) i K. W. Hagelin dyrektor spółki naftowej Noblów w Baku (dlatego jego syn Boris ma takie imię). 1917 A-1 aka Mecano Cryptographer. Wniosek patentowy 10 października 1919. A-1b 1921 Electromechanical Cryptographer.
+
+Brzmi to interesująco, ale ciągle nie ma zysków. Damm byłby świetnym bohaterem zarówno dramatu, jak i komedii, zdecydowanie brakowało mu dyscypliny i rzetelności, jego życie osobiste... ok zostawmy to, pierwsza maszyna szyfrująca, którą oferowano na sprzedaż zagraniczną (1925 Paryż, 1926 Haga) Model B 1, była kompletną porażką. Od 1922 z polecenia Nobla i Hagelina ojca w firmie był Boris Ceasar Wilhelm Hagelin, który miał nadzorować ich inwestycje. Tymczasem Damm popadł w tarapaty finansowe i nie miał żadnych sukcesów. Hagelin natomiast mając solidne wykształcenie techniczne, poprawił jego maszynę i jako Model B-21 zaoferował armii szwedzkiej. Zdobył wielkie zamówienie. W 1925 praktycznie przejmuje zarządzanie firmą.
+
+W 1927 (lub jak inne źródła mówią w 1928) Damm już na marginesie firmy umiera w wieku 58 lat. Aktiebolaget Cryptograph w fatalnej kondycji, ale z dobrymi perspektywami została kupiona przez grupę kapitałową Nobla i Hagelina i od tej pory działa jako Aktiebolaget Cryptoteknik. Boris Hagelin jest dyrektorem i głównym konstruktorem.
+
+W 1936 nawiązał pierwsze kontakty z kryptologami amerykańskimi zainteresowanym jego maszyną B-36, przed wojną wyjechał dwa razy do USA w 1937 i 1939. 9 kwietnia 1940 z radia dowiedział się, że Niemcy napadli na Norwegię i natychmiast uciekł z żoną i dokumentacją techniczną, przez Berlin do Szwajcarii. Włoskim statkiem przypłynęli do Nowego Jorku. Szwedzką firmą zarządza zdalnie. Dopiero po wojnie wracają do Europy.
+
+W 1948 z powodów finansowych i politycznych przeniósł laboratorium ze Sztokholmu do Zug w Szwajcarii, a w 1959 całą resztę firmy, która od tej pory działała jako Crypto Aktiengesselschaft (Crypto AG). W 1955 zawarł porozumienie z NSA gwarantujące Amerykanom backdoora we wszystkich jego urządzeniach.
+
+Zmarł w 1983 w wieku 91 lat, jak to pisze Kahn, jako jedyny konstruktor maszyn szyfrujących, który zbił na nich majątek.
+
+- Crypto Museum [Arvid Gerhard Damm](https://www.cryptomuseum.com/people/damm/arvid.htm) | [Boris Hagelin](https://www.cryptomuseum.com/people/hagelin/boris.htm)
+
+#### Hagelin B-21 / B-211
+
+Hagelin B-21 to było właśnie to urządzenie, które w 1926 kupiła od niego szwedzka armia. Był to uproszczony, poprawiony i dostosowany do użytku polowego Model B 1. Pod wpływem Enigmy dodał lampki.
+
+Mechanizm szyfrujący składał się z walców mających niejednakową liczbę bolców na obrzeżach. Bolce mogły być wysunięte lub cofnięte (bierne). Podstawienie polialfabetyczne z okresem równym iloczynowi wszystkich bolców. Przypisanie wierszy i kolumn na szachownicy 25x25.
+
+W 1932 powstała kolejna wersja B-21, czyli B-211. Zamiast lampek miała drukarkę. Waga 18 kg, 200 znaków na minutę, rozmiar niewielkiej przenośnej skrzynki.
+
+Pierwszym kupcem była sieć przedstawicielstw Ericssona w Ameryce Południowej. 500 tych maszyn zostało wyprodukowanych przez L.M. Ericsson w Colombes k. Paryża i tuż przed wybuchem wojny dostarczonych armii francuskiej. Po wojnie zamówili kolejne 100.
+
+- Crypto Museum [B-21](https://www.cryptomuseum.com/crypto/hagelin/b21/index.htm) | [Hagelin B-211](https://www.cryptomuseum.com/crypto/hagelin/b211/index.htm)
+
+#### Hagelin C-35 / C-36 / C-37
+
+Z oczywistych powodów Francuzi nie chcieli niemieckiej maszyny szyfrującej. Pod koniec lat 20. Enigmy używała Reichswehra. Armia francuska złożyła u Hagelina kolejne zamówienie, tym razem wydawałoby się niemożliwe do realizacji: kieszonkowa maszyna drukująca szyfrogramy, obsługiwana przez jednego człowieka (w przypadku lampek było potrzebnych trzech ludzi, jeden obsługiwał klawiaturę, drugi na głos odczytywał litery z lampek, trzeci zapisywał).
+
+Hagelin wiedząc, że próba miniaturyzacji istniejących maszyn jest ślepą uliczką, spróbował z drugiej strony - wystrugał z drewna model docelowej wielkości, mieszczący się w regulaminowej kieszeni i zaczął się zastanawiać jaki mechanizm mógłby się zmieścić w środku i jak można by takie urządzenie używać.
+
+Ostatecznie połączył dwie maszyny w jednej. Dotychczasowy bęben znany z B-21 połączył ze zliczarką monet, do której miał prawa, bo klient, który ją zamówił, wycofał się z kupna. Był to rodzaj cylindrycznej klatki z prętów, na których były uchwyty. Walce miały kolejno 25, 26, 21, 19 i 17 kroków co zapewniało okres 3,900,225. Bolce z walców łączyły się z uchwytami na prętach - stąd określenie tego mechanizmu "pin-and-lug" (bolec i uchwyt), który odtąd staje się klasycznym rozwiązaniem Hagelina. Wprawdzie wymagana kieszeń jest dość spora, ale powstaje najmniejsze urządzenie szyfrujące na świecie: waga 1,5 kg, wielkość 15x11x5 cm.
+
+Literę wprowadzono przez wybór pokrętłem, potem obrót korbką uruchamiał szyfrowanie i druk na gumowanej taśmie. Wyszkolony operator osiągał szybkość 25 znaków na minutę.
+
+Armia francuska natychmiast zamówiła 5 tysięcy tych maszyn.
+
+C-36 i C-37 to zmodyfikowane nieco wersje, mające inną konfigurację sprzętową.
+
+- Crypto Museum [Hagelin C-35](https://www.cryptomuseum.com/crypto/hagelin/c35/index.htm) | [Hagelin C-36](https://www.cryptomuseum.com/crypto/hagelin/c36/index.htm) | [Hagelin C-37](https://www.cryptomuseum.com/crypto/hagelin/c37/index.htm)
+
+#### M-209 (C-38)
+
+Najliczniej produkowana wojskowa maszyna szyfrująca na świecie. Dostosowana do potrzeb US Army C-38, znana jako M-209 w US Army, w US Navy nazywana CSP-1500, Niemcy mówili na nią AM-1 (niem. Amerikanische Maschine Nr. 1). Wielkość 178x140x83 mm.
+
+W 1942 w zatrudniającej 900 robotników fabryce L.C. Smith & Corona Typewriters Inc. w Groton (stan Nowy Jork) produkowano dziennie 400 M-209 (dla porównania, również dziennie 600 maszyn do pisania). Ogółem wyprodukowano ich 140 tys.
+
+Czasem używana w tej samej sieci łączności razem z wersją zmotoryzowaną, czyli BC-543.
+
+Nie dawała wielkiego zabezpieczenia kryptograficznego. W 1943 Niemcy potrzebowali 4h do odczytania wiadomości, ale ponieważ używano och do łączności na poziomie taktycznym, takie zabezpieczenie wystarczało.
+
+W 1952 zastąpiona przez C-52 i CX-52.
+
+- Crypto Museum [M-209](https://www.cryptomuseum.com/crypto/hagelin/m209/index.htm)
+
+#### Hagelin BC-38 / BC-543
+
+Elektromechaniczna maszyna szyfrująca, rozwinięcie mechanicznej C-38. Wyposażona w motor i klawiaturę (to właśnie oznacza litera B). Zbudowana 1938.
+
+Wielkość 34x32x12 cm, zasilanie z sieci 110 lub 220 V. Możliwość działania wyłącznie mechanicznego co w warunkach wojennych jest ogromną zaletą. Drukarka jest podwójna, może jednocześnie drukować szyfrogram (do wysłania) i tekst jawny (do archiwizacji).
+
+Używana podczas WWII głównie przez US Army. Po wojnie przez Szwecję i Norwegię.
+
+BC-543 to nieco ulepszona i w pełni kompatybilna wersja BC-38.
+
+- Crypto Museum [Hagelin BC-38](https://www.cryptomuseum.com/crypto/hagelin/bc38/index.htm)
+
+#### Hagelin C-443 / C-48 / C-48A
+
+Seria mechanicznych maszyn szyfrujących, będących kontynuacją rozwiązań Hagelina z lat 30.
+
+w 1946 na podstawie doświadczeń wojennych powstaje Hagelin C-446.
+
+- Crypto Museum [Hagelin C-443](https://www.cryptomuseum.com/crypto/hagelin/c443/index.htm) | [Hagelin C-446](https://www.cryptomuseum.com/crypto/hagelin/c446/index.htm)
+
+### Enigma
+
+Arthur Scherbius i Richard Ritter (Niemcy). Wniosek patentowy 23 lutego 1918.
+
+Obaj przedstawili projekt maszyny zarówno niemieckiej Kriegsmarine, jak i Ministerstwu Spraw Zagranicznych, ale nie uzyskali zainteresowania żadnej z tych instytucji.
+
+Wobec tego przekazali prawa patentowe założonej przez nich firmie Gewerkschaft Securitas. 9 lipca 1923 przekształciła się w Chiffriermaschinen Aktien-Gesellschaft (Maszyny Szyfrujące Spółka Akcyjna), w której Scherbius i Ritter zostali członkami zarządu.
+
+Scherbius w 1928 wykupił nieużywany komercyjnie patent Holendra Hugo Kocha.
+
+Enigma szczegółowo zostanie opisana w kolejnym wpisie.
+
+Tak więc podsumowując, w okresie międzywojennym na rynku komercyjnym konkurowały tylko dwie konstrukcje:
+
+- **Enigma** Scherbiusa, który skorzystał z cudzej idei, a ostatecznie, choć zainspirowała cały świat, była kolejną katastrofą armii niemieckiej
+- **Hagelin**, czyli biznes przejęty od oryginalnego wynalazcy, który po latach został celowo skompromitowany przez właściciela
+
+### Polska kryptologia
+
+W tym miejscu był rozdział dotyczący historii i dorobku polskiego radiowywiadu i kryptoanalizy w okresie od odzyskania niepodległości w 1918 po koniec WWII. Ponieważ rozrósł się, przeniosłem go do odrębnego wpisu: ["Enigma cz. 6 - Kryptologia i radiowywiad II RP"](/blog/enigma-iirp)

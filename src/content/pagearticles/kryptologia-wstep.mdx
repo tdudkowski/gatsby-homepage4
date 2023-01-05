@@ -1,0 +1,164 @@
+---
+title: "Kryptologia - wstęp"
+comment: ""
+section: "it"
+subsection: "kryptologia"
+---
+
+### Wstęp
+
+- Autor nie ponosi odpowiedzialności za ewentualne problemy wynikłe z zastosowania podanych tu informacji.
+- Niniejszy tekst ma charakter wyłącznie edukacyjny.
+- Wszelkie prawa zastrzeżone.
+
+Dokument ten powstał pierwotnie jako poradnik szyfrowania PGP (w praktyce: GPG) do prywatnego użytku na konkretnych przykładach, takich jak tworzenie i zarządzanie kluczami oraz zastosowaniu w kliencie poczty (Thunderbird) i IM (Jabber/Psi). Przy okazji chciałem wyjaśnić kilka innych rzeczy, no i tak wyszło... Minęło parę lat, o klientach XMPP świat zapomniał, tekst ciągle jest w internecie i ostatnio - przy okazji cyklu wpisów o Enigmie - został uporządkowany i zaktualizowany. A część praktyczną dopiszę na nowo, bo parę rzeczy się w ciągu tych lat zmieniło.
+
+Fragment [wywiadu z Michałem Zalewskim](http://www.oreillynet.com/pub/a/security/2005/08/25/zalewski.html?page=2):
+
+>Pytanie:<br />
+>HTTP does not use crypto, while HTTPS does. Do you think that in the future we'll use crypto for every single connection?
+><br />
+>Odpowiedź:<br /> 
+>Well, because of the shortcomings of TCP (and the increasing ease of blindly tampering with the data as bandwidth increases and new attacks are discussed), almost all communications, even nominally of little relevance, should be either encrypted or cryptographically tamper-proofed by now.<br />
+>Unfortunately, this is a complex and costly process, and implementing advanced cryptography may introduce new flaws elsewhere. Furthermore, unless carefully engineered, it may remain susceptible to disruptions on underlying layers, replay attacks, etc. Last but not least, end users simply don't understand encryption and PKI, and hence can be easily tricked to ignore or bypass our sophisticated protections.<br />
+>In other words, "perfect world" solutions may be not really that desirable or easy to implement, and we might have to stick with simpler short-term options and strategies for now. 
+
+### Podstawowe pojęcia
+
+**Kryptografia** to dziedzina wiedzy o metodach utajniania informacji. Dokonuje się to poprzez zmianę jej postaci - z otwartej, czytelnej i dostępnej dla wszystkich w niezrozumiałą, którą można odczytać, tylko posiadając dodatkowe dane (z założenia dostępne tylko dla docelowego odbiorcy). Celem tej zmiany jest ukrycie danych przed dostępem osób niepowołanych. W zaszyfrowanej postaci mogą być bezpiecznie przechowywane i transmitowane. 
+
+Proces ukrywania informacji w celu uczynienia jej nieczytelnej bez specjalnej wiedzy to **szyfrowanie** - zamienia jawną postać (tekst jawny) w nieczytelną (szyfrogram, kryptogram). Odwrotny proces, odtwarzania jawnej postaci z szyfrogramu to **deszyfrowanie** (ang. encription, enciphering vs. decryption, deciphering).
+
+Jawna (oryginalna, pierwotna) postać informacji przed zaszyfrowaniem to **tekst jawny** a tajna, po zaszyfrowaniu to **szyfrogram**. Za wyjątkiem szyfrów jednostronnych (funkcji skrótu) szyfrogram powinien zawierać wszystkie informacje z jawnego tekstu, ale w postaci nieodróżnialnej od szumu. Marian Rejewski używał w swoich pracach określeń kler na tekst jawny i krypt na tekst tajny (ang. plaintext vs. ciphertext, cyphertext, cryptogram). 
+
+Metoda użyta do tej zamiany to - uwaga, wieloznaczne określenie - **szyfr**, czyli procedura (algorytm) takiego przekształcania wiadomości, żeby (szyfrowanie) była ona niemożliwa, lub bardzo trudna do odczytania przez każdego, kto nie posiada odpowiedniego klucza oraz znajomości tego algorytmu, oraz (odszyfrowanie) umożliwiała odtworzenie pierwotnej postaci informacji z szyfrogramu (ang. cipher, cypher, encipherment).
+
+**Kryptosystem** to zestaw opisanych przez protokoły kryptograficzne szczegółów działania systemu, zawierający szyfry (algorytmy kryptograficzne), zarządzanie kluczami (tworzenie i dystrybucję) oraz sposób postępowania użytkownika i inne procedury, a także całą dokumentację, materiały treningowe oraz sprzęt, czyli głównie maszyny szyfrujące i rutyny łączności. W całości tworzy kompletne narzędzie, z którym ma do czynienia końcowy użytkownik. Jednym z popularnych obecnie i powszechnie dostępnych kryptosystemów jest PGP. 
+
+Najczęściej szyfr używa dodatkowych parametrów, które zawiera tzw. **klucz**. Te parametry jednoznacznie i w unikalny dla danego klucza sposób określają sposób przetworzenia danych. Zwykle będziemy mieli do czynienia z sytuacją, kiedy szyfr (czyli sam algorytm przekształcenia) jest jawny i opublikowany, natomiast unikalny klucz szyfrujący / deszyfrujący jest tajny. Bez klucza szyfr nie może zostać użyty ani do szyfrowania, ani do rozszyfrowania.
+
+Szukaniem słabości rozwiązań kryptograficznych zajmuje się **kryptoanaliza**, sztuka łamania tych zabezpieczeń. Obie czasem są grupowane razem jako kryptologia, chociaż w praktyce również i kryptografia jest używana w tym znaczeniu. 
+
+**Kryptologia** jest ogólniejszym pojęciem i dzieli się na: 
+
+- kryptografia - ochrona danych przez szyfrowanie
+- kryptoanaliza - badanie słabości kryptografii
+- steganografia - ochrona tajnych danych przez ukrycie ich istnienia
+- analiza ruchu (traffic analysis) - zajmuje się wzorcami komunikacji w celu odczytania tajnych danych.
+
+Kryptologia jest interdyscyplinarnym przedmiotem łączącym wiele dziedzin. Przed mechanizacją (maszyny rotorowe) i komputeryzacją była ściśle związana z lingwistyką, ale obecnie jest to głównie matematyka, szczególnie tzw. matematyka dyskretna: teoria liczb, teoria informacji, złożoność obliczeniowa, statystyka i kombinatoryka. 
+
+Wynalezienie kryptografii asymetrycznej (1976) umożliwiło nowe zastosowania. Obecnie metody kryptograficzne są stosowane nie tylko do utajnienia informacji - cztery najważniejsze zastosowania:
+
+- poufność (tajność) - tylko autoryzowany odbiorca jest w stanie odczytać wiadomość z szyfrogramu
+- integralność - odbiorca może stwierdzić czy wiadomość nie została naruszona/zmieniona w czasie transmisji
+- uwierzytelnienie (notorycznie i błędnie nazywane autentykacją) - odbiorca jest w stanie potwierdzić tożsamość nadawcy i zweryfikować czy to podpisany nadawca rzeczywiście wysłał wiadomość
+- niezaprzeczalność (ang. non-repudiation) - nadawca nie będzie w stanie zaprzeczyć, że wysłał wiadomość (niezaprzeczalność nadania), odebrał (niezaprzeczalność odbioru) itd...
+
+Zwykle używa się kilku na raz, np. w podpisie elektronicznym czy tworzeniu bezpiecznych kanałów komunikacji. 
+
+Znaczenie kryptografii w internecie wynika z samej natury przesyłanych nim informacji, które w łatwy sposób mogą być powielane, fałszowane. Tym bardziej że nie są dostępne żadne zabezpieczenia natury fizycznej, a zapewnienie wiarygodności i poufności danych wciąż rośnie wraz z rozwojem komercyjnej roli sieci.
+
+### Rodzaje szyfrów
+
+Używane dawniej szyfry określane są jako klasyczne i ze względu na postęp technologiczny są całkowicie odmienne od współczesnych. Wszystkie z dzisiejszego punktu widzenia są proste i łatwe do złamania. W dwudziestoleciu międzywojennym weszły w użycie trochę bardziej skomplikowane maszyny walcowe, ale współczesna kryptografia zaczyna się dopiero po WWII wraz z pracami Shannona i użyciem komputerów. 
+
+- [klasyczne](/it/kryptologia/kryptologia-klasyczna):
+  - zastąpienie (substitution)
+  - przestawienie (transposition)
+- maszyny walcowe / rotorowe (rotor machines)
+- współczesne:
+  - [symetryczne](/it/kryptologia/kryptologia-symetryczna) (np. DES i AES)
+    - blokowe
+    - strumieniowe
+  - [asymetryczne](/it/kryptologia/kryptologia-asymetryczna) (np. RSA)
+  - [jednostronne](/it/kryptologia/kryptologia-jednostronna) (np. MD5)
+  - jednorazowe; one time pad (OTP/OTT). 
+
+### Konwencja: Alice i Bob
+
+W pracach kryptograficznych przyjęło się stosować pewną konwencję opisu sytuacji, dzięki której nie trzeba stosować trudnych do zrozumienia sformułowań w rodzaju "osoba A chce wysłać wiadomość do osoby B".
+
+Uczestnicy komunikacji to najczęściej [Alicja i Bob](http://en.wikipedia.org/wiki/Alice_and_Bob). Przykład z Alice i Bob przyjął się ze względu na podobieństwo (Alice to 'osoba A', Bob to 'osoba B') i wygodę; następne postacie biorące udział w komunikacji dobierane są według zasady: kolejna litera alfabetu/zmiana płci; czyli po Alice i Bob będzie Carol, Dave... Czasem sugeruje, że nazwy tych postaci wzięte zostały z filmu ["Bob & Carol & Ted & Alice"](http://arxiv.org/pdf/cs.CR/0109089), [IMDB](http://www.imdb.com/title/tt0064100/), ale nie ma na to potwierdzenia. 
+
+Najważniejsze:
+
+- Alicja i Bob - Alicja zazwyczaj chce wysłać wiadomość do Boba
+- Carol, Dave... - ewentualni następni uczestnicy komunikacji
+- Eve - podsłuchiwacz (ang. eavesdropper); pasywny napastnik, może podsłuchiwać wiadomości pomiędzy Alice i Bobem, ale nie może ich modyfikować
+- Mallory (czasem Mallet; prawdopodobnie od malefactor) - aktywny napastnik, w przeciwieństwie do Eve, Mallory może modyfikować wiadomości, zamieniać swoimi, jeszcze raz wysyłać stare itp.; stanowi dużo większy problem niż Eve
+- Trent - (trusted Trent) zaufany rozjemca/arbiter, neutralna trzecia strona, której rola różni się zależnie od kontekstu
+
+Inne:
+
+- Isaac - ISP
+- Ivan - wystawca (ang. an issuer); w kryptografii finansowej
+- Justin - prawnik (z ang. the justice system)
+- Matilda - handlowiec; w kryptografii finansowej
+- Peggy (czasem Pat, Vanna - asystent z Koła Fortuny - lub Victor [$]) - osoba sprawdzająca (imię na P: ang. a prover) lub weryfikująca (imię na V: ang. a verifier), często musi zareagować w jakiś sposób, by pokazać, że zamierzona transakcja rzeczywiście miała miejsce; postacie często spotykane w tzw. dowodach bez przekazywania informacji (ang. zero-knowledge proofs)
+- Plod - oficer policji (czasem urzędnik celny lub pracownik wywiadu)
+- Oscar - przeciwnik, zwykle odpowiednik Mallory'ego
+- Trudy - napastnik, bardziej niebezpieczny niż Eve, ponieważ może modyfikować wiadomości w czasie transmisji; Alice i Bob powinni być w stanie wykryć taką modyfikację i zignorować ją lub odzyskać oryginalną wiadomość pomimo zniekształceń, jeśli nie mogą tego zrobić Trudy może spowodować poważne szkody
+- Walter - strażnik (z ang. warden), może być czasem potrzebny do ochrony Alice i Boba
+- Arthur i Merlin - w IPS ([Interactive proof system](http://en.wikipedia.org/wiki/Interactive_proof_system)), osoba sprawdzająca (ang. prover) ma nieograniczoną moc obliczeniową i stąd nawiązanie do Merlina potężnego czarownika, orzeka on o prawdzie stanowiska/twierdzenia, a Arthur, mądry król, zadaje mu pytania. Te dwie postacie zapoczątkowały dwie bardziej złożone klasy, nazwane MA i AM ([Arthur-Merlin protocol](http://en.wikipedia.org/wiki/Arthur-Merlin_protocol)).
+
+### Kodowanie nie jest szyfrowaniem: szyfr vs kod
+
+W potocznym rozumieniu (tajny) kod jest tym samym co szyfr, jednakże w praktyce kryptologicznej są to dwie zupełnie odmienne rzeczy.
+
+- Kody pracują na poziomie atomów znaczenia, tzn. słowa lub frazy są konwertowane w słowa kodowe (np. jabłecznik == atak o świcie).
+- Natomiast szyfry pracują na niższym poziomie, atomów komunikacji: pojedynczych liter, znaków, małych grup liter (dwuznaki w szyfrze Playfaira), lub w przypadku szyfrów cyfrowych, na pojedynczych bitach.
+- Niektóre kryptosystemy dla zwiększenia bezpieczeństwa używają zarówno kodu i szyfru (superszyfrowanie).
+
+Kody mają własną terminologię analogiczną do szyfrów (encoding, decoding). **Książka kodowa** (nomenklator) - lista używanych wyrażeń i słów powiązanych z odpowiadającymi im słowami kodowym, zakodowane wiadomości to **kod** (codetext, tekst zakodowany).
+
+Długo uważano kody za bezpieczniejsze od szyfrów, ponieważ jeśli twórcy książki kodowej dobrze wywiązali się ze swojego zadania, nie było wzorca transformacji, który mógłby być odkryty. Ponadto kodowanie było szybsze i bardziej odporne na błędy niż kłopotliwe szyfrowanie ręczne.
+
+Dopiero z pojawieniem się automatycznego przetwarzania danych - maszyn rotorowych i komputerów - szyfry zdominowały kryptografię. Historia zaś wykazała, że kody są podatne na kryptoanalizę i w razie przejęcia książki kodowej, co niestety dla użytkowników zdarzało się dość często, cała tajemnica komunikacji była w rękach przeciwnika.
+
+Współcześnie uważane są za przestarzałe, a w porównaniu z szyfrowaniem mechanicznym korzystanie z książki kodów jest trudne i niewygodne. W razie przejęcia książki kodów opracowanie kolejnej jest czasochłonne, jej dystrybucja skomplikowana i niebezpieczna. Z tych powodów kody przestały być używane w kryptografii.
+
+Pierwotnie książki kodowe miały słowa kodowe wyliczone w "porządku jawnego tekstu" np. w kodzie używającym liczbowych kodów jawny tekst zaczynający się od "a" miałby niskiej wartości grupę a zaczynający się od "z" wysokiej wartości - ta sama książka kodowa była używana do kodowania i dekodowania. Ten mechanizm był podatny na złamanie, bo cechował się pewną przewidywalnością, dzięki której można było zauważyć wzór i ujawnić jawny tekst lub jego część. Żeby utrudnić takie działanie, twórcy kodów wprowadzili brak powiązań pomiędzy słowami kodowymi a porządkiem pasującego tekstu, co oznaczało, że są potrzebne dwie książki kodowe: jedna [jawny tekst -> kod] a druga [kod -> jawny tekst]. Było to trudniejsze w realizacji i zapewnieniu bezpieczeństwa, ale też cięższe do złamania. 
+
+Kryptonaliza kodów
+
+Rozszyfrowanie zakodowanej wiadomości przypomina tłumaczenie dokumentu z obcego języka z jednoczesnym tworzeniem słownika.
+
+- Pierwszą wskazówką może być to, że niektóre słowa pojawiają się częściej niż inne (rodzaj analizy statystycznej). Pomaga to określić strukturę wiadomości w zdaniach.
+- Analiza kontekstowa - porównuje się wiadomości zakodowane tym samym wzorcem i porównuje z informacjami z innych źródeł: szpiegów, gazet, rozmów na przyjęciach dyplomatycznych, miejsca lub czasu wysyłania wiadomości, adresata (analiza ruchu), wydarzeń mających miejsce przed i po wysłaniu wiadomości, zachowania się ludzi wysyłających zakodowane wiadomości itd. Np. jeśli jakieś słowo kodowe znajduje się tylko w informacjach z konkretnej armii, może oznaczać dowódcę lub siedzibę sztabu. Słowo kodowe pojawiające się w wiadomościach o ataku na określone miejsce może oznaczać to miejsce.
+- Można także użyć ataku ze znanym jawnym tekstem (cribs) lub "zasiać" treść np. dokonując rajdu o określonym czasie i miejscu, a potem analizując wiadomości.
+- Najbardziej oczywistym i w zasadzie ostatnim najprostszym sposobem złamania kodu jest kradzież książki kodowej przez łapówkę, kradzież ("black bag" operation - kradzież w celu wykonania kopii) lub wypad - procedura określana czasem jako "praktyczna kryptologia" i jest to słabość zarówno kodów, jak i szyfrów, chociaż książki kodowe są generalnie większe i dłużej używane niż klucze szyfrów. Strata książki kodowej paraliżuje kryptosystem, strata klucza ujawnia część wiadomości.
+
+Dobra książka kodowa może trudniejsza do złamania niż szyfr, ale napisanie jej i dystrybucja jest kłopotliwa i czasochłonna. Konstruowanie nowego kodu jest jak pisanie nowego języka, jeśli zostanie złamany, musi zostać napisany od nowa. W praktyce jeśli zostanie już rozpowszechniony, jest ciągle modyfikowany, żeby utrudnić złamanie. W miarę dystrybucji książki kodowej rosły szanse na jej przechwycenie, jeśli używały jej całe armie, utrzymanie w tajemnicy było trudne.
+
+Dla kontrastu: bezpieczeństwo szyfrów jest oparte na kluczu, jeśli zostanie ukradziony lub zdradzony dużo łatwiej go zmienić i rozprowadzić. Ba, regularna zmiana klucza jest najczęściej wpisana w architekturę kryptosystemu.
+
+Superszyfrowanie (superencipherment) - Dość częste jest szyfrowanie zakodowanych wiadomości dla zapewnienia większego bezpieczeństwa, łatwo można to zrobić, jeśli jest to kod numeryczny. Dobry kod kompresuje wiadomość i zapewnia pewnego rodzaju automatyczną korektę błędów. Taki charakter miał najtrudniejszy japoński system tajnej komunikacji JN25 (czasem JN-25): używał książki kodowej mającej 90 tys. słów i fraz, komunikat był najpierw przekładany na kod, potem szyfrowany. JN25 sprawił Amerykanom o wiele większy problem niż mechaniczne szyfry RED i PURPLE. Nigdy nie mieli takiej sytuacji, że czytali wszystko. Jeżeli wydedukowali 20% wiadomości, był to ogromny sukces.
+
+- ["How Did the U.S. Break Japanese Military Codes Before the Battle of Midway?"](https://slate.com/human-interest/2013/11/u-s-in-world-war-ii-how-the-navy-broke-japanese-codes-before-midway.html)
+
+### Kryptologia w mediach
+
+I nie będzie w tym rozdziale mowy o banałach Dana Browna.
+
+- [Cicada 3301](https://en.wikipedia.org/wiki/Cicada_3301)
+- [11B-X-1371](https://en.wikipedia.org/wiki/11B-X-1371)
+- [Szyfr Beale’a](https://pl.wikipedia.org/wiki/Szyfr_Beale%E2%80%99a)
+- Chill Fuel ["A858 - The Most Mysterious Subreddit" [YT 8:40]](https://www.youtube.com/watch?v=TmoRowBRZvY)
+- Chill Fuel ["Unfavorable Semicircle - Youtube's Strangest Channel" [YT 11:33]](https://www.youtube.com/watch?v=GxyJ1rZ4lY8)
+- Chill Fuel ["The Most Mysterious Website - Mortis.com" [YT 17:03]](https://www.youtube.com/watch?v=6u81mGCUqJI)
+
+Powieści:
+- [Neal Stephenson "Cryptonomicon"](https://en.wikipedia.org/wiki/Cryptonomicon)
+
+Filmy:
+
+- ["Citizenfour" 2014](https://www.imdb.com/title/tt4044364/) | ["Snowden" 2016](https://www.imdb.com/title/tt3774114/)
+
+Wyzwania:
+
+- [The Alan Turing Cryptography Competition edition 2021](https://www.maths.manchester.ac.uk/cryptography_competition/)
+- [Cryptography Murder Mystery](https://passionatelycurioussci.weebly.com/blog/cryptography-murder-mystery)
+- [Cipher challenges](https://www.mysterytwisterc3.org/en/challenges/the-four-levels?view=displaychallenges)
+- National Museum of Scotland [Cryptography Challenge](https://www.mathsweek.scot/assets/files/Cryptography-Challenge-4-pages-A4-artwork.pdf)
+- Simon Singh [Cipher Challenge](https://simonsingh.net/cryptography/cipher-challenge/)

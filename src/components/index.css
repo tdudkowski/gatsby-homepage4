@@ -1,0 +1,44 @@
+.container {
+    /* background-image: url(../content/pageimages/Ornate-Dharma-Wheel-Silhouette.svg); */
+    background-image: url(../content/pageimages/dharma-wheel-publicdomainvectors.org.svg);
+    background-repeat: no-repeat;
+    background-size: 80%;
+    background-attachment: fixed;
+    background-position: 200% 120%;
+}
+
+.container main > div > ul li {background-color: rgba(250,250,250,.4);}
+/* .container main > article {background-color: rgba(153, 153, 153, 0.1);} */
+/*.container main > article {background-color: #fff;*/
+/*    background-image:*/
+/*    linear-gradient(90deg, transparent 79px, #abced4 79px, #abced4 81px, transparent 81px),*/
+/*    linear-gradient(#eee .1em, transparent .1em);*/
+/*    background-size: 100% 1.2em;}*/
+.content a, aside a {text-decoration: none;}
+.content a:hover, aside a:hover {text-decoration: underline;}
+.content > div {background-color: rgba(250,250,250,.9);}
+
+/*rgba(80,0,20,.9)*/
+.container > header {background-color: #1b365d; color:#ffc845; }
+blockquote {padding-left:1rem;}
+
+.line-numbers .line-numbers-rows {
+	position: absolute;
+	pointer-events: none;
+	display: inline-block;
+	margin-right: 5rem;
+	padding: 0 .5rem;
+	text-align: right;
+	top: 1rem;
+	font-size: 100%;
+	left: -3.8em;
+	width: 5em; /* works for line-numbers below 1000 lines */
+	letter-spacing: -1px;
+	border-right: 1px solid #663;
+
+	-webkit-user-select: none;
+	-moz-user-select: none;
+	-ms-user-select: none;
+	user-select: none;
+
+}

@@ -1,0 +1,452 @@
+---
+title: "Gatsby cz. 8 - menu RWD z Hamburgerem"
+section: "blog"
+subsection: "it"
+set: gatsby
+date: 2022-05-23
+edited: 
+image: ../blogimages/Gatsby_Monogram.png
+tags: react, gatsby, css, hamburger, rwd
+description: "Responsywne menu Hamburger, Dropdown Menu oraz Mega Menu"
+url: https://dygresje.info/blog/gatsby-menu
+---
+
+Stały adres serii wpisów o Gatsbym - [/blog/gatsby](/blog/gatsby)
+
+### Wstęp
+
+Omówię tutaj jeden z podstawowych i często sprawiających problemy elementów strony WWW - menu. Wpis ten jest przeniesieniem treści z wpisu z sąsiedniego cyklu [Frontend - menu RWD z Hamburgerem](/blog/webdev-menu) i dotyczą go wszystkie zastrzeżenia opisane tam we wstępie:
+
+- założenie budowy bottom up, czyli podstawą jest rozdzielczość mobilna, dlatego Hamburger jest niezbędny
+- minimalny kod, sama mechanika menu i nic więcej
+- dlatego też zakładam tylko dwa zakresy rozdzielczości i jeden breakpoint
+
+Omówione tutaj zostaną trzy podstawowe rodzaje menu:
+
+- zwykłe płaskie menu
+- Dropdown Menu
+- Mega Menu, czyli menu składające się z bloków zajmujących najczęściej całą szerokość ekranu, które zawierają wiele odnośników, często również tekst i elementy graficzne
+
+### useState i styled components
+
+Do utworzenia relacji Hamburger CSS będziemy potrzebowali hooka stanu, czyli useState z Reacta oraz styled components, które umożliwiają przełączanie właściwości propsami.
+
+Weźmy poniższy najprostszy przykład takiego mechanizmu:
+
+```js {numberLines: true}
+import React, {useState} from "react"
+import styled from "styled-components"
+
+const StyledDiv = styled.div`
+width:25rem;
+height: 5rem;
+background-color:${props => (props.red  ? "green" : "red") }
+`;
+
+const StateButton = ()=>{
+
+    const [open, setOpen] = useState(true)
+    const check = () => setOpen(!open)
+
+    return (
+        <>
+<div>
+<button onClick={()=>check()}>click me; actual state is: {open ? "true" : "false"}</button>
+{open? <StyledDiv red /> : <StyledDiv />}
+</div>
+</> )
+}
+
+export default StateButton;
+```
+
+- W pierwszych dwóch liniach (1-2) importujemy najpierw hook useState, a potem styled components.
+- Stan, którego będziemy używać to boolean (12).
+- Przełącznik, w tym wypadku button (18), ale może to być dowolny tag, ma przypisaną do kliknięcia funkcję zmieniająca stan na przeciwny. Żebyśmy widzieli jego wartość i zmiany wewnątrz tego przycisku znajduje się operator warunkowy (ternary), który wartość tego stanu wyświetla.
+- Takim samym operatorem wyświetlamy stylowany div (19); z tym że ma on tutaj dwie wersje i zależnie od wartości stanu albo ma propsa "red", albo nie.
+- Dopiero w definicji stylu zamiast zwykłej właściwości CSS mamy JS z kolejny operatorem warunkowym (7), który zwraca do CSS wartość CSS zależną od propsa.
+
+Więc wygląda to tak, że przełączamy stan operacją użytkownika, zależnie do niej wyświetlamy element z propsem lub bez i ten props decyduje o właściwości CSS. Tak będzie działać nasz Hamburger.
+
+### Menu
+
+Zacznijmy od najprostszego menu, zwykłej belki nawigacyjnej składającej się z listy odnośników w elemencie nav. Będzie to komponent menu.js.
+
+**/src/components/menu.js**
+
+```js
+import React from 'react';
+import { Link } from "gatsby"
+
+const Menu = () => {
+    return (<nav className="menu-container">
+        <ul>
+            <li><Link to="/">Home</Link></li>
+            <li><Link to="/articles">Articles</Link></li>
+            <li><Link to="/about">About us</Link></li>
+            <li><Link to="/contact">Contact</Link></li>
+        </ul>
+    </nav>)
+}
+
+export default Menu
+```
+
+Przykładowy CSS dla tego komponentu wygląda tak:
+
+```css
+.menu-container ul {display: flex; flex-direction: column; padding-left:0; list-style-type: none; margin:0;}
+.menu-container ul li {flex:1;}
+.menu-container ul li a {display:block; text-align: center; text-decoration: none;}
+.menu-container ul li a:hover {background-color: gold; text-decoration: underline;}
+
+@media (min-width: 800px) {
+    .menu-container ul {flex-direction: row;}
+}
+```
+
+Jest to podstawowe, typowe stylowanie menu w modelu CSS Flexbox zapewniające układ pionowy w małych rozdzielczościach i poziomy w większych. Zaleta jest prostota oraz to, że zawsze są widoczne wszystkie elementy tego menu. Natomiast wada jest zajmowanie miejsca w pionie, co zmusza użytkownika do przewinięcia w dół, co więcej podczas przewijania można niechcący uruchomić element menu i przejść na przypadkową stronę, zamiast zobaczyć co jest poniżej.
+
+### Hamburger
+
+Żeby uniknąć tych problemów, wprowadzono menu Hamburger, które zajmuje tylko prostokąt w rogu ekranu. Potrzebny będzie dodatkowy komponent, do którego zaimportujemy powyższe menu. Czyli będzie to wrapper zapewniający odpowiednie zachowanie. Przedstawione tutaj rozwiązanie zaczerpnąłem z artykułu ["Gatsby Navigation using Styled Components and useState hook"](https://snopkowski.com/blog/gatsby-navigation-styled-components) znajdującego się na blogu Wojciecha Snopkowskiego. Trochę go zmieniłem.
+
+Wymogi:
+
+{/* - [Loadable Components](https://loadable-components.com/) zadaniem tego modułu jest code splitting, czyli podział wykonywanych skryptów JS tak, żeby można było załadować menu dopiero po jego utworzeniu, w przeciwnym razie po załadowaniu strony byłby to pusty element i pojawiłby sie dopiero po przeładowaniu. `npm i @loadable/component`  */}
+- [styled-components](https://styled-components.com/) dynamiczny CSS odpowiedzialny za animację hamburgera.
+
+Styled Components trzeba dodać do `gatsby-config.js`. Szczegóły są opisane we wpisie [Gatsby cz. 3 - CSS](/blog/gatsby-css).
+
+Tak wygląda komponent hamburgera:
+
+**/src/components/hamburger.js**
+
+```js {numberLines: true}
+import React, { useState } from "react"
+import styled from "styled-components"
+import Menu from "./menu"
+
+const Navigation = styled.nav`
+@media (max-width: 699px) {
+    position: absolute;
+    height: 2rem;
+    top: 0;
+    left: 0;
+    right: 0;
+    left: 0;
+           }
+`
+
+const Toggle = styled.div`
+  display: none;
+  height: 100%;
+  cursor: pointer;
+  padding: 0 10vw;
+  background-color: #ddc;
+
+  @media (max-width: 699px) {
+    padding-left:1rem;
+    display: flex;
+  }
+`
+
+const Navbox = styled.div`
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+
+  @media (max-width: 699px) {
+    position: absolute;
+    width: 100%;
+    justify-content: flex-start;
+    transition: all 0.3s ease-in;
+    left: ${props => (props.open ? "-100%" : "0")};
+    & h2, h3, ul {font-size:1.3rem; }
+    & a:hover {background-color: rgba(251, 251, 251, 0.3); color:#eec;}
+  }
+`
+
+const Hamburger = styled.div`
+  background-color: #ccc;
+  width: 30px;
+  height: 3px;
+  transition: all 0.3s linear;
+  align-self: center;
+  position: relative;
+  transform: ${props => (props.open ? "rotate(-45deg)" : "inherit")};
+
+  ::before,
+  ::after {
+    width: 30px;
+    height: 3px;
+    background-color: #ccc;
+    content: "";
+    position: absolute;
+    transition: all 0.3s linear;
+  }
+
+  ::before {
+    transform: ${props => props.open ? "rotate(-90deg) translate(-10px, 0px)" : "rotate(0deg)"};
+    top: -10px;
+  }
+
+  ::after {
+    opacity: ${props => (props.open ? "0" : "1")};
+    transform: ${props => (props.open ? "rotate(90deg) " : "rotate(0deg)")};
+    top: 10px;
+  }
+`
+
+const MenuHamburger = () => {
+    const [navbarOpen, setNavbarOpen] = useState(false)
+
+        const closeExpanded = () => {
+      if (window.visualViewport.width>799) {
+        setNavbarOpen(false);
+              }
+   }
+window.addEventListener('resize', closeExpanded);
+   
+    return (
+        <Navigation className="menu-hamburger">
+            <Toggle onClick={() => setNavbarOpen(!navbarOpen)} >
+{navbarOpen ? <Hamburger open /> : <Hamburger />}
+            </Toggle>
+            {navbarOpen ? (<Navbox onClick={() => setNavbarOpen(false)}> <Menu /> </Navbox>
+            ) : (
+<Navbox open> <Menu />  </Navbox>)}
+        </Navigation>
+    )
+}
+export default MenuHamburger
+```
+
+Po kolei:
+
+- Na samym początku pliku mamy importy: React z hookiem useState (1), Styled Components (2).
+- Stan boolean navbarOpen ustawiony na false i metoda zmieniającą setNavbarOpen (78).
+- Kontener Hamburgera (88-90; stylowany div Toggle) ma na kliknięcie przypisaną funkcję zmieniającą stan. Kontener z Hamburgerem jest widoczny tylko w małej rozdzielczości. Poniżej mamy dwa operatory warunkowe:
+- Pierwszy operator warunkowy (89), we wnętrzu Toggle zależnie od stanu wyświetla Hamburger z propsem open, lub bez niego. Jeżeli stan jest 'true', Hamburger posiada propsa open, jeżeli stan jest false, nie ma go.
+- Drugi operator warunkowy (91-93) wyświetla menu, również zależnie od stanu hooka - ma on props open lub nie. Div (Navbox) zawierający menu, który mając stan 'false', znajduje się poza ekranem, a kiedy stan zmienia się na 'open', wyjeżdża zza lewej krawędzi ekranu. Kolejne kliknięcie zmienia stan na false (91), co zapewnia płynne działanie w Landing Page oraz w sytuacji, jeśli klikniemy link podstrony aktywnej. A jak logiczny stan komponentu zmienia jego wygląd? Dokładnie tak samo, jak w opisanym powyżej elemencie Hamburger. Jeżeli stan jest 'true' (91), nie ma propsa open, a jeżeli stan jest 'false', jest props open (94).
+- CSS Styled Components: w elementach Hamburger i Navbox widzimy powyższe propsy użyte jako stany logiczne dla operatorów warunkowych sterujących wyglądem tych elementów (52, 65, 70, 71). Elementy wizualne Hamburgera, czyli te trzy kreski to div z dwoma pseudoelementami CSS (kreski dolna i górna). Podobnie wygląda to w przypadku Navboxa, tutaj również mamy 'transition' z tym samym czasem i pozycja 'left' (39), która zależnie od propsa wynosi -100% lub 0.
+- Efekt: Każde kliknięcie w Hamburger zmienia stan na przeciwny, a wizualnie oddane jest to trzema równoległymi kreskami, kiedy hamburger jest zamknięty i iksem, kiedy jest otwarty. Analogicznie zależnie od tego samego stanu kontener menu albo jest poza lewą krawędzią, albo zajmuje 100% szerokości widoku.
+- Płynność animacji zapewnia 'transition: all 0.3s linear;' (49, 61)
+- Przy każdym resizie okna przeglądarki wykonuje się funkcja closeExpanded (79-84), która przy większej rozdzielczości zmienia stan na false. W ten sposób rozwinięcie menu nie jest zapamiętywane.
+
+### Dropdown Menu
+
+Najbardziej typowym rozwiązaniem dla rozwijanego menu jest umieszczenie listy wewnątrz elementu listy nadrzędnej z właściwością `display: none;`. W wyniku akcji na elemencie nadrzędnym (kliknięcie lub najechanie) następuje zmiana na `display:block`.
+
+Wygląda to tak:
+
+**/src/components/menu-dropdown.js**
+
+```js {numberLines: true}
+import React from 'react';
+import { Link } from "gatsby"
+import "./menu-dropdown.css"
+
+const Menu = (props) => {
+    
+    return (<nav className="menu-container">
+        <ul>
+            <li onClick={(e) => props.handlesubmenu(e)}><Link  to="#" >Home</Link>
+              <ul>
+                <li><Link to="/article1">Article 011</Link></li>
+                <li><Link to="/article2">Article 012</Link></li>
+                <li><Link to="/article3">Article 013</Link></li>
+                <li><Link to="/article4">Article 014</Link></li>
+              </ul>
+            </li>
+            <!-- rest of menu -->
+        </ul>
+      </nav>)
+}
+
+export default Menu
+```
+
+Jak widać jest to prosty w budowie JSX z jedną funkcją importowaną z komponentu nadrzędnego (5) - ta funkcja będzie zarządzać zachowaniem submenu w małych rozdzielczościach. Umieszczona jest w elemencie 'li' (9), dlatego że 'a' (czyli 'Link' w tym wypadku) będzie miał wyłączoną akcję.
+
+Natomiast CSS może wyglądać tak:
+
+**/src/components/menu-dropdown.css**
+
+```css {numberLines: true}
+.menu-container ul {display: flex; flex-direction: column; padding-left:0; list-style-type: none; margin:0;}
+.menu-container > ul li {flex:1;}
+.menu-container > ul > li > a {pointer-events: none;}
+.menu-container > ul > li:hover > a { background-color: #ffa;}
+.menu-container > ul li a {display:block; text-align: center; text-decoration: none;}
+.menu-container > ul li a:hover {background-color: gold; text-decoration: underline;}
+.menu-container > ul ul {display:none;} 
+
+@media (max-width: 799px) {
+    .menu-container > ul ul.open {display:flex; flex-direction: column; }
+}
+
+@media (min-width: 800px) {
+    .menu-container ul {flex-direction: row;}
+    .menu-container > ul > li:hover ul {display:flex; flex-direction: column;} 
+}
+```
+
+Powyższe reguły są podobne do poprzednich, ale różnice zapewniają:
+- niewyświetlenie listy podrzędnej w małej rozdzielczości przez `display: none` (7)
+- dodatkowo, ponieważ nie chcemy mylić użytkownika zachowaniem kursora, wyłączamy akcję w odnośniku menu nadrzędnego (3), nie prowadzi on donikąd, jest tylko triggerem (spustem) dla pokazania / ukrycia menu podrzędnego (submenu) - w dużej rozdzielczości przez najechanie kursorem, w małej przez kliknięcie
+- tak naprawdę, ponieważ wyłączyliśmy akcję na tym odnośniku, właściwym triggerem jest jego rodzic, czyli element 'li' (15)
+- najważniejsza dla małych rozdzielczości jest reguła, która wyświetla submenu po otrzymaniu przez niego klasy 'open' (10), to właśnie manipulacja tą klasą za pomocą JS będzie decydować o działaniu menu
+
+Tutaj warto zauważyć, że nadal mamy podział modułów. W osobnym pliku jest moduł Menu i jest on importowany do modułu Hamburgera, który jest końcowym modułem nawigacyjnym umieszczonym w module Layout. Można wszystko wsadzić do jednego pliku, ale trzymanie tych modułów osobno sprawia, że kod jest bardziej przejrzysty i łatwiejszy w modyfikacji. Ponadto jak widać, w module menu jest funkcja, która mogła zostać tam umieszczona bezpośrednio, ale importuję ją z Hamburgera. Po prostu wolę, żeby cała akcja JS była w jednym miejscu.
+
+Jak więc będzie wyglądać moduł Hamburgera? Jak bardzo zmieni się w porównaniu z poprzednim? Niewiele.
+
+**/src/components/hamburger-dropdown.js**
+
+```js {numberLines: true}
+// rest of component above
+
+const MenuHamburger = () => {
+    const [navbarOpen, setNavbarOpen] = useState(false)
+    const MenuHTML = document.getElementsByClassName('menu-container')
+
+    const closeAllOpen = () => {
+      for (let i=0; i < MenuHTML[0].children[0].children.length; i ++) {
+        MenuHTML[0].children[0].children[i].children[1].classList.remove('open')         }
+      }
+
+    const handleMenu = (e) => {
+      setNavbarOpen(!navbarOpen)     
+      if (!navbarOpen) { closeAllOpen() }
+    }
+
+    const handleSubmenu = e => {     
+        if (e.target.children[1].classList.contains("open")) { e.target.children[1].classList.remove("open");  return;}
+        closeAllOpen();
+        e.target.children[1].classList.add("open")
+      }
+
+    const closeExpanded = () => {
+      if (window.visualViewport.width>799) {
+        setNavbarOpen(false);
+        closeAllOpen();
+      }
+   }
+
+window.addEventListener('resize', closeExpanded);
+   
+    return (
+        <Navigation className="menu-hamburger">
+            <Toggle onClick={() => handleMenu()} >
+{navbarOpen ? <Hamburger open /> : <Hamburger />}
+            </Toggle>
+            {navbarOpen ? (<Navbox> <Menu handlesubmenu={handleSubmenu} /> </Navbox>
+            ) : (
+<Navbox open> <Menu />  </Navbox>)}
+        </Navigation>
+    )
+}
+export default MenuHamburger
+```
+
+Wszystkie zmiany to dwie dodatkowe funkcje JS oraz umieszczenie jednej z nich w propsie komponentu Menu.
+
+- Funkcją, która prawie nie ulega zmianie, jest 'closeExpanded' (23-30) - odpowiada ona za "zapominanie", czy też może dokładniej za czyszczenie stanu menu w momencie przejścia do wyższej rozdzielczości.
+- Funkcją, która była poprzednio, ale tym razem została wydzielona do osobnego bloku, jest 'handleMenu' (12-15).
+- Nową funkcją, która zostaje eksportowana w propsie do komponentu Menu, jest 'handleSubmenu' (17-21), która zarządza klasą '.open' w submenu. W przeciwieństwie do innych używa zdarzenia 'event' - po prostu musimy wiedzieć skąd, z którego elementu menu przyszło zdarzenie. Na początku sprawdza, czy dany element ma przydzieloną klasę '.open' jeśli tak to ją odbiera i kończy funkcję (18). Potem kiedy już wiadomo, że dany element nie ma jeszcze klasy '.open', czyli ma zostać mu przydzielona, najpierw odbiera ją wszystkim (19), a potem przydziela temu, z którego przychodzi zdarzenie (20).
+- Dodatkowo, żeby nie powtarzać wszędzie tego samego kodu, jest funkcja 'closeAllOpen' (7-10), która odbierając wszystkie przydzielone klasy '.open' zamyka wszystkie submenu. Jest obecna we wszystkich trzech poprzednio wymienionych funkcjach i to właśnie jej obecność różni 'closeExpanded' od poprzedniej wersji i wymusza wydzielenie 'handleMenu' do osobnego bloku. Przy okazji skraca również 'handleSubmenu'.
+
+### Mega Menu
+
+Specyficznym rodzajem rozwijanego menu jest tzw. Mega Menu, czyli Dropdown, którego blok zajmuje całą szerokość bloku treści.
+
+Żeby dla powyższego przykładu uzyskać taki efekt, trzeba wprowadzić dwie zmiany w CSS:
+
+- element submenu powinien mieć właściwości `position: absolute; left:0; width: 100%;`, które zapewniają właściwą pozycję i wielkość
+- rodzic powinien mieć `position:relative;`, dlatego że w ogóle powinien mieć zdefiniowaną właściwość position inną niż domyślna 'static', a 'relative' tak naprawdę niczego tu nie zmienia, więc jest neutralna
+
+Trzeba pamiętać, że dotychczas mieliśmy do czynienia tylko z menu nawigacyjnym, a więc wszystko to były listy odnośników. W przypadku MegaMenu poszczególne moduły submenu to mogą być ilustracje, formularze, teksty, cokolwiek. Tak więc kontener submenu nie może być, jak dotąd, listą nieuporządkowaną. Będzie to neutralny div z klasą '.submenu-container' i w nim będą się znajdowały poszczególne elementy blokowe submenu.
+
+W tym wypadku dla uproszczenia przyjmijmy, że nadal to są menu, czyli listy z odnośnikami i taki moduł Menu może wyglądać tak:
+
+```js {numberLines: true}
+import React from 'react';
+import { Link } from "gatsby"
+import "./menu-megamenu.css"
+
+const TestMenu = (props) => {
+    
+    return (<nav className="menu-container">
+        <ul>
+            <li onClick={(e) => props.handlesubmenu(e)}><Link  to="#" >Home</Link>
+            <div className='submenu-container'>
+                <ul>
+                    <li><Link to="/article111">Article 111</Link></li>
+                    <li><Link to="/article112">Article 112</Link></li>
+                    <li><Link to="/article113">Article 113</Link></li>
+                    <li><Link to="/article114">Article 114</Link></li>
+                </ul>
+                <ul>
+                    <li><Link to="/article121">Article 121</Link></li>
+                    <li><Link to="/article122">Article 122</Link></li>
+                    <li><Link to="/article123">Article 123</Link></li>
+                    <li><Link to="/article124">Article 124</Link></li>
+                </ul>
+                <ul>
+                    <li><Link to="/article131">Article 131</Link></li>
+                    <li><Link to="/article132">Article 132</Link></li>
+                    <li><Link to="/article133">Article 133</Link></li>
+                    <li><Link to="/article134">Article 134</Link></li>
+                </ul>
+            </div>
+        </li>
+        {/* rest of component */}
+```
+
+Czyli jak widzimy nic tu poza kontenerem (10) i blokami submenu się nie zmieniło.
+
+Jak widać, importujemy inny plik CSS, czyli tam również zaszły pewne zmiany. Również nie są wielkie:
+
+```css {numberLines: true}
+.menu-container ul {display: flex; flex-direction: column; padding-left:0; list-style-type: none; margin:0; position:relative;}
+.menu-container > ul li {flex:1;}
+.menu-container > ul > li > a {pointer-events: none;}
+.menu-container > ul > li:hover > a {background-color: #ffa;}
+.menu-container > ul li a {display:block; text-align: center; text-decoration: none;}
+.menu-container > ul li a:hover {background-color: gold; text-decoration: underline;}
+.menu-container > ul div.submenu-container {display: none; position: absolute; left: 0; width: 100%;} 
+
+@media (max-width: 799px) {
+    .menu-container > ul div.open {display:flex; flex-direction: column; position: relative;}
+}
+
+@media (min-width: 800px) {
+    .menu-container ul {flex-direction: row;}
+    .menu-container > ul > li:hover div.submenu-container {position:absolute; display:flex; flex-direction: column;} 
+}
+```
+
+Przeanalizujmy po kolei. Tak jak wspomniałem na początku dwie podstawowe zmiany w CSS to:
+
+- `position: relative;` dla rodzica (1)
+- i trzy główne właściwości (`position: absolute; left: 0; width: 100%;`) dla kontenera submenu (7), którym do tej pory była podrzędna lista nieuporządkowana, w tym wypadku jej miejsce zajął 'div.submenu-container'.
+
+Co jeszcze warto zauważyć, to właściwość `position: relative;` dla kontenera submenu w małej rozdzielczości (10). Dzięki temu kontener zachowuje się poprawnie jako element akordeonu, jego rozwinięcie nie zasłania następujących po nim elementów menu, a tylko je przesuwa niżej.
+
+No dobrze, a co z samym Hamburgerem, jakie zajdą z nim zmiany? Otóż żadne. Można zastosować dokładnie ten sam moduł Hamburgera.
+
+### TODO
+
+Co jeszcze można zrobić?
+
+Przede wszystkim ostylować menu. Te reguły, które tutaj wstawiłem miały na celu wyłącznie prezentację działania mechanizmu.
+
+Po drugie i jest to znacznie poważniejsze zadanie - zapewnienie animacji / spowolnienia działania submenu. Niestety wyświetlanie / chowanie submenu dokonywane jest tu za pomocą zmiany atrybutu 'display' a on nie podlega animacji przez 'transition'. Uważam, że bez wyjaśnienia tego niniejszy wpis nie jest kompletny.
+
+No i w końcu sam sposób, w jaki dokonywana jest akcja na menu w Hamburgerze. Na pewno można zrobić to bardziej 'react way', np. wyłącznie przez zarządzanie stanem i nawet tak próbowałem na początku zrobić. Ale po pierwsze manipulacja powiązanymi stanami nie jest taka prosta, a po drugie przedstawiony tu sposób, choć może nie jest optymalny - jest prosty i działa uniwersalnie, tak samo dla Dropdown Menu, jak i Mega Menu.
+
+### Odnośniki
+
+- ["Gatsby Navigation using Styled Components and useState hook"](https://snopkowski.com/blog/gatsby-navigation-styled-components) 
+- Web Dev Simplified ["How To Create Advanced CSS Dropdown Menus" [16:08]](https://www.youtube.com/watch?v=S-VeYcOCFZw)

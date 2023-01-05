@@ -1,0 +1,78 @@
+---
+title: "Klucz"
+comment: ""
+section: "it"
+subsection: "kryptologia"
+---
+
+### Definicja
+
+Klucz (ang. *key*) - w kryptografii informacja umożliwiająca wykonywanie pewnej czynności kryptograficznej - szyfrowania, deszyfrowania, podpisywania, weryfikacji podpisu itp.
+
+Część informacji, która kontroluje działanie algorytmu kryptograficznego. W szyfrowaniu klucz jest parametrem określającym konkretną transformację jawnego tekstu w szyfrogram, a w deszyfrowaniu na odwrót. Klucze są także używane w innych kryptograficznych algorytmach np. cyfrowych podpisach i MAC. Można o nich myśleć jak o swego rodzaju argumentach funkcji.
+
+Dla dobrze zaprojektowanego algorytmu szyfrowanie tego samego tekstu z innym kluczem powinno spowodować powstanie całkowicie odmiennego szyfrogramu i podobnie odszyfrowanie przy pomocy nieprawidłowego klucza powinno wygenerować wyłącznie szum. Jeśli klucz deszyfrujący jest utracony, zaszyfrowane dane powinny być nie do odzyskania, przynajmniej dla dobrej jakości algorytmów i dostatecznie dużej wielkości kluczy.
+
+- Kryptografia symetryczna - klucz służy do szyfrowania i deszyfrowania wiadomości. Do obu tych czynności używa się tego samego klucza, dlatego powinien być znany tylko uczestnikom komunikacji. W praktyce dla taki klucz jest przypisany do danej komunikacji, nie do posiadacza, zwykle do każdego połączenia jest generowany nowy klucz. Może do tego służyć np. (oparty na kryptografii asymetrycznej) protokół Diffiego-Hellmana.
+- Kryptografia asymetryczna - wyróżniamy klucz publiczny oraz prywatny. Ten pierwszy może być zupełnie jawny, drugi pozostaje wyłączną wiedzą właściciela. Matematyczna konstrukcja kluczy powinna być taka, żeby wygenerowanie prywatnego na podstawie publicznego było jak najtrudniejsze obliczeniowo. Zależnie od kryptosystemu, wygenerowanie klucza publicznego na podstawie prywatnego również może być trudne (RSA), lub trywialne (ElGamal).
+
+Dwie najważniejsze funkcje kryptografii asymetrycznej to:
+
+- szyfrowanie - wtedy klucz publiczny służy do szyfrowania, a prywatny do deszyfrowania
+- podpisy cyfrowe - klucz prywatny służy do generacji podpisów, klucz publiczny do ich weryfikacji
+
+Klucze asymetryczne są zwykle przypisane do uczestnika (osoby, programu itp.), nie do kanału komunikacji. Dwa najpopularniejsze systemy kryptografii asymetrycznej to RSA i ElGamal. Inne to m.in. DSA i ECC.
+
+### Rozmiar klucza (2021)
+
+Dla OTP klucz musi być przynajmniej tak samo długi, jak wiadomość. W innych systemach wiadomość może być dużo dłuższa niż klucz, który jednak musi być dość długi, by atakujący nie mógł wypróbować wszystkich możliwych kombinacji.
+
+Dla algorytmu symetrycznego AES praktyczne minimum to 128, prawdopodobnie dopiero 256-bitowy klucz może być odporny na kryptografię kwantową (takie też jest zalecenie NSA z 2015 na Top Secret). NIST wycofało wszystkie klucze < 80 bitów do 2015. 
+
+W kryptografii asymetrycznej klucze mają pewną matematyczną strukturę, np. w RSA jest produktem dwóch liczb pierwszych. Wymagają większej długości klucza niż systemy symetryczne dla zapewnienia porównywalnego stopnia bezpieczeństwa. Sugerowana minimalna długość klucza dla systemów bazujących na faktoringu to 3072 bity co daje porównywalną siłę z 128-bitowym kluczem symetrycznym. 15360 bitów długości klucza asymetrycznego RSA odpowiada 256 bitom długości klucza AES.
+
+Kryptografia krzywej eliptycznej (Elliptic-curve cryptography, ECC) może pozwolić na zmniejszenie tej wielkości, ale te algorytmy są znane krótko i obecne oceny trudności wyszukania takiego klucza mogą się zmienić. Relacja długości do klucza symetrycznego wynosi tu 2/1, tzn. 256-bitowy klucz ECC odpowiada 128-bitowemu kluczowi AES.
+
+Poza OTP bezpieczeństwo tych systemów nie zostało dowiedzione matematycznie, więc przełom matematyczny może zamienić wszystko, co jest zaszyfrowane w otwartą książkę. Jest to jeszcze jeden powód do wybierania dłuższych kluczy.
+
+### Generowanie klucza
+
+Żeby ochronić przed odgadnięciem klucza, klucze muszą być generowane przypadkowo i zawierać dostateczną entropię. Generowanie bezpiecznych kluczy jest dużym problemem. [RFC 1750, Randomness Recommendations for Security.](https://datatracker.ietf.org/doc/html/rfc1750)
+
+Czasem używa się rozwiązań sprzętowych, które pobierają entropię z otoczenia, do wygenerowania mniejszych kluczy dostateczne źródło przypadkowości może zapewnić zwykła kostka do gry.
+
+Niektóre kryptosystemy używają KDF (key derivation function), który dodaje soli i dopasowuje do pożądanej długości klucza, np. zmniejszając długą frazę hasła do 128-bitowej wartości.
+
+### Prawo Kerckhoffsa (Kerckhoffs’ Prinzip)
+
+
+Belg Auguste Kerckhoffs w "La cryptographie militaire" 1883: kryptosystem powinien być bezpieczny, nawet jeśli wszystko na jego temat (oprócz klucza) jest publicznie znane. Dosłownie:
+
+>Il faut qu’il n’exige pas le secret, et qu’il puisse sans inconvénient tomber entre les mains de l’ennemi.
+
+"Nie może wymagać tajności i powinien móc bez szkody wpaść w ręce wroga"
+
+Przeformułował je później - prawdopodobnie niezależnie - Claude Shannon jako *the enemy knows the system* (wróg zna system - jest to tzw. maksyma Shannona).
+
+Jest szeroko uznawana w kryptografii w przeciwieństwie do *security through obscurity* (bezpieczeństwo przez ukrywanie). 
+
+Zgodnie z tym większość cywilnej kryptografii używa publicznie znanych algorytmów. Natomiast szyfry używane do ochrony tajemnic rządowych i wojskowych czasem są trzymane w tajemnicy.
+
+Prawo to jest jedną z sześciu zasad projektowych wyłożonych przez Kerckhoffsa dla szyfrów wojskowych: 
+
+1. System musi być praktycznie - jeśli nie matematycznie - nierozszyfrowywalny (*indecipherable*).
+2. Nie można wymagać trzymania go w tajemnicy, a poznanie go przez nieprzyjaciela nie może spowodować kłopotów.
+3. Jego klucz musi być przekazywalny (*communicable*) i zachowywalny (*retainable*) bez zewnętrznej pomocy i tworzenia dodatkowych zapisów oraz możliwy do zmiany (*changeable or modifiable*), kiedy zechcą tego korespondenci.
+4. Musi być możliwy do zastosowania (*applicable*) w korespondencji telegraficznej
+5. Musi być przenośny (*portable*), a jego używanie nie może wymagać uczestnictwa kilku ludzi
+6. Na koniec, koniecznie, biorąc pod uwagę okoliczności, w jakich musi być stosowany, system musi być łatwy w użyciu, nie wymagający ani umysłowego wysiłku, ani znajomości długiej serii reguł, których trzeba przestrzegać.
+
+Bruce Schneier powiązał je z przekonaniem, że wszystkie systemy bezpieczeństwa muszą być projektowane tak, by zawodzić z jak najmniejszymi stratami (*to fail as gracefully as possible*). Zasady Kerckhoffsa stosują się nie tylko do kodów i szyfrów, ale do systemów bezpieczeństwa w ogólności, każda tajemnica tworzy potencjalne źródło porażki (failure point). Inaczej mówiąc tajemnica jest podstawowym powodem łamliwości - i dlatego może spowodować załamanie się systemu. I odwrotnie, otwartość zapewnia giętkość.
+
+Kluczowe znaczenie dla każdego systemu bezpieczeństwa ma trzymanie pewnych rzeczy w tajemnicy. Uważa, że w tajemnicy należy trzymać te elementy systemu, które łatwiej jest zmienić. Załóżmy, że algorytm kryptograficzny jest zaimplementowany w sprzęcie i oprogramowaniu, które jest szeroko dystrybuowane wśród użytkowników - jeśli bezpieczeństwo zależy od trzymania go w tajemnicy, wtedy ujawnienie spowoduje potrzebę utworzenia, przetestowania i wdrożenia nowego implementacji nowego algorytmu, a co za tym idzie wymiany oprogramowania lub nawet sprzętu. Natomiast jeśli ważne jest utrzymanie w tajemnicy nie algorytmu, a tylko kluczy, wtedy ujawnienie kluczy będzie wymagało o wiele prostszej procedury utworzenia i dystrybucji nowych kluczy.
+
+Klucz jest dużo łatwiejszy do ochrony (jest to zwykle niewielka ilość danych) niż algorytm szyfrowania. Jest też łatwiejszy do zmiany, jeśli zostanie przechwycony, tak więc bezpieczeństwo jest najczęściej zależne od utrzymania w tajemnicy klucza. Dlatego zadanie bezpiecznej i skutecznej dystrybucji kluczy (*key management*) jest jednym z najtrudniejszych problemów w praktycznej kryptografii. Atakujący, który przechwyci klucz (ukradnie, wymusi, znajdzie w śmieciach, zastosuje socjotechnikę lub znajdzie na karteczce Post-it) może odzyskać oryginalne dane z szyfrogramu.
+
+Inaczej mówiąc, im mniej rzeczy trzeba utrzymać w tajemnicy, by zapewnić bezpieczeństwo tego systemu, tym bardziej jest bezpieczny.
+
+Eric Raymond rozszerza tę zasadę na wsparcie oprogramowania open source, mówiąc, że tworzenie oprogramowania, bez założenia, że nieprzyjaciel posiada kod źródłowy jest z zasady niewarte zaufania, tak więc "nigdy nie ufaj zamkniętemu oprogramowaniu" (never trust closed source). Idea, że oprogramowanie Open Source jest z zasady bardziej bezpieczne niż zamknięte jest promowane jako koncepcja "bezpieczeństwo przez jawność" (security through transparency). 

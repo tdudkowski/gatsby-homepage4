@@ -1,0 +1,309 @@
+---
+title: "Kryptologia klasyczna"
+comment: ""
+section: "it"
+subsection: "kryptologia"
+---
+
+### Definicja
+
+Szyfr klasyczny definiowany jest przez to, czym jest (jest szyfrem) i czym nie jest. Powstanie nowoczesnej, matematycznej kryptografii opartej na matematyce, teorii liczb i używającej maszyn rotorowych, a potem komputerów zamknęło całą dotychczasową kryptografię w szlachetnej, mahoniowej szafce z naftaliną. Narodziny matematycznej kryptografii oznaczały również powstanie kryptografii klasycznej, czyli całej dotychczasowej i odesłanie jej pomiędzy lary i penaty ku zabawie miłośników szarad i wyzwań.
+
+A co konkretnie oznacza powstanie kryptografii matematycznej i jakie są tu słupy graniczne?
+
+- Szyfr Vernama, czyli OTP, w praktyce OTT, czyli końcówki dalekopisu
+- Enigma, tu przede wszystkim sama idea szyfru maszynowego, ale zaraz potem zaawansowana kryptoanalityka: Marian Rejewski i bomba kryptologiczna, płachty Zygalskiego; oraz po Polakach doświadczenia brytyjskie: bomba Turinga w Bletchley Park (pierwszy na świecie prawdziwy ośrodek kryptoanalityczny, drugi jeśli wziąć pod uwagę polskie Biuro Szyfrów w Pyrach)
+- dziedzictwo Williama Friedmana, stworzenie teorii maszyn rotorowych i opracowanie SIGABA
+- Maszyna Lorenza, czyli Enigma na sterydach i brytyjski atak, do którego użyto pierwszych na świecie komputerów kryptoanalitycznych i tu po raz kolejny zasługi Turinga
+- maszyna Turinga 1936 "On Computable Numbers, with an Application to the Entscheidungsproblem" (Universal Turing machine aka UTM)
+- Architektura von Neumanna i cybernetyka; "First Draft of a Report on the EDVAC" 30 czerwca 1945
+- teoria informacji Claude Shannon "A Mathematical Theory of Communication" 1948
+
+Jak więc widać nowoczesna kryptologia powstała dla wojska i w ogniu wojny. Drugim użytkownikiem była dyplomacja, która szybko doceniła pożytek z OTP.
+
+### Podział
+
+Jest kilka klasyfikacji szyfrów klasycznych.
+
+- podstawieniowe / przestawieniowe
+- jedno-, wielostopniowe
+- mono-, polialfabetyczne
+
+#### Szyfr podstawieniowy / przestawieniowy
+
+Szyfr podstawieniowy pozostawia znak na jego miejscu, ale podmienia go na inny wg wzoru podstawienia. Podstawienie to zastąpienie, znaku, słowa lub nawet całego zdania.
+
+Jeżeli podstawienie jest zawsze jeden do jeden, tzn. A zawsze zamieniane jest w B, mamy do czynienia z prostym szyfrem podstawieniowym, jeżeli A zamieniane może być w B lub 2 jest to homofoniczny szyfr podstawieniowy - ta technika może utrudniać atak statystyczny. Jeżeli podstawiamy grupy znaków, np. dwuznaki w szyfrze Plaifaira - jest to poligramowy szyfr podstawieniowy.
+
+Pewną kryptologiczną generalizacją szyfru podstawieniowego jest kod, gdzie każde słowo lub często używana fraza zamieniana jest na słowo kodowe. Jako formy szyfrów podstawieniowych można też rozumieć slangi, żargony zawodowe (specyficzne znaczenia słów takich jak słup czy aktor w security IT).
+
+Podczas obu wojen światowych Amerykanie dla ukrycia komunikacji w tajemnicy używali Indian Nawaho (*Navaho CodeTalkers*), ich język był wtedy prawie nieznany i nawet nie był spisany, nie miał papierowej kodyfikacji, więc wróg był bezradny.
+
+Szyfr przestawieniowy nie zmienia znaku, ale zmienia jego pozycję. Potrzebne są do tego wzorce przestawień najczęściej w formie tabel.
+
+#### Mono-, polialfabetyczne
+
+Niezależnie od tego ile mamy etapów szyfrowania i jakie one są - jeżeli dla wszystkich znaków komunikacji stosujemy ten sam wzór przekształcenia, jest to szyfr monoalfabetyczny.
+
+Szyfr polialfabetyczny zmienia wzór przekształcenia dla kolejnych znaków wg własnego wzorca przekształcenia, jest więc pewnego rodzaju metaszyfrem.
+
+Żeby wyjaśnić to na jakimś żywym przykładzie, załóżmy że słowem-kluczem jest "klucz". Wartości liczbowe kolejnych liter klucza to: 11, 12, 21, 03, 26. Zakładamy najpierw przesunięcie w prawo, potem w lewo, potem w prawo itd. Zatem pierwszą literę przesuwamy o 11 znaków w prawo (A zamienia się w L), drugą o 12 (A zamienia się w M), ..., kiedy doszliśmy do końca klucza, zmieniamy wektor przesunięcia i szóstą literę przesuwamy o 11 w lewo (A zamienia się w P).
+
+Wzorzec przekształcenia powtarza się tu co dziesięć znaków - jest to okres kryptograficzny. Im większy, tym lepiej. Zespół rotorów Enigmy, który był najbardziej znaną sprzętową implementacją szyfru polialfabetycznego, miał okres kryptograficzny znacznie przekraczający standardową długość komunikatu: 17_900.
+
+Szyfrem idealnym jest szyfr z kluczem jednorazowym (szyfr Vernama), całkowicie losowym nieskończonym ciągiem znaków. Nie ma on okresu kryptograficznego.
+
+#### Szyfry jedno-, wielostopniowe
+
+Proste szyfry polegają na jednokrotnym, identycznym dla każdego znaku przekształceniu. Bardzo szybko w historii pojawiły się szyfry, które są łańcuchem przekształceń, albo zawierają jakieś dodatkowe elementy, które utrudniają złamanie. Najczęściej łączy się metody przestawieniowe i podstawieniowe.
+
+W łańcuchu przekształceń szyfrów wielostopniowych łączy się nie tylko odmienne rodzaje przekształceń, ale i generalne metody kryptologiczne. Bardzo interesującym przykładem takiego szyfru wielostopniowego jest superszyfrowanie, czyli szyfrowanie wiadomości zakodowanej.
+
+#### Zadanie
+
+Przypuśćmy, że Alicja chce przekazać Bobowi informację, żeby zażółcił gęślą jaźń. Z jakiegoś powodu jest dla niej ważne, żeby ta informacja nie dotarła do Ewy, która jest guwernantką i czyta wszystkie liściki w komunikacji pomiędzy Alicją i Bobem.
+
+Alicja przeczytała podręcznik kryptografii klasycznej znaleziony w bibliotece ojca i wie, że w szyfrach wycina się spacje, niepotrzebne znaki przestankowe oraz znaki diakrytyczne, efekt zaś wyraża się dużymi literami, tak więc - sorry polskie znaki! - ostatecznie jej komunikat w tekście jawnym brzmi:
+
+```
+ZAZOLCGESLAJAZN
+```
+
+Mamy do dyspozycji podstawowy zestaw znaków alfabetu angielskiego (US-ASCII), tak się składa również używany w Enigmie.
+
+|01|02|03|04|05|06|07|08|09|10|11|12|13|14|15|16|17|18|19|20|21|22|23|24|25|26|
+|:-:|:-:|:-:|:-:|:-:|:-:|:-:|:-:|:-:|:-:|:-:|:-:|:-:|:-:|:-:|:-:|:-:|:-:|:-:|:-:|:-:|:-:|:-:|:-:|:-:|:-:|
+| A | B | C | D | E | F | G | H | I | J | K | L | M | N | O | P | Q | R | S | T | U | V | W | X | Y | Z |
+
+### Przykłady
+
+- szyfr przesuwający
+- szyfr Playfaira
+- tablica Polibiusza
+- szyfr Vigenère’a
+- Wielki Szyfr (fr. Le Grande Chiffre)
+
+#### Szyfr przesuwający (Cezara)
+
+Klasycznym przykładem zastąpienia jest szyfr przesuwający (przesuniętego alfabetu). Jeżeli ciąg alfabetyczny wyobrazimy sobie w postaci listwy lub walca z wypisanymi po kolei literami, możemy umieścić obok siebie dwie takie listwy / walce i jeśli tą drugą wynikową przesuniemy o jeden znak w lewo (dekrementacja) to każde A, zamieni się w B, B w C itd., jeżeli przesuniemy o jedną pozycję w prawo (inkrementacja), to koniec wjedzie na początek i każde A zamieni się w Z, B w A itd.:
+
+```
+      alfabet: ABCDEFGHIJKLMNOPQRSTUVWXYZ
+ jeden w lewo: BCDEFGHIJKLMNOPQRSTUVWXYZA
+jeden w prawo: ZABCDEFGHIJKLMNOPQRSTUVWXY
+```
+
+Kierunek i wielkość przesunięcia może być kluczem.
+
+Ponieważ pierwszym znanym w historii zastosowaniem tego szyfru była tajna korespondencja Klaudiusza Juliusza Cezara, taki prosty szyfr podstawieniowy nazywany jest często szyfrem Cezara. Gwoli ścisłości w jego przypadku było to -3, jak to opisywał Swetoniusz D dawało A.
+
+Bardziej zaawansowanej wersji tego szyfru używał jego adoptowany syn i mściciel Oktawian August, przesuwał on znaki o jeden w prawo (+1) i dodatkowo każde X zamieniał w AA.
+
+Najbardziej znaną i współcześnie używaną wersją szyfru przesuwającego jest ROT13 (**rot**ate by **13** places), który przesuwa o 13. Ponieważ zakładamy, że ilość znaków w alfabecie to 26 więc bez znaczenia jest tu kierunek przesunięcia, 13 to dokładnie połowa alfabetu. Co więcej, jest to dzięki temu przekształcenie symetryczne, tzn. powtórzone szyfrowanie da nam z powrotem tekst jawny.
+
+Używa się go czasem do obfuskacji spoilerów, przekleństw (najbardziej znany polski przykład: xhejn), rozwiązań zadań czy zagadek. Ponieważ w internecie jest mnóstwo stron, które rozwiązują ROT13, daje nam to rozwiązanie, które uniemożliwia nieumyślne, przedwczesne odczytanie tekstu. Kiedy jesteśmy na to gotowi, sprawdzamy na stronie [rot13.com](https://rot13.com/)
+
+W języku polskim jest to oczywiście pewien problem, ponieważ te narzędzia albo nie rozumieją polskich znaków, albo mylą się co do miejsca w alfabecie, który ma 32 znaki w tym 9 diakrytycznych. Alicja ma tu proste zadanie, bo używa US ASCII, wiec jej wiadomość do Boba w ROT13 będzie brzmieć:
+
+```
+MNMBYPTRFYNWNMA
+```
+
+Jedyną informacją, jakiej Bob potrzebuje do odczytanie informacji jest +13. To mogło zostać ustalone na początku ich komunikacji lub przesłane niezależnym kanałem.
+
+
+#### Atbasz (hebr. אתבש)
+
+Ewa z początku nie rozumiała wiadomości wysyłanych przez Alicję, ale dość szybko zauważyła pewne regularności i tajemnica została zagrożona. Alicja cały czas pilnie czyta podręcznik kryptologii i zastosowała kolejny szyfr - atbasz. Przekształcenie polega na tym, że pierwsi będą ostatnimi i na odwrót, a konkretnie literę pierwszą w alfabecie zamieniamy na ostatnią (pierwszą od końca), drugą na przedostatnią (drugą od końca), ... siódmą od początku na siódmą od końca. Stąd jego nazwa, bierze się ona z pierwszej, ostatnie, drugiej i przedostatniej litery alfabetu hebrajskiego: alef, taw, bet, szin.
+
+Był on używany przez pisarzy biblijnych do obfuskacji niewygodnych treści (taki ROT13 antyku, tyle że sekretny), kiedy np. nie wypadało obrażać Babilonu, pisano o Szeszach (ששך).
+
+Wzorzec przekształcenia jest tu wbrew pozorom całkiem prosty, wystarczy popatrzeć na tabelę: litery zamieniamy na drugą odpowiadającą jej z pary:
+
+| A | B | C | D | E | F | G | H | I | J | K | L | M |
+| Z | Y | X | W | V | U | T | S | R | Q | P | O | N |
+
+- Wikipedia [Atbash](https://en.wikipedia.org/wiki/Atbash)
+
+Wiadomość dla Boba:
+
+```
+AZALOXTVHOZQZAM
+```
+
+#### Szyfr Playfaira
+
+Ewa przepisuje wszystkie wiadomości od Alicji i ma już ich niezłą kolekcję. W przypadku krótkich komunikatów trudno to zauważyć, ale wszelkie monoalfabetyczne szyfry podstawieniowe mają pewną słabość wynikającą z samej tylko konstrukcji języka. Liczba łatwych do wymówienia zgłosek jest zbyt krótka, by można było z nich zbudować mowę. Te łatwe do wymówienia zgłoski to samogłoski, możemy je wypowiedzieć bez żadnej pomocy. Jest ich tylko kilka. Spółgłosek wymagających pewnej pomocy w wypowiedzeniu jest kilka razy więcej. Dlatego litery samogłoski występują w każdym tekście o wiele częściej niż litery spółgłoski. Do tego każdy język ma pewną specyfikę częstości występowania danej litery. Można też wziąć pod uwagę, że pewne złożenia liter są nadzwyczaj popularne, np. "th" w języku angielskim.
+
+Ewa może dokonać ataku statystycznego na komunikację Alicji.
+
+- [Atak statystyczny](https://pl.wikipedia.org/wiki/Atak_statystyczny)
+
+Czy Alicja, która czytając książkę o kryptologii, wciąż tkwi w rozdziale o szyfrach podstawieniowych, ma jakąś szansę na tajemnicę?
+
+Może liczyć na znaczne utrudnienie zadania Ewy, używając szyfru Playfaira. Rzeczywistym wynalazcą tego szyfru był Charles Wheatstone, brytyjski naukowiec i wynalazca. Był twórcą pierwszego telegrafu elektrycznego. Skonstruował także mechaniczny kryptograf, czyli jedno z pierwszych urządzeń do mechanicznej kryptografii. W 1854 przedstawił swój szyfr, a jego popularyzatorem był jego przyjaciel lord Playfair, znany arystokrata, dworzanin i naukowiec mający związki z armią. Stąd nazwa szyfru.
+
+- Wikipedia [Szyfr Playfaira](https://pl.wikipedia.org/wiki/Szyfr_Playfair)
+- [PlayFair Cipher](https://www.dcode.fr/playfair-cipher)
+
+Zasadniczą ideą szyfru był podział tekstu nie na litery, a na dwuznaki: pary liter. Więc ZAZOLCGESLAJAZN będzie: ZA, ZO, LC, GE, SL, AJ, AZ, NX. To "X" na końcu to wypełniacz. I teraz każdej parze liter tekstu jawnego odpowiada konkretna para liter wzorca podstawienia. Liter w języku angielskim mamy 26, natomiast dwuznaków 600. Analiza statystyczna szyfru przestawieniowego jest łatwa, w przypadku szyfru Playfaira... przez pewien czas sądzono, że niemożliwa, okazało się to jednak po prostu tylko trudniejsze. Używany był dość powszechnie podczas WWI, a przez brytyjski wywiad nawet podczas WWII.
+
+Wiadomość dla Boba:
+
+```
+VEYPNAKBQNDFEVSC
+```
+
+#### Szachownica Polibiusza
+
+Grecki historyk z II wieku p.n.e. Polibiusz z Megalopolis w swoim monumentalnym dziele o skromnym tytule "Dzieje" (w sumie 40 tomów, z czego ocalało tylko 5 pierwszych) opisał szyfr, czy też urządzenie kryptograficzne pozwalające nie tylko ukryć tajną wiadomość, ale też zredukować zestaw przesyłanych znaków. Jeżeli mamy do czynienia z 26-znakowym alfabetem, to musimy najpierw pozbyć się jednej litery (najczęściej wyrzuca się J, zastępując każde jej wystąpienie I) i teraz możemy je rozpisać na tablicy 5x5. Kolumny i wiersze są numerowane od 1 do 5, więc zakładając, że wypisaliśmy litery w porządku alfabetycznym, to literze A odpowiada zestaw cyfr 11, a literze Z 55.
+
+Alicja do Boba:
+
+```
+115511343113221543311124115533
+```
+
+Redukcja liczby dostępnych znaków okazała się wielką zaletą w początkach telegrafii, przydaje się również w steganografii. W kryptologii tablicę Polibiusza uważano bardzo długo za trudną lub wręcz niemożliwą do złamania. Niewielka liczba znaków występujących w szyfrogramie jest z daleka widocznym sygnałem "jestem tablicą Polibiusza". Wystarczy ustalić porządek znaków na krawędziach (najczęściej zamiast wymienionych w powyższym przykładzie cyfr były to litery) i szyfr staje się podatny na analizę statystyczną.
+
+W okrutny sposób przekonali się o tym Niemcy, którzy tej metodzie zaufali w 1918 podczas ofensywy wiosennej. Był to ich ostatni rzut na taśmę podczas WWI i prawdę mówiąc, już i tak nie mieli żadnych szans na trwały przełom w sytuacji na froncie. W marcu 1918 niemieckie Abhorchdienst przestawiło tajną komunikację na szyfr ADFGX/ADFGVX, który w krytycznym momencie został złamany przez francuskiego kryptologa Georgesa Painvina. Francuzi wiedzieli dokładnie, kiedy i gdzie wypadnie główne uderzenie niemieckie.
+
+Pamiętajmy, że kolejność alfabetyczna w szachownicy Polibiusza służyła tylko ilustracji, w rzeczywistości szachownice / tabele przekształceń zmieniano co kilka dni. To jednak nie przeszkodziło Francuzom w czytaniu niemieckiej komunikacji.
+
+#### Szyfr Vigenère’a
+
+Podobnie jak w przypadku szyfru Plaifaira nazwa szyfru nie odpowiada wynalazcy, w tym przypadku jest to po prostu błędna atrybucja. Rzeczywistym wynalazcą był włoski XVI-wieczny kryptolog Giovan Battista Bellaso pochodzący z Brescii (Lombardia). Ukończył prawo cywilne na uniwersytecie w Padwie.
+
+Tutaj drobna uwaga historyczna: Italia okresu renesansu to obszar zajęty przez całą masę drobnych terytorialnie, aczkolwiek niekiedy potężnych państewek, wielkich rodów toczących ze sobą nieustanne jawne i tajne wojny, ogromne fortuny, Państwo Kościelne i handel na obszarze całego Morza Śródziemnego. Intrygi, spiski i szyfry. Nigdzie w Europie kryptografia i wykształcenie nie były na takim poziomie. To włoski architekt Leon Battista Alberti 1467 w dziele "De componendis cifris" opisał pierwsze polialfabetyczne urządzenie szyfrujące ([Alberti cipher](https://en.wikipedia.org/wiki/Alberti_cipher)).
+
+Szyfr został opublikowany w 1553 w broszurze "La cifra del. Sig. Giovan Batista Belaso" i zyskał sobie miano `le chiffrage indéchiffrable`. Niestety dla Bellaso jakieś trzydzieści lat później, bo w 1586 francuski alchemik, tłumacz i kryptolog Blaise de Vigenère na dworze Henryka III opublikował podobny, ale słabszy szyfr i w XIX wieku, kiedy rzecz stała się sławna wynalazek przypisano błędnie Francuzowi.
+
+Bardzo długo, bo przez cztery stulecia cieszył się sławą bezpiecznego szyfru, jeszcze w 1917 tak zapewniał Scientific American. W rzeczywistości już w 1846 Charles Babbage potrafił go złamać. W 1863 Prusak Friedrich Kasiski opublikował "Die Geheimschriften und die Dechiffrir-Kunst", w którym opisał atak na szyfr Vigenère’a. Niestety publikacja przeszła bez echa. Niestety dla samych Niemców, bo zaufali tej metodzie podczas WWI w listopadzie 1914 wprowadzając na froncie ABC-Chiffre, który został złamany przez Francuzów jeszcze przed jego pełną implementacją, która zakończyła się w maju 1915.
+
+W skrócie: szyfr Vigenère’a polega na tym, że tworzymy tabelę alfabetów, w naszym przypadku będzie to tablica 26x26. W pierwszym rzędzie będzie zwykły alfabet (zaczynający się od A), w drugim przesunięty o jedno miejsce w lewo, w drugim o dwa itd., aż na samym końcu w 26 linii będzie alfabet przesunięty o 25 miejsc, więc na pierwszej pozycji będzie miał Z.
+
+Teraz Alicja musi wymyślić słowo-klucz, niech będzie to "klucz". Ostatecznie klucz musi mieć taką samą długość jak komunikat, więc powtarzamy go do spełnienia tego warunku.
+
+I teraz tak samo jak w tablicy Polibiusza bierzemy literę wiadomości, znajdujemy jej wiersz, i szukamy kolumny z literą klucza. Na ich przecięciu jest litera szyfrogramu.
+
+```
+    klucz:  KLUCZKLUCZKLUCZ
+wiadomość:  ZAZOLCGESLAJAZN
+szyfrogram: JLTQKMRYUKKUUBM
+```
+
+- Cryptii [Vigenère cipher: Encrypt and decrypt online](https://cryptii.com/pipes/vigenere-cipher)
+- Wikipedia [Szyfr Vigenère’a](https://pl.wikipedia.org/wiki/Szyfr_Vigen%C3%A8re%E2%80%99a)
+
+#### Wielki Szyfr (Le Grande Chiffre)
+
+Opracowany przez naczelnego kryptologa Francji Antoine Rossignola na potrzeby dworu Ludwika XIV. Był to szyfr dwuczęściowy, przykład superszyfrowania, czyli szyfrowania kodu. Tekst jawny najpierw poddawany jest kodowaniu - każde słowo, czasem fraza zamieniana jest na odpowiadające jej słowo kodowe lub kod liczbowy zawarty w nomenklatorze, czyli księdze kodowej.
+
+Rozwijany był potem przez syna Rossignola. Podczas Rewolucji cała dokumentacja szyfru została zniszczona lub zaginęła. Szyfrogramy stały się nieczytelne i wydawało się, że nikt nie będzie w stanie ich odczytać, ale dokonał tego w 1893 inny francuski kryptolog Étienne Bazeries.
+
+Nie tylko Wieli Szyfr przepadł w tym czasie. W ogóle w XIX wieku zaprzestano używać nomenklatorów i superszyfrowania, to były czasy popularności rozmaitych wersji szyfru Vigenère’a.
+
+Książki kodowe wróciły do łask z rozwojem telegrafu i łączności radiowej na morzu i tu znowu Niemcy byli na przegranej pozycji ich książki kodowe i floty wojennej i dyplomacji i handlu wpadły w ręce nieprzyjaciela już w 1914. Wszystkie klęski floty wynikały z tego, że Brytyjczycy z wyprzedzeniem wiedzieli o ich planach.
+
+#### Szyfr masoński
+
+Używany od XVIII wieku. Brzmi i wygląda tajemniczo, ale jest bardzo łatwy do rozpoznania i niezbyt bezpieczny. Inaczej nazywany jest szyfrem w kółko i krzyżyk. Bierzemy jakiś nieregularny wzór siatki i tak, żeby każde miejsce było unikalne, np. w niektórych narożach dajemy kropki. Musi być tyle unikalnych miejsc, ile jest liter. Można użyć kilku siatek. Wypełniamy je literami i teraz elementem podstawienia jest otoczenie danej litery. Szczegóły na podlinkowanym artykule z Wikipedii:
+
+- Wikipedia [Szyfr masoński](https://pl.wikipedia.org/wiki/Szyfr_maso%C5%84ski)
+
+#### Szyfr płotkowy
+
+Huraa! Alicja dokończyła rozdział o szyfrach podstawieniowych i zaczęła czytać o szyfrach przestawieniowych. Tutaj nie ma jakichś wielkich, znanych i wybitnych przykładów szyfrów tak jak to jest w przypadku szyfrów podstawieniowych.
+
+Najprostszą formą szyfru podstawieniowego jest pisanie całego tekstu lub poszczególnych słów wspak. Ela ein tsej ot enawokilpmoks, adwarp? Alicji nawet na myśl by nie przyszło pisać tak do Boba.
+
+Możemy tekst jawny wypisać w wierszach o ustalonej kluczem liczbie znaków. Dajmy na to, że jest to 5 i dla utrudnienia piszemy najpierw normalnie, a potem wspak i tak na zmianę.
+
+```
+ZAZOL
+LSEGC
+AJAZN
+```
+
+Potem odczytujemy to kolumnami i tu też można zastosować podobna obfuskację, więc rezultat to będzie: "ZLAJSAZEAZGOLCN".
+
+Można to też odczytać w porządku spiralnym, startując w umówionym miejscu, jeżeli zaczniemy z górnego prawego narożnika: "LCNZAJALZAAZOGES".
+
+Trochę bardziej zaawansowaną formą takiego właśnie szyfru jest szyfr płotkowy, który polega na utworzeniu siatki o ustalonej wysokości (rzeczony płotek), którą wypełniamy od lewej do prawej z góry na dół i z powrotem. Można go zapisać jak powyżej, tylko pozostawiając puste miejsca na skrajach, ale przejrzyściej wygląda tak:
+
+```
+Z      G       A
+ A    C E    J  Z
+  Z  L   S A     N
+   O      L
+```
+
+Pierwsza zapisana szyfrem przestawieniowym wiadomość Alicji do Boba:
+
+```
+ZGAACEJZZLSANOL
+```
+
+#### Szyfr kolumnowy
+
+Bardziej zaawansowanym szyfrem przestawieniowym jest szyfr kolumnowy. Relatywnie trudny do złamania, łatwy w użyciu i stosowany przy braku innych metod również w XX wieku.
+
+Alicja potrzebuje słowa klucza, niech będzie to "klucz". Teraz zamieni go na ciąg liczb, każde słowo zastąpi liczba określająca jego kolejność w alfabecie. Jeżeli w słowie-kluczu jakaś litera pojawi się więcej niż jeden raz, każde jej kolejne wystąpienie dostaje inkrementacje. Podstawową zasadą jest to, że liczby nie mogą się powtarzać, muszą być unikalne.
+
+KLUCZ -> 23415
+
+Długość klucza określa liczbę kolumn w tabeli:
+
+```
+ZAZOL
+CGESL
+AJAZN
+```
+
+Wygląda tak samo, jak poprzednio? Otóż nie. Bo ideą tego szyfru jest zastosowanie klucza właśnie. Teraz wypisujemy po kolei kolumny, ale według kolejności wynikającej z klucza. Czyli pierwsza jest kolumna czwarta, potem pierwsza, potem druga, potem trzecia a na końcu piąta.
+
+Alicja do Boba szyfrem kolumnowym:
+
+```
+OSZZCAAGJZEALLN
+```
+
+- Crypto-IT [Kolumnowy Szyfr Przestawieniowy](http://www.crypto-it.net/pl/proste/szyfr-kolumnowy.html)
+
+### Szyfry dwustopniowe
+
+Interesujący okres w komunikacji Alicji z Bobem zaczyna się, kiedy Alicja łączy użycie szyfrów podstawieniowych z przestawieniowymi. Bo teraz może rozpisać tekst w kolumnach, każdej przypisać numer wg klucza i dla każdej zastosować przesunięcie, które wynika z klucza. A na końcu wypisać to spiralnie.
+
+Niektóre szyfry tego typu są naprawdę trudne do skutecznej analizy. Tu przykładem niech będzie niemiecki "podwójny Playfair": Doppelkassete używany np. przez SD SS.
+
+Na koniec można tylko mieć nadzieję, że w końcu Bob zażółci gęślą jaźń, bo przecież jest prawdziwym mężczyzną i kiedyś wreszcie zrobi to, o co się go prosi, więc nie trzeba co rok mu o tym przypominać. A dlaczego Alicja mówi do niego szyfrem? Prawdopodobnie jest ciskobietą.
+
+### Szyfry harcerskie
+
+Nie jest to jakaś ściśle określona grupa szyfrów, łączy je prostota i zabawowy charakter. Są łatwe do zastosowania w grach terenowych, na obozach. Jest to rodzaj gry towarzyskiej. Przyjrzenie się im jest swego rodzaju retrospektywną wycieczką po szyfrach klasycznych.
+
+#### Szyfry podstawieniowe
+
+W tym wypadku nazwa szyfru jest jednocześnie stworzoną mnemotechnicznie tabelą podstawień. Każdą ze znajdujących się w nazwie liter zamieniamy na drugą z pary. Pozostałe litery zostają bez zmian.
+
+- GA-DE-RY-PO-LU-KI
+- KO–NI–EC–MA–TU–RY
+- PO–LI–TY–KA–RE–NU
+- NO–WE–BU–TY–LI–SA
+- KA–CE–MI–NU–TO–WY
+- MO–TY–LE–CU–DA–KI
+
+#### Szyfr matematyczny
+
+Również prosty szyfr podstawieniowy z elementem obfuskacji steganografią. Zamieniamy tekst wg najprostszego wzorca A - 1, B - 2 itd. Rozpisany w ten sposób szyfrogram uzupełniamy dowolnymi elementami działań matematycznych mających udawać zapis np. równania, czy zadania matematycznego.
+
+#### Czekoladka
+
+Forma szyfru masońskiego.
+
+#### Mafeking
+
+Tablica Polibiusza. Nazwa szyfru to osiem liter i tworzy pierwszy wiersz, w trzech numerowanych od 1 wierszach poniżej wypisane są litery alfabetu. W ten sposób A to M1.
+
+- [szyfry harcerskie](https://kryptografia.wixsite.com/szyfry/szyfry-harcerskie)
+- [szyfry - Hufiec ZHP Kłobuck](http://klobuck.zhp.pl/o-nas-2/do-pobrania/materialy-dla-harcerzy/szyfry/)

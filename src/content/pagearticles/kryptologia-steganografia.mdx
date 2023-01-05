@@ -1,0 +1,70 @@
+---
+title: "Steganografia"
+comment: ""
+section: "it"
+subsection: "kryptologia"
+---
+
+### Założenia
+
+Wiadomość może zostać ukryta na dwa sposoby:
+
+- kryptograficzny - przetworzenie w taki sposób, aby stał się nieczytelny;
+- steganograficzny - ukrycie faktu istnienia komunikatu.
+
+Steganografia jest sposobem tworzenia ukrytych wiadomości w taki sposób, że nikt oprócz odbiorcy nie wie o istnieniu wiadomości. Przeciwieństwo wobec kryptografii, gdzie istnienie wiadomości jest oczywiste, ale jej znaczenie jest ukryte. Nazwa pochodzi z traktatu, którego autorem był Johannes Trithemius: "Steganographia: a treatise on cryptography and steganography disguised as a book on black magic". Po grecku oznacza "ukryte pismo" (ang. hidden writing). Wiadomość steganograficzna pojawi się jako coś innego, np. lista z zakupami, artykuł, obraz lub inna "zasłaniająca" wiadomość. Steganografię stosuje się zazwyczaj, gdy chce się ukryć sam fakt komunikacji, jest więc stosowana przez szpiegów, a nie przez wojsko.
+
+Wiadomości steganograficzne są często najpierw zaszyfrowane w tradycyjny sposób, a potem tekst zakrywający (*covertext*) jest modyfikowany, tak by zawrzeć zaszyfrowaną wiadomość - w ten sposób powstaje *stegotext*. Taką wiadomość można przemycić np. rozmiarze czy rozstępie liter, foncie lub innych cechach. Tylko odbiorca, który zna użytą technikę, może odkryć wiadomość i rozszyfrować ją.
+
+Im większa jest wiadomość zasłaniająca (w znaczeniu ilości danych - liczby bitów) względem ukrytej wiadomości, tym łatwiej jest ukryć stegotekst. Dlatego często używane są pliki graficzne (które zawierają duże ilości danych). Dla przykładu 24-bitowa bitmapa będzie miała 8 bitów reprezentujących każdą z trzech wartości kolorów (RGB) na każdy piksel. Jeśli rozważymy tylko niebieski, jest 28 różnych wartości, a różnica pomiędzy np. 11111111 a 11111110 w intensywności jest niewykrywalna dla ludzkiego oka, tak więc najmniej znaczący bit może zostać użyty (w sposób bardziej lub mniej niewykrywalny) dla czegoś innego niż informacja o kolorze. Jeśli zrobimy to z zielonym i czerwonym, będziemy mogli przesłać jedną literę tekstu ASCII na 3 piksele.
+
+Mówiąc bardziej formalnie, kodowanie steganograficzne jest trudne do wykrycia, jeśli zmiana nośnika (oryginalnego sygnału) z powodu umieszczenia ładunku (ang. *payload*, czyli tajnej wiadomości) jest wizualnie (i w idealnej sytuacji także statystycznie) bez znaczenia, tj. zmiany są nieodróżnialne od poziomu szumu nośnika.
+
+Z punktu widzenia teorii informacji oznacza to, że kanał musi mieć pojemność większą niż wymaga tego zasłaniająca transmisja, np. istnieje redundancja. Dla obrazu cyfrowego może to być szum zakłóceń, w audio może to być szum będący skutkiem technik nagrywania lub sprzętu wzmacniającego. Każdy system zawierający etap analogowego wzmocnienia wprowadza również tzw. cieplny lub "1/f" szum, który może zostać wykorzystany do przykrycia, na dodatek mechanizmy stratnej kompresji (np. JPEG) wprowadzają trochę błędów w dekompresowanych danych, które również mogą zostać wykorzystane to celów steganograficznych.
+
+### Przykłady
+
+Wiadomo, że Francis Bacon sugerował by użyć takiej techniki do ukrywania wiadomości.
+
+Techniki steganograficzne są bardzo różnorodne, wiele z nich było używanych w dawnych czasach, zanim się rozwinęły kryptosystemy
+
+- ukryte wiadomości w tablicach woskowych, w starożytnej Grecji pisano wiadomość na desce i pokrywano ją woskiem tak, że wyglądała na zwykłą, nieużywaną tablicę woskową.
+- na ciele posłańca: Herodot opisuje tatuowanie wiadomości na głowie niewolnika i wysłanie go, kiedy włosy odrosły (wiadomość zawierała ostrzeżenie dla Grecji przed perską inwazją).
+- stosowanie niewidzialnego atramentu w pustych partiach innej wiadomości, często takie były wiadomości wysyłane przez szpiegów do agentów w krajach neutralnych
+- nakłuwanie literek większego komunikatu szpilką (widoczne tylko pod światło);
+- takie formułowanie komunikatu, aby sekwencja kolejnych liter, sylab bądź wyrazów tworzyła ukrytą wiadomość (ang. *null cipher*); układ liter bądź słów w jakimś komunikacie stanowi ukryty komunikat. Przykładem może być sekwencja pierwszych liter słów w zdaniu "To Anna jest naszą egzaminatorką" - ukryty komunikat: "tajne".
+- podczas i po WWII stosowano mikrokropki (*microdots*) do wysyłania wiadomości; przy skali pomniejszenia 300x karta A4 miała rozmiar kropki w maszynopisie [Kacper Szurek "Techniki szpiegowskie – mikrofilm domowej roboty"](https://security.szurek.pl/techniki-szpiegowskie-mikrofil-domowej-roboty/)
+- w czasie WWII japoński szpieg w Baltimore, Velvalee Dickinson, wysyłała informacje na różne adresy w neutralnej Europie lub Ameryce Południowej, była sprzedawcą lalek i jej listy omawiały ile i jakich lalek wysłać, stegotekstem były zamówienia lalek, a ukryty jawny tekst był kodetekstem zawierającym informacje o ruchu okrętów itp.; jej przypadek stał się sławny, przeszła do historii jako "*Doll Woman*".
+- OTP (*one-time pad*) jest teoretycznie niełamliwym szyfrem, który tworzy wyglądające na przypadkowy szum szyfrogramy i tylko ten, kto posiada klucz prywatny, może odróżnić szyfrogram od przypadkowych danych, więc każdy ciąg doskonale przypadkowych danych może zostać użyty jako covertekst dla teoretycznie niełamliwej steganografii.
+- w każdym cyfrowym formacie obrazu RGB jeden bądź dwa najmłodsze bity każdego piksela można wykorzystać do przenoszenia informacji bez zauważalnej zmiany cech obrazu.
+- [Chaffing and winnowing](https://en.wikipedia.org/wiki/Chaffing_and_winnowing)
+- ukryte wiadomości w zmodyfikowanych plikach wykonywalnych, wykorzystujące redundancję w zestawie poleceń i386.
+
+### Terminologia:
+
+Ogólnie jest to terminologia analogiczna (i zgodna z) bardziej konwencjonalną technologią radiową i komunikacyjną, ale warto krótko przedstawić opis niektórych terminów używanych w oprogramowaniu, bo są mylone. Odnoszą się najbardziej do systemów steganografii cyfrowej.
+
+- Ładunek (*payload*) to dane przeznaczone do przesłania (a więc ukrycia).
+- Nośnik to sygnał, strumień, lub plik z danymi, w których payload jest ukryty, przeciwieństwo "kanał" (ang. channel, najczęściej używany do odniesienia typu wejścia, np. "obraz JPEG").
+- Efekt w postaci sygnału, strumienia lub pliku danych w których zakodowany jest payload, jest czasem określany jako pakiet (ang. package).
+- Stosunek procentowy bajtów, sampli, lub innych sygnałów, które zostały zmodyfikowane, by zakodować payload, jest określany jako gęstość kodowania (*encoding density*) i jest najczęściej wyrażony w postaci liczby zmiennoprzecinkowej pomiędzy 0 a 1.
+- W zestawie plików, te które uważane są za zawierające payload, nazywane są podejrzanymi (*suspects*).
+- Jeśli podejrzany został zidentyfikowany przez pewien typ analizy statystycznej, nazywa się go kandydatem (*candidate*).
+- Wykrycie steganograficznie zakodowanych pakietów to *stegoanaliza*. Najprostszy sposób to porównanie z oryginałem, żeby wykryć zmodyfikowane pliki, wystarczy porównać je ze znanymi oryginałami, o których wiadomo, że są czyste. Różnica (zakładając, że nośnik jest ten sam) ujawni/utworzy payload.
+
+### Zastosowanie
+
+Steganografia może zostać użyta do cyfrowych podpisów wodnych, gdzie wiadomość (identyfikator) jest ukryta w obrazie, więc jego źródło może zostać wyśledzone i potwierdzone. DRM.
+
+Swego czasu głośno było o użyciu steganografii przez terrorystów: X 2001 NYT opublikował artykuł, w którym stwierdzano, że Al Kaida użyła technik steganograficznych, by zakodować wiadomości w obrazach i przesłała je przez mail (lub usenet) w ataku na WTC. Historia ta wciąż jest powtarzana, chociaż już dawno wyjaśniono, że nie ma na to żadnych dowodów. Przechwycony podręcznik treningowy Al Kaidy nie zawiera żadnej wzmianki na temat steganografii. Rozdział o komunikacji potwierdza przewagę techniczną USA i generalnie zaleca technologie niskiego poziomu ukrywania danych. Rozdział o kodach i szyfrach kładzie nacisk na używanie niewidzialnego atramentu w tradycyjnych papierowych listach i proste szyfry.
+
+Pomimo to są prowadzone wysiłki, by wykryć obecność informacji steganograficznej w obrazach w internecie. Do chwili obecnej przeskanowano miliony obrazów bez wykrycia żadnej steganograficznej zawartości innej niż testowa i instrukcyjne obrazy na stronach www o steganografii.
+
+Wysoki stopień kompresji czyni się steganografię trudną, ale nie niemożliwą. Błędy kompresji zapewniają miejsce do ukrycia danych, ale mniejsza jest wtedy ilość danych, jaką można zakodować.
+
+Na zawodach CTF zadania stegano są przyjmowane z niechęcią.
+
+### Odnośniki
+
+- [Steganography - A list of useful tools and resources](https://0xrick.github.io/lists/stego/)
+- Computerphile ["Secrets Hidden in Images (Steganography) - Computerphile" [YT 13:13]](https://www.youtube.com/watch?v=TWEXCYQKyDc)

@@ -1,0 +1,664 @@
+---
+title: "Bezpieczeństwo IT"
+comment: ""
+section: "it"
+subsection: "kryptologia"
+---
+
+### Intro
+
+Porady dotyczące ogólnie rozumianego bezpieczeństwa IT. Postaram się dodawać kolejne odcinki co dwa tygodnie.
+
+To co jest na końcu za linią poziomą proszę traktować jak brudnopis.
+
+### 01 - początek [2022-02-14]
+
+OK, zaczynamy.
+
+#### Źródła
+
+Na polskim rynku IT liczy się kilka źródeł wiedzy o bezpieczeństwie IT. Ograniczenie się do polskich źródeł ma wbrew pozorom pewien sens, bo te wymienione 1) są kompetentne i działają naprawdę szybko i 2) większość fraudów, i tak ma charakter lokalny.
+
+Przede wszystkim trzy branżowe portale (jednocześnie firmy prowadzące działalność szkoleniową i usługową w zakresie bezpieczeństwa IT):
+
+1. [Zaufana Trzecia Strona](https://zaufanatrzeciastrona.pl/) Adam Haertle et al.
+2. [Niebezpiecznik.pl](https://niebezpiecznik.pl/) stworzony przez Piotra Koniecznego, jest to pierwszy człowiek, który profesjonalnie zabrał się w Polsce za dziennikarstwo IT security.
+3. [Sekurak](https://sekurak.pl/) założyciel: Michał Sajdak, głównie bezpieczeństwo urządzeń i webaplikacji, ale są też informacje praktyczne dla zwykłego użytkownika.
+
+Popularyzacja:
+
+1. [Kacper Szurek](https://security.szurek.pl/) cztery lata temu dołączył do powyższej świętej trójcy, fenomenalny popularyzator. Dużo wiedzy o podstawach. Głównie prowadzi [kanał na YT](https://www.youtube.com/c/KacperSzurek).
+2. [Mateusz Chrobok](https://www.youtube.com/c/MateuszChrobok)
+3. [Bezpieczny Blog](https://bezpieczny.blog/).
+4. [UW-TEAM.org](https://www.youtube.com/c/uwteamorg) Jakub Mrugalski
+
+Inne: Z3S ["25 miejsc, gdzie warto czytać po polsku o bezpieczeństwie"](https://zaufanatrzeciastrona.pl/post/25-miejsc-gdzie-warto-czytac-po-polsku-o-bezpieczenstwie/)
+
+Nie musisz tego regularnie czytać, subskrybować itd. Wystarczy wiedzieć, że są to zaufane źródła.
+
+N początek dwa filmy raczej beletrystyczne, ale wprowadzają w tematykę cyberprzestępczości i pokazują jak wygląda bezpieczeństwo od strony praktycznej, na technikalia przyjdzie czas:
+- SysOps / DevOps Polska ["[#104] Z życia cyberprzestępcy, czyli jak trudno pozostać niezłapanym złodziejem - Adam Haertle" [YT 1:22:19]](https://www.youtube.com/watch?v=EPIIILlIYXE)
+- CERT Polska [Adam Haertle "To tylko metadane" @ SECURE 2015 [YT 31:15]](https://www.youtube.com/watch?v=2UwxO0fqyog)
+
+#### Na początek
+
+No właśnie technikalia. Kilka informacji:
+
+- Czy "zielona kłódeczka" oznacza bezpieczeństwo? NIE. "Zielona kłódeczka" to potwierdzenie, że strona używa SSL (w praktyce jest to TSL, ale ciągle używa się starej nazwy), czyli specjalnego protokołu szyfrującego dane przesyłane protokołem HTTP, który zapewnia dwie rzeczy; uwierzytelnienie (strona jest tą, za którą się podaje), szyfrowania ruchu (wszystkie dane pomiędzy serwerem ze stroną a przeglądarką są szyfrowane). Wydaje się to być ok i obecnie jest standardem, ale od kilku lat certyfikat SSL jest dostępny za darmo, poza tym wydawany jest w takich ilościach, że nie ma możliwości weryfikacji klientów, a przede wszystkim - i to jest najważniejsze - jak już napisałem, poświadcza tylko to, że strona jest tą, za którą się podaje, co nie oznacza wcale, że jest tą za która ją uważamy (np. rnbank udający mbank). Inaczej mówiąc, bandyta będzie miał elegancką stronę z "zieloną kłódeczką" ale jego adres domenowy będzie przypominał stronę banku, czy też bramki płatności. Również tzw. typosquatting to tradycyjne narzędzie bandytów - jest pewne prawdopodobieństwo, że jeśli pomylimy się wpisując nazwę domenową, pod tym błędnym adresem będzie czekać na nas pułapka. Jest kilka sposobów, żeby upewnić się, że jesteśmy na tej stronie, na której myślimy, że jesteśmy. W przypadku takich usług jak banki używając smartfona najlepiej korzystać z aplikacji banku, jeżeli używamy komputera to z zapisanych odnośników (zależnie od przeglądarki tzw. zakładek, albo ulubionych), albo ręcznie wpisać adres, a przede wszystkim nie klikać w żadne linki, które dostaliśmy. Stosowanie menedżerów haseł zabezpiecza przed podstawieniem strony, bo na fałszywej stronie menedżer nie wstawi hasła. [Pasja informatyki "Czy SSL i 2FA (SMS) to dobra ochrona przed phishingiem?" YT 15:07](https://www.youtube.com/watch?v=xIXF-QP5XWA)
+- Czy można się logować do banku, poczty etc korzystając z darmowych, publicznych wifi? TAK. Choć wiele osób mówi, że nie, to prawda jest taka, że wszystkie tego typu ważne usługi używają SSL ("zielona kłódeczka") więc dane są szyfrowane. Tak, bandyta może to podsłuchać, zapisać i wszystkie te dane rozszyfrować, co zajmie miesiąc lub więcej i będzie kosztować parę tys. dolarów. A po tym czasie te informacje mogą okazać się bezużyteczne. No, cóż. No i oczywiście można pod warunkiem, że naprawdę jesteśmy połączeni z właściwą stroną - patrz punkt wyżej.
+- Co do logowania się do banku z publicznych miejsc, najczęściej dotyczy to banku i używania smartfona. Rzecz wymagałaby dłuższego wyjaśnienia, ale w skrócie: aplikacja i nic innego. Oczywiście tylko aplikacja dostarczona przez bank, oryginalna z wiarygodnego źródła, żadnych "mega multi aplikacji bankowych 100 mln pobrań". Nie używaj przeglądarki w smartfonie do łączenia się z bankiem, do tego jest aplikacja. Nie używaj potwierdzenia operacji bankowych przez SMS, potwierdzaj je przez aplikację. No i jak każda aplikacja powinna być aktualna. W ogóle SMS-y i cała struktura telekomunikacyjna jest tu mega zawodna. Podobnie jak w przypadku banku do poczty również używamy aplikacji, więc tu ryzyka związane z domeną nie istnieją.
+- Hasła - o to również baaaardzo obszerny temat, ale w skrócie: wszystkie te porady, że hasło ma 1) mieć przynajmniej jedną dużą literę, przynajmniej jeden znak specjalny i przynajmniej jedną cyfrę, 2) że powinno mieć przynajmniej 8 znaków, czyli to czego byliśmy uczeni przez lata, jest teraz OKDR. Czasy się zmieniły i moc obliczeniową można sobie kupić zdalnie np. na Amazonie i tam hashcatem potraktować zaszyfrowane hasła. Dobre hasło ma mieć tylko dwie cechy: 1) ma być dłuższe niż 15 znaków, 2) ma być unikalne *za: [FBI Tech Tuesday: Strong Passphrases and Account Protection](https://www.fbi.gov/contact-us/field-offices/phoenix/news/press-releases/fbi-tech-tuesday-strong-passphrases-and-account-protection))
+
+Dlaczego unikalność hasła jest ważna? Bo kiedy się stosuje to samo hasło do wielu serwisów, może się okazać, że z któregoś wycieknie baza kont i przez skojarzenie użytkownika (ta sama nazwa, ten sam mail) bandyta pozna albo samo hasło, albo schemat, jakiego używamy do tworzenia ich. To podstawowa metoda ataku na organizację.
+
+#### Zadanie domowe
+
+1. Wejdź na stronę [Have I Been Pwned](https://haveibeenpwned.com/), to bezpieczny i polecany serwis, a swoich danych można szukać legalnie. Sprawdź swoje adresy mailowe, dostaniesz informacje jakie wycieki ich dotyczą. 
+2. Co do adresów mailowych: w przypadku każdego z nich sprawdź czy masz włączone uwierzytelnianie dwuskładnikowe (jeśli jest dostępne), jeśli nie to włącz; zobacz też, jaka jest metoda odzyskiwania dostępu do konta jeśli ten dostęp utracisz, czasem podaje się tu maile awaryjne, na które mają być wysłane linki potwierdzające. Czy nadal używasz tych maili? Większość dostawców kasuje nieużywane konta po kilku miesiącach. Bandyta łatwo może w ten sposób je przejąć.
+3. Tu ostrzegam, że to jest czasochłonne, ale zdecydowanie warto. Sporządź listę posiadanych przez siebie kont i haseł. W pliku na komputerze, do którego tylko Ty masz dostęp, lub na papierze. Plik, tak czy inaczej, nie może mieć nazwy Hasła.txt i nie może znajdować się w Dokumenty. Wszystkie konta z podziałem na pracowe, osobiste ważne (finanse, mail) i resztę. Wiele serwisów jest uwierzytelnianych przez inne (standard OAuth) takie jak Facebook, Google, Github, to rozwiązanie jest ok, ale Facebooka należy unikać, bo co się stanie, jeżeli zostaniemy zbanowani? Więc jeżeli jakieś konto jest logowane przez zewnętrzny serwis, to piszesz np. google zamiast hasła, chodzi o to, żeby mieć naoczny przegląd Twojej tożsamości w internecie. Tylko wtedy można tym jakoś sensownie zarządzać. Za każdym razem musimy też zweryfikować metodę odzyskiwania hasła, sprawdzić czy nadal mamy dostęp do zapasowych maili podanych w ustawieniach.
+
+Myślę, że to jest dość dużo jak na początek, ale prezentacje Adama Haertle Ci się spodobają, więc będzie to jakieś ogólne wejście w tematykę.
+
+W następnym odcinku - menedżer haseł - dlaczego i jak. Tu właśnie przyda się wzmiankowana powyżej inwentaryzacja kont.
+
+### 02 - menedżer haseł [2022-02-28]
+
+Jednym z najlepszych rozwiązań zwiększających bezpieczeństwo logowania są menedżery haseł. Są to specjalne programy trzymające hasła użytkownika w zaszyfrowanej bazie i wyręczające go w procesie logowania. Ważną właściwością jest zarządzanie przechowywanymi hasłami oraz ich generowanie. Poprawnie używany menedżer haseł zapewnia, że użytkownik będzie miał unikalne hasło do każdej usługi i żadnego z nich nie będzie znał. Co jednak w sytuacji, kiedy dysk, na którym przechowywana jest baza programu, ulegnie uszkodzeniu? Tutaj przydaje się uprzednia inwentaryzacja używanych kont i haseł oraz sposobów odzyskiwania hasła. To jest pierwszy krok. Zresztą najlepiej jest zacząć używanie menedżera haseł od dwóch - trzech mniej ważnych kont, wdrożyć się w używanie go i stopniowo dodawać kolejne. Bazę można archiwizować na nieużywanym do innych celów pendrivie.
+
+Oczywiście zawsze, kiedy jest to możliwe, należy zastosować uwierzytelnianie dwuskładnikowe i zadbać o funkcjonowanie odzyskiwania hasła (usuwać z opcji odzyskiwania stare nieużywane konta mailowe i numery telefonów). Co z odzyskiwania hasła, jeśli kod potwierdzający pójdzie na konto lub nr telefonu, do którego nie mamy dostępu?
+
+#### OAuth
+
+Jeszcze zanim przejdę do menedżera - istnieje otwarty standard autoryzujący [OAuth](https://pl.wikipedia.org/wiki/OAuth), który umożliwia twórcom danego serwisu wydzielenie procesu logowania do zewnętrznego, wiarygodnego dostawcy uwierzytelnienia. co do zasady, jeżeli jest to możliwe, powinniśmy z tego korzystać i nigdy nie powinien to być to Facebook (bo to konto najłatwiej utracić, i co wtedy?). Inni dostawcy uwierzytelnienia to: Amazon, Google, Microsoft, Twitter oraz Github (czyli znowu Microsoft). Ja używam zawsze, jeśli to jest możliwe Githuba (wszystkie serwisy IT), a jeśli nie to Google'a.
+
+W przypadku kont używających OAuth menedżer haseł nie ma sensu. Co nie znaczy, że nie powinny zostać zinwentaryzowane. Natomiast konta udostępniające tożsamość powinny być chronione menedżerem haseł, choć tu lepszym rozwiązaniem jest klucz sprzętowy U2F, no ale to zupełnie inna sprawa i o tym kiedy indziej - póki co [Sekurak "Poradnik o kluczach sprzętowych na przykładzie YubiKey 5 NFC (2FA, U2F, FIDO2)"](https://sekurak.pl/poradnik-o-kluczach-sprzetowych-na-przykladzie-yubikey-5-nfc-2fa-u2f-fido2/)
+
+#### Facebook
+
+W przypadku Facebooka trzeba wybrać w ustawieniach pięciu rzeczywistych znajomych (w: Ustawienia / Bezpieczeństwo i logowanie [ Wybierz 5 znajomych do kontaktu w przypadku utraty dostępu do konta ]), do których mamy kontakt telefoniczny. Jeśli zawiedzie prosta metoda odzyskiwania konta przez ustawiony mail, to Facebook przedstawi Ci 5 kontaktów, z których trzy muszą potwierdzić, że Ty to Ty. Jeśli nie ustawisz tam rzeczywistych znajomych, to dobierze ich losowo i nawet jeśli jakimś cudem będą tam trzy osoby, które Cię znają i masz do nich kontakt, to i tak nie będą mogły potwierdzić Twojej tożsamości, bo - uwaga - nie zostali wybrani przez Ciebie. Taki paragraf 22. Co gorsza, za każdym ponowieniem próby odzyskania konta będzie to ta sama piątka kontaktów.
+
+Tak więc, zanim dokonasz jakichkolwiek zmian w ustawieniach bezpieczeństwa konta Facebooka - wybierz tych 5 realnych kontaktów. Dodatkowo warto tam też zaznaczyć:
+
+- [ Otrzymuj powiadomienia o nierozpoznanych logowaniach ]
+- [ Używaj uwierzytelniania dwuskładnikowego.• Zapytamy o kod logowania, jeśli zauważymy próbę logowania z nieznanego urządzenia lub
+przeglądarki. ]
+- [ Autoryzowane logowania Przejrzyj listę urządzeń, na których nie musisz używać kodu do logowania ]
+
+Ponadto:
+
+- nigdy nie loguj się Facebookiem (przez OAuth) do stron, aplikacji, których nie jesteś pewien, ponieważ zawsze udostępniasz im jakieś uprawnienia do konta; raz na czas warto w ustawieniach sprawdzić jakie aplikacje mają uprawnienia i usunąć wszystkie poza tymi, które są rzeczywiście niezbędne
+- nigdy nie wpisuj loginu / hasła na stronach, które przekonują Cię, że albo są częścią Facebooka, albo potrzebują Twojego zalogowania, żeby udostępnić jakąś treść, najczęściej będą to strony z drastycznymi filmami (weryfikacja wieku), albo jakieś fałszywe konkursy
+- nigdy nie klikaj w linki, które dostałeś od kontaktów z messengera, nawet jeśli ufasz tym osobom, konto mogło być zaatakowane, bezpiecznie można kliknąć tylko jeśli z kontekstu rozmowy wprost wynika, że jest to legalny link, ale nawet wtedy lepiej sprawdzić jaki to jest link i najlepiej otworzyć go w nowym oknie incognito (jest taka opcja w menu
+kontekstowym Google Chrome)
+
+Koniecznie do obejrzenia:
+
+- Kacper Szurek ["Phishing - jak kradną konta na Facebooku" [YT 21:59]](https://www.youtube.com/watch?v=jhCDMlatyUg)
+
+#### Rodzaje menedżerów haseł
+
+Menedżery haseł z grubsza rzecz biorąc, dzielą się na: standalone, czyli pojedyncze aplikacje instalowane oddzielnie na każdym urządzeniu oraz menedżery online. Te drugie są wygodniejsze, najbardziej znanym przykładem jest [Dashlane](https://www.dashlane.com/), ale niestety nie ma tutaj sensownej darmowej opcji.
+
+Trochę inne podejścia do zarządzania hasłami proponują takie programy jak [Spectre](https://spectre.app/) czy [LessPass | Stateless Password Manager](https://www.lesspass.com/#/).
+
+Jeszcze jedną możliwością zarządzania hasłami jest trzymanie ich w przeglądarce: Google Chrome: [Menedżer haseł | passwords.google.com](https://passwords.google.com/). Analogiczna usługa Mozilli: Firefox Lockwise został wyłączony.
+
+#### KeePassXC
+
+Menadżery haseł w wersji standalone same z siebie nie umożliwiają używania tej samej bazy w różnych urządzeniach. Można jednak zainstalować ten sam program (lub pokrewne wersje) na różnych urządzeniach i dynamicznie współdzielić bazę haseł za pomocą trzeciej aplikacji. Dynamicznie, tzn. że każda zmiana w bazie (jak np. dodanie kolejnego konta) będzie od razu aplikowana na wszystkich urządzeniach. Nie jest to tak proste w użyciu jak menedżer online, ale efekt jest ten sam.
+
+Tutaj omówię zastosowanie programu KeePassXC (darmowy i otwarty fork KeePass) oraz jego pochodnych. Program ten jest polecany przez Z3S i Niebezpiecznika. Aplikacją udostępniającą bazę będzie Dropbox - jest to jedyna z polecanych aplikacji, która jest dostępna na wszystkie systemy operacyjne (Ok, jest jeszcze GDrive, ale nie chciał u mnie działać).
+
+Założenie: potrzebujemy menedżera haseł dla notebooka, na którym są dwa systemy operacyjne (Windows i Ubuntu) i smartfona (Android). Zresztą niezależnie dla ilu komputerów i środowisk konfigurujemy menedżera, wygląda to tak samo. Postaramy się to zrobić łagodnie, zaczynając od kluczowych elementów systemu i niezbyt istotnych kont. Ponadto można podzielić cały proces na dwie części: pierwsza ograniczy się do jednego urządzenia (Ubuntu), w drugiej części dodamy drugie urządzenie (Android).
+
+Przed wdrożeniem proszę przeczytać do końca i zrozumieć sens działania w całym procesie. Wszystkie niezbędne odnośniki znajdują się na końcu rozdziału.
+
+Po kolei - zaczynamy pd komputera:
+
+- Wspomniana uprzednio inwentaryzacja wszystkich założonych przez nas kont, łącznie z hasłami i metodami ich odzyskiwania. Wszystkich założonych, nie tylko obecnie rzeczywiście używanych. Oceniamy, które są ważne (związane z finansami, tożsamością, uwierzytelniają nas na innych serwisach). Wbrew pozorom jest to długi proces i po latach aktywności w internecie trudny do skompletowania. Na początek wystarczą najważniejsze i ostatnio regularnie używane przez nas konta.
+- Instalacja programu: w Ubuntu `# apt install keepassxc` (jest to niestety w momencie, w którym to piszę dość stara wersja). Trzeba pamiętać, że oprogramowanie związane z kryptografią i ogólnie z bezpieczeństwem musi być aktualizowane w pierwszej kolejności. W Windows jest zwyczajny instalator MSI.
+- Uruchamiamy program. Na początek tworzymy bazę danych, w której będą trzymane dane logowania. Trzeba ustalić jej hasło główne i lokalizację pliku. Hasło główne można łatwo zmienić, trzeba wybrać takie, które jest jednocześnie silne kryptograficznie (min 15 znaków) i łatwe do zapamiętania. Z oczywistych powodów menedżer haseł nie pomoże nam we wpisywaniu hasła do menedżera haseł. Baza może być nazwana dowolnie i może zostać umieszczona w dowolnym miejscu. Jest to pojedynczy plik, który można przenieść, zapisać na oddzielnym nośniku, albo wysłać pocztą.
+- Teraz w programie tworzymy wpis, trzeba podać rozpoznawalną unikalną nazwę (tytuł) wpisu, nazwę użytkownika, hasło (można go utworzyć, podejrzeć) i url.
+- Zaczynamy od desktopa, tutaj wszystkie (lub prawie wszystkie) konta używamy w przeglądarce WWW. Wybieramy tę, którą będziemy do nich używać (tak na marginesie: wybór nie jest wielki, będzie to albo Google Chrome do normalnego użytku, albo Tor Browser do rzeczy wymagających anonimowości). Instalujemy rozszerzenie i w jego ustawieniach łączymy z bazą danych, podając jej nazwę (identyfikator), program musi być w tym czasie włączony. Dla KeePassXC istnieją przynajmniej dwa rozszerzenia Chrome, u mnie zadziałało KeePassXC-Browser.
+- Przy pierwszym wejściu na zdefiniowaną stronę z logowaniem zostaniemy zapytani o skojarzenie. Od tej pory uruchamiamy menedżer haseł, który działa w tle i samodzielnie loguje nas do usług w przeglądarce, która ma zainstalowane dedykowane rozszerzenie połączone z bazą menedżera.
+
+Dobra, teraz krok drugi, przenosimy bazę do Dropboxa i używamy jej na Androidzie:
+
+- W podlinkowanym artykule Niebezpiecznika mowa jest o trzech możliwościach: iCloud, Google Drive i Dropbox. Te dwa ostatnie są dostępne jednocześnie dla wszystkich trzech najważniejszych systemów operacyjnych.
+  - ["How To Sync Ubuntu To Your Google Drive"](https://helpdeskgeek.com/linux-tips/how-to-sync-ubuntu-to-your-google-drive/)
+  - ["Zainstaluj Dropbox, aby w pełni wykorzystać swoje konto"](https://www.dropbox.com/install-linux)
+- Instalujemy aplikację Dropboxa na komputerze. Łączymy ją z kontem i kopiujemy plik bazy do katalogu Dropboxa.
+- W programie KeePassXc importujemy bazę z nowego miejsca. Stary plik można skasować.
+- Na smartfonie instalujemy program KeePassDX ze sklepu Google, producent Kunzisoft.
+- Importujemy bazę z Dropboxa (trzeba wybrać opcję Remote). Za każdym użyciem programu uzyskujemy do niej dostęp po wpisaniu hasła głównego. Kiedy ją widzimy to można w Ustawienia / Wypełnianie formularzy włączyć "Ustaw domyślną usługę autouzupełniania". Wtedy możemy włączyć już przeglądarkę na telefonie i uzyskamy opcję automatycznego zalogowania się.
+
+Przeniesienie czy archiwizacja bazy danych jest bardzo łatwa, wszak to pojedynczy plik o znanej nazwie i lokalizacji. W tym pliku są wszystkie nasze zapisane hasła. Czy to bezpieczne, czy to bezpieczniejsze niż trzymanie haseł zapisanych na papierze, albo gdzieś w kryptyczny sposób na komputerze? Tak, i to co najmniej z czterech powodów:
+
+1. Papier na wiele sposobów zawodzi, jest tu pewien problem z czytelnością, aktualizacją i organizacją danych. Tym bardziej te zastrzeżenia dotyczą zapisywania haseł w pliku. Jeżeli trzymamy je na komputerze, tracimy wszystko w momencie awarii dysku, natomiast online jest tym samym, co robimy z bazą KeePassa z tą różnicą, że jest to w głupi sposób niebezpieczne. Tak samo, jak używanie tego samego lub w przewidywalny sposób modyfikowanego hasła do wszystkiego. Owszem - KeePass trzyma nasze hasła w jednym pliku i ten plik może zostać przejęty, nawet z Dropboxa czy Google Drive (choć jest to bardzo mało prawdopodobne), ale plik ten jest kryptograficznie zabezpieczony hasłem głównym (które można zmienić w razie przejęcia, lub zmieniać regularnie). Logistycznym zyskiem z używania menedżera haseł jest przeniesienie całego ryzyka na jedno miejsce. Jest to znana w IT taktyka "single point of failure" umieszczenia ryzyka w jednym, łatwym do kontroli i zarządzania miejscu.
+2. Ponieważ menedżer haseł trzyma informację o prawidłowej domenie zapisanych usług, jesteśmy odporni na ataki polegające na podstawieniu fałszywej domeny. Po prostu w takiej sytuacji menedżer haseł nic nie podpowie, nie zaproponuje zalogowania. Chroni to nas przed sporą częścią ataków fiszingowych.
+3. Hasła wygenerowane przez menedżer haseł spełniają wszystkie wymogi bezpieczeństwa. Są unikalne dla każdego serwisu i odpowiednio trudne do złamania.
+4. Odporność na sprzętowe keyloggery czy na podejrzenie wpisywania hasła. Tu uwaga: sam menedżer haseł nie jest z oczywistych sposobów zabezpieczony przed keyloggerem. Ale podejrzenie hasła głównego nie daje bandycie dostępu do naszego konta w serwisie. Ponadto menedżer haseł można dodatkowo zabezpieczyć kluczem sprzętowym U2F.
+
+#### Odnośniki:
+
+- [List of password managers](https://en.wikipedia.org/wiki/List_of_password_managers)
+- ["The Best Password Managers to Secure Your Digital Life"](https://www.wired.com/story/best-password-managers/)
+- [KeePassXC](https://keepassxc.org/)
+- [Bitwarden](https://bitwarden.com/) inny popularny menedżer haseł
+- przeglądarka: [KeePassHelper](https://add0n.com/keepass-helper.html) - [KeePassHelper Password Manager](https://chrome.google.com/webstore/detail/keepasshelper-password-ma/jgnfghanfbjmimbdmnjfofnbcgpkbegj) | [KeePassXC-Browser](https://chrome.google.com/webstore/detail/keepassxc-browser/oboonakemofpalcgghocfoadofidjkkk)
+- Android [KeePassDX](https://play.google.com/store/apps/details?id=com.kunzisoft.keepass.free) | [Keepass2Android](https://play.google.com/store/apps/details?id=keepass2android.keepass2android)
+- Zaufana Trzecia Strona ["Podstawy Bezpieczeństwa: Menedżery haseł – który wybrać i jak go używać"](https://zaufanatrzeciastrona.pl/post/podstawy-bezpieczenstwa-menedzery-hasel-ktory-wybrac-i-jak-go-uzywac/)
+- Niebezpiecznik ["KeePass — jak zacząć swoją przygodę z managerem haseł?"](https://niebezpiecznik.pl/post/keepass-jak-zaczac-swoja-przygode-z-managerem-hasel/)
+- Kacper Szurek ["Czy korzystać z Menadżera Haseł? (wady i zalety)" [YT 1:18:44]](https://www.youtube.com/watch?v=1-3iKtg50Zc)
+- Mateusz Chrobok ["Menedżer haseł, czyli kilka słów o zdrowej paranoi" [YT 25:33]](https://www.youtube.com/watch?v=uI3k2TKa6iw)
+
+### 03 - VPN, Tor i komunikatory [2022-03-14]
+
+Nie chcę przedłużać, dlatego pomijam bardziej techniczne aspekty. A jest tam wiele, wiele niuansów, więc to taki z grubsza obraz. Od następnego odcinka postaram się trzymać jednego tematu.
+
+#### Podstawy czyli wszystko jest WWW
+
+Zwykle mówimy o tym internet - ogólnoświatowa, pozbawiona granic i centrum, sieć komputerowa sprzężona złożeniem protokołów TCP/IP. Istnieje od przełomu lat 60. i 70. Początkowo miała charakter eksperymentu wojskowego. Potem służyła celom naukowym łącząc ośrodki akademickie. W latach 80. pojawiły się komputery osobiste i można było je łączyć modemami z internetem przez zwykłe łącza telefoniczne. Działały takie usługi (protokoły) jak mail, FTP, usenet.
+
+Dopiero w połowie lat 90. pojawił się World Wide Web. Przyszedł na końcu i dzięki temu, że oferował połączenie tekstu, grafiki i hipertekstowości (odnośniki) zdobył ogromną popularność i z czasem pochłonął wszystkie inne usługi. WWW podobnie jak większość usług internetowych jest zbudowana na zasadzie architektury klient-serwer (alternatywą jest peer-to-peer znany z torrenta). klient to przeglądarka użytkownika a serwer to "strona w internecie" czyli umieszczona na hostingu usługa udostępniająca dane w protokole HTTP (Hyper Tekst Transfer Protocol).
+
+Pierwsza wersja protokołu HTTP była bezstanowa, tzn. nie utrzymywała danych połączenia, danych sesji. Trochę to przypominało rozmowę z człowiekiem, który pamięta tylko to co teraz się do niego mówi, ale po tym jak odpowie, wszystko zapomina. Do tego cała treść tej rozmowy była przesyłana jawnym kanałem w publicznej sieci i po drodze dane można było podsłuchać, odczytać, a nawet podmienić. Jak zwykle przy projektowaniu nowinki technicznej nikt nie pomyślał, że będą tego używać miliardy ludzi i poważne biznesy. WWW to pierwotnie była po prostu specyficzna i uproszczona wersja FTP. Klient wysyła żądanie dokumentu do serwera, serwer mu go wysyła.
+
+#### HTTP + SSL = HTTPS
+
+To musiało się zmienić, dlatego już w pierwszej wersji tego protokołu czyli HTTP/1 wprowadzono mechanizmy tworzenia i śledzenia sesji użytkownika - pierwszym były ciasteczka (cookies). Kolejna wersja czyli HTTP/2 ma już wbudowane właściwości stanowe.
+
+Powstał protokół szyfrujący dane przesyłane HTTP - SSL (Secure Socket Layer), który już dawno nie jest używany, zastąpił go TSL, ale nadal powszechnie używa się starej nazwy. HTTP szyfrowany SSL (w praktyce TLS) to HTTPS.
+
+- nieszyfrowane połączenie: adres zaczyna się od `http://`
+- połączenie szyfrowane SSl/TSL: adres zaczyna się od `https://` (jest to też sygnalizowane "zieloną kłódeczką")
+
+Co to oznacza w praktyce? SSL zapewnia:
+
+- Gwarancję, że jeżeli połączyliśmy się ze stroną `https://mbank.pl` to połączyliśmy się z mbank.pl, ale - uwaga! - jeżeli połączyliśmy się z `https://rnbank.pl` to połączyliśmy się ze stroną rnbank.pl. Widzisz różnicę?
+- Szyfrowanie danych - wciąż można podsłuchać przesyłane dane, wszak idą publicznym internetem, ale rozszyfrowanie ich zajmuje nieopłacalne ilości czasu i pieniędzy.
+- Dane są weryfikowane - zapewniona jest integralność danych, nie ma możliwości podstawienia zmienionych informacji, jeżeli dochodzi do przekłamania, następuje ponowne żądanie, jeśli to nie przynosi rezultatu sesja jest zrywana. Co nie oznacza, że wirus nie potrafi podmienić kodu strony banku i wysłać pieniędzy na inne konto, tyle że to następuje po stronie użytkownika w jego oprogramowaniu. SSL działa dopiero "na wyjściu" przeglądarki.
+- Ciągłość sesji użytkownika. Obie strony komunikacji mają potwierdzoną tożsamość przez cały czas trwania połączenia.
+
+Niestety Chrome zdecydował się ukryć protokół z paska przeglądarki i teraz już tylko "zielona kłódeczka" jest jedynym potwierdzeniem używania HTTPS. Co gorsza po kliknięciu nie można poznać danych wystawcy certyfikatu, dostajemy tylko zapewnienie, że "połączenie jest bezpieczne".
+
+#### Tryb prywatny
+
+Jest to mocno niedoceniana właściwość przeglądarki internetowej. Jeżeli z jakichś powodów nie chcemy zostawić śladów naszej aktywności w historii, buforze, ciasteczkach czy LocalStorage naszej przeglądarki wystarczy otworzyć nowe okno w trybie prywatnym, jak to się popularnie określa: porn mode. Jest to bardziej związane z prywatnością, a nie ściśle z bezpieczeństwem.
+
+To jest przydatne jeżeli korzystamy z czyjegoś komputera, albo wchodzimy na stronę co do której nie chcemy, żeby mogła mieć dostęp do danych logowania (np, żeby była izolowana od naszego Facebooka albo innej silnie profilującej strony).
+
+Należy przy tym pamiętać, że działanie tego trybu ogranicza się tylko do lokalnego komputera.
+
+- Liron Segev ["WARNING: Don't trust Incognito or Private Browsing!" [YT 6:10]](https://www.youtube.com/watch?v=SptOnY4EoqM)
+
+#### VPN (Virtual Private Network)
+
+Posiada jednocześnie kilka znaczeń: przede wszystkim jest to standard tworzenia izolowanych połączeń w publicznej sieci Internet, jest to też konkretna usługa używająca tego protokołu tworzona przez organizację (przedsiębiorstwo, urząd), firmy komercyjne oferujące ją klientom prywatnym, lub przez samych użytkowników.
+
+Jest to otwarty standard szyfrowanego połączenia przez sieć. Ponieważ izoluje punkty końcowe, mówi się o nim "tunel" i przez zestawienie takiego tunelu pomiędzy dwoma dowolnymi punktami w sieci można tworzyć bezpieczne połączenia.
+
+Nie wchodząc za bardzo w szczegóły techniczne - używać VPN czy nie? To zależy:
+
+- Jeżeli jest to wymóg pracodawcy to jak najbardziej i cieszyć się, że ktoś dba o poufność danych.
+- Jeżeli obawiamy się, że ISP będzie nas podsłuchiwał, to nie, tu wystarczy SSL, a poza tym ISP naprawdę nie ma na to czasu.
+- Jeżeli gdzieś widzisz reklamę VPN i wielce przekonujące frazesy, że po wykupieniu usługi będziesz niewidzialny jak ninja to polecam obejrzeć podlinkowaną poniżej prezentację Adama Haertle "Wszystko co chcecie wiedzieć o VPN". Okazuje się, że "darmowym VPN-om" - co jest oczywiste - nie można wierzyć, nie powinno się też wierzyć tym płatnym, szczególnie jeśli koszty usługi są podejrzanie atrakcyjne.
+- Jeżeli wiemy po co i jak postawić VPN to można to łatwo zrobić na wykupionym serwerze. To jest jedyna usługa VPN jakiej można zaufać, ma tylko tę wadę, że nie możemy fałszować lokalizacji.
+
+Zwykły użytkownik może potrzebować VPN głównie dla fałszowania lokalizacji. Zależnie bowiem od tego skąd się łączy do internetu, jakie miasto, państwo wskazuje jego IP może otrzymać ofertę podróży lub noclegu w innych cenach. Podobnie jest w przypadku usług VoD typu Netflix: chcemy korzystać z amerykańskiej oferty Netflixa? Musimy mieć IP z USA (geofencing). To uzasadnia kupno usługi VPN, tyle, że nie ma nic wspólnego z bezpieczeństwem.
+
+Chcemy anonimowości (wiadomo co, ale nie wiadomo kto)? Od tego jest Tor.
+
+- ArubaCloud PL [Adam Haertle "ArubaCloud- Webinar - Wszystko co chcecie wiedzieć o VPN" [YT 1:32:44]](https://www.youtube.com/watch?v=Sq6RpgXNDmU)
+- PROIDEA Events [Adam Lange "Oh My H@ck 2020 - Adam Lange - Bezpieczny, darmowy VPN - czy aby na pewno?" [YT 42:38]](https://www.youtube.com/watch?v=hGb1QB2-kzo)
+- Mateusz Chrobok ["Jak (i po co) wybrać VPN?" [YT 10:58]](https://www.youtube.com/watch?v=87u0matbDPU)
+- SekurakTV ["Praktyczna konfiguracja OpenVPN" [YT 1:19:15]](https://www.youtube.com/watch?v=JwJ13HXuRZs)
+- Liron Segev ["STOP using a VPN - You don't really need it!" [YT 5:54]](https://www.youtube.com/watch?v=lDTi16UOCi8)
+- Wydawnictwo Naukowe PWN ["Security PWNing Conference 2017 – Kacper Szurek" [YT 31:27]](https://www.youtube.com/watch?v=omtxggcFLuo)
+- [Demise of ThatOnePrivacySite](https://www.reddit.com/r/VPN/comments/mxeova/demise_of_thatoneprivacysite/) - [BitWrecker / Archived-VPN-Comparison-Spreadsheet](https://github.com/BitWrecker/Archived-VPN-Comparison-Spreadsheet)
+- AdminAkademia ["Podstawy usługi VPN (Virtual Private Network) i coś niecoś o TOR" [YT playlist 10 filmów]](https://www.youtube.com/playlist?list=PL144PdtmXQoo1FAoQjhGrj1V0PwW2KPGj)
+- [Privacy Tools: Encryption Against Mass Surveillance](https://www.privacytools.io/) - [privacytools / blog.privacytools.io](https://github.com/privacytools/blog.privacytools.io)
+- Wirecutter ["The Best VPN Service"](https://www.nytimes.com/wirecutter/reviews/best-vpn-service/)
+
+#### Tor
+
+Tor jest osobną siecią WWW istniejącą w ramach internetu. Był to początkowo eksperyment armii amerykańskiej, którego celem było stworzenie internetu następnej generacji (VPN podobnie), ale obecnie rozwijany jest przez niezależną, utrzymującą się z dotacji fundację. Symbolem Tor nie bez powodu jest cebula. Każde połączenie bowiem przechodzi przez trzy serwery: pierwszy zna nasz adres i środkowego, środkowy zna tylko adresy serwerów wejściowego i wyjściowego, wyjściowy zna tylko adresy serwera środkowego i docelowego już w jawnym internecie. Są też adresy i usługi istniejące tylko wewnątrz sieci Tor.
+
+Jeszcze jakiś czas temu ta usługa była skomplikowana w konfiguracji, ale teraz jest dostępny [Tor Browser](https://www.torproject.org/download/), dedykowana dla sieci Tor przeglądarka WWW oparta na Mozilli Firefox.
+
+Połączenia sieci Tor są wykrywane w sieci publicznej i nie gwarantują bezpieczeństwa (nic nie gwarantuje). Właściciele dużej liczby serwerów Tor są w stanie wyciągnąć wiele informacji.
+
+Do czego służy sieć Tor:
+
+- do tajnej komunikacji, to jest jedna z głównych przyczyn, dla których sieć otrzymuje tak duże wsparcie od trzyliterowych agencji USA, korzystają z tego tzw. sygnaliści (whistleblower), ludzie którzy chcą przekazać ważne informacje nie ujawniając tożsamości, powszechnie stosowane w dziennikarstwie śledczym
+- do uzyskania dostępu do filtrowanych treści WWW, dysydenci w różnych reżimach mogą wejść na zakazane strony i usługi - [Sekurak "W cieniu rosyjskiej cenzury… Twitter dostępny jest przez Tora"](https://sekurak.pl/w-cieniu-rosyjskiej-cenzury-twitter-dostepny-jest-przez-tora/)
+- do działalności przestępczej: jest to głównie handel narkotykami, bronią, carding, paserstwo, pornografia dziecięca itp; nie da się tego oszacować ale jest to ponad 90% a może i ponad 99% aktywności w sieci Tor
+
+Tor spowalnia połączenie, nadaje się tylko do stron typu tekst i trochę grafiki, Tor Browser domyślnie ma wyłączony JS. Przesyłanie dużych plików czy torrenty są źle widziane. Trzeba też - podobnie jak w przypadku VPN - zdawać sobie sprawę z tego, że zapewnia anonimowość tylko w ramach istniejącego połączenia. Dla przykładu: Tor Browser zapewnia połączenie z siecią Tor tylko dla tej właśnie przeglądarki, jeżeli chcemy puścić tam np. komunikator czy program pocztowy to musimy użyć innego rozwiązania.
+
+- ArubaCloud PL ["ArubaCloud - Webinar - Wszystko o sieci TOR" [YT 1:23:18]](https://www.youtube.com/watch?v=vL7HzXUcBfU)
+- Niebezpiecznik ["NP #004 - ten o VPN i sieci TOR" [YT 38:42]](https://www.youtube.com/watch?v=B-IGxNpIqn8)
+
+#### Komunikatory
+
+Pomijając i skracając całą dyskusję za i przeciw, polecić można trzy komunikatory. W tej dyskusji brane są pod uwagę trzy podstawowe parametry:
+
+- model rozwoju: ponieważ pierwszą rzeczą, która ma tutaj znaczenie jest solidność kryptografii, czyli punkty są za otwarty model rozwoju (Open Source, gdzie nieograniczona liczba oczu może sprawdzić jakość kodu) oraz użycie otwartych, znanych i sprawdzonych standardów kryptograficznych. Tutaj więc odpadają komunikatory bardzo popularne i należące do wielkich marek (zamknięty kod) oraz Telegram (który za wszelką cenę chce przeforsować własną kryptologię).
+- model biznesowy: wielkie marki typu Apple, FB, MS, czy Google mają tutaj czyste ręce, wiadomo skąd są ich pieniądze, choć akurat Apple czy MS nie zarabiają na dystrybucji danych użytkowników, czego nie można powiedzieć o Google, czy FB. Czy na pewno wiadomo co robią z danymi? Z kolei małe komunikatory muszą wykazać, że nie są opłacane pod stołem, czy wiadomo skąd są ich wszystkie pieniądze?
+- stopień z zachowania, czyli historia wpadek: z jednej strony brak takich wpadek nie jest na nic dowodem, ale z drugiej historia problemów, a tym bardziej problematycznego radzenia sobie z nimi obciąża.
+
+Trzy komunikatory kolejno (wszystkie są darmowe bez ograniczeń):
+
+- [Signal](https://signal.org/en/) popularny i sprawdzony, polecany przez wielu specjalistów, utrzymuje się z dotacji, w zawodach takich jak dziennikarze i prawnicy jest to standard komunikacji
+- [Briar](https://briarproject.org/) tylko na Androida, dostosowany do warunków utrudnionego dostępu do internetu, zdecentralizowany komunikator P2P, który potrafi wykorzystać Bluetooth innych smartfonów z Biarem i łączyć się przez Tor. Mała liczba użytkowników.
+- [Matrix](https://matrix.org/) w tej chwili raczej ciekawostka, protokół komunikacji w czasie rzeczywistym, w wielu aspektach przypominający dawne XMPP (choć jest zbudowany inaczej i od podstaw), jest to raczej podstawa do zbudowania czegoś własnego, a nie gotowy komunikator, ale są gotowe serwery (oprogramowanie) i referencyjny komunikator.
+- ["Rattlegram brings simple COFDM data transfer to Amateur Radio"](https://msars.org.uk/feature-articles/279-rattlegram-brings-simple-cofdm-data-transfer-to-amateur-radio) | HB9BLA Wireless ["Wireless Text Messages without Cables or Modems: Rattlegram (OFDM)" [YT 13:03]](https://www.youtube.com/watch?v=ubPP48ojJ3E)
+
+Domyślnym wyborem więc powinien być zatem Signal.
+
+- Sekurak ["Czym jest komunikator Signal? Jakie bezpieczeństwo zapewnia? Jak z niego korzystać?"](https://sekurak.pl/czym-jest-komunikator-signal-jakie-bezpieczenstwo-zapewnia-jak-z-niego-korzystac/)
+- Kacper Szurek ["Jak działa kod zabezpieczenia w Signal?" [YT 14:50]](https://www.youtube.com/watch?v=0Cg460WC164) | ["Kradzież wiadomości z Signal, wyjaśnienie RCE CVE-2018-10994" [YT 11:19]](https://www.youtube.com/watch?v=vc-rk4yVA58)
+- Mateusz Chrobok ["Jaki komunikator jest najbezpieczniejszy, czyli zadbaj o prywatność w sieci" [YT 24:05]](https://www.youtube.com/watch?v=7r1-XRgdlVM)
+
+Za kolejne dwa tygodnie: hasła i szyfrowanie jednostronne
+
+### 04 - Hasła [2022-03-28]
+
+O tej pory zawężam tematykę każdego odcinka, ale dzięki temu będzie dokładniej.
+
+Hasła są najstarszym istniejącym systemem uwierzytelnienia (ang. authentication) użytkownika, który wciąż pomimo wszystkich wad jest używany. Dlaczego? Bo jest prosty. Jest przy tym łatwy do ataku i bardzo zawodny.
+
+#### System logowania
+
+Zacznijmy jednak od tego jak to w ogóle działa.
+
+1. Mamy formularz logowania. Wpisujemy nazwę użytkownika, hasło, potem klikamy przycisk.
+2. Akcja na przycisku (albo też zwykły Enter) uruchamiają działanie formularza, który wysyła dane (login i hasło) do weryfikacji do zdalnego lub lokalnego systemu (usługi).
+3. Mechanizm weryfikacji może mieć różne formy ale zasadniczo jest to proces porównujący otrzymany zestaw danych z zapisem wszystkich istniejących w systemie kont z ich hasłami.
+   - wpisany login porównywany jest z wszystkimi loginami (nazwami kont)
+   - kiedy odnaleziony jest identyczny, porównuje się odebrane hasło z tym przypisanym do danego konta; i tutaj trochę na marginesie, ale ważna uwaga: co do zasady system nie może znać hasła użytkownika - dlaczego tak jest o tym później - tak więc hasła trzymane są (powinny być) w postaci zaszyfrowanej, jak więc porównać czy hasło przysłane w postaci jawnej jest identyczne z tym zaszyfrowanym z bazy? To proste, hasło jawne szyfruje się tym samym algorytmem i porównuje zaszyfrowane formy. Tak więc proses logowania zawiera w sobie szyfrowanie.
+4. I teraz mamy dwie możliwości:
+   - login istnieje i hasło zgadza się z tym zapisanym w systemie, wtedy do programu odsyłana jest informacja, że uwierzytelnienie przebiegło poprawnie.
+   - jeżeli zaś danego konta nie znaleziono, lub znaleziono, ale hasło się nie zgadza, zwracany jest błąd; błąd ten już w samym mechanizmie weryfikacji powinien być sformułowany ogólnie, nie powinno się odsyłać informacji pozwalających ewentualnemu atakującemu dowiedzieć się, że dany login istnieje, ale niech spróbuje z innym hasłem, dlatego zawsze przy pomyłce w logowaniu widzimy (powinniśmy widzieć) tylko ogólną informację, że podana nazwa konta nie istnieje, lub hasło jest niepoprawne.
+
+Lista kont, czyli nazwy użytkowników, ich uprawnienia, hasła, ewentualnie inne dane typu historia działań, wiadomości, ustawienia, etc. są trzymane albo w zwykłym pliku tekstowym, albo w bazie danych. Jest to najściślejsza tajemnica systemu.
+
+#### Atak
+
+Żeby zrozumieć dlaczego stosujemy takie a nie inne zasady w tworzeniu haseł trzeba wziąć pod uwagę sposoby w jakie atakujący może przejąc hasło. Najogólniej rzecz biorąc można podzielić te sposoby na cztery kategorie:
+
+- Podglądnięcie: wbrew pozorom nie jest to takie abstrakcyjne, bandyta może podejrzeć odblokowanie telefonu i aplikacji bankowej (dwa piny, w sumie 8 cyfr) i wystarczy mu przejęcie telefonu na minutę, żeby przelać wszystkie pieniądze z konta, hasła zapisane na karteczkach Post-it, na spodzie klawiatury są dostępne dla każdego kto wie gdzie ich szukać, również błędem tego typu jest logowanie się w miejscach publicznych jeśli nie upewnimy się, że klawiatura nie jest w polu widzenia kamer CCTV czy przypadkowych osób, które mogą nagrać jak się logujemy udając, że dzwonią.
+- Keylogger, czyli program sczytujący dane z klawiatury; może być wirusem, może też mieć formę sprzętową, najczęściej jest to urządzenie USB, czasem udające kabel zasilający lub przedłużacz ([AirDrive Forensic Keylogger Cable Pro - USB extension cable hardware keylogger with Wi-Fi and 16MB memory](https://www.amazon.co.uk/AirDrive-Forensic-Keylogger-Cable-Pro/dp/B07DCCBBHT), [W tym „zwykłym” kablu USB udało się upakować keyloggera, router WiFi oraz tryb udawania prawdziwej klawiatury (wpisującej to co atakujący tylko chce)](https://sekurak.pl/w-tym-zwyklym-kablu-usb-udalo-sie-upakowac-keyloggera-router-wifi-oraz-tryb-udawania-prawdziwej-klawiatury-wpisujacej-to-co-atakujacy-tylko-chce/)).
+- Podsłuchanie, służą do tego sniffery takie jak np. [Wireshark](https://www.wireshark.org/), [tcpdump](https://pl.wikipedia.org/wiki/Tcpdump), czy [Snort](https://www.snort.org/) było to łatwe w połączeniach HTTP nieużywających szyfrowania SSL, szyfrowanie połączenia czy to przy pomocy SSL czy vPN zabezpiecza przed tym; przy użyciu [Aircrack-ng "Tutorial: How to Crack WPA/WPA2"](https://www.aircrack-ng.org/doku.php?id=cracking_wpa) można włamać się do sieci wifi używającej PSK (pre-shared keys). Znany badacz bezpieczeństwa Mathy Vanhoef przeprowadził udany atak na WPA2 ([KRACK](https://en.wikipedia.org/wiki/KRACK)), zostało to załatane w latach 2017-18, co oznacza, że wciąż mogą się znajdować w użytku podatne urządzenia sieciowe. Konsekwentne stosowanie WPA2-AES powinno zabezpieczać przed podsłuchem.
+- Kradzież bazy. To jest najczęstszy scenariusz. Nie ma systemu odpornego na atak, nie można nawet zakładać, że takowy istnieje. Trzeba brać pod uwagę prawdopodobieństwo, że wcześniej czy później każda baza z danymi użytkowników wpadnie w ręce bandytów, którzy ją wykorzystają, a czasem z takich czy innych powodów upublicznią. Co wtedy?
+
+To właśnie dlatego hasła muszą być trzymane z postaci zaszyfrowanej. To niestety nie zawsze się zdarza. Co do zasady: nikt poza użytkownikiem nie może znać hasła. Ale nie chodzi tu tylko o mało prawdopodobną sytuację, kiedy to admin loguje się użytkownikiem i wyczynia na jego notabene konto niecne brewerie. Nikt normalny nie ma na to czasu. Hasła są zaszyfrowane właśnie dlatego, żeby nie mogli ich użyć bandyci.
+
+- Jeżeli hasła są trzymane w postaci jawnej system jest w całości przejęty. To oznacza, lub powinno oznaczać kompletną kompromitację i bankructwo organizacji mającej ten system. Jeżeli system do odzyskiwania haseł działa w ten sposób, że na zapytanie odsyła hasło, oznacza to, że trzyma je w postaci jawnej. To sygnał alarmowy. 
+- Sytuacja jest zupełnie inna jeśli hasła są zaszyfrowane. Niestety bandyci wciąż nie są bez szans. Mogą wykupić moc obliczeniową w chmurze i [hashcatem](https://hashcat.net/hashcat/) przelecieć bazę haseł. Jeżeli twórcy systemu pomyśleli, ale niekonsekwentnie i zastosowali jakiś prosty algorytm szyfrujący typu MD5, a użytkownicy stosowali hasła typu '12345sierpien' (sierpien, bo co miesiąc muszą zmieniać hasło), to bardzo szybko i bardzo tanio bandyci osiągnęli ten sam pozytywny dla siebie rezultat.
+- Zgoła inaczej jest jeżeli twórcy systemu pomyśleli poprawnie i wdrożyli właściwy algorytm szyfrujący czyli [bcrypt](https://www.openwall.com/crypt/) oraz założyli dobre limity na liczbę znaków, czyli minimum 15 znaków
+- Również tę sytuację zmienić mogą sami użytkownicy jeśli mają dobrze skonstruowane hasła o właściwej długości. Wtedy, nawet jeśli są zaszyfrowane MD5 będą problemem dla hashcata i bandyci zadowolą się, jak to się mówi "nisko wiszącymi owocami", czyli hasłami typu 'buziaczek12'. Trudne hasła są o wiele bardziej kosztowne do złamania zarówno w kategoriach czasu jak i pieniędzy.
+
+Na pytanie co jest ważniejsze: poprawna architektura systemu weryfikacji haseł, czy dobre hasła użytkowników właściwą odpowiedzią jest pytanie: a co jest łatwiejsze, raz porządnie napisać program i zastosować właściwy algorytm, czy przekonać / zmusić użytkowników do właściwej polityki haseł?
+
+Jak wielkie znaczenie ma zastosowanie właściwego szyfru (czyli bcrypt zamiast MD5 czy SHA1) przedstawia Marcin Rybak w prezentacji [CERT Polska "S2 Marcin Rybak Wczoraj złamałem Twoje hasło, jutro złamię je ponownie PL" [YT 45:53]](https://www.youtube.com/watch?v=7zZjqRM4d1k) tutaj od 3:53: przykładowe ośmioznakowe hasło składające się z samych małych liter jest łamane przez kartę graficzną - MD5 w 8 sekund, SHA1 25 sekund, a bcrypt w 186 dni.
+
+No dobrze, ale skoro o tym mowa jakie cechy powinny posiadać dobre hasła? Powinny być:
+
+- silne kryptograficznie, czyli przede wszystkim długie, a po drugie (to ma mniejsze znaczenie) złożone
+- unikalne
+
+#### Bezpieczne hasło czyli siła kryptograficzna hasła
+
+Obowiązkowy XKCD [Password Strength](https://xkcd.com/936/). Siłę kryptograficzna frazy hasła określa stopień entropii, który znacząco rośnie z każdym znakiem więcej. Zależy to również od tego jaki to jest znak, jedna cyfra to 10 możliwości, litera w US-ASCII to 26 możliwości, tak więc hasła składające się z samych cyfr (np. piny) są słabsze niż tej samej długości hasła, na które składać się mogą litery, lub litery i cyfry.
+
+Tak więc na siłę kryptograficzną hasła składają się dwa czynniki:
+
+- długość (liczba znaków)
+- złożoność (przestrzeń możliwości znaku)
+
+#### Długość hasła
+
+Ta kwestia składa się z dwóch części:
+
+- jaka powinna być minimalna długość hasła, czyli jakie minimum powinni narzucić / sugerować projektanci systemów.
+- jakie powinno być maksimum długości hasła i czy w ogóle jakieś powinno być.
+
+Na to pierwsze pytanie jest łatwo odpowiedzieć:
+
+- ["FBI Tech Tuesday: Strong Passphrases and Account Protection" [2021]](https://www.fbi.gov/contact-us/field-offices/phoenix/news/press-releases/fbi-tech-tuesday-strong-passphrases-and-account-protection): 15 znaków
+- ["How long should your password be? The data behind a safe password length policy." [2020]](https://www.lmgsecurity.com/how-long-should-your-password-be-a-technical-guide-to-a-safe-password-length-policy/): 16 znaków
+
+Bezpiecznym i łatwym do zapamiętania kompromisem jest 20. I tu pojawia się kolejny problem: jak zapamiętać dwudziestoznakowe hasło? A konkretnie jak zapamiętać kilkanaście okołodwudziestoznakowych haseł? Przynajmniej kilkanaście bo z tylu różnych serwisów korzystamy. Rozwiązaniem jest oczywiście menedżer haseł, który zdejmuje z nas problem zapamiętania dowolnej liczby haseł o dowolnej liczbie znaków, do tego skonstruowanych bez troski o mnemonikę, za to maksymalnie trudnych kryptograficznie.
+
+Zanim o dobrej konstrukcji hasła - odpowiedzmy na drugie pytanie: jakie jest maksimum?
+
+Bcrypt celowo jest tak zaprojektowany, żeby zabierać jak najwięcej mocy obliczeniowej. Ma to utrudnić działanie bandytom, ale skutkiem tego jest to, że dla systemu szyfrowanie baaardzo długich haseł również jest czasochłonne. Trzeba się zabezpieczyć przed atakiem [Long password denial of service](https://www.acunetix.com/vulnerabilities/web/long-password-denial-of-service/), który polega na wysłaniu tak długiej frazy hasła, że proces skonsumuje cały RAM. Odpowiedź z 2008 [Should I impose a maximum length on passwords?](https://stackoverflow.com/questions/98768/should-i-impose-a-maximum-length-on-passwords) "Setting the upper bound to something like 256 chars seems overly generous by today's standards". To dotyczy MD5 czy SHA1. Obecnie zaś [OWASP Cheat Sheet Series - Authentication Cheat Sheet](https://cheatsheetseries.owasp.org/cheatsheets/Authentication_Cheat_Sheet.html): "Maximum password length should not be set too low, as it will prevent users from creating passphrases. A common maximum length is 64 characters due to limitations in certain hashing algorithms". Czyli jak zwykle: "to zależy". Maksimum nie jest żadną sugestią dla użytkownika, jest zabezpieczeniem systemu przed atakiem.
+
+#### Złożoność hasła
+
+Wynika z zakresu znaków dozwolonych we frazie hasła. Hasła składające się z samych cyfr (10 możliwości na pozycję) są słabsze, łatwiejsze do złamania, niż hasła składające się z samych liter (minimum 26 możliwości na pozycję), te zaś będą słabsze niż hasła, na które składać się mogą litery, cyfry i znaki specjalne (ponad 36 możliwości na pozycję).
+
+Do tej złożoności odwoływała się reguła, której uczono nas przez lata, że każde hasło powinno zawierać przynajmniej jedną literę dużą i małą, przynajmniej jedną cyfrę i przynajmniej jeden znak specjalny. To rzeczywiście pomagało kiedy hasła były krótkie i zanim pojawiły się takie programy jak hashcat. Obecnie ma to jednak o wiele mniejsze znaczenie, bo jak to wykazano w XKCD 11-znakowe "haxorskie" hasło (Tr0ub4dor&3) ma ok 28 bitów entropii (dokładny wynik zależy od sposobu kodowania znaków), podczas kiedy łatwy do zapamiętania ciąg czterech słów w sumie 25 znaków samymi małymi literami ma ok 44 bitów entropii.
+
+Dobrą radę daje tu podlinkowany powyżej artykuł FBI: zamiast krótkich haseł o dużej złożoności powinniśmy stosować łatwe do zapamiętania sekwencje słów i dodatkowych znaków utrudniających złamanie go, ale długość hasła jest ważniejsza niż jego złożoność. Przykładem do naśladowania jest 'TechTuesday2021Strengthen!'.
+
+#### Unikalność hasła
+
+Dlaczego musi być unikalne? Na stronie [Have I Been Pwned](https://haveibeenpwned.com/) możemy sprawdzić czy nasz adres mailowy został ujawniony podczas któregoś z wycieków. Bandyci korzystają z podobnych serwisów, ale udostępniających odpłatnie o wiele większą ilość informacji, mogą więc dostać nasze stare hasło z jakiegoś serwisu, o którym użytkownik już dawno zapomniał i użyć go do ataku.
+
+Jeżeli używamy tego samego hasła wszędzie dajemy bandytom klucze do wszystkich kont.
+
+Jeżeli używamy wszędzie podobnego wzorca tworzenia hasła ułatwiamy im dorobienie sobie tych kluczy.
+
+#### Błędy
+
+Przez lata byliśmy uczeni, że hasła powinny posiadać dwie cechy:
+
+- być dłuższe niż 8 znaków
+- posiadać przynajmniej jeden znak specjalny, przynajmniej jedną dużą i jedną małą literę, przynajmniej jedną cyfrę
+
+Jest to na tyle bałamutne, że najlepiej o tym wszystkim zapomnieć. Szczególnie ta pierwsza porada jest bez sensu, uczy bowiem, że 8, no może 9 znaków wystarczy. Druga może ma sens jako zalecenie, ale przecież ważniejsza jest unikalność haseł. Lepsze są dwudziestoznakowe, unikalne hasła składające się z samych małych liter niż jedno |-!@x0rskie stosowane wszędzie.
+
+Ze strony administratorów, czy też działów IT pojawiały się 2 kolejne błędne wymogi:
+
+- hasła nadmiernie skomplikowane powodowały zapisywanie ich np. na karteczkach pod klawiaturą, co mogło być wykorzystane przez atakujących
+- regularna zmiana haseł prowadziła do haseł typu 'Adam!grudzien', po którym następowało 'Adam!styczen'; częsta zmiana hasła obniża jego jakość
+
+Jakie jest rozwiązanie tych problemów, są dwa:
+
+- relatywnie proste i darmowe - oczywiście menedżer haseł
+- klucze U2F, no ale to już zupełnie inny temat
+
+#### Podsumowanie
+
+Hasło powinno być:
+
+- odpowiednio długie: minimum to gdzieś pomiędzy 15 a 20 znaków (jeżeli system na to nie pozwala zaskarż go, zaprojektowali go ignoranci)
+- unikalne, ba! nawet sposób tworzenia haseł nie może być przewidywalnym wzorcem
+- złożone, czyli rzeczywiście dobrze jest jeśli zawiera jakiś znak specjalny, cyfrę i dużą literę, ale nie jest to aż tak ważne jak długość i unikalność hasła
+
+Zawsze jeżeli jest dostępne 2FA - uwierzytelnianie dwuskładnikowe - powinniśmy je włączyć, ale wtedy jeżeli jako drugi składnik podaliśmy jakiś mail zapasowy albo numer telefonu trzeba zadbać o to żeby nie stracić go, a w razie utraty / zmiany uaktualnić tę informację. Co bowiem z systemu uwierzytelniania jeśli dane autoryzacyjne zostaną wysłane na mail / telefon do którego nie mamy dostępu.
+
+Jeżeli dany serwis umożliwia logowanie za pomocą protokołu autoryzacji dostępu [OAuth](https://pl.wikipedia.org/wiki/OAuth) powinniśmy z tego skorzystać. Umożliwia on logowanie się do różnych usług za pomocą zewnętrznych zaufanych serwisów takich jak Google, Facebook, Twitter, Amazon, Microsoft, czy GitHub. O ile jest to tylko możliwe powinno się unikać Facebooka, bo to konto najłatwiej jest stracić. Ja do wszystkich serwisów IT loguję się GitHubem, a do reszty Googlem. Google ma tę zaletę, że jeżeli w jakimś serwisie założyliśmy konto klasycznie na nazwę użytkownika i hasło oraz jako maila podaliśmy gmaila, to można się tak samo zalogować Oauth Googla - automatycznie zaloguje nas na nasze konto.
+
+Nieoczekiwanym zagrożeniem może się okazać logowanie na nasze serwisy z obcych urządzeń. Przeglądarka potrafi zachować dane logowania. W takiej sytuacji trzeba pamiętać, żeby używać trybu anonimowego w przeglądarce i nie pozwolić jej zapisać żadnych danych.
+
+Czy to wszystko było skomplikowane? Weź pod uwagę, że zupełnie pominąłem opis bardzo specyficznego szyfru używanego do szyfrowania haseł - szyfrowanie jednostronne, czyli tzw. skrót kryptograficzny aka hasz. Więcej na ten temat w artykule [Kryptografia jednostronna](/it/kryptologia/kryptologia-jednostronna).
+
+Skomplikowane? To teraz weź pod uwagę, że biorąc pod uwagę korzyści wdrożenie menedżera haseł jednak nie jest aż tak skomplikowane.
+
+#### Odnośniki
+
+- Pasja informatyki ["Bezpieczeństwo haseł - haszowanie" [YT 29:21]](https://www.youtube.com/watch?v=ROhIXZ_RF5Q)
+- Kacper Szurek ["Jak wygląda łamanie haseł? Skąd przestępcy znają Twoje hasło?" [YT 25:25]](https://www.youtube.com/watch?v=hCphZ3r7tqM)
+- [Hasło (kryptografia)](https://pl.wikipedia.org/wiki/Has%C5%82o_(kryptografia))
+- ["OAuth 2.0 – jak działa / jak testować / problemy bezpieczeństwa"](https://sekurak.pl/oauth-2-0-jak-dziala-jak-testowac-problemy-bezpieczenstwa/)
+- [hashcat - advanced password recovery](https://hashcat.net/hashcat/)
+- [bcrypt password hashing ("password encryption") for your software and your servers](https://en.wikipedia.org/wiki/Bcrypt)
+- Wikipedia [List of the most common passwords](https://en.wikipedia.org/wiki/List_of_the_most_common_passwords) | [Wikipedia:10,000 most common passwords](https://en.wikipedia.org/wiki/Wikipedia:10,000_most_common_passwords)
+- Sekurak ["Bezpieczeństwo sieci Wi-Fi – część 1 (wstęp)"](https://sekurak.pl/bezpieczenstwo-sieci-wi-fi-czesc-1/)
+- ["Jak można łatwo złamać Twoje hasło? Sprawdź :-)"](https://sekurak.pl/jak-mozna-latwo-zlamac-twoje-haslo-sprawdz/)
+- [gry-online.pl "Tak szybko można złamać Twoje hasło w 2022 roku"](https://www.gry-online.pl/hardware/tak-szybko-mozna-zlamac-twoje-haslo-w-2022-roku/z22166c) | [hivesystems.io "Are Your Passwords in the Green?"](https://www.hivesystems.io/blog/are-your-passwords-in-the-green)
+- [All Hash Generator](https://www.browserling.com/tools/all-hashes)
+- TunnelsUP [Hash Analyzer](https://www.tunnelsup.com/hash-analyzer/)
+- Computerphile ["Password Cracking - Computerphile" [YT 20:19]](https://www.youtube.com/watch?v=7U-RbOKanYs)
+
+W następnym odcinku: Przeglądarka cz. 1 ciasteczka
+
+---
+
+### Brudnopis
+
+Wygląda na to, że jednak nie dam razy zamknąć sprawy ciasteczek do poniedziałku, zrobię je przez najbliższe dwa tygodnie razem ze storage'm przeglądarki. No trudno.
+
+### Przeglądarka cz. 1 ciasteczka
+
+#### Powstanie
+
+Jak już powyżej pisałem protokół WWW czyli HTTP jest bezstanowy, czyli nie zachowuje sesji, składa się z serii requestów (żądań) ze strony klienta (w tym wypadku przeglądarki), które dla serwera są ze sobą niepowiązane. Każdy request jest zupełnie oddzielnym żądaniem i odpowiedzią.
+
+A przecież bez sesji, bez potwierdzenia tożsamości klienta (w sensie oprogramowania klienckiego) nie można trzymać stanu zalogowania, przeprowadzić transakcji, przedstawić / użyć / zmodyfikować danych użytkownika. Dlatego wprowadzenie możliwości zachowania sesji (stanu) było jednym z pierwszych właściwości, które trzeba było dodać po upowszechnieniu się WWW.
+
+#### Historia
+
+Po raz pierwszy ciasteczka pojawiły się z wersją 0.9beta przeglądarki Mosaic Netscape w październiku 1994. Ich twórca Lou Montulli w 1995 wystąpił o patent i otrzymał go w 1998. Co interesujące od samego początku były kontrowersyjnym wynalazkiem, ponad rok ich istnienie było zupełną tajemnicą, przeglądarka akceptowała je zawsze, a użytkownik nie miał żadnej metody by je sprawdzić. Opinia publiczna dowiedziała się o nich dopiero w lutym 1995 i dwukrotnie w latach 1996 i 1997 były przedmiotem badań U.S. Federal Trade Commission.
+
+Dopiero w kwietniu 1995 powstała grupa robocza IETF poświęcona rozwijaniu publicznego standardu cookies. Pierwszym takim standardem był RFC 2109 opublikowany w lutym 1997, w październiku 2000 zastąpił go RFC 2965, zastąpiony dopiero w kwietniu 2011 przez RFC 6265.
+
+- ["Pomylisz się z przelewem na telefon Blik, wpadniesz w systemową czarną dziurę. Problemy czytelnika z odzyskaniem pieniędzy"](https://www.bankier.pl/wiadomosc/Pomylisz-sie-z-przelewem-na-telefon-Blik-wpadniesz-w-systemowa-czarna-dziure-Problemy-czytelnika-z-odzyskaniem-pieniedzy-8326853.html)
+
+#### Właściwości
+
+Jest to plik tekstowy składający się z:
+
+- nazwy
+- flag
+- klucza
+
+Co interesujące aktualne RFC wyraźnie mówi, że oprogramowanie użytkownika (przeglądarka) musi przygotować wymagania przynamniej 4096 bajtów na ciasteczko, przynamniej 50 plików cookie na domenę i przynajmniej 3 tys. cookies w ogóle, to w przypadku rozmiaru ciasteczka owo przynajmniej stało się w implementacji we wszystkich przeglądarkach maksymalnym rozmiarem ciasteczka licząc wszystkie znaki z nazwy, flag i klucza razem wziętych. Ma to sens z tego powodu, że większa wielkość nigdy nie jest potrzebna.
+
+Co więcej Chrome 95 wprowadził sztywny limit na wielkość ciasteczka 4096 bitów a długość któregokolwiek z atrybutów na 1024 bity. Tych samych limitów używa Mozilla Firefox. Czasem można się spotkać z informacją, że 4096 bitów to maksymalny rozmiar wszystkich ciasteczek na daną domenę. Ani Chrome ani Firefox takiego limitu nie mają.
+
+RFC zaleca użycie przez serwer jak najmniejszej ich liczby. Zwykle na domenę przypada od kilku do kilkunatu cookies co powinno wystaczać dla analityki i uwierzytelnienia. Zaleca się aby górny limit to było 30 do 50 ciasteczek. Są jednak takie serwery związane z reklamami, które używają tysięcy ciasteczek (słownie: tysięcy).
+
+Po stronie serwera trzymane są wygenerowane ciasteczka wraz z ustawieniami i hostorią. Dzięki temu nie trzeba się logować. Ciasteczko jest powiązane z domeną pochodzenia. 
+
+Ciasteczko jednoznacznie identyfikuje użytkownika, co oznacza, że jeżeli zostanie przechwycone atakujący może przejąć konto ze wszystkimi skutkami. Nie musi w tym celu znać ani loginu ani hasła użytkownika.
+
+W HTTP ciasteczka przesyłane są otwartym tekstem, można je było podsłuchać, dlatego wprowadzono flagę Secure zastrzeżoną tylko dla HTTPS. Chroni to przed podsłuchem. 
+
+XSS nieautoryzownay kod JS na stronie wstrzyknięty na stronę rpzez atakujacego, koszystajac z powiazania z domena mozna ukrasc ciasteczko. Dlatego wprowadzono HHTRTPOnly nie mozna jej uksrasc z posiomu JS. Chroni przed XSS
+
+SRSF atak formularzem na stronie atakującego. Formularz może wykonać czynności spoza własnej domeny, przeglądarka atakowanego rozpozna tę domenę i dołączy do akcji formularza pasujące do niej ciasteczka. W ten sposób bez żadnej akcji ofiary samo wejście na stronę podstawioną rpzez atakujacego może dojść do dowolnej i uwierzytelnionej operacji jakiej można dokonać formularzem: zmiana maila, hasła, likwidacja konta, itd.
+
+Można się zabezpieczyc używajac nagłówków automatycznie dolaczenych przez przegladarke Origin (nazwa domeny z ktorej nastapilo zadanie) i referer (oprocz pełen adres podstrony zainicjoaala zadanie). Mozna odrzucic zadania spoza wlasciwej domeny.
+
+losowa wartosc inna dla kazdego uzytkownika i czesto zmieniana z kazdymz zadaniem
+do formularza dołączane jest uktyte pole z losowo wygeneroanym tokenem, po wyslaniu dokumentu serwer sprawdza zawartosc tego pola porwonujac z wygenerowana przez siebie wartoscia, jesli sie zgadzaja to zadanie jest prawiddlowe i jest obslugiwane dalej.
+
+Brak tu standaryzacji i latwo zapmniec
+
+dlatego flaga samesite
+strict nie dolaczy ciasteczka jesli domena sie rozni, bazujac na pochdozeniu zadania
+ale odnosniki tworzony a href jest zadaniem GET do witryny ktorej adres jest w tagu href, jest ok w obrebie jednej domeny 
+co jesli do innej origin nie zgodzi sie pochodzenie zapytania origin bedzie inny a uset nie zostanie zalogowany bo ciasteczka nie zpstana dolaczone, np. z obcej stony na fb nie zosatniemy zalogowani, wtedy samesite lax 
+czy nie lepiej pozwolic na spoza origin jesli wykonywane jest zadanie GET 
+tu chodzi takze o prywatnosc, sluza do identyfikacji i sledzenia 
+np polub jezeli jestesmy zalogowani dowolna witryna moze wyslac tozasamosc uzytkowika i wtedy jest sdledzony 
+lax nie tylko do zewnetrznego serwer ale zmiana wymaga zmiany top-level-navigation w przypadku ahref wiec kod przyciksu ktory przeciez nie zmienia adreesu bo pochodzi z fb nie przywola ciasteczek sledzacych
+bezpieczne get head trace
+rewolucja wlaczyc ciasteczka samesite lax automaycznie dla wszystkich ktore nie sa oznaczone inaczej
+
+dlatego tez w formularzach nie powinno sie stosowac metody get, bezpieczna jest tylko post
+
+Tworzenie cookies
+
+- JS Document.cookie
+- host Set-cookie header
+
+cross origin resource share 
+nikt nie wystawia api na geet
+
+#### Zastosowanie
+
+- tworzenie sesji (zalogowanie, uwierzytelnienie użytkownika)
+- trzymanie ustawień, personalizacja
+- śledzenie third-party-cookies
+
+#### Zombie cookie
+
+etag random number; cache
+
+- [Zombie cookie](https://en.wikipedia.org/wiki/Zombie_cookie)
+- [ETag](https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/ETag)
+
+#### Evercookie
+
+- [Evercookie](https://en.wikipedia.org/wiki/Evercookie)
+
+#### Ataki
+
+kradzież i csrf
+
+- XSS cross-site scripting [Sekurak "Czym jest XSS?"](https://sekurak.pl/czym-jest-xss/) [Cross-site scripting](https://portswigger.net/web-security/cross-site-scripting) [Virtual Forge an Onapsis Company "XSS - Cross Site Scripting Explained" [YT 7:23]](https://www.youtube.com/watch?v=cbmBDiR6WaY) [Web Dev Simplified "How To Prevent The Most Common Cross Site Scripting Attack" [YT 4:55]](https://www.youtube.com/watch?v=ns1LX6mEvyM) [Loi Liang Yang "Cross-Site Scripting (XSS) Explained And Demonstrated!" [YT 8:54]](https://www.youtube.com/watch?v=1Hr4_r2xQXY) [Loi Liang Yang "Cross-Site Scripting (XSS) Explained And Demonstrated By A Pro Hacker!" [YT 9:30]](https://www.youtube.com/watch?v=PPzn4K2ZjfY) [Jesse Campos - Chef Secure "Hacking Websites With Cross-Site Scripting (XSS Attack Basics)" [YT 6:13]](https://www.youtube.com/watch?v=9kaihe5m3Lk) [Cybergrid "How To Scan A Web Application for XSS Vulnerability - Bug Hunting" [YT 3:08]](https://www.youtube.com/watch?v=W4VN1u2lv2U) [intigriti "Find XSS the easy way! Dalfox - Hacker Tools" [YT 7:08]](https://www.youtube.com/watch?v=m64aviF1Two) [CISEC "DOM-based XSS" [YT 20:30]](https://www.youtube.com/watch?v=A5faK0BC8cE) [F5 DevCentral "2017 OWASP Top 10: Cross-Site Scripting (XSS)" [YT 11:26]](https://www.youtube.com/watch?v=IuzU4y-UjLw) [Bugcrowd "Bugcrowd University - Cross Site Scripting (XSS)" [YT 24:49]](https://www.youtube.com/watch?v=gkMl1suyj3M) [KacperSzurekEN "XSS Polyglot" [YT 6:00]](https://www.youtube.com/watch?v=Havdj8CWngY) [Academind "Running a XSS Attack + How to defend" [YT 15:08]](https://www.youtube.com/watch?v=oEFPFc36weY) [SilverHack "Cross-Site Scripting (XSS) Explained And Exploited" [YT 32:34]](https://www.youtube.com/watch?v=ZmNlFNsty9o) [Jesse Campos - Chef Secure "The 12 Exploits of XSS-mas" [YT 33:29]](https://www.youtube.com/watch?v=d84SP5r6n9c)
+- XST cross-site tracing
+- CSRF cross-site request forgery [Cross-site request forgery (CSRF)](https://portswigger.net/web-security/csrf) [PwnFunction "Cross-Site Request Forgery (CSRF) Explained" [YT 14:10]](https://www.youtube.com/watch?v=eWEgUcHPle0) [Troy Hunt "Understanding CSRF, the video tutorial edition" [YT 29:27]](https://www.youtube.com/watch?v=hW2ONyxAySY) [Computerphile "Cross Site Request Forgery - Computerphile" [YT 9:19]](https://www.youtube.com/watch?v=vRBihr41JTo) [LiveOverflow "CSRF Introduction and what is the Same-Origin Policy? - web 0x04" [YT 10:24]](https://www.youtube.com/watch?v=KaEj_qZgiKY)
+- [Harshal Patil "Ultimate Guide to HTTP Cookies"](https://blog.webf.zone/ultimate-guide-to-http-cookies-2aa3e083dbae)
+- [Aleksandr Hovhannisyan "What Are Cookies?"](https://www.aleksandrhovhannisyan.com/blog/what-are-cookies/)
+- [David Nield "Why Your Web Browser Is Declaring War on Cookies and How They'll Be Replaced"](https://gizmodo.com/why-your-web-browser-is-declaring-war-on-cookies-and-ho-1844792609)
+
+get request tylko do odczytu powinny byc, link to get request
+
+#### Flagi
+
+Podczas tworzenia ciasteczka 
+
+- Expires określona parametrem [Date](https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Date) data usunięcia ciasteczka
+- Max-Age określony w sekundach czas życia ciasteczka, jeżeli wynik się różni od Expires, Max-Age decyduje, brak określenia czasu ekspiracji oznacza, że ciasteczko zostanie skasowane z końcem sesji - jest to tzw. session cookie, określony czas tworzy persistent cookie
+- Domain definicja domeny, jeżeli została określona to dotyczy również subdomen, jeżeli nie to tylko bieżaca domena bez subdomen
+- Path ścieżka, która musi istnieć na serwerze, żeby wysłać ciasteczko
+- Secure zostanie wysłane do hosta tylko w połączeniu HTTPS cp zabezpiecza przed MITM i XSS (secure cookie), choć wciąż możliwe są ataki XST (cross-site tracing) i CSRF (cross-site request forgery)
+- HttpOnly zabezpiecza przed JS w ataku XSS, tworzone jest tylko po stronie serwera i przeglądarka nie może go czytać przez document.cookie
+- SameSite (wprowadzony przez Google w 2016, ponieważ jest nieoficjalny implementacje mogą się różnić i zmieniać), ten sam host nie jest traktowany jak identyczne połączenie jeżeli różni się rodzajem połączenia (HTTP i HTTPS)
+  - Strict, wysłany jest tylko do hosta pochodzenia, co ma zabezpieczać przed CSRF
+  - Lax, tak samo jak wtedy kiedy parametr nie jest ustawiony, dopuszcza inną domenę, ale tylko żądanie GET (POST uważany jest za niebezpieczny)
+  - None, wymaga flagi Secure
+
+Odnośniki
+
+- F5 DevCentral ["HTTP Cookie SameSite Attribute" [YT 10:34]](https://www.youtube.com/watch?v=urdtmjuukbk)
+- Merrick WebDev ["SameSite Cookies Explained ~ With Examples" [YT 11:32]](https://www.youtube.com/watch?v=CvKPeWojukc)
+
+#### Odnośniki
+
+- [RFC 6265 - HTTP State Management Mechanism](https://datatracker.ietf.org/doc/html/rfc6265)
+- MDN [Using HTTP cookies](https://developer.mozilla.org/en-US/docs/Web/HTTP/Cookies) | [Set-Cookie](https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Set-Cookie)
+- [Cookiebot CMP | GDPR, ePrivacy and CCPA compliant cookies](https://www.cookiebot.com/en/)
+- [Secure-Cookie](https://secure-cookie.io/)
+- Sec Team Blog ["Remote Code Execution on a Facebook server"](https://blog.scrt.ch/2018/08/24/remote-code-execution-on-a-facebook-server/)
+- [Ghostery](https://www.ghostery.com/)
+- [OWASP Cheat Sheet Series - Session Management / Cookies](https://cheatsheetseries.owasp.org/cheatsheets/Session_Management_Cheat_Sheet.html#cookies)
+- Recompiled [Device cookie - pokonaj ataki brute force używając ciasteczka](https://recompiled.pl/device-cookie/)
+- [WSTG - Latest |  4-Web Application Security Testing > 06-Session Management Testing > Testing for Cookies Attributes](https://owasp.org/www-project-web-security-testing-guide/latest/4-Web_Application_Security_Testing/06-Session_Management_Testing/02-Testing_for_Cookies_Attributes)
+- Kacper Szurek ["Jak działa flaga SameSite cookie?" [YT 16:47]](https://www.youtube.com/watch?v=U584R5IVgsU)
+- Mateusz Chrobok ["Te potworne ciasteczka!" [YT 16:19]](https://www.youtube.com/watch?v=I2NilLaLwh0)
+- Dawid Balut ["Błędy Bezpieczeństwa w Mechanizmach Autoryzacji i Uwierzytelniania #04 #DawidBalutTraining" [YT 16:50]](https://www.youtube.com/watch?v=yWOjg2_TO2s&list=PLswBolcRPQPEHjYZzMGjMP3qmuKLOjWut&index=4)
+- Simply Explained ["How cookies can track you (Simply Explained)" [YT 6:50]](https://www.youtube.com/watch?v=QWw7Wd2gUJk)
+- Hussein Nasser ["Cookies" YT playlist 8 filmów](https://www.youtube.com/playlist?list=PLQnljOFTspQXaimjxx6uGLJz6lR25abZn) | ["HTTP Cookies Crash Course" [YT 1:09:20]](https://www.youtube.com/watch?v=sovAIX4doOE)
+- LearnWebCode ["Cookies, Sessions, JSON Web Tokens (JWT) and More 🍪🔐" [YT 46:40]](https://www.youtube.com/watch?v=uXDnS5PcjCA)
+- Code Realm ["Authentication on the Web (Sessions, Cookies, JWT, localStorage, and more)" [YT 37:05]](https://www.youtube.com/watch?v=2PPSXonhIck)
+- Zach Gollwitzer ["HTTP Headers and Cookies" [YT 17:37]](https://www.youtube.com/watch?v=DxeSGUM16_4)
+- Steve Griffith - Prof3ssorSt3v3 ["Understanding Browser Cookies" [YT 13:47]](https://www.youtube.com/watch?v=j0PpT96EFeg)
+- Computerphile ["Follow the Cookie Trail - Computerphile" [YT 8:30]](https://www.youtube.com/watch?v=LHSSY8QNvew) | ["EXTRA BITS - Follow the Cookie Trail - Computerphile" [YT 4:35]](https://www.youtube.com/watch?v=_d0G6FZ_kR4) | ["Cookie Stealing - Computerphile" [YT 16:11]](https://www.youtube.com/watch?v=T1QEs3mdJoc) | ["Cracking Websites with Cross Site Scripting - Computerphile" [YT 8:33]](https://www.youtube.com/watch?v=L5l9lSnNMxg)
+- Udacity ["Cookies - Web Development" [YT 3:35]](https://www.youtube.com/watch?v=xdH9zsW1CK0) | ["Cookie Domains - Web Development" [YT 3:18]](https://www.youtube.com/watch?v=xgW0XjOeusY)
+- NetSec ["HTTP cookies. All you need to know" [YT 11:44]](https://www.youtube.com/watch?v=7BAmQd-aHYc) | ["Set and get HTTP cookies in PHP and JavaScript" [YT 46:05]](https://www.youtube.com/watch?v=JNYCgIKVbGI)
+- AI LAW TECH ["Seminarium: Cookies w praktyce - aspekty techniczne i prawne" [YT 1:31:30]](https://www.youtube.com/watch?v=CPdJGMkZ5r4) | [""Recepta na ciasteczka" - Sławomir Kowalski i Paweł Tobiczyk" [YT 1:03:34]](https://www.youtube.com/watch?v=cjuVyI0m-88)
+- WebCore meetup ["Maxim Tsoy - The Zen of Cookies" [YT 43:03]](https://www.youtube.com/watch?v=V7aI68YuXP4)
+- Mateusz Glanert ["Pliki cookies rozłożone na łopatki - Jakub Betka | #zanimzaczniesz, RODO, polityka prywatności" [YT 46:26]](https://www.youtube.com/watch?v=vqAij2yaztU)
+- Marek Lukowski ["Prywatność w sieci, zgody na cookies, cyfrowy dobrostan" [YT 47:12]](https://www.youtube.com/watch?v=9k20Y0Fc6CQ)
+- Jan Iłowski ["Blokowanie cookies jest bez sensu" [YT 20:41]](https://www.youtube.com/watch?v=nDIq1JyxVpw)
+- Rob Braxman Tech ["I Don't Block HTTP Cookies!" [YT 25:31]](https://www.youtube.com/watch?v=fx6MyPeMLEM)
+- The Full Stack Junkie ["Understanding Authentication in Node.js - Sessions and Cookies - Web Development Concepts Explained" [YT 30:58]](https://www.youtube.com/watch?v=TDe7DRYK8vU)
+- Rahul Ahire ["Using HttpOnly cookies in React & Node | Storing JWT Tokens or SessionID Securel" [YT 36:13]](https://www.youtube.com/watch?v=a5Krfkfl9MM)
+- webTalkTO ["Episode 2 - 🍪 SameSite cookie explained (including chrome 80 changes)" [YT 1:40:44]](https://www.youtube.com/watch?v=dWtQFaVtZvk)
+
+#### Security Coockies
+
+- Kirk Jackson ["Same-origin policy: The core of web security @ OWASP Wellington" [YT 1:04:42]](https://www.youtube.com/watch?v=zul8TtVS-64)
+- PwnFunction ["Cross-Site Scripting (XSS) Explained" [YT 11:26]](https://www.youtube.com/watch?v=EoaDgUgS6QA)
+- Academind ["Running a XSS Attack + How to defend" [YT 15:03]](https://www.youtube.com/watch?v=oEFPFc36weY)
+- HakerEduPL ["Kurs Web Application Pentesting" [YT playlist 27 filmów]](https://www.youtube.com/playlist?list=PLe18tvImRSTRbffDg4wIGMy7KmMQ1QI45) - ["#5 Wprowadzenie do ciasteczek w PHP i ataków (cookies) | Kurs Web Application Pentesting" [YT 11:00]](https://www.youtube.com/watch?v=KY3xLlF78Yg) | ["#6 Kradniemy PHP cookies z phpsessid... czyli Cookie Cadger, Wireshark i Ettercap | WEP" [YT 19:26]](https://www.youtube.com/watch?v=ex7P8R6EsEM) | ["#15 Atak XSS i kradzież cookies, czyli session hijacking w praktyce" [YT 20:26]](https://www.youtube.com/watch?v=LTTngoPBYBQ)
+- John Hammond ["TryHackMe! Advent of Cyber 3 - HTTP Cookies & Authentication Bypasses - "Day 2"" [YT 32:40]](https://www.youtube.com/watch?v=8XYtpv-3-No)
+- Hussein Nasser ["1 Hour of Popular Web Attacks (XSS, CSRF, SSRF, SQL Injection, MIME Sniffing, Smuggling and more!)" [YT 1:18:38]](https://www.youtube.com/watch?v=pdC3H8SX-F4)
+- ["Flaw in Western Digital My Cloud exposes the content to hackers"](https://securityaffairs.co/wordpress/76344/hacking/western-digital-my-cloud-flaw-2.html)
+- Motasem Hamdan ["Admin Access By Cookie Manipulation | TryHackMe Advent of Cyber 1 Day 1" [YT 13:46]](https://www.youtube.com/watch?v=PMN5ydNlo1k)
+- Feross ["Web Security - Lecture 02 - HTTP, Cookies, Sessions" [YT 1:17:49]](https://www.youtube.com/watch?v=zhnQFQ2qFtA)
+- Black Hat ["HTTP Cookie Hijacking in the Wild: Security and Privacy Implications" [YT 46:11]](https://www.youtube.com/watch?v=jYcx7WtbB0A)
+- DEFCONConference ["DEF CON 22- David Wyde - Client-Side HTTP Cookie Security: Attack and Defense" [YT 33:18]](https://www.youtube.com/watch?v=tso5rhzQYBc)
+- OWASP Foundation ["Cookie Security Myths and Misconceptions - David Johansson - AppSecUSA 2017" [YT 48:57]](https://www.youtube.com/watch?v=ND_IaksBRQE)
+- OWASP London [""Cookie Security - Myths & Misconceptions" - David Johansson" [YT 40:35]](https://www.youtube.com/watch?v=rzbhi_MNcJM)
+- The TechCave ["Session Hijacking Attack | Session ID and Cookie Stealing | SideJacking" [YT 14:03]](https://www.youtube.com/watch?v=oI7dX6DWyTo)
+- NCSAatIllinois ["NCSA Cybersecurity webinar: "Chips Annoy! Web Cookies and How to Manage Them"" [59:06]](https://www.youtube.com/watch?v=dHPIJlBr_WU)
+- Sicherheitsforschung ["[DS15] Hacking Cookies in Modern Web Applications and Browsers - Dawid Czagan" [YT 42:12]](https://www.youtube.com/watch?v=uSFqAzmaT3o)
+- IEEE Symposium on Security and Privacy ["The Cracked Cookie Jar: HTTP Cookie Hijacking and the Exposure of Private Information" [YT 20:51]](https://www.youtube.com/watch?v=4k-1qV_FkC4)
+- Devoxx ["#backtobasics HTTP cookies by Hubert SABLONNIÈRE" [YT 49:31]](https://www.youtube.com/watch?v=y6mwekHkgVQ)
+- Professor Messer ["Cookies, Header Manipulation, and Session Hijacking - CompTIA Security+ SY0-401: 3.5" [YT 11:02]](https://www.youtube.com/watch?v=eDui1JX49zc)
+- Feross ["CS 253 Web Security" YT playlist 19 filmów](https://www.youtube.com/playlist?list=PL1y1iaEtjSYiiSGVlL1cHsXN_kvJOOhu-)
+- MIT OpenCourseWare ["9. Securing Web Applications" [1:22:07]](https://www.youtube.com/watch?v=WlmKwIe9z1Q)
+
+
+### Przeglądarka cz. 2  Local / Web Storage
+
+#### Odnośniki
+
+- Web Dev Simplified ["JavaScript Cookies vs Local Storage vs Session" [YT 14:27]](https://www.youtube.com/watch?v=GihQAC1I39Q)
+- freeCodeCamp.org ["cookies vs localStorage vs sessionStorage - Beau teaches JavaScript" [YT 9:04]](https://www.youtube.com/watch?v=AwicscsvGLg)
+- ["Local storage vs. Session storage. Czym są i jak ich używać?"](https://bedekodzic.pl/localstorage/)
+- Wikipedia [Web storage](https://en.wikipedia.org/wiki/Web_storage)
+- MDN [Web Storage API](https://developer.mozilla.org/en-US/docs/Web/API/Web_Storage_API) | [Window.sessionStorage](https://developer.mozilla.org/en-US/docs/Web/API/Window/sessionStorage) | [Window.localStorage](https://developer.mozilla.org/en-US/docs/Web/API/Window/localStorage) | [IndexedDB API](https://developer.mozilla.org/en-US/docs/Web/API/IndexedDB_API)
+- javascript.info [LocalStorage, sessionStorage](https://javascript.info/localstorage)
+- [A Primer on the Different Types of Browser Storage](https://css-tricks.com/a-primer-on-the-different-types-of-browser-storage/)
+- web.dev [Web storage overview](https://web.dev/web-storage/)
+
+### Przeglądarka cz. 3 JSON Web Tokens
+
+- [JSON Web Tokens](https://jwt.io/)
+- Flavio Copes ["JWT authentication: Best practices and when to use it"](https://blog.logrocket.com/jwt-authentication-best-practices/)
+- [Get Started with JSON Web Tokens](https://auth0.com/learn/json-web-tokens/)
+
+#### Przeglądarka
+
+- [Device Info](https://www.deviceinfo.me/)
+- [BrowserLeaks - Web Browser Fingerprinting - Browsing Privacy](https://browserleaks.com/)
+- [What browser? My browser? Is my browser out of date?](https://www.whatismybrowser.com/)
+- [PrivacyTests.org](https://privacytests.org/)
+- [Cover Your Tracks - A Project of the Electronic Frontier Foundation](https://coveryourtracks.eff.org/)
+- [Web SQL Database](https://en.wikipedia.org/wiki/Web_SQL_Database)
+- z0ccc.github.io [Extension Fingerprints](https://z0ccc.github.io/extension-fingerprints/)
+
+### Odnośniki różne
+
+Trochę chaosu, żeby potem zrobić porządek.
+
+- [Cock.li E-mail Hosting](https://cock.li/)
+- [Tutanota](https://tutanota.com/)
+- ["Don t get kicked out a tale of rootkits and other backdoors"](https://capsule8.com/blog/dont-get-kicked-out-a-tale-of-rootkits-and-other-backdoors/)
+- [hmaverickadams / Beginner-Network-Pentesting](https://github.com/hmaverickadams/Beginner-Network-Pentesting) Notes for Beginner Network Pentesting Course
+- ["Android z ważną aktualizacją dla Ukrainy – ostrzeże on przed śmiercią spadającą z nieba"](https://android.com.pl/news/470398-android-ostrzeze-przed-nalotami/)
+- [NirSoft](https://www.nirsoft.net/)
+- [Hackersploit](https://hackersploit.org/)
+- [urlscan.io - URL and website scanner](https://urlscan.io/)
+- [SY0-601 CHEATSHEET – 1.1 SOCIAL ENGINEERING](https://vilya.pl/sy0-601-cheatsheet-1-1-social-engineering/) | [COMPTIA SECURITY+ 1.2.1 MALWARE](https://vilya.pl/comptia-security-1-2-1-malware/)
+- [OpenSecurity.pl &#8902; ...ponieważ bezpieczeństwo to kwestia świadomości zagrożeń](https://opensecurity.pl/)
+- [Laboratory (Content Security Policy / CSP Toolkit)](https://addons.mozilla.org/pl/firefox/addon/laboratory-by-mozilla/) | [Facebook Container](https://addons.mozilla.org/en-US/firefox/addon/facebook-container/)
+- ["Oszuści mogą podszyć się pod bank za... dwa euro. Jak nie dać się nabrać? Ekspert wyjaśnia"](https://next.gazeta.pl/next/7,151003,27631199,oszusci-moga-podszyc-sie-pod-bank-za-dwa-euro-jak-nie-dac.html)
+- ["WaitList.dat File on Your Windows Machine? Immediate Red Flag!"](https://www.beyondtrust.com/blog/entry/waitlist-dat-file-windows-machine-immediate-red-flag)
+- dev.to [Arika O "How web browsers work - navigation (part 1, with illustrations) ⚙️💥"](https://dev.to/arikaturika/how-web-browsers-work-part-1-with-illustrations-1nid)
+- sekurak ["PyScript – czyli Python w Twojej przeglądarce + co można nim zrobić?"](https://sekurak.pl/pyscript-czyli-python-w-twojej-przegladarce-co-mozna-nim-zrobic/) [Jak sprawdzić czy mój Windows jest zainfekowany? Podstawy analizy powłamaniowej](https://sklep.securitum.pl/jak-sprawdzic-czy-moj-windows-jest-zainfekowany)
+- [dwm - dynamic window manager](https://dwm.suckless.org/)
+
+Klucze U2F
+
+- Niebezpiecznik ["Klucze U2F – pytania i odpowiedzi. Dlaczego hakerzy ich nienawidzą i dlaczego warto z nich korzystać?"](https://niebezpiecznik.pl/post/klucze-u2f-pytania-i-odpowiedzi/)
+- Sekurak ["Poradnik o kluczach sprzętowych na przykładzie YubiKey 5 NFC (2FA, U2F, FIDO2)"](https://sekurak.pl/poradnik-o-kluczach-sprzetowych-na-przykladzie-yubikey-5-nfc-2fa-u2f-fido2/)
+- Kacper Szurek ["Jak używać YubiKey? Co to jest 2FA/U2F/FIDO2?" [2:11:55]](https://www.youtube.com/watch?v=uku-G_COA7U)
+- AdminAkademia ["W jaki sposób i do czego wykorzystać YubiKey w praktyce ;-) Część 1." [YT 1:47:54]](https://www.youtube.com/watch?v=Bs_BPCW6Wwg) | ["W jaki sposób i do czego wykorzystać YubiKey w praktyce ;-) Część 2." [Yt 2:33:55]](https://www.youtube.com/watch?v=-6X3ku-TwkM) | ["Wykorzystanie Yubikey z urządzeniami mobilnymi, oraz podsumowanie podcyklu ;-)" [YT 1:15:26]](https://www.youtube.com/watch?v=ViPgYr8TMHk) | [Black Hat (YT 190)](https://www.youtube.com/c/BlackHatOfficialYT)
+
+HTTP i SSL / TLS
+
+- Hussein Nasser [TLS YT playlist 30 filmów](https://www.youtube.com/playlist?list=PLQnljOFTspQW4yHuqp_Opv853-G_wAiH-) | ["TLS Certificates" YT playlist 10 filmów](https://www.youtube.com/playlist?list=PLQnljOFTspQXFUUIEnnmsQatlXz5duXRb) | ["WebSockets" YT playlist 10 filmów](https://www.youtube.com/playlist?list=PLQnljOFTspQUGjfGdg8UvL3D_K9ACL6Qh) | ["HTTP/2" YT playlist 24 filmy](https://www.youtube.com/playlist?list=PLQnljOFTspQWbBegaU790WhH7gNKcMAl-) | ["TCP" YT playlist 13 filmów](https://www.youtube.com/playlist?list=PLQnljOFTspQX_Zkt_8teMRsdY4sNt4BX6)
+- Bogdan Stashchuk ["SSL, TLS and HTTPS Overview" YT playlist 20 filmów](https://www.youtube.com/playlist?list=PLWkguCWKqN9P8zOHYxS7e0nrHDmUZGZDq)
+- F5 DevCentral ["SSL/TLS Encryption Videos" YT playlist 55 filmów](https://www.youtube.com/playlist?list=PLyqga7AXMtPMXgn1NwDqnSlgU05cnl4PA)
+- Computerphile ["Transport Layer Security (TLS) - Computerphile" [YT 15:32]](https://www.youtube.com/watch?v=0TLDTodL7Lc) | ["TLS Handshake Explained - Computerphile" [YT 16:58]](https://www.youtube.com/watch?v=86cQJ0MMses)
+- TECH SCHOOL [Cybersecurity YT playlist 3 filmy](https://www.youtube.com/playlist?list=PLy_6D98if3UINAba67DnhO4055OA6viSb)
+- kubucation ["Learn about HTTPS, TLS & Certificates" YT playlist 5 filmów](https://www.youtube.com/playlist?list=PLShDm2AZYnK3cWZpOjV7nOpL7plH2Ztz0)
+- AdminAkademia ["Ogólna logika działania protokołu SSL/TLS oraz protokołu Diffiego-Hellmana" [YT 1:05:34]](https://www.youtube.com/watch?v=K7dW4kg5n2M) | ["Jak uzyskać certyfikat SSL? I jaki certyfikat SSL wybrać? - Protokół SSL/TLS (część 2)" [YT 1:25:10]](https://www.youtube.com/watch?v=iMqGFMLl9yA) | ["Jak uzyskać certyfikat SSL za darmo? Czyli niech żyje Let’s encrypt :-)" [YT 34:35]](https://www.youtube.com/watch?v=PqbrVEYtLhw) | ["Jak wygenerować ten cert za darmo z „Let’s encrypt” ?" [YT 30:37]](https://www.youtube.com/watch?v=yE9805VBuuM)
+- Plaintext Packets ["Troubleshoot TLS Handshake Failures using Wireshark" [YT 31:32]](https://www.youtube.com/watch?v=cR5CO0wSZLs)
+- ExChainSmokerTech ["TLS - Transport Layer Security" YT playlist 5 filmów](https://www.youtube.com/playlist?list=PLunI9fKXC5hEXhruAlBdiKSysj2jwSdCj)
+
+https://askubuntu.com/questions/1398344/apt-key-deprecation-warning-when-updating-system
+https://askubuntu.com/questions/1403556/key-is-stored-in-legacy-trusted-gpg-keyring-after-ubuntu-22-04-update
+https://www.newstatesman.com/world/europe/ukraine/2022/05/he-has-embarked-on-a-war-he-cant-stop-mikhail-khodorkovsky-on-putins-next-move
+https://astrohomines.wordpress.com/2021/12/26/james-webb-spece-telescope-a-egzoplanety-i-astrobiologia-rewolucja-i-ograniczenia/
+https://colonelweekly.pl/

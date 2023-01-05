@@ -1,0 +1,421 @@
+---
+title: "Enigma cz. 9 - rekonstrukcja JS cz. 2"
+section: "blog"
+subsection: "historia"
+set: enigma
+date: 2021-09-22
+edited:
+image: ../blogimages/Enigma-logo.jpg
+tags: enigma, kryptologia, javascript, js
+url: https://dygresje.info/blog/enigma-js-2
+description: "Rekonstrukcja w JavaScript. Mechanizm szyfrujący - łącznica kablowa. Ustawienia."
+---
+
+Stały adres serii wpisów o Enigmie - [/blog/enigma](/blog/enigma)
+
+### Założenie
+
+W tym odcinku odchodzimy od samej Enigmy, została napisana w poprzednim wpisie -  [Enigma cz. 8 - rekonstrukcja JS cz. 1](/blog/enigma-js-1). Tutaj zrobimy aplikacje, czyli interfejs po stronie użytkownika i mechanizmy wprowadzające zmiany w kodzie JS.
+
+Zwykłe kodowanko.
+
+Co do kodu - jak zawsze jestem pewien, że można to zrobić lepiej, krócej i wydajniej. Na ten moment jednak taki kod mnie zadowala, jest przejrzysty. Cały JS nadal trzymamy w jednym pliku.
+
+### Interfejs
+
+W przypadku walców mamy dwojakiego rodzaju ustawienia, po pierwsze jest to wybór trzech z pięciu typów walców. Nigdy nie powtarzały się w zestawie, tzn. każdy typ walca mógł być użyty tylko w jednym miejscu.
+
+Czyli mamy trzy sloty, a w M4 cztery, ale w tym wypadku sprawa jest o tyle prostsza, że czwarty walec w M4 był umieszczony na stałe, tzn. było tyle samo miejsca na walce, żeby więc wygospodarować miejsce zarówno czwarty walec szyfrujący, jak i walec odbijający były węższe. Dlatego czwarty walec różnił się konstrukcją i nie mógł być zamieniony miejscami z pozostałymi trzema.
+
+Trzeba wziąć też pod uwagę walec odwracający. Był nieruchomy, ale mamy dostępne trzy typy walca odwracającego.
+
+Drugi rodzaj ustawienia to zmieniane regularnie i łatwo wstępne przesunięcia walców. Można je wyrazić w liczbach (od 0 do 25 lub od 1 do 26) albo w literach, to nie ma znaczenia. W prawdziwej sprzętowej Enigmie ustawiano litery, więc tak tutaj zrobimy, ponieważ będziemy musieli równocześnie ustawić typy walców i ich przesunięcia, a przesunięcia wyrażone literami zależą od typów, będzie to bardziej skomplikowane, ale na szczęście jest to bardziej interesujące zadanie.
+
+Trzecim elementem interfejsu jest łącznica kablowa.
+
+### Pliki startowe
+
+Zacznijmy od HTML. Jedyną istotną zmianą jest dodanie formularza, tutaj w pewnym skrócie:
+
+```html
+        <div>
+            <form id="formRotors">
+                <h4>Walzensatz (Zespoł walców)</h4>
+                <section class="setting-field">
+                    <label for="mirrorRotor">Umkehrwalze<br />
+                        <select name="mirrorRotor" id="mirrorRotor">
+                            <option value="UKW_A">UKW A</option>
+                            <option value="UKW_B">UKW B</option>
+                            <option value="UKW_C">UKW C</option>
+                        </select></label>
+                    <label for="thirdRotor">Dritter Rotor (langsam)<br />
+                        <select name="thirdRotor" id="thirdRotor">
+                            <option value="I">I</option>
+                            <option value="II">II</option>
+                            <option value="III" selected="selected">III</option>
+                            <option value="IV">IV</option>
+                            <option value="V">V</option>
+                        </select>
+                    </label>
+//
+                </section>
+                <h4>Buchstabeneinstellungen (Ustawienia walców)</h4>
+                <section class="setting-field">
+                    <label for="thirdRotorStart">Dritter Rotor (langsam)<br />
+                        <select name="thirdRotorStart" id="thirdRotorStart">
+                            <option value="A">A</option>
+                            <option value="B">B</option>
+                            <option value="C">C</option>
+//
+                </section>
+                <h4>Steckerbrett (Łącznica kablowa)</h4>
+                <section class="setting-field">
+                    <input id="steckerbrett">
+                </section>
+                <!-- <button id="buttonRotorsSettings">Einstellen</button> -->
+            </form>
+        </div>
+```
+
+Jest to siedem list rozwijalnych, cztery dla rotorów (trzy szyfrujące i odwracalny) i trzy dla ustawień startowych walców. Do tego input na wprowadzanie ustawień łącznicy kablowej i na końcu jeden button dla całego formularza.
+
+Ponieważ użytkownik powinien zostać powiadomiony czy jego ustawienia zostały zaaplikowane, trzeba dodać pola informacyjne, zarówno dla samej informacji, że została dokonana zmiana, jak i wyświetlania tych ustawień.
+
+Zaczynamy od JS-a z poprzedniego wpisu. Trzeba dodać nowe elementy HTML:
+
+```js
+// GET SETTIING FROM PAGE
+const buttonSettings = document.getElementById("buttonSettings");
+const formRotorsSequence = document.getElementById("formRotorsSequence");
+const firstRotor = document.getElementById("firstRotor");
+const secondRotor = document.getElementById("secondRotor");
+const thirdRotor = document.getElementById("thirdRotor");
+const mirrorRotor = document.getElementById("mirrorRotor");
+const firstRotorStart = document.getElementById("firstRotorStart");
+const secondRotorStart = document.getElementById("secondRotorStart");
+const thirdRotorStart = document.getElementById("thirdRotorStart");
+const steckerbrett = document.getElementById("steckerbrett");
+
+// SHOW SETTINGS ON PAGE
+const showInfo = document.getElementById("info");
+const showRotorsSettings = document.getElementById("settings-rotorsSequence");
+const showMirrorRotor = document.getElementById("settings-mirrorRotor");
+const showRotorsStart = document.getElementById("settings-rotorsStart");
+const showSteckerbrett = document.getElementById("settings-steckerbrett");
+```
+
+### Ustawienie zestawu walców szyfrujących
+
+Na czas uruchamiania i testowania pojedynczych mechanizmów można podpiąć funkcje bezpośrednio do buttona. Ustawienie wszystkich parametrów zrobimy na końcu.
+
+Najpierw przebudujemy obiekty walców, zarówno walców szyfrujących, jak i odbijających. Dodamy element name i utworzymy tablicę walców odbijających:
+
+```js
+// ROTORS
+const ETW = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+const I = { sequence: "EKMFLGDQVZNTOWYHXUSPAIBRCJ", notch: "Q", shift: 0, name: "I" };
+const II = { sequence: "AJDKSIRUXBLHWTMCQGZNPYFVOE", notch: "E", shift: 0, name: "II" };
+const III = { sequence: "BDFHJLCPRTXVZNYEIWGAKMUSQO", notch: "V", shift: 0, name: "III" };
+const IV = { sequence: "ESOVPZJAYQUIRHXLNFTGKDCMWB", notch: "J", shift: 0, name: "IV" };
+const V = { sequence: "VZBRGITYUPSDNHLXAWMJQOFECK", notch: "Z", shift: 0, name: "V" };
+const UKW_A = { sequence: "EJMZALYXVBWFCRQUONTSPIKHGD", name: "UKW A" };
+const UKW_B = { sequence: "YRUHQSLDPXNGOKMIEBFZCWVJAT", name: "UKW B" };
+const UKW_C = { sequence: "FVPJIAOYEDRZXWGCTKUQSBNMHL", name: "UKW C" };
+
+const mirrorRotorsArr = [UKW_A, UKW_B, UKW_C];
+```
+
+Uwaga: wszędzie gdzie używamy zmiennej mirror, trzeba dodać teraz mirror.sequence. Trzeba przekonstruować każde wystąpienie walca.
+
+Ustawienie typów i kolejności walców to zwykła funkcja przypisania danych z formularza przez switch i na końcu sprawdzamy, czy w zestawie żaden się nie powtarza. Jeżeli się powtarza, wyświetlamy komunikat i przeładowujemy stronę. Jest to reset do ustawień domyślnych.
+
+```js
+// SET A ROTOR SET
+const setRotorsSet = (rotorsSet) => {
+
+    for (let i = 0; i < rotorSequence.length; i++) {
+        switch (rotorsSet[i]) {
+            case 'I':
+                rotorSequence[i] = I;
+                break;
+            case 'II':
+                rotorSequence[i] = II;
+                break;
+            case 'III':
+                rotorSequence[i] = III;
+                break;
+            case 'IV':
+                rotorSequence[i] = IV;
+                break;
+            case 'V':
+                rotorSequence[i] = V;
+                break;
+        }
+    }
+    if (rotorSequence[0].name === rotorSequence[1].name || rotorSequence[0].name === rotorSequence[2].name || rotorSequence[1].name === rotorSequence[2].name) {
+        alert("Nie możesz wybrać dwukrotnie tego samego walca!");
+        location.reload();
+    }
+}
+```
+
+Wygląda to prosto, ale skąd się biorą dane do tej funkcji? To też nie jest skomplikowane.
+
+```js
+const rotorsSet = [firstRotor.value, secondRotor.value, thirdRotor.value]
+setRotorsSet(rotorsSet)
+```
+
+### Ustawienie walca odbijającego
+
+To jest najprostsze. Dane do funkcji pobierane są w taki sam sposób.
+
+```js
+// SET A MIRROR ROTOR
+const setMirrorRotor = () => {
+    const selectedMirror = mirrorRotor.options[mirrorRotor.selectedIndex].text;
+    for (let i = 0; i < mirrorRotorsArr.length; i++) {
+        if (mirrorRotorsArr[i].name === selectedMirror) {
+            mirror = mirrorRotorsArr[i]
+        }
+    }
+}
+```
+
+I w ten sposób mamy kompletne ustawienie walców szyfrujących i odbijającego w dwóch prostych funkcjach.
+
+### Łącznica kablowa
+
+Tutaj pojawiają się pierwsze problemy. Jaki zastosować interfejs danych? W symulatorach zwykle wpisuje się pary liter w zadanym formacie. Zdecydowałem się zrezygnować ze ściśle określonej formy zapisu. Użytkownik będzie wpisywał litery, jak mu będzie wygodnie. Wszystkie inne znaki oraz powtarzające się litery odrzuci się, a z wynikowego stringu utworzy się pary wg kolejności, w jakiej zostały wpisane. Tutaj nie trzeba jakoś limitować liczny tych par, ponieważ limit taki i tak wynika z tego, że nie mogą się powtarzać.
+
+Pierwsza funkcja tworzy string z ciągu wpisanych znaków. Jest to dołączenie spełniających warunki litery do zmiennej tekstowej. Druga funkcja dzieli ją na dwuelementowe tablice włożone w większą tablicę.
+
+```js
+// USER SETTINGS - PLUGBOARD
+const setSteckerbrett = () => {
+    steckerbrettFinal.length = 0;
+    steckerbrettRaw = steckerbrett.value
+    for (let i = 0; i < steckerbrettRaw.length; i++) {
+        if (ETW.includes(steckerbrettRaw[i].toUpperCase()) && !steckerbrettMiddle.includes(steckerbrettRaw[i].toUpperCase())) {
+            steckerbrettMiddle = steckerbrettMiddle.concat(steckerbrettRaw[i].toUpperCase())
+        }
+    }
+    while (steckerbrettMiddle.length >= 2) {
+        steckerbrettFinal.push(Array.from(steckerbrettMiddle.slice(0, 2)))
+        steckerbrettMiddle = steckerbrettMiddle.slice(2)
+    }
+    steckerbrett.value = ""
+}
+```
+
+Implementacja łącznicy:
+
+```js
+    // STECKERBRETT
+    for (let i = 0; i < steckerbrettFinal.length; i++) {
+        if (steckerbrettFinal[i].includes(itemValue)) {
+            const tempValue = itemValue
+            if (itemValue === steckerbrettFinal[i][0]) { itemValue = steckerbrettFinal[i][1]; }
+            if (tempValue === steckerbrettFinal[i][1]) { itemValue = steckerbrettFinal[i][0]; }
+        }
+    }
+```
+
+Łącznica podmienia litery wchodzące do szyfrowania zespołem walców wg par wpisanych do ustawień. Potem jeszcze raz robi to samo z literami wychodzącymi z szyfrowania. Dlatego ten kod pojawia się dwukrotnie w bloku szyfrowania.
+
+### Ustawienia startowe walców
+
+Tu zaczynają się schody. Wszystko do tej pory to spacer bezpieczną rutyną. Rzecz pozornie jest łatwa: przesunięcie, które działa tak samo jak zwykła praca walca, tyle że tutaj mamy obrót o zadaną liczbę pozycji. W świecie prostych rzeczy wyglądałoby to tak:
+
+```js
+// USER SETTING - INITIAL LETTER SETTINGS OF ROTORS
+const setRotorsStart = (rotorsStart) => {
+    const tempRotorSequence = [];
+    for (let i = 0; i < rotorSequence.length; i++) {
+        let numberToShift = ETW.indexOf(rotorsStart[i].toUpperCase());
+        tempRotorSequence[i] = rotorSequence[i].sequence.slice(numberToShift) + rotorSequence[i].sequence.slice(0, numberToShift)
+        rotorSequence[i].sequence = tempRotorSequence[i];
+        rotorSequence[i].shift += numberToShift
+    }
+}
+```
+
+To by rozwiązywało tę kwestię, gdyby chodziło o jakąś po prostu działającą symulację Enigmy. Jednak, jeżeli ma działać wiernie, tzn. być i odwzorowaniem prawdziwej Enigmy i interoperacyjna z innymi symulatorami Enigmy to musi brać pod uwagę mechanizm zapadek (karbów). To jest właśnie ten "podwójny krok" (niem. Doppelschritt), z którego rozwiązania w zaledwie trzech liniach kodu byłem zadowolony.
+
+Metodą eksperymentów i wielu prób doszedłem do rozwiązania, w którego kwestii moje zdanie jest podzielone. Ma tę zaletę, że działa i to w zakresie jakim sprawdzałem, działa perfekt w 100%. Ma niestety tę wadę, którą muszę w tej chwili wyznać: jest przekombinowane, powstało metodą prób i błędów i nie wszystko w nim rozumiem.
+
+Najogólniej mówiąc, trzeba wydzielić kilka zupełnie odrębnych sytuacji.
+
+- pierwszy walec został ustawiony na karb
+- drugi walec został ustawiony na karb
+- jednocześnie pierwszy i drugi walec zostały ustawione na karb
+- ani pierwszy, ani drugi walec nie zostały ustawione na karb
+
+Jak widać, trzeci walec nie bierze udziału w tej kombinacji.
+
+Dodatkowo implementacja, nie tylko jest niejasna, ale i rozłożona na dwa etapy: pierwszy znajduje się (co jest oczywiste) we wprowadzaniu ustawień, a drugi jest w obrocie walców. Tak, że podsumowując - startowe, alfabetyczne ustawienie walców było nie tylko najtrudniejsze do wykonania, ale i najbardziej zaciemnia obraz działania kodu.
+
+W ustawieniach wygląda to tak - jak widać, na samym początku używamy mechaniki przedstawionej powyżej funkcji. Dotychczasową funkcję Doppelschritt można wyrzucić do kosza - niestety nadaje się ona tylko na sytuację, kiedy ani pierwszy, ani drugi rotor nie został ustawiony na karb.
+
+```js
+    setRotorsStart(rotorsStart)
+
+    notchZeroFinder = ETW.indexOf(rotorSequence[0].notch) - rotorSequence[0].shift
+    if (notchZeroFinder < 0) { notchZeroFinder += 26 }
+    notchOneFinder = (((ETW.indexOf(rotorSequence[1].notch) - rotorSequence[1].shift - 1) * 26) + 2);
+
+    if (rotorSequence[1].shift - ETW.indexOf(rotorSequence[1].notch) === 0 && rotorSequence[0].shift - ETW.indexOf(rotorSequence[0].notch) === 0) {
+        notchZeroFinder = 26
+        DoppelschrittFaktor = 1
+        tempDoppel = 1
+        ifNotch2and1 = true
+    }
+
+    if (rotorSequence[1].shift - ETW.indexOf(rotorSequence[1].notch) === 0 && rotorSequence[0].shift - ETW.indexOf(rotorSequence[0].notch) !== 0) {
+        notchOneFinder = -15;
+        DoppelschrittFaktor = notchZeroFinder + notchOneFinder;
+    }
+
+    if (rotorSequence[1].shift - ETW.indexOf(rotorSequence[1].notch) !== 0) {
+        if (notchOneFinder < 0) { notchOneFinder = notchOneFinder % 26; }
+        if (notchOneFinder < 0) { notchOneFinder += 26 * (26 - (rotorSequence[1].shift - ETW.indexOf(rotorSequence[1].notch))) }
+        DoppelschrittFaktor = notchOneFinder + notchZeroFinder;
+    }
+```
+
+To tylko wprowadzenie ustawień startowych walców szyfrujących. Teraz trzeba je przełożyć na działanie walców.
+
+```js
+// DOUBLE STEP (Doppelschritt) FACTOR
+let notchZeroFinder;
+let notchOneFinder;
+let DoppelschrittFaktor;
+let tempDoppel;
+let XFactor = 9;
+let XBothFactor = 0;
+
+// MOVING ROTORS
+const moveRotors = (i) => {
+
+    rotorSequence[0].sequence = rotorSequence[0].sequence.slice(1) + rotorSequence[0].sequence.slice(0, 1);
+    rotorSequence[0].shift++;
+
+    const increaseArr = [1282, 1920, 2556, 5080]
+    const shiftArrDo = [1291, 1941, 2591, 3241, 3891, 4541, 5191, 5841, 6483, 6491, 7141, 7791, 8441, 9091, 9741, 10391, 11041, 11691, 12341, 12991, 13641, 14292, 14941, 15591, 16241, 16891, 17541, 18191]
+    const shiftArrDont = [2583, 3185, 3190, 3822, 3828, 3875, 3883, 4445, 4466, 5096, 5167, 5183, 5733, 5825, 5688, 6310, 6370, 6459, 6483, 7007, 7644, 8281, 8918, 9555, 10192, 10829, 11466, 12103, 12740, 13377, 14014, 14651, 15288, 15925, 16562, 17199, 17836, 18473]
+    const increaseBothArr = [650]
+
+    if (i > 18473 && i % 637 === 0) { shiftArrDont.push(i) }
+    if (i > 18191 && i % 650 === 641) { shiftArrDo.push(i) }
+    if (increaseArr.includes(i)) { XFactor += 1 }
+    if (increaseBothArr.includes(i)) { tempDoppel += 1 }
+
+    if (ifNotch2 && !ifNotch2and1) {
+        if ((
+            (((i + 1) - notchZeroFinder - 1) % 26 === 0) || (i + 1) % (shiftParam - XFactor) === DoppelschrittFaktor || shiftArrDo.includes(i)) && (!shiftArrDont.includes(i))) {
+            rotorSequence[1].sequence = rotorSequence[1].sequence.slice(1) + rotorSequence[1].sequence.slice(0, 1);
+            rotorSequence[1].shift++;
+        }
+
+        if (((i + 1) % (shiftParam - XFactor) === DoppelschrittFaktor || shiftArrDo.includes(i)) && !shiftArrDont.includes(i)) {
+
+            rotorSequence[2].sequence = rotorSequence[2].sequence.slice(1) + rotorSequence[2].sequence.slice(0, 1);
+            rotorSequence[2].shift++;
+            if (rotorSequence[2].shift === 27) { rotorSequence[2].shift = 1 }
+        }
+    }
+
+    if (ifNotch2and1 && !ifNotch2) {
+        if ((((i + 1) - notchZeroFinder - 1) % 26 === 0) || (i + 1) % (shiftParam - XBothFactor) === tempDoppel) {
+            rotorSequence[1].sequence = rotorSequence[1].sequence.slice(1) + rotorSequence[1].sequence.slice(0, 1);
+            rotorSequence[1].shift++;
+        }
+
+        if (((i + 1) % shiftParam === tempDoppel)) {
+            rotorSequence[2].sequence = rotorSequence[2].sequence.slice(1) + rotorSequence[2].sequence.slice(0, 1);
+            rotorSequence[2].shift++;
+            if (rotorSequence[2].shift === 27) { rotorSequence[2].shift = 1 }
+        }
+    }
+    if (!ifNotch2 && !ifNotch2and1) {
+
+        if ((((i + 1) - notchZeroFinder - 1) % 26 === 0) || (i + 1) % shiftParam === DoppelschrittFaktor) {
+            rotorSequence[1].sequence = rotorSequence[1].sequence.slice(1) + rotorSequence[1].sequence.slice(0, 1);
+            rotorSequence[1].shift++;
+        }
+
+        if ((i + 1) % shiftParam === DoppelschrittFaktor) {
+            rotorSequence[2].sequence = rotorSequence[2].sequence.slice(1) + rotorSequence[2].sequence.slice(0, 1);
+            rotorSequence[2].shift++;
+            if (rotorSequence[2].shift === 27) { rotorSequence[2].shift = 1 }
+        }
+    }
+};
+```
+
+Mam nadzieję, że będę miał wkrótce cierpliwość zabrać się za to jeszcze raz i jakoś to uprościć.
+
+### Wprowadzenie ustawień
+
+OK, do tej pory mamy wszystkie elementy. Żeby maszyna działała, trzeba ją uruchomić. Służy do tego funkcja sendText(). 
+
+```js
+// ITERATE CIPHER FUNCTION LETTER BY LETTER
+const sendText = (inputValue) => {
+
+    // SET ROTROS TO INITIAL
+    rotorSequence[0].shift, rotorSequence[1].shift, rotorSequence[2].shift = 0
+
+    const rotorsSet = [firstRotor.value, secondRotor.value, thirdRotor.value]
+    const rotorsStart = [firstRotorStart.value, secondRotorStart.value, thirdRotorStart.value]
+    setRotorsSet(rotorsSet)
+    setMirrorRotor()
+
+   // tutaj ustawienie rotorów
+
+    setSteckerbrett()
+    ifClicked = "clicked";
+    showSetting(ifClicked)
+
+    let resultValue = "";
+    for (let i = 0; i < inputValue.length; i++) {
+        const itemValue = letCipher(inputValue[i], i);
+        resultValue = resultValue.concat(itemValue);
+    }
+    output.innerText = resultValue;
+    counter.innerText = "" + resultValue.length;
+};
+```
+
+### Prezentacja ustawień
+
+To jest banał.
+
+```js
+// SHOW SETTING
+const showSetting = () => {
+    if (ifClicked === "clicked") { showInfo.innerText = "Aktualne ustawienia: zmienione!"; }
+    showRotorsSettings.innerText = rotorSequence[0].name + ", " + rotorSequence[1].name + ", " + rotorSequence[2].name
+    showMirrorRotor.innerText = mirror.name
+    showRotorsStart.innerText = firstRotorStart.value + ". " + secondRotorStart.value + ", " + thirdRotorStart.value
+    let steckerbrettFinalString = ""
+    for (let i = 0; i < steckerbrettFinal.length; i++) {
+        steckerbrettFinalString = steckerbrettFinalString.concat(steckerbrettFinal[i][0] + " - " + steckerbrettFinal[i][1] + ", ")
+    }
+    showSteckerbrett.innerText = steckerbrettFinalString ? steckerbrettFinalString : "brak";
+}
+```
+
+### Github
+
+W repozytorium [Enigma](https://github.com/tdudkowski/Enigma) - są to pliki: [index.html](https://github.com/tdudkowski/Enigma/index.html) i [index.js](https://github.com/tdudkowski/Enigma/blob/master/index.js).
+
+Symulator dostępny jest pod adresem [tdudkowski.github.io/Enigma/](https://tdudkowski.github.io/Enigma/)
+
+### Symulatory
+
+- [The Enigma machine: Encrypt and decrypt online — Cryptii](https://cryptii.com/pipes/enigma-machine)
+- [Universal Enigma - Simulator by dp](http://people.physik.hu-berlin.de/~palloks/js/enigma/enigma-u_v26_en.html)
+- [Enigma Machine &#8211; Summerside Makerspace](https://summersidemakerspace.ca/projects/enigma-machine/)
+- [Enigma Machine Cipher - Decoder, Encoder, Solver, Translator](https://www.dcode.fr/enigma-machine-cipher)
+

@@ -1,0 +1,73 @@
+---
+title: "Kryptografia symetryczna"
+comment: ""
+section: "it"
+subsection: "kryptologia"
+---
+
+### Opis
+
+Używa tego samego klucza do szyfrowania i odszyfrowania treści (lub dokładniej: klucz deszyfrujący jest łatwy do odtworzenia z klucza szyfrującego). Jego zalety to prostota i szybkość.
+
+Słabą stroną tej metody jest konieczność przesłania klucza - dającego dostęp do zawartości - od nadawcy do odbiorcy. Klucz musi być ich wspólną tajemnicą. Od utrzymania klucza w sekrecie i jego bezpiecznej i niezakłóconej dystrybucji zależy bezpieczne funkcjonowanie systemu. Zapewnienie sprawnego funkcjonowania kanału dystrybucji było trudnym zadaniem, szczególnie jeśli liczba uczestników komunikacji rosła, a klucze musiały być często zmieniane.
+
+Schemat:
+
+```
+tekst jawny >--[klucz tajny]--> szyfrogram >--[klucz tajny]--> tekst jawny
+```
+
+Założenia:
+
+- klucz jest znany tylko nadawcy i odbiorcy
+- istnieje bezpieczna - poza normalnym trybem komunikacji - droga wymiany kluczy
+
+### Podział
+
+Szyfry symetryczne dzieli się na dwa rodzaje: 
+
+- **blokowe** (DES, IDEA, AES): Procedury, które w jednym przejściu operują na blokach znaków zwykle o określonej wielkości, szyfrując niewielkie bloki danych - współcześnie jest to najczęściej 128 bitów (AES), przedtem przeważały 64-bitowe bloki (DES, 3DES, Blowfish, IDEA). Klucze są niewielkie, mają zwykle od 128 do 256 bitów. Typowy szyfr blokowy składa się z kilkunastu dość prostych rund przekształcających blok. Operacje używane w tych szyfrach są zwykle proste, ale są mocno zróżnicowane, np. używa się dodawania, XOR, przesunięć cyklicznych, różnego typu S-BOX-ów, mnożenia modulo liczb pierwszych itd. Już kilka rund takich operacji zupełnie zaburza jakikolwiek porządek i utrudnia analizę. Ponieważ szyfr blokowy szyfruje jedynie niewielką ilość informacji, używane są różne tryby szyfrowania, które umożliwiają szyfrowanie większych wiadomości. Niektóre z trybów szyfrów blokowych - CFB, OFB, CTR - działają jako szyfry strumieniowe, generując strumień szyfrujący i XOR-ując dane. Zależnie od trybu działania mogą być zaimplementowane jako samosynchronizujące się szyfry strumieniowe (tryb CFB).
+- **strumieniowe** (RC4) Szyfry strumieniowe szyfrują każdy znak tekstu jawnego osobno, generując znak strumienia szyfrującego i przekształcając go na przykład z użyciem funkcji XOR go ze znakiem danych, w związku z czym nie jest konieczne oczekiwanie na cały blok danych, jak w przypadku szyfrów blokowych. Przekształcają ciągły strumień znaków, szyfrując znak po znaku. Popularne szyfry strumieniowe to A5/1 i A5/2 stosowane w telefonii komórkowej. Do szyfrów strumieniowych należą też historyczne szyfry polialfabetyczne (Enigma) i monoalfabetyczne. Mogą również być zastosowane do przetwarzania pojedynczych bloków jawnego tekstu na raz. 
+
+Jak widać, jest to dość ogólny podział, raczej określający domyślny tryb pracy.
+
+### Szyfry
+
+#### Blowfish
+
+Blowfish to szyfr blokowy stworzony przez Bruce'a Schneiera w 1993 roku jako szybka i bezpłatna alternatywa dla istniejących ówcześnie algorytmów. Algorytm operuje na 64-bitowych blokach i używa kluczy od 32 do 448 bitów. Algorytm ma postać szyfru Feistela z 16 rundami z SBOXami zależnymi od klucza. Każda zmiana klucza wymaga dość sporej ilości wstępnych obliczeń, żeby ustalić SBOXy. Z tego powodu atak BF trwa znacznie dłużej niż można by się spodziewać.
+[Blowfish_(cipher)](http://en.wikipedia.org/wiki/Blowfish_(cipher)), [Blowfish_(kryptografia)](http://pl.wikipedia.org/wiki/Blowfish_(kryptografia))
+
+#### DES (Data Encryption Standard)
+
+Opracowany przez IBM i używany w latach 1976-2001 standardowy algorytm szyfrujący zalecany przez rząd USA - szeroko używany algorytm kryptograficzny. Stworzony na podstawie szyfru Lucifer, zmodyfikowany przez NSA. Zaakceptowany jako amerykański standard przemysłowy w roku 1977.
+
+64-bitowy blok szyfru z 56-bitowym kluczem przetwarzany 16 razy. Obecnie uznawany za zbyt słaby szyfr, głównie ze względu na zbyt mały rozmiar klucza, który był już łamany w czasie poniżej 24 godzin.
+
+- Wikipedia [DES (ang)](http://en.wikipedia.org/wiki/DES) | [DES (.pl)](http://pl.wikipedia.org/wiki/DES)
+
+#### 3DES (Triple DES)
+
+Ulepszony DES. Algorytm polegający na zakodowaniu wiadomości DES trzy razy: kodujemy pierwszym kluczem, dekodujemy drugim kluczem, kodujemy trzecim kluczem (użycie dekodowania jako drugiej fazy nie wpływa na siłę algorytmu: szyfrowanie w DES jest identyczne jak deszyfrowanie, tylko ma odwróconą kolejność rund), ale umożliwia używania 3DES w trybie kompatybilności z DES - za klucz pierwszy i drugi, lub drugi i trzeci przyjmujemy dowolny taki sam klucz, a za ostatni zwykły klucz DES.
+
+3DES używa takich samych rozmiarów bloków oraz trybów jak zwykły DES. Siła 3DES jest tylko dwukrotnie, nie trzykrotnie, większa od siły zwykłego DES, ze względu na atak MITM.
+
+#### AES (Advanced Encryption Standard - Rijandel)
+
+Symetryczny szyfr blokowy przyjęty przez NIST w wyniku konkursu ogłoszonego w roku 1997. Bezpośrednią przyczyną rozpisania konkursu była niewystarczająca siła algorytmu DES. Konkurs wygrał algorytm Rijndael. Możliwe jest w nim użycie kluczy o długościach 128, 192 i 256 bitów. Operuje on na blokach danych o długości 128 bitów (oryginalna specyfikacja Rijndael dopuszczała również bloki 192 i 256-bitowe).
+
+AES wykonuje 10, 12 lub 14 (w zależności od długości klucza) rund szyfrujących podstawienie-permutacja, składających się z substytucji wstępnej, permutacji macierzowej (mieszanie wierszy, mieszanie kolumn), modyfikacji za pomocą klucza, przy czym funkcja substytucyjna ma bardzo oryginalną konstrukcję uodparniającą na znane ataki kryptoanalizy różnicowej i liniowej.
+
+Autorami są dwaj belgijscy kryptografowie Joan Daemen i Vincent Rijmen (stad nazwa Rijndael). Jest szybki i łatwy w implementacji, wymaga niewiele pamięci i jest wolny od problemów licencyjnych - dlatego obecnie jest powszechnie stosowany.
+
+- Wikipedia [AES (ang)](http://en.wikipedia.org/wiki/AES)
+
+#### IDEA (International Data Encryption Algorithm)
+
+Symetryczny szyfr blokowy operujący na 64-bitowych blokach wiadomości i mający 128-bitowy klucz opracowany w ETH w Zurychu. IDEA jest objęta patentem w USA i Europie, jest dostępna do darmowego użytku tylko w celach niekomercyjnych. Ze względów patentowych oraz ze względu na powstanie lepszych algorytmów (AES) i postępy w kryptoanalizie IDEA znacznie straciła na popularności, choć nie została nigdy złamana. Obecnie nie ma już powodów do stosowania tego szyfru, są lepsze i pozbawione komplikacji patentowych.
+
+- [IDEA (ang)](http://en.wikipedia.org/wiki/International_Data_Encryption_Algorithm)
+
+#### RC6
+
+Symetryczny szyfr blokowy, jeden z finalistów konkursu AES. Bardzo szybki i prosty algorytm autorstwa Ronalda Rivesta (MIT) - powstał w 1994. Rozmiar bloku, ilość rund i długość klucza może być dostosowywana do potrzeb. Patent RSA Security.

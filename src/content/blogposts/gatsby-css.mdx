@@ -1,0 +1,714 @@
+---
+title: "Gatsby cz. 3 - CSS"
+section: "blog"
+subsection: "it"
+set: gatsby
+date: 2021-07-26
+edited: 2021-08-03
+image: ../blogimages/Gatsby_Monogram.png
+tags: react, gatsby, css
+description: "Jak w Gatsbym zastosować CSS: global.css, CSS-in-JS, frameworki i biblioteki CSS, preprocesory, Font Awesome, Google Fonts, Bootstrap Icons."
+url: https://dygresje.info/blog/gatsby-css
+---
+
+Stały adres serii wpisów o Gatsbym - [/blog/gatsby](/blog/gatsby)
+
+### Wstęp
+
+Popularne jest sformułowanie, że HTML tworzy (liniową) strukturę treści, CSS nadaje jej wygląd (i układ), a JavaScript zapewnia reaktywność. Postulowano fizyczne rozdzielenie HTML, CSS i JS.
+
+Czasem przy tym samym pliku layoutu wystarczy zastosować różne CSS-y, żeby uzyskać zupełnie różne układy strony. Pierwszą popularną prezentacją możliwości CSS była strona [CSS Zen Garden](http://www.csszengarden.com/).
+
+### CSS-in-JS
+
+Wiele rozwiązań stosowanych we frameworkach JS zaciera ten podział, ale nie jest to skutkiem bałaganiarstwa, czy zwróceniem się w stronę złych praktyk. CSS tak jak wszystkie inne elementy aplikacji jest tylko narzędziem i ma swoje ograniczenia. Włączenie CSS do plików stron, jak np. ma to miejsce w Gatsbym, wynika z dwóch głównych powodów:
+
+- dynamiczne tworzenie stron powoduje przenikanie poza kontekst i łączenie reguł CSS dające nieprzewidywalne rezultaty.
+- CSS ma ograniczenia wynikające z tego, że - dziękujemy, kapitanie Oczywisty! - nie jest językiem programowania; to język opisu wyglądu.
+
+Rozwiązaniem obu tych bolączek jest CSS-in-JS, które co trzeba podkreślić, nie jest jakimś fenomenalnym, kolejnym etapem rozwoju CSS, ale skuteczną odpowiedzią na powyższe problemy. CSS-in-JS zapewnia:
+
+- izolację kontekstu
+- przewidywalność reguł
+- integrację z JS - to jest nadal CSS, ale może odbierać argumenty od aplikacji
+
+Więcej o CSS-in-JS:
+
+- [JSS](https://cssinjs.org/) nieomówione tu rozwiązanie CSS-in-JS
+- Leonardo Maldonado ["Understanding CSS-in-JS"](https://www.telerik.com/blogs/understanding-css-in-js)
+- Andrei Pfeiffer ["A Thorough Analysis of CSS-in-JS"](https://css-tricks.com/a-thorough-analysis-of-css-in-js/)
+- Chris Coyier [The Differing Perspectives on CSS-in-JS](https://css-tricks.com/the-differing-perspectives-on-css-in-js/)
+- [tuchk4 / awesome-css-in-js](https://github.com/tuchk4/awesome-css-in-js) Awesome CSS in JS
+- [polished](https://polished.js.org) A lightweight toolset for writing styles in JavaScript
+- Harry Wolff ["CSS in JS: My favorite" [YT 17:36]](https://www.youtube.com/watch?v=rKz6cLXhpwA)
+
+### W tym wpisie
+
+Generalnie rzecz biorąc wszystkie możliwości użycia CSS w Gatsbym można podzielić na pięć grup:
+
+- style globalne - import jak z layout.css lub przy pomocy wrappera jak z global.css
+- CSS Modules
+- CSS-in-JS - Styled Components, Emotion
+- frameworki i biblioteki CSS: Bootstrap i MDB, Chakra UI, Bulma, Tailwind CSS
+- preprocesory CSS: Stylus, Less, SASS (oraz SCSS)
+
+W sumie 13 rozwiązań. Na początek dwie uwagi:
+
+- Niniejszy wpis nie jest manualem, poza Styled Components, które być może będzie tematem osobnego wpisu, chodzi mi raczej o typowe how-to-start, czyli jak wygląda proces implementacji danego rozwiązania i jakie ma podstawowe cechy.
+- Nie jest też kompletny, ale jak sądzę, wymieniłem większość możliwości, która jest rzeczywiście używana.
+
+### Layout.css
+
+Najprostszym sposobem na użycie CSS w Gatsbym jest import pliku CSS bezpośrednio do pliku strony lub co ma więcej sensu do komponentu layoutu, który używany jest przez pliki stron.
+
+Najczęściej, tak jak to jest zalecane w dokumentacji, tworzy się plik layout.css znajdujący się razem z komponentami w katalogu /src/components, importowany potem w pliku layout.js:
+
+```js
+import * as React from "react"
+import "./layout.css"
+
+//
+```
+
+I działa od razu. Beż żadnej konfiguracji czy restartu.
+
+Na dobrą sprawę, w przypadku prostych stron można tam umieścić cały CSS i mieć tę sprawę z głowy.
+
+W praktyce jednak stosowane jest na początku w procesie budowania strony, żeby mieć jakiś CSS na starcie. Potem można z tego zrezygnować albo zostawić tam bazę responsywnego layoutu, czyli sam układ podstawowych elementów strony i media queries. Przykład takiego pliku jest zaprezentowany we [wpisie o komponentach w rozdziale "CSS"](/blog/gatsby-komponenty#css).
+
+### Global styles
+
+Innym rodzajem stylu globalnego jest umieszczenie pliku w /src/styles/global.css.
+
+Żeby zadziałał globalnie, trzeba dodatkowo użyć wrappera, czyli pliku konfiguracyjnego gatsby-browser.js:
+
+**/gatsby-browser.js**
+
+```js
+import "./src/styles/global.css"
+```
+
+Ma to tę przewagę, że wszystkie pliki CSS trzymamy w oddzielnym, specjalnie do tego celu przeznaczonym katalogu. Przybliża to nas do klasycznego postulatu rozdzielenia liniowo ułożonej treści i wyglądu.
+
+Jednak tak jak już napisałem, ten postulat jest tu sztuką dla sztuki. Wszak w całym ekosystemie frameworków JS treść i goły układ w JSX (odpowiedniku HTML) jest owinięta w JS, a wiele innych rozwiązań CSS mieszają to jeszcze bardziej.
+
+Jedynym argumentem, który pozostaje to łatwość w organizacji kodu, pewien porządek, który z tego wynika.
+
+Style globalne tak samo jak plik layout.css mają zastosowanie tylko na stronach, które:
+
+- nie wymagają zróżnicowania stylów
+- ani właściwości CSS-in-JS
+- frameworków CSS takich jak Bootstrap, czy Bulma
+
+Podstawowym problemem, z którego wynika ich niekompatybilność z innymi rozwiązaniami, jest nieograniczone, trudne do powstrzymania przenikanie i nieprzewidywalność rezultatu.
+
+Natomiast można je to zastosować do plików resetu, czy normalizacji. Kolejne style, czy to layoutu, czy Styled Components nadpisują je.
+
+- [Standard Styling with Global CSS Files](https://www.gatsbyjs.com/docs/how-to/styling/global-css/)
+
+### CSS Modules
+
+Nie wymaga konfiguracji. Zasadniczo polega na imporcie CSS jako obiektu JS.
+
+Konwencją jest nazywanie arkuszy styli z umieszczeniem słowa module, przykład: `style.module.css`. Jest to zwyczajny plik CSS. Załóżmy, że są tam klasy `.outer` i `.inner`.
+
+Import na dwa możliwe sposoby wygląda tak:
+
+```js
+import { outer, inner } from "../styles/styles.module.css"
+import * as styles from "../styles/styles.module.css"
+//
+
+<div className={ outer }>
+  <p className={ inner }>Treść akapitu</p>
+</div>
+
+<div className={ styles.outer }>
+  <p className={`inner ${styles.inner}`}>Treść akapitu</p>
+</div>
+```
+
+Jak widać, można zaimportować wybraną klasę lub klasy jako obiekt i umieścić bezpośrednio w deklaracji klasy elementu JSX, lub zaimportować cały arkusz i odwoływać się do niego.
+
+Dynamicznie modyfikuje nazwy stylów, by zachować ich unikalność. Ostatni zapis zapewni nadanie dwóch klas: jedną będzie zmodyfikowana np. `styles-module--inner--1JjqS`, druga w tym przypadku będzie niezmieniony `inner`.
+
+Pozwala na trzymanie wszystkich klas w jednym katalogu.
+
+- [css-modules / css-modules](https://github.com/css-modules/css-modules)
+- Gatsby [Component-Scoped Styles with CSS Modules](https://www.gatsbyjs.com/docs/how-to/styling/css-modules/) | [Part 2: Use and Style React Components #Style components with CSS Modules](https://www.gatsbyjs.com/docs/tutorial/part-2/#style-components-with-css-modules)
+- gatsbyjs / gatsby [using-css-modules](https://github.com/gatsbyjs/gatsby/tree/master/examples/using-css-modules)
+- CSS TRickd: [Robin Rendle "What are CSS Modules and why do we need them?"](https://css-tricks.com/css-modules-part-1-need/) | [Matija Marohnić "Bridging the Gap Between CSS and JavaScript: CSS Modules, PostCSS and the Future of CSS"](https://css-tricks.com/bridging-the-gap-between-css-and-javascript-css-modules-postcss-and-the-future-of-css/)
+- Glen Maddern ["CSS Modules Welcome to the Future"](https://glenmaddern.com/articles/css-modules)
+- React: ["Adding a CSS Modules Stylesheet"](https://create-react-app.dev/docs/adding-a-css-modules-stylesheet/)
+- [Harry Wolff "CSS Modules: Why are they great?" [YT 12:02]](https://www.youtube.com/watch?v=pKMWU9OrA2s)
+- [Fullstack Academy "CSS Modules in React and Webpack Tutorial" [YT 8:42]](https://www.youtube.com/watch?v=u9LBSeeJzXc)
+- [ReactiveConf "The case for CSS modules - Mark Dalgleish" [YT 45:08]](https://www.youtube.com/watch?v=zR1lOuyQEt8)
+- [Rushing Labs "CSS Modules + Create React App" [YT 26:45]](https://www.youtube.com/watch?v=XLUaq8Qhx_w)
+
+### Styled Components
+
+Z dwóch najpopularniejszych rozwiązań CSS-in-JS za najlepszy uważam Styled Components, dlatego od tego zacznę. Styled Components nie używa osobnych plików - poza możliwością umieszczenia wszystkich definicji w osobnym pliku.
+
+Zainstalowany plugin importuje się do komponentów (plików stron i wszystkich innych komponentów) i wpisane do nich reguły aplikują się wyłącznie lokalnie, nie przenikają na zewnątrz. Właśnie w tym celu powstały.
+
+Jeżeli utworzymy plik komponentu tworzącego dowolny element layoutu, zastosowane tam style, zgodnie z regułami CSS zostaną zastosowane tylko do tego komponentu i wszystkich komponentów w nim zagnieżdżonych.
+
+Mają przy tym właściwości, których nie ma zwykły CSS i to też decyduje o wartości tego rozwiązania.
+
+Po zainstalowaniu zastosowanie wygląda tak:
+
+- import pluginu (linia 2)
+- utworzenie elementu stylowanego (linie 4-6)
+- umieszczenie go w kodzie JSX (linie 11-13)
+
+```js {numberLines: true}
+import * as React from "react"
+import styled from "styled-components"
+
+const StyledDiv = styled.div`
+// reguły CSS
+`;
+
+const PrzykladowyKomponent = () => {
+  return (
+    //
+    <StyledDiv>
+      ...
+    </StyledDiv>
+```
+
+Jak widać na powyższym przykładzie, definicje styli umieszcza się poza renderem (przed returnem).
+
+W kodzie HTML w tym przypadku renderowany jest zwykły div, któremu przydzielone zostają wszystkie wpisane reguły CSS.
+
+Przykład:
+
+- zwykły CSS
+- zmiana na hover
+- CSS dla zagnieżdżonego elementu, ampersand oznacza tu stylowany element, który dla tego diva jest rodzicem
+- j.w. z tym że użyto tu selektora oznacząjacego bezpośrednie dziecko
+- j.w. ale jak widać, można się odnieść do zewnętrznego kontekstu, co jest przydatne w przypadku włączania/wyłączania trybu ciemnego
+- media query
+
+```css {numberLines: true}
+font-size:1.1rem;
+&:hover {color: red}
+& div {color: red;}
+& > div {color: red;}
+.dark & > div {color: yellow;}
+@media(min-width: 900px) {
+  //
+}
+```
+
+To są normalne właściwości CSS, ale Styled Components potrafi więcej:
+
+Stylować można inne stylowane komponenty, także importowane:
+
+```js
+//
+import StyledDiv from "./styleddiv"
+
+const StyledHero = styled(StyledDiv)`
+//
+`;
+```
+
+Przekazywanie propsów - w tym wypadku w stylowanym elemencie jest props `background={tutaj_ades_obrazka}`:
+
+```css
+background: url(${props => props.background}) no-repeat top center;
+```
+
+W nawiasach klamrowych można przekazać dowolny JS, w tym wypadku jest to funkcja strzałkowa z propsem jako parametrem i ciałem funkcji postaci wyodrębnionej nazwy przekazanego propsa.
+
+Można tam też umieścić operator warunkowy (ternary) lub logiczny OR, w obu poniższych przypadkach istnieje wartość domyślna.
+
+- pojedynczy props w tym wypadku np. `red`, tutaj nazwa jest dowolna:
+- props przekazany w wartości `color="red"`, tutaj nazwa jest wyciągana z propsów, do zastosowania jeśli mamy kilka propsow w elemencie (analogicznie jak w pierwszym przykładzie):
+
+```css
+border-color: ${props => props ? "red" : 'black'};
+border-color: ${props => props.color || 'black'};
+```
+
+Jeszcze jeden przykład, tym razem wzięty z mojego rtykułu o Gatsbym. Jestem pewien, że skądś go skopiowałem i trochę zmieniłem. Rezultat - no jest jaki jest. Mniejsza o sensowność, ale dobrze pokazuje możliwości Styled Components:
+
+**/src/components/indicator.js**
+
+```js
+import * as React from "react"
+import styled, { keyframes } from 'styled-components'
+
+const fadeIn = keyframes`
+0% { opacity: 0; }
+100% { opacity: 1; }
+`;
+
+const StyledIcon = styled.div`
+background-color: ${({ primary }) => primary ? 'green' : 'yellow'};
+width: 10rem;
+height: 2rem;
+border-radius: 1rem;
+margin: 5px;
+border: ${({ border }) => border || 0};
+border-color: ${({ progress }) => {
+        let numeric = progress.slice(0, -1)
+        let integer = parseInt(numeric)
+        if (integer >= 80) return 'red';
+        else if (integer >= 60) return 'orange';
+        else if (integer >= 40) return 'yellow';
+        else return 'green';
+    }};
+animation: 5s ${fadeIn} ease-in;
+font-weight: bold;
+color: #333;
+`;
+
+const TodayIcon = styled(StyledIcon)`
+background-color: purple;
+color: #eed;
+`;
+
+const Indicator = ({ primary, border, day, progress, children }) => {
+
+    let today = new Date()
+    let dayOfTheWeek = today.getDay()
+    const isToday = day === dayOfTheWeek
+
+    return (
+        <>
+            {isToday ?
+                <TodayIcon border={border} primary={primary} progress={progress}>{children}</TodayIcon> :
+                <StyledIcon border={border} primary={primary} progress={progress}>{children}</StyledIcon>}
+        </>)
+}
+
+export default Indicator
+```
+
+Potem na dowolnej stronie:
+
+```js
+//
+
+import Indicator from "../components/indicator"
+
+//
+
+<Indicator primary border='solid 10px' progress='30%' day={3}>inside text</Indicator>
+
+//
+```
+
+Tutaj tylko zarysowałem najważniejsze, najczęściej używane właściwości Styled Components. Podobnie jak w przypadku niżej wymienionych po więcej odsyłam do dokumentacji.
+
+- [styled-components](https://styled-components.com)
+- Wojciech Snopkowski ["Gatsby Navigation using Styled Components and useState hook"](https://snopkowski.com/blog/gatsby-navigation-styled-components)
+- hello roman ["Styled components + Gatsby.js" [YT playlista 5 filmów]](https://www.youtube.com/playlist?list=PLKnxnWdLGM48DUzxZ1uSYBhgPNETsgWA_)
+- ScottSpence.com ["Globally Style the Gatsby Default Starter with styled-components v5"](https://scottspence.com/2020/02/06/globally-style-gatsby-styled-components/)
+- Academind ["Why you should look into these React component styling options!" [YT 28:35]](https://www.youtube.com/watch?v=NMiEREulVLc)
+- Ben Awad ["React Styled Components Tutorial" [YT 13:27]](https://www.youtube.com/watch?v=syqw5UJrfoc)
+- Daniel Stout ["Using styled-components in Gatsby"](https://www.digitalocean.com/community/tutorials/gatsbyjs-using-styled-components-in-gatsbyjs)
+- Adrian Twarog ["Styled Components" [YT playlist 3 filmy]](https://www.youtube.com/playlist?list=PLsprmdocuVe-tQy47UBnXjrZYu8QOCtnv)
+- Hungry Turtle Code ["What are Styled Components? - A Beginners Guide" [YT 20:10]](https://www.youtube.com/watch?v=JFE_UuHtHT4)
+- Classsed ["React Styled Components (Next Level CSS?)" [YT 18:27]](https://www.youtube.com/watch?v=3SpAg5tr7Ws)
+- Better Coding Academy ["Learn Styled Components In 15 Minutes! | React Tutorials" [YT 15:12]](https://www.youtube.com/watch?v=17AwVXg5lHk)
+- Fidalgo ["Styled Components Tutorial - Crash Course [2020]" [YT 47:42]](https://www.youtube.com/watch?v=c5-Vex3ufFU)
+- Wrong Akram ["How To Code With Styled Components and React.js" [YT 24:25]](https://www.youtube.com/watch?v=TWODzlTeZUM)
+- James Q Quick ["Convert CSS in React To Styled Components" [YT 22:17]](https://www.youtube.com/watch?v=feYJ5D7VknE)
+- Karl Hadwen ["React Tutorial - Compound Components in React - Styled Components - React Tutorial 2020" [YT 23:48]](https://www.youtube.com/watch?v=nHMAMS38x-E)
+- ComScience Simplified ["Styled Components with React | All you need to know" [YT 10:06]](https://www.youtube.com/watch?v=kClcUzAhz9g)
+
+### Emotion
+
+Instalacja:
+
+```
+$ npm i gatsby-plugin-emotion @emotion/react @emotion/styled
+```
+
+**/gatsby-config.js**
+
+```js
+`gatsby-plugin-emotion`,
+```
+
+Jak widać poniżej bardzo przypomina styled-components:
+
+```js
+import React from "react"
+import styled from "@emotion/styled"
+import { css } from "@emotion/react"
+
+const Element = styled.div`
+//
+`
+
+const Wrapper = styled.div`
+//
+`
+
+const Card = props => {
+  <Element>
+    <h3>{props.title}</h3>
+    <p>{props.text}</p>
+  </Element>
+}
+
+const PageEmotion = () => {
+return (
+  <Wrapper>
+    <Card
+      title = "Pierwsza Karta"
+      text = "Treść pierwszej karty"
+    />
+    <Card
+      title = "Druga Karta"
+      text = "Treść drugiej karty"
+    />
+  </Wrapper>
+)
+}
+
+export default PageEmotion
+```
+
+Dodatkowo Emotion umożliwia trzymanie wszystkich stylów i utworzonych komponentów w plikach JS, np. w katalogu /src/styles/emotion.
+
+**/src/styles/emotion/styles.js**
+
+```js
+import styled from "@emotion/styled"
+
+export const Element = styled.div`
+//
+`
+
+export const Wrapper = styled.div`
+//
+`
+```
+
+Import potem wygląda tak:
+
+```js
+import { Element, Wrapper } from "../styles/emotion/styles"
+import Card from "./Card"
+```
+
+- [Emotion](https://emotion.sh/docs/introduction)
+- Gatsby [Emotion](https://www.gatsbyjs.com/docs/how-to/styling/emotion/)
+
+### Bootstrap i MDB
+
+Instalacja:
+
+```sh
+$ npm i bootstrap
+```
+
+**/gatsby-browser**:
+
+```js
+import "bootstrap/dist/css/bootstrap.min.css"
+```
+
+I po restarcie możemy korzystać z klas Bootstrapa i jego metod globalnie na całej stronie, trzeba tylko pamiętać, żeby wszystkie class zamienić na className.
+
+Innym rozwiązaniem niewymagającym instalacji jest ściągnięcie pakietu, rozpakowanie go w np. w src/styles i importowanie bezpośrednio do pliku strony:
+
+```js
+import "../styles/bootstrap-5.0.2-dist/css/bootstrap.min.css"
+```
+
+- Bootstrap [Download #npm](https://getbootstrap.com/docs/5.0/getting-started/download/#npm)
+- [BootstrapCDN](https://www.bootstrapcdn.com/)
+- ["Adding Bootstrap CDN link to Gatsby"](https://coleruche.com/post/Adding-Bootstrap-CDN-in-Gatsby/)
+
+### MDB
+
+Instalacja - z powodu starych zależności musiałem użyć opcji --legacy-peer-deps, potem Gatsbny zgłosił brak modułu react-is, więc w końcu wygląda to tak:
+
+```js
+$ npm i mdbreact react-is --legacy-peer-deps
+```
+
+Wrapper.
+
+**/gatsby-browser.js**
+
+```js
+import '@fortawesome/fontawesome-free/css/all.min.css'
+import 'bootstrap-css-only/css/bootstrap.min.css'
+import 'mdbreact/dist/css/mdb.css'
+```
+
+I wszystko działa. Dzięki wrapperowi nie trzeba do plików wpisywać importów.
+
+- MDB [Download & installation guide](https://mdbootstrap.com/docs/standard/getting-started/installation/)
+- Anna Morawska ["Gatsby & MDB React - quick start quide"](https://mdbootstrap.com/articles/react/gatsby-mdb-react-quick-start-quide/)
+
+### Chakra UI
+
+Biblioteka komponentów.
+
+Instalacja:
+
+```
+$ npm i gatsby-plugin-chakra-ui @chakra-ui/core @emotion/core @emotion/styled emotion-theming
+```
+
+**/gatsby-config.js**
+
+```
+"@chakra-ui/gatsby-plugin",
+```
+
+Import potrzebnych komponentów do pliku, proszę zwrócić uwagę, że trzeba zmienić nazwę w imporcie natywnego komponentu Link, żeby użyć komponentu Chakra UI o tej samej nazwie:
+
+```js
+import * as React from "react"
+import { Link as GatsbyLink } from "gatsby"
+import { Box, Text, Link, ListItem, UnorderedList } from "@chakra-ui/core";
+
+//
+
+<Box as="header">
+  <Link as={GatsbyLink} activeClassName="menuLinkActive" className="link-header" to="/">
+    <Text as="h1">Tytuł strony</Text>
+  </Link>
+  <UnorderedList className="menu">
+    <ListItem><Link as={GatsbyLink} activeClassName="menuLinkActive" to="/">home</Link></ListItem>
+    <ListItem><Link as={GatsbyLink} activeClassName="menuLinkActive" to="/about">about</Link></ListItem>
+//
+  </UnorderedList>
+</Box>
+```
+
+- [Chakra UI](https://chakra-ui.com/)
+- [gatsby-plugin-chakra-ui](https://www.gatsbyjs.com/plugins/gatsby-plugin-chakra-ui/)
+
+### Tailwind CSS
+
+Wzbudzający wiele kontrowersji framework CSS. Kocha się go lub nienawidzi.
+
+Instalacja:
+
+```js
+$ npm i gatsby-plugin-postcss tailwindcss@latest postcss@latest autoprefixer@latest
+$ npx tailwindcss init -p
+```
+
+**/gatsby-config.js**
+
+```js
+'gatsby-plugin-postcss'
+```
+
+**/src/styles/global.css**
+
+```css
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+```
+
+**/gatsby-browser.js**
+
+```js
+import './src/styles/global.css';
+```
+
+I to już wszystko. W największym uproszczeniu, bo reguły Tailwinda działają, ale pozostaje jeszcze jego konfiguracja, optymalizacja, no i wejście w głąb tego frameworka.
+
+- [Tailwind CSS](https://tailwindcss.com/) | [Install Tailwind CSS with Gatsby](https://tailwindcss.com/docs/guides/gatsby)
+- Gatsby [Tailwind CSS](https://www.gatsbyjs.com/docs/how-to/styling/tailwind-css/)
+- hello roman ["Testuję Tailwind + Gatsby.js! ⌨️ hello roman #126" [YT 29:46]](https://www.youtube.com/watch?v=z7uAt7_8y08)
+
+### Bulma
+
+Biblioteka CSS bez JS, dzięki czemu łatwo się integruje w środowisku JS.
+
+Najprościej ściągnąć i rozpakować w katalogu /src/styles i zaimportować lokalny plik przez wrappera.
+
+**/gatsby-browser.js**
+
+```js
+import "/src/styles/bulma/css/bulma.min.css"
+```
+
+I działa jak specyfikacja chciała. Jeżeli dopisujemy własne arkusze stylów trzeba je importować. Bulma jest silnie zorientowana na użycie SCSS i SASS.
+
+Oczywiście można też zainstalować pakiet npm, najlepiej od razu z Sassem.
+
+```
+$ npm i bulma sass gatsby-plugin-sass
+```
+
+i dodać w gatsby-config.js:
+
+```js
+`gatsby-plugin-sass`,
+```
+
+- [Bulma](https://bulma.io/) | [With node-sass](https://bulma.io/documentation/customize/with-node-sass/)
+- Gatsby [Bulma](https://www.gatsbyjs.com/docs/how-to/styling/bulma/)
+
+### Stylus
+
+Preprocesor CSS.
+
+Instalacja:
+
+```
+$ npm i gatsby-plugin-stylus
+```
+
+**/gatsby-config.js**
+
+```js
+`gatsby-plugin-stylus`,
+```
+
+Pliki Stylusa mają rozszerzenie .styl. Można je trzymać w katalogu /src/styles/stylus. Importuje się je do plików.
+
+- [Stylus](https://stylus-lang.com/)
+- [gatsby-plugin-stylus](https://www.gatsbyjs.com/plugins/gatsby-plugin-stylus/) | [gatsby-plugin-stylus](https://github.com/gatsbyjs/gatsby/tree/master/packages/gatsby-plugin-stylus)
+
+### Less
+
+Instalacja:
+
+```
+$ npm i gatsby-plugin-less
+```
+
+**/src/gatsby-config.js**
+
+```js
+`gatsby-plugin-less`,
+```
+
+- [Less.js](https://lesscss.org/)
+- [gatsby-plugin-less](https://www.gatsbyjs.com/plugins/gatsby-plugin-less/)
+
+Pliki Lessa mają rozszerzenie .less. Tak samo jak w przypadku Stylusa, można je trzymać w katalogu /src/styles i trzeba je zaimportować do pliku.
+
+### SASS
+
+Sass ma dwie składnie (i jak widać dwie pisownie, czasem pisze się jego nazwę jak typowy akronim, a czasem jak nazwę własną):
+
+- starsza i mniej popularna operująca na wcięciach, nazywana po prostu Sass
+- SCSS - nowsza, częściej używana, zgodna z CSS-em
+
+Instalacja:
+
+```
+$ npm i sass gatsby-plugin-sass
+```
+
+**/gatsby-config.js**
+
+```js
+`gatsby-plugin-sass`,
+```
+
+- [Using Sass in Gatsby](https://www.gatsbyjs.com/docs/how-to/styling/sass/) | [gatsby-plugin-sass](https://www.gatsbyjs.com/plugins/gatsby-plugin-sass/)
+
+### Fonty i glify
+
+Ze względu na opóźnienie spowodowane przez łączenie się z zewnętrznymi bibliotekami, dokumentacja Gatsby'ego odradza importowanie bibliotek fontów i glifów. Zdecydowanie lepiej jest ściągnąć je do katalogu strony i zaimportować lokalnie.
+
+#### Font Awesome
+
+Instalacja:
+
+```
+$ npm i @fortawesome/fontawesome-svg-core @fortawesome/free-brands-svg-icons @fortawesome/react-fontawesome
+```
+
+Import do pliku:
+
+```js
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
+import { faReact } from "@fortawesome/free-brands-svg-icons"
+
+//
+
+<FontAwesomeIcon icon={faReact} />
+```
+
+Można też bez instalacji, ściągnąć dostępną bez nagabywania o rejestracje wersję 4.7 i tutaj interesuje nas tylko plik /css/font-wesome.css (do produkcji oczywiście zminifikowany). Na stronie FA wyszukujemy potrzebną ikonę, szukamy jej nazwy w pliku i pobieramy wartość content. Zakładając, że chcemy zrobić fancy listę bulletpointem będzie `fa-check` a jego wartością content `\f00c`. W docelowym pliku komponentu wyglda to potem tak:
+
+```js
+//
+
+import styled from "styled-components"
+import "../styles/font-awesome-4.7.0/css/font-awesome.css"
+
+//
+
+const StyledLi = styled.li`
+position: relative;
+list-style-type: none;
+&::before {
+  font-family: "FontAwesome";
+  display: block;
+  content: "\f00c";
+  position: absolute;
+  top: 0;
+  left: -2rem;
+  color:red;
+  font-size:20px;
+`;
+
+//
+```
+
+- [Font Awesome 4.7](https://fontawesome.com/v4.7/)
+- [React Icons / Font Awesome](https://react-icons.github.io/icons?name=fa)
+
+#### Google Fonts
+
+Instalacja:
+
+```
+$ npm i @fontsource/open-sans
+```
+
+Import:
+
+```js
+import "@fontsource/open-sans"
+```
+
+#### Bootstrap Icons
+
+Instalacja:
+
+```
+$ npm i react-bootstrap-icons
+```
+
+Import:
+
+```js
+import { ArrowRight } from 'react-bootstrap-icons';
+
+//
+
+<ArrowRight className="bigredone" />
+```
+
+### TODO
+
+- [Tachyons](https://tachyons.io/)
+- [JSS](https://cssinjs.org/)
+
+### Odnośniki
+
+- [Gatsby Plugin Purgecss](https://www.gatsbyjs.com/plugins/gatsby-plugin-purgecss/) usuwa nieużywany CSS z css/sass/less/stylus i SCC Modules; wsparcie dla Tailwind CSS, Bootstrap, Bulma itd.
+- Adebiyi Adedotun [10 Gatsby styling methods](https://blog.logrocket.com/10-gatsby-styling-methods/)
+- Arley McBlain [Saving the Day with Scoped CSS](https://css-tricks.com/saving-the-day-with-scoped-css/)
+- [Active classnames in menu on a one-page website using GatsbyJS](https://stackoverflow.com/questions/48595318/active-classnames-in-menu-on-a-one-page-website-using-gatsbyjs)

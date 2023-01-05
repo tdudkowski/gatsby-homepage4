@@ -1,0 +1,43 @@
+{
+  "name": "hmp",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@loadable/component": "^5.15.2",
+    "@mdx-js/mdx": "^2.2.1",
+    "@mdx-js/react": "^2.2.1",
+    "babel-plugin-styled-components": "^2.0.7",
+    "dotenv": "^16.0.3",
+    "gatsby": "^5.3.2",
+    "gatsby-plugin-breadcrumb": "^12.3.1",
+    "gatsby-plugin-catch-links": "^5.3.0",
+    "gatsby-plugin-google-tagmanager": "^5.3.1",
+    "gatsby-plugin-image": "^3.3.2",
+    "gatsby-plugin-manifest": "^5.3.1",
+    "gatsby-plugin-mdx": "^5.3.1",
+    "gatsby-plugin-offline": "^6.3.1",
+    "gatsby-plugin-sharp": "^5.3.2",
+    "gatsby-plugin-sitemap": "^6.3.1",
+    "gatsby-plugin-styled-components": "^6.3.0",
+    "gatsby-remark-autolink-headers": "^6.3.1",
+    "gatsby-remark-images": "^7.3.1",
+    "gatsby-remark-prismjs": "^7.3.0",
+    "gatsby-remark-vscode": "^3.3.1",
+    "gatsby-source-filesystem": "^5.3.1",
+    "gatsby-transformer-remark": "^6.3.2",
+    "gatsby-transformer-sharp": "^5.3.1",
+    "lodash": "^4.17.21",
+    "prismjs": "^1.29.0",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "react-is": "^18.2.0",
+    "styled-components": "^5.3.6"
+  }
+}

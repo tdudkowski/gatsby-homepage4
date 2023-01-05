@@ -1,0 +1,619 @@
+---
+title: "Enigma cz. 8 - rekonstrukcja JS cz. 1"
+section: "blog"
+subsection: "historia"
+set: enigma
+date: 2021-09-17
+edited: 2021-09-22
+image: ../blogimages/Enigma-logo.jpg
+tags: enigma, kryptologia, javascript, js
+url: https://dygresje.info/blog/enigma-js-1
+description: "Rekonstrukcja w JavaScript. Mechanizm szyfrujący - zespół walców."
+---
+
+Stały adres serii wpisów o Enigmie - [/blog/enigma](/blog/enigma)
+
+### Wstępne założenia
+
+Celem tego odcinka serii o Enigmie jest napisana w JavaScripcie rekonstrukcja maszyny.
+
+Zdecydowałem się podzielić ten materiał na dwie części:
+
+1. Rekonstrukcja podstawowej maszyny Reichswehry i Wehrmachtu używanej w latach 1930-45: Enigma I, sam mechanizm obrotu walców (w układzie I, II, III), bez wprowadzania ustawień i łącznicy kablowej
+2. Enigma I: wprowadzanie ustawień i łącznica kablowa
+
+Uprzedzając bieg wypadków - inne wersje Enigmy, aczkolwiek rzecz dość oczywista, na razie (piszę to we wrześniu 2021) jest odsunięta na daleką przyszłość, prawdopodobnie lato 2022.
+
+Pliki są w repozytorium [Enigma](https://github.com/tdudkowski/Enigma).
+
+### Interfejs 
+
+I teraz pytanie - jaki zrobić interfejs?
+
+- Identiko? No w sumie jak reko to reko. Zrobić identyczną klawiaturę i niech użytkownik sobie kliknie i zobaczy, jak lampka się świeci. Koniec. Potrzebny mu będzie zapis danych, niech sobie zapisze. To jest akuratna rekonstrukcja, ale UX koszmar, bo strasznie niewygodne.
+- Zwykły input z polem tekstowym.
+
+Prawdopodobnie zrobię oba, w każdym razie raczej skłaniam się ku polu tekstowemu, bo jest to wygodniejsze, szczególnie w fazie testowania, kiedy trzeba będzie testować ciągi po kilkaset znaków.
+
+Ponieważ na samym początku nie wiem jaki będzie input danych, zresztą nie jest dobrą praktyką uzależniać program od konkretnego wejścia, trzeba założyć, że dane do zaszyfrowania, cały tekst wchodzi z pola tekstowego, czyli cały naraz w postaci stringa.
+
+### Podstawowy mechanizm
+
+Cechą charakterystyczną Enigmy jest to, że szyfruje każdą wprowadzoną literę osobno. Operator wbija znak na klawiaturze, maszyna wykonuje pracę i w rezultacie zapala się jedna z lampek. Znak z lampki jest zapisywany i dopiero wtedy operator może wprowadzić kolejny znak. Operacja jest odwracalna i deterministyczna, tzn. szyfrowanie szyfrogramu daje tekst jawny, a przy tych samych ustawieniach ta sama litera na tej samej pozycji zawsze da taki sam rezultat. Cechą charakterystyczną Enigmy i poważną słabością kryptograficzną jest to, że dana litera nigdy nie jest przekładana na nią samą, tzn. A nigdy nie da A, B nie będzie zamienione na B itd.
+
+Na początek zróbmy uproszczony mechanizm - Enigmę w wersji mini. Bez łącznicy kablowej, bez ustawień walców, z tylko jednym walcem szyfrującym. Sygnał wchodzi na walec wprowadzający, którego programistycznie nie ma, bo tu jest przełożenie A-A, B-B itd. Potem walec szyfrujący, jeden, obracający się o jedną pozycję przed wejściem sygnału, odbijający nieruchomy tak jak to było w Enigmie I i wraca przez szyfrujący, który cały czas jest na tej samej pozycji do wprowadzającego - to jest nasz rezultat, który trafia do wyjściowego stringu.
+
+Użyjemy walca I z Enigmy I i walca odbijającego w pierwszej wersji, czyli UKW A. Za [Enigma-Walzen](https://de.wikipedia.org/wiki/Enigma-Walzen), będą to:
+
+- walec wprowadzający, nasz alfabet (niem. Entrittswalze) **ETW**: "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
+- walec szyfrujący **I**: "EKMFLGDQVZNTOWYHXUSPAIBRCJ"
+- walec odbijający: (niem. Umkehrwalze) **UKW A** "EJMZALYXVBWFCRQUONTSPIKHGD"
+
+Wszystkie walce działają na tej samej zasadzie, ich wewnętrzne uzwojenie przekłada (szyfr przestawieniowy) wchodzące znaki wg określonego zaszytego sprzętowo wzorca. Walce są niezmienne, na zewnątrz na ruchomym pierścieniu są umieszczone litery alfabetu, ale mogą to być dowolne znaki, istotne jest to, że w stały sposób mieszana jest ich kolejność. Ta kolejność jest zwykle opisywana poprzez ciąg liter, które są w miejscu alfabetu, na który jest przekazywany sygnał.
+
+Prościej: jeżeli weźmiemy za przykład walec szyfrujący I (poniżej: trzeci i czwarty wiersz), to sygnał wchodzący na pierwszą pozycję przekierowany jest na miejsce, które w alfabecie zajmuje litera E, czyli piąte, sygnał wchodzący na pozycje drugą oznaczoną literą K, wychodzi na pozycji zajmowanej przez K w alfabecie, czyli jedenaste. I tak dalej.
+
+Można to wyrazić tak (od góry kolejność alfabetyczna, numery porządkowe, walec I, rezultat przełożony na numery porządkowe):
+
+```
+A  B  C  D  E  F  G  H  I  J  K  L  M  N  O  P  Q  R  S  T  U  V  W  X  Y  Z
+01 02 03 04 05 06 07 08 09 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 26
+E  K  M  F  L  G  D  Q  V  Z  N  T  O  W  Y  H  X  U  S  P  A  I  B  R  C  J
+05 11 13 06 12 07 04 17 22 26 14 20 15 23 25 08 24 21 19 16 01 09 02 18 03 10
+```
+
+To oczywiście działa w obie strony: w ruchu powrotnym (tutaj - od dołu) sygnał wchodzący na pozycję szesnastą, czyli literę H jest przekazywany na pozycję ósmą, bo jest to ósma litera w naszym alfabecie. Odpowiadające sobie litery są połączone przewodami: każde H jest połączone przewodem z H, X z X itd.
+
+W Enigmie Kriegsmarine mamy od początku do końca 29 znaków, jest więcej typów walców i w modelu M4 (1942) pojawia się czwarty walec szyfrujący (nieruchomy podczas pracy), ale zasada działania jest taka sama.
+
+Tak więc w programie walce szyfrujące możemy zapisać jako stringi, tablice z literami (jednoliterowy string), lub tablice z numerami. Jak będzie wygodnie. Zacznijmy od najprostszego rozwiązania, czyli stringów.
+
+### Pliki startowe
+
+Zróbmy tak, że CSS-y zostawimy chętnym (z wyjątkiem łamania ciągu, żeby na się strona nie rozjeżdżała), a najprostsza struktura HTML pojawi się w tym wpisie tylko raz i od tej pory zajmiemy się tylko JavaScriptem.
+
+**prototyp.html**
+
+```html
+<!DOCTYPE html>
+<html lang="de">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Enigma</title>
+    <script src="prototyp1.js" defer></script>
+    <style>
+        #output {
+            word-break: break-word;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>Enigma I Prototyp</h1>
+    <h2>Dateneingabe</h2>
+    <form action="">
+        <textarea name="" id="input"></textarea><br />
+        <button id="button">Verschlüsseln</button>
+    </form>
+    <h2>Datenausgabe</h2>
+    <div id="output"></div>
+</body>
+
+</html>
+```
+
+Zaś początkowy main.js dla przetestowania może wyglądać tak:
+
+**prototyp1.js**
+
+```js
+const input = document.getElementById("input")
+const button = document.getElementById("button")
+const output = document.getElementById("output")
+
+const ETW = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
+const I = "EKMFLGDQVZNTOWYHXUSPAIBRCJ"
+const UKW_A = "EJMZALYXVBWFCRQUONTSPIKHGD"
+
+const sendText = (inputValue) => {
+    output.innerText = inputValue;
+}
+
+const getText = (e) => {
+    e.preventDefault();
+    const inputValue = input.value;
+    sendText(inputValue);
+    input.value = "";    
+}
+
+button.addEventListener("click", (e) => getText(e))
+```
+
+I na wstępie mamy formularz do wprowadzania tekstu. Kiedy klikniemy button, tekst zniknie z formularza i pojawi się w divie pod spodem. Ponieważ wiadomo, że szyfrowanie odbędzie się w osobnych funkcjach, od razu samo przypisanie do outputu jest wyniesione do oddzielnej funkcji. Dodałem też stringi walców.
+
+Po ustawieniu sceny można wprowadzić aktorów.
+
+### Sanityzacja danych wejściowych
+
+Tak, jest takie słowo w języku polskim. Oznacza osiągnięcie pożądanego poziomu sterylności, oczyszczenie, w tym wypadku danych. To nie to samo co walidacja, która jest procesem weryfikacji poprawności danych. W przypadku walidacji, jeżeli dane nie są poprawne, proces jest przerywany, a użytkownik dostaje komunikat o błędzie. W sanityzacji wprowadzamy wszystko, wyrzucając w procesie to, co nie jest poprawne i poprawiając to, co się da automatycznie poprawić. W tym wypadku sanityzacja oznacza wykluczenie wszystkich znaków spoza alfabetu zawartego w stringu ETW, w tym także spacji. Czyli jest to filtr białą listą.
+
+W tym kroku musimy wykluczyć wszystkie znaki spoza dozwolonej służbowej klawiatury (trzymamy się 26-znakowej klawiatury Wehrmachtu) i wszystkie znormalizować do CAPSLOCKA (sorry, taki mamy standard w kryptologii, mnie też CAPSLOCKI drażnią, ale co poradzić).
+
+Wystarczy w funkcji getText() przeiterować wejście na stringu ETW (alfabet) z walca wprowadzającego:
+
+```js
+    const inputValueRaw = input.value;
+    let inputValue = "";
+    for (let i = 0; i < inputValueRaw.length; i++) {
+        if (ETW.includes(inputValueRaw[i].toUpperCase())) { inputValue = inputValue.concat(inputValueRaw[i].toUpperCase()) }
+    }
+```
+
+Ok, jeszcze jedna rzecz do zrobienia, zanim zaczniemy szyfrować, tzn. to o czym była mowa na początku. Input już mamy i jest on poprawny, ale szyfrowanie dotyczy każdego znaku z osobna, więc teraz każdy element inputu musimy przeiterować przez funkcje szyfrującą (damy zaślepkę na początek) i z wyjścia tej funkcji zmontować rezultat. Dajmy na to, że do każdego znaku będziemy dodawali kolejny numer i potem jako dwuznak będziemy go doklejać do wyjściowego stringa.
+
+Można to zrobić przekształcając funkcję sendText() w taki sposób (w tym wypadku jedyne co robimy w letCipher to `return itemValue += i`):
+
+```js
+    let resultValue = ""
+    for (let i = 0; i < inputValue.length; i++) {
+        const itemValue = letCipher(inputValue[i], i);
+        resultValue = resultValue.concat(itemValue);
+    }
+    output.innerText = resultValue;
+```
+
+Teraz mamy gwarancję, że 1) wejście jest poprawne, są to znaki wyłącznie z regulaminowej klawiatury i wszystkie w UPPERCASE, 2) każdy z nich jest niezależnie przekształcany 3) mamy czytelne wyjście.
+
+W repozytorium [Enigma](https://github.com/tdudkowski/Enigma) - są to pliki: [prototyp.html](https://github.com/tdudkowski/Enigma/prototyp.html) i [prototyp1.js](https://github.com/tdudkowski/Enigma/blob/master/prototyp1.js).
+
+Czyli możemy zabrać się do rzeczy. Zamieńmy nasz wyświetlacz liter w maszynę szyfrującą.
+
+### Szyfrowanie walcem
+
+Zacznijmy od pojedynczego przekształcenia wg wzorca jednego z walców. Biorąc pod uwagę to, co powyżej napisałem o mechanizmie - jak powinien wyglądać algorytm zamiany. Zacznijmy od podstawienia, a potem zrobimy obrót walca.
+
+- **podstawienie** - litera (dowolny znak) wchodzi w miejsce wyznaczone przez swoją kolejność alfabetyczną, wychodzi z numeru kolejności alfabetycznej litery na walcu (więc jeżeli string walca I przypiszemy do stałej I: `return itemValue = I[i]`)
+- **obrót walca** - ponieważ walec obraca się przed przepuszczeniem sygnału - przed podstawieniem ostatni znak stringa walca przechodzi na początek, ale tu pojawia się kilka problemów: 1) może lepiej, żeby wartości stringów walców były niezmiennym jednolitym źródłem prawdy, a tu go zmieniamy; można to rozwiązać, tworząc wewnątrz funkcji szyfrującej zmienną, która będzie pobierać dane z zewnętrznej i niezmiennej stałej, wygląda to wtedy tak: `let rotor = I.slice(-i - 1) + I.slice(0, -i - 1);`; no ale tu pojawia się kolejny problem 2) bo jeżeli iterator i jest większy od długości stringu rotora, rotor przestaje się "obracać", można to rozwiązać, pilnując żeby iterator nie był większy: `if (i > I.length) { i = i % I.length }`
+
+Ponieważ walce Enigmy poruszają się w kierunku od obserwatora, obrót o jedną pozycję oznacza połączenie oryginalnego stringu bez pierwszego znaku `str.slice(1)` z pierwszym znakiem `slice(0, 1)`.
+
+Tak dla pamięci: jeżeli zadeklarujemy zmienną jako np. shiftParam: `const shiftParam = 1`, możemy przesuwać string:
+
+- w lewo: `str.slice(shiftParam) + str.slice(0, shiftParam)`
+- w prawo: `str.slice(-shiftParam) + str.slice(0, -shiftParam)`
+
+W rezultacie powyższych zabiegów teraz nasza funkcja szyfrująca wygląda tak (ponieważ iterator startuje od zera, trzeba go powiększyć o jeden, żeby pierwszy obrót nie był zerowy):
+
+```js
+const letCipher = (itemValue, i) => {
+    if (i >= I.length) { i = i % I.length }
+    let rotor = I.slice(i + 1) + I.slice(0, i + 1); 
+    return itemValue = rotor[ETW.indexOf(itemValue)]
+}
+```
+
+Sprawdźmy, czy działa poprawnie dla dwóch przykładowych inputów: "aaa" i "abc":
+
+- **aaa**: pierwsza litera `a` wchodzi w pierwszą pozycję walca, który już się przesunął o jedną pozycję, czyli pierwsza jego litera została przerzucona na koniec, a druga jest na pierwszej pozycji; a ponieważ `a` jest pierwszą literą alfabetu, to właśnie w nią powinna się zamienić; podsumowując: skoro walec się obraca za każdym razem, to pierwsza litera alfabetu powinna zamienić się najpierw w drugi znak stringu (A -> K), wprowadzona kolejny raz w trzeci (A -> M), wprowadzona po raz trzeci w czwarty znak (A -> F); kiedy popatrzymy na string walca I są to kolejno litery "K", "M" i "F" i taki właśnie mamy rezultat.
+- **abc**: dokładnie jak powyżej, z tą różnicą, że za drugim razem dodajemy przesunięcie do tyłu o jeden znak, za drugim o dwa; jak się przekłada to przesunięcie na pozycję w stringu? w alfabecie (znaki wprowadzane) idziemy i jeden do przodu, walec idzie o jeden znak do tyłu, to znaczy, że za każdym razem mamy różnicę dwóch znaków, czyli przeskakujemy o dwa znaki na stringu walca, w tym wypadku, jeżeli ciąg alfabetyczny zaczniemy od "a" będzie to "K", "F" i "G".
+
+I taki jest właśnie rezultat. Co więcej, jeżeli wpiszemy ciąg "aaa" dłuższy niż długość stringu walca, zobaczymy, że wynik powtarza się co do znaku.
+
+W repozytorium [Enigma](https://github.com/tdudkowski/Enigma) jest to plik [prototyp2.js](https://github.com/tdudkowski/Enigma/blob/master/prototyp2.js).
+
+Mamy już maszynę szyfrująca, pora na prawdziwy szyfr.
+
+### Szyfrowanie z walcem odwracającym
+
+Pora rozwinąć to do prawie rzeczywistego mechanizmu opisanego na początku:
+
+- walec szyfrujący obraca się o jedną pozycję przed każdym wprowadzeniem znaku
+- sygnał przechodzi przez walec szyfrujący, przez walec odwracający i jeszcze raz (wraca) przez walec szyfrujący
+
+Tutaj musimy oddzielić obrót walca (lub w bardziej zaawansowanej symulacji: obroty walców), czyli ustalić pozycję sprzętową do wprowadzenia sygnału dla każdego wprowadzenia sygnału osobno. Każda kolejna pozycja sprzętowa wynika bezpośrednio z poprzedniej oraz wartości iteratora.
+
+```js
+let rotor;
+
+const moveRotor = (i) => {
+    if (i >= I.length) { i = i % I.length }
+    rotor = I.slice(i + 1) + I.slice(0, i + 1);
+    return rotor;
+}
+
+const letCipher = (itemValue, i) => {
+    moveRotor(i)
+    const rotorsList = [rotor, UKW_A, rotor]
+    for (let i = 0; i < rotorsList.length; i++) {
+        itemValue = rotorsList[i][ETW.indexOf(itemValue)];
+        console.log(i, itemValue);
+    }
+    return itemValue;
+}
+```
+
+Przeanalizujmy ten kod. Po pierwsze mamy funkcję obrotu rotorem wyrzuconą na zewnątrz, tu oczywiście pojawia się problem z zakresem, więc z tej wyrzuconej funkcji trzeba wyrzucić deklarację zmiennej `rotor`, można to zrobić bardziej elegancko, ale chciałem, żeby kod był przejrzysty.
+
+I teraz letCipher składa się z
+
+- ustawienia rotora: funkcja `moveRotor(i)`
+- utworzenia tablicy rotorów (rotorsList), po której będziemy iterować naszą literę
+- pętli for, która robi na literze dokładnie to samo co przedtem letCipher, tyle że teraz na każdym rotorze / walcu z tablicy
+
+### Obrót walca
+
+Wygląda to całkiem dobrze, nie jest skomplikowane i działa. Ale ma bardzo poważną wadę, którą już teraz trzeba usunąć. Otóż sygnał wracający idzie z drugiej strony, zatem przekształcenie powinno być odwrotne.
+
+Sądzę, że to właściwy moment by wprowadzić ilustrację. Żeby nie powtarzać jej dwa razy, będzie od razu zawierała trzy walce, na potrzeby niniejszego rozdziału po prostu pominiemy dwa z nich. Dla prostoty opisu na ten moment pomińmy kwestię obrotu walców.
+
+Walec jest sprzętową aplikacją określonego wzorca podstawienia (substytucja). Oznacza to, że te same litery po obu stronach walca są połączone przewodem.
+
+Kolejność na poniższym schemacie jest następująca: walec odwracający UKW_A, III, II, I, walec wprowadzający ETW. Sygnał wychodzi od walca wprowadzającego w lewa stronę do walca odbijającego,  apotem wraca w prawą do walca wprowadzającego.
+
+- Ruch w lewo: wyobraźmy sobie, że w przedstawionej poniżej konfiguracji z walca wprowadzającego wychodzi sygnał A, trafia na pierwszą od góry pozycję na walcu I, jest to litera E, czyli łączy się z piątą pozycją po drugiej stronie co łączy ją z literą S na walcu II. Litera S przekazuje na drugą stronę walca sygnał na miejscu, które litera S ma w alfabecie, czyli dziewiętnastym, więc na walcu trzecim trafia na literę G. Trzeci walec przekazuje więc sygnał na pozycji 7 do walca odwracającego.
+- Walec odwracający: ma inną konstrukcję, ale zasada działania jest taka sama. Dostaje sygnał na swoją literę Y i na pozycji alfabetycznej litery Y oddaje.
+- Ruch w prawo: i tutaj - uwaga! - następuje odwrócenie wzorca. Walce przyjmują sygnał na pozycji alfabetycznej i oddają na własnej. Sygnał idzie z lewej do prawej, czyli walec trzeci przekazuje sygnał z pozycji 25 na 15, co oznacza, że walec drugi dostaje sygnał na literze O, i przekazuje go na 25 pozycji, czyli Y na pierwszym walcu, która po jego prawej stronie jest na pozycji 15, więc ostatecznie walec wprowadzający dostaje sygnał na literę O.
+
+```
+UKW_A  III    II     I      ETW 
+A E    A B    A A    A E    A 01
+B J    B D    B J    B K    B 02
+C M    C F    C D    C M    C 03
+D Z    D H    D K    D F    D 04
+E A    E J    E S    E L    E 05 
+F L    F L    F I    F G    F 06 
+G Y    G C    G R    G D    G 07
+H X    H P    H U    H Q    H 08
+I V    I R    I X    I V    I 09
+J B    J T    J B    J Z    J 10
+K W    K X    K L    K N    K 11
+L F    L V    L H    L T    L 12
+M C    M Z    M W    M O    M 13
+N R    N N    N T    N W    N 14 
+O Q    O Y    O M    O Y    O 15
+P U    P E    P C    P H    P 16
+Q O    Q I    Q Q    Q X    Q 17
+R N    R W    R G    R U    R 18
+S T    S G    S Z    S S    S 19
+T S    T A    T N    T P    T 20
+U P    U K    U P    U A    U 21
+V I    V M    V Y    V I    V 22
+W K    W U    W F    W B    W 23
+X H    X S    X V    X R    X 24
+Y G    Y Q    Y O    Y C    Y 25
+Z D    Z O    Z E    Z J    Z 26
+```
+
+To oznacza, że sygnał, który idzie do walca odwracającego, biegnie z prawej do lewej, a wraca od lewej do prawej. Co więcej, kiedy będziemy brali pod uwagę obroty walców, w ruchu powrotnym trzeba będzie wyliczać obrót sąsiedniego, prawego walca.
+
+W naszym, prostym przykładzie, jeżeli dla uproszczenia opisu wyłączymy ruch walca, litera A z walca wprowadzającego na walcu I staje się E i wchodzi na walec odwracający na literze A. Teraz walec I dostaje z lewej sygnał na pozycji pierwszej (A) i oddaje go z prawej na pozycji 21, czyli na walcu wprowadzającym literę U. 
+
+Zatem ostatnia iteracja musi być zbudowana odwrotnie: `itemValue = ETW[rotorsList[i].indexOf(itemValue)];`. To jednak nie wszystko. jeżeli chcemy na tym etapie zbliżyć się do finalnego mechanizmu, trzeba wprowadzić ruch walca i wynikające stąd zmiany w pozycji liter.
+
+Pora przebudować budowę walca, zamieniając go w obiekt, dzięki temu będziemy mogli dodać parametr przesunięcia: `const I = { sequence: "EKMFLGDQVZNTOWYHXUSPAIBRCJ", shift: 0 }` - z każdym ruchem będziemy go powiększać o jeden.
+
+W samej funkcji szyfrowania dodamy zmienną number określającą pozycję znaku w stringu. Jest niezbędna, bo w ruchu do walca odbijającego najpierw określamy literę, a potem wyliczamy jej numer, natomiast w powrotnym na odwrót.
+
+Po zmianach funkcja ruchu walca i szyfrująca wygląda tak:
+
+```js
+const moveRotor = (i) => {
+    if (i >= I.sequence.length) { i = i % I.sequence.length }
+    I.sequence = I.sequence.slice(1) + I.sequence.slice(0, 1);
+    I.shift++;
+    rotor = I;
+    return rotor;
+}
+
+const letCipher = (itemValue, i) => {
+
+    moveRotor(i)
+    let number = ETW.indexOf(itemValue);
+    const rotorsList = [rotor, UKW_A, rotor]
+    for (let j = 0; j < rotorsList.length; j++) {
+
+        if (rotor.shift >= 26) { rotor.shift = rotor.shift % 26; }
+
+        if (j < 2) {
+            itemValue = rotorsList[j].sequence[number];
+            number = ETW.indexOf(itemValue) - rotorsList[j].shift;
+            if (number > 25) { number = number % 26; }
+            if (number < 0) { number = number % 25; }
+            if (number < 0) { number += 26; }
+        }
+        if (j === 2) {
+            number = number + rotor.shift
+            if (number > 25) { number = number % 26; }
+            if (number < 0) { number = number % 25; }
+            if (number < 0) { number += 26; }
+            number = rotorsList[j].sequence.indexOf(ETW[number]);
+            itemValue = ETW[number];
+        }
+        // console.log(j, itemValue)
+    }
+    return itemValue;
+}
+```
+
+W tej sytuacji włączmy ruch walców i przeanalizujmy przekształcenia dla ciągu "aaa" korzystając z console.log zawartego w pętli: 
+
+```
+0 'K'
+1 'B'
+2 'X'
+0 'M'
+1 'W'
+2 'M'
+0 'F'
+1 'M'
+2 'Q'
+```
+
+- pierwsza litera a jest zamieniona kolejno na K, B i X: pierwsze znamy z szyfrowania jednym walcem, wynik K idzie na walec odwracający, litera K jest w alfabecie na 11 pozycji, ale walec jest przesunięty o jedno miejsce w dół, a 10 literą na walcu odwracającym jest właśnie B, teraz wracamy do walca szyfrującego, ale pamiętajmy, że jest już przesunięty o jedną pozycję i szukamy drugiej litery alfabetu, ale teraz przesuniętego o jedną pozycję więc będzie to litera C i w tej pozycji litera C po prawej stronie walca szyfrującego celuje w X na walcu wprowadzającym.
+- druga litera a daje kolejno N, W i M; ponieważ walec szyfrujący obrócił się po raz kolejny o jedną pozycję, tym razem nasza litera a wchodzi na literę M, która normalnie jest na 13 miejscu, ale mamy już przesunięcie walca szyfrującego o dwa miejsca więc szukamy jedenastej litery na walcu odwracającym - jest to W, które kieruje sygnał na styk na miejsce, które w alfabecie zajmuje litera W, czyli 23, na walcu szyfrującym jest to litera W plus dwa miejsca przesunięcia, czyli styk na literze Y, który kieruje sygnał na M
+- trzecia litera a to kolejno "F", "M", "Q". Rzeczywiście walec szyfrujący po prawej styka z A literę F, która po lewej jest na miejscu szóstym minus trzy pozycje przesunięcia - trzecią literą na walcu odwracającym jest właśnie litera M; a na walcu szyfrującym po stronie alfabetycznej na miejscu litery M plus trzy pozycje przesunięcia jest P, które kieruje sygnał na Q. Bingo!
+
+Dla ciągu "abc" mamy wynik:
+
+```
+0 'K'
+1 'B'
+2 'X'
+0 'F'
+1 'Z'
+2 'U'
+0 'G'
+1 'Z'
+2 'V'
+```
+
+Cierpliwy czytelnik może dokonać sprawdzenia samemu (tu akurat jest to prostsze, spora część jest zrobiona w poprzednim przykładzie), ja to zrobiłem i mogę tu napisać, że się zgadza, system działa, od tej pory będziemy testować go w inny sposób. Od złożenia walców służą do tego symulatory.
+
+Ponadto patrząc na ten kod, myślę, że najlepiej w tym momencie przygotować go na kilka rotorów szyfrujących i od razu sprawdzić, póki mamy jeden zweryfikowany czy mechanizm daje ten sam rezultat. Więc zamiast na sztywno zapisanych `const rotorsList = [rotor, UKWA, rotor]` powinniśmy mieć `const rotorsList = [sekwencja_rotorów, wybrany_rotor_odwracający, sekwencja_rotorów_odwrócona]`. Nie trzeba wpisywać sekwencji powrotnej, można ją utworzyć automatycznie.
+
+Tak więc w miejsce jednej definicji zmiennej, mamy cztery, ale teraz kod jest uniwersalny i działa tak samo.
+
+```js
+    const mirror = UKW_A
+    const rotorSequence = [rotor]
+    const rotorSequenceBack = rotorSequence.slice().reverse();
+    const rotorsList = [...rotorSequence, mirror, ...rotorSequenceBack]
+```
+
+Przede wszystkim mamy wreszcie wyjęte na zewnątrz ustawienia, rotor odbijający i sekwencję rotorów w tabeli. Tutaj trzeba uważać na metodę tablicy reverse(), bo jest metodą zmieniającą - właśnie temu, żeby nie zmieniała (mutowała) samej sekwencji jest to slice() pośrodku.
+
+W repozytorium [Enigma](https://github.com/tdudkowski/Enigma) jest to plik [prototyp3](https://github.com/tdudkowski/Enigma/blob/master/prototyp3.js).
+
+### Zespół trzech walców
+
+Ale - uwaga! - uniwersalność dotyczy samej tylko funkcji szyfrującej, ściśle rzecz biorąc sekwencji podstawienia znaków przez rotory, które są na określonych pozycjach. Nie zrobiliśmy jeszcze obrotów kolejnych rotorów.
+
+A obracają się one według prostego schematu:
+
+- wszystkie walce poruszają się przed wprowadzeniem znaku
+- pierwszy (liczymy od prawej, bo najbardziej po prawej jest walec wprowadzający, a po lewej jest walec odbijający) obraca się o jedną pozycję z każdym znakiem
+- drugi obraca się o jedną pozycję po tym, jak pierwszy wykona pełny obrót o 26 znaków, czyli co 26 znaków
+- trzeci obraca się o jedną pozycję po tym, jak drugi wykona pełny obrót o 26 znaków, czyli co 26 x 26 = 676 znaków
+
+Ponadto są jeszcze zapadki, które trochę komplikują ruch walców - o nich na końcu.
+
+Dopóki wiadomość nie przekracza długością 26 znaków, efekt jest ten sam. Ale ponieważ jest to kiepskie ograniczenie, warto przepłacić.
+
+Ale jeszcze teraz przed dodaniem obrotu pozostałych walców warto przetestować rezultat, żeby zrozumieć, do czego potrzebne są obroty pozostałych walców i dlaczego przebiegają w takiej zależności. Otóż jeżeli wrzucimy, dajmy na to ciąg 104 znaków "a" otrzymamy taki rezultat: `ENNGXCWTDROARMFKOXIGFZYLREENNGXCWTDROARMFKOXIGFZYLREENNGXCWTDROARMFKOXIGFZYLREENNGXCWTDROARMFKOXIGFZYLRE`. Jest to czterokrotnie powtórzona ta sama sekwencja. Ktoś mógłby powiedzieć: "no ale w takim razie trzy rotory dają dokładnie to samo, tyle że dla 676 znaków", ale po pierwsze: nikt nie wysyła wiadomości składających się z tych samych liter nawet o długości 26 liter, a co dopiero mających długość ponad 600 znaków. Po drugie, większość meldunków jest krótsza niż 676 znaków, a pamiętajmy, że dochodzą zapadki, wstępne ustawienia walców no i łącznica kablowa. Okres kryptograficzny - czyli przejście wszystkich możliwości w porządku deterministycznym i powrót do punktu początkowego - samego tylko zespołu walców to 16_900.
+
+Dotychczasowy kod ma wiele wad. Przede wszystkim wiele elementów jest zaszytych na sztywno, zupełnie niepotrzebna zmienna rotor. Wszystko jest proste, ale tylko dlatego, że służyło nam do przetestowania poprawności działania systemu. Wiemy już, że jest OK, wiec można i rozbudować i zrobić to w bardziej elastyczny sposób.
+
+Idąc ku docelowej konstrukcji, w połowie drogi mamy coś takiego:
+
+```js
+const mirror = UKW_A;
+const rotorSequence = [I, II, III];
+const rotorLength = mirror.length;
+const shiftParam = rotorLength * 25;
+const Doppelschritt = ETW.indexOf(rotorSequence[0].notch) - rotorSequence[0].shift
+const shiftFactor = 80 + Doppelschritt;
+
+// MOVING ROTORS
+const moveRotors = (i) => {
+
+    rotorSequence[0].sequence = rotorSequence[0].sequence.slice(1) + rotorSequence[0].sequence.slice(0, 1);
+    rotorSequence[0].shift++;
+
+    if ((((i + 1) - Doppelschritt - 1) % 26 === 0) || (i + 1) % shiftParam === DoppelSchrittFaktor) {
+        rotorSequence[1].sequence = rotorSequence[1].sequence.slice(1) + rotorSequence[1].sequence.slice(0, 1);
+        rotorSequence[1].shift++;
+    }
+
+    if ((i + 1) % shiftParam === DoppelSchrittFaktor) {
+        rotorSequence[2].sequence = rotorSequence[2].sequence.slice(1) + rotorSequence[2].sequence.slice(0, 1);
+        rotorSequence[2].shift++;
+    }
+};
+```
+
+Najpierw mamy parametry: wybrane rotory, długość znaków i zmienne określające ruch walców. Do obiektów walców trzeba dodać literę, na której jest karb (ang. notch), dla każdego jest inna. Zmienna Doppelschritt wskazuje, kiedy karb nachodzi na wcięcie. Potrzebowałem iteratora, który startuje od jedynki oraz idzie w nieskończoność, dlatego jest to i powiększone o 1. 
+
+- Joshua Zeitsoff ["Enigma Explained 3 : Double Stepping" [YT 7:39]](https://www.youtube.com/watch?v=5StZlF-clPc) 
+
+Pora teraz przetestować czy niczego nie popsuliśmy. Teraz kiedy mamy już trzy walce szyfrujące możemy użyć symulatora:
+
+- Najlepszy jest [Enigma Machine &#8211; Summerside Makerspace](https://summersidemakerspace.ca/projects/enigma-machine/), pozwala on prześledzić operację maszyny na poszczególnych walcach.
+- Do tworzenia referencyjnych bloków szyfrogramów polecam: [The Enigma machine: Encrypt and decrypt online — Cryptii](https://cryptii.com/pipes/enigma-machine)
+
+Dla własnej analizy będziemy potrzebowali tabeli. od góry: numery kolejne, walec wprowadzający, czyli kolejność alfabetyczna, po kolei pięć walców 26-znakowych używanych w Wehrmachcie (Heer i Luftwaffe) i trzy walce odbijające.
+
+||01|02|03|04|05|06|07|08|09|10|11|12|13|14|15|16|17|18|19|20|21|22|23|24|25|26|
+|:-:|:-:|:-:|:-:|:-:|:-:|:-:|:-:|:-:|:-:|:-:|:-:|:-:|:-:|:-:|:-:|:-:|:-:|:-:|:-:|:-:|:-:|:-:|:-:|:-:|:-:|:-:|
+| ETW | A | B | C | D | E | F | G | H | I | J | K | L | M | N | O | P | Q | R | S | T | U | V | W | X | Y | Z |
+| I | E | K | M | F | L | G | D | Q | V | Z | N | T | O | W | Y | H | X | U | S | P | A | I | B | R | C | J |
+| II | A | J | D | K | S | I | R | U | X | B | L | H | W | T | M | C | Q | G | Z | N | P | Y | F | V | O | E |
+| III | B | D | F | H | J | L | C | P | R | T | X | V | Z | N | Y | E | I | W | G | A | K | M | U | S | Q | O |
+| IV | E | S | O | V | P | Z | J | A | Y | Q | U | I | R | H | X | L | N | F | T | G | K | D | C | M | W | B |
+| V | V | Z | B | R | G | I | T | Y | U | P | S | D | N | H | L | X | A | W | M | J | Q | O | F | E | C | K |
+| UKW A | E | J | M | Z | A | L | Y | X | V | B | W | F | C | R | Q | U | O | N | T | S | P | I | K | H | G | D |
+| UKW B | Y | R | U | H | Q | S | L | D | P | X | N | G | O | K | M | I | E | B | F | Z | C | W | V | J | A | T |
+| UKW C | F | V | P | J | I | A | O | Y | E | D | R | Z | X | W | G | C | T | K | U | Q | S | B | N | M | H | L |
+
+### Kod
+
+A oto półmetek, kod na którym kończymy ten wpis. Od góry:
+
+- pobranie elementów HTML (1-4)
+- dane rotorów (6-15)
+- zmienne (17-26)
+- ustalenie "podwójnego kroku" (Doppelschritt) dla dowolnego zestawu walców - więcej o tym na końcu (23-26)
+- ruch rotorów (28-44)
+- funkcja szyfrująca, po kolei dla walców szyfrujących w stronę walca odwracającego, dla walca odwracającego i dla walców szyfrujących w stronę walca wprowadzającego (46-85)
+- iterator szyfrowania na pobranym stringu, który wyświetla rezultat (87-97)
+- pobranie stringa i sanityzacja danych (99-111)
+
+```js  {numberLines: true}
+const input = document.getElementById("input");
+const button = document.getElementById("button");
+const output = document.getElementById("output");
+const counter = document.getElementById("counter");
+
+// ROTORS
+const ETW = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+const I = { sequence: "EKMFLGDQVZNTOWYHXUSPAIBRCJ", notch: "Q", shift: 0 };
+const II = { sequence: "AJDKSIRUXBLHWTMCQGZNPYFVOE", notch: "E", shift: 0 };
+const III = { sequence: "BDFHJLCPRTXVZNYEIWGAKMUSQO", notch: "V", shift: 0 };
+const IV = { sequence: "ESOVPZJAYQUIRHXLNFTGKDCMWB", notch: "J", shift: 0 };
+const V = { sequence: "VZBRGITYUPSDNHLXAWMJQOFECK", notch: "Z", shift: 0 };
+const UKW_A = "EJMZALYXVBWFCRQUONTSPIKHGD";
+const UKW_B = "YRUHQSLDPXNGOKMIEBFZCWVJAT";
+const UKW_C = "FVPJIAOYEDRZXWGCTKUQSBNMHL";
+
+// SETTINGS
+const mirror = UKW_A;
+const rotorSequence = [I, II, III];
+const rotorLength = mirror.length;
+const shiftParam = rotorLength * 25;
+
+// DOUBLE STEP (DOPPELSCHRITT) FACTOR
+const Doppelschritt = ETW.indexOf(rotorSequence[0].notch) - rotorSequence[0].shift
+const notchFinder = ((ETW.indexOf(rotorSequence[1].notch) - 1) * 26) + 2;
+const DoppelSchrittFaktor = notchFinder + Doppelschritt;
+
+// MOVING ROTORS
+const moveRotors = (i) => {
+
+    rotorSequence[0].sequence = rotorSequence[0].sequence.slice(1) + rotorSequence[0].sequence.slice(0, 1);
+    rotorSequence[0].shift++;
+
+    if ((((i + 1) - Doppelschritt - 1) % 26 === 0) || (i + 1) % shiftParam === DoppelSchrittFaktor) {
+        rotorSequence[1].sequence = rotorSequence[1].sequence.slice(1) + rotorSequence[1].sequence.slice(0, 1);
+        rotorSequence[1].shift++;
+    }
+
+    if ((i + 1) % shiftParam === DoppelSchrittFaktor) {
+        rotorSequence[2].sequence = rotorSequence[2].sequence.slice(1) + rotorSequence[2].sequence.slice(0, 1);
+        rotorSequence[2].shift++;
+        if (rotorSequence[2].shift === 27) { rotorSequence[2].shift = 1 }
+    }
+};
+
+// MAKE ROTORS SEQUENCE & SUBSTITUTION LETTER THROUGH THEM
+const letCipher = (itemValue, i) => {
+    moveRotors(i);
+
+    const rotorSequenceBack = rotorSequence.slice().reverse();
+    let numberInOrder = ETW.indexOf(itemValue);
+
+    // RUN TO MIRROR
+    for (let j = 0; j < rotorSequence.length; j++) {
+
+        itemValue = rotorSequence[j].sequence[numberInOrder];
+        numberInOrder = ETW.indexOf(rotorSequence[j].sequence[numberInOrder]) - rotorSequence[j].shift;
+
+        if (numberInOrder > 25) { numberInOrder = numberInOrder % 26; }
+        if (numberInOrder < 0) { numberInOrder = numberInOrder % 26; }
+        if (numberInOrder < 0) { numberInOrder += 26; }
+    }
+
+    // MIRROR
+    let inMirrorNumber = ETW.indexOf(itemValue) - rotorSequence[2].shift
+    if (inMirrorNumber < 0) { inMirrorNumber += 26 }
+    itemValue = mirror[inMirrorNumber];
+    numberInOrder = ETW.indexOf(itemValue);
+    numberInOrder += rotorSequence[2].shift;
+    if (numberInOrder > 25) { numberInOrder = numberInOrder % 26 }
+    itemValue = ETW[numberInOrder]
+
+    // RUN BACK
+    for (let j = 0; j < rotorSequence.length; j++) {
+
+        numberInOrder = rotorSequenceBack[j].sequence.indexOf(itemValue) + (rotorSequenceBack[j + 1] ? rotorSequenceBack[j + 1].shift : 0);
+
+        if (numberInOrder > 25) { numberInOrder = numberInOrder % 26; }
+        if (numberInOrder < 0) { numberInOrder = numberInOrder % 25; }
+        if (numberInOrder < 0) { numberInOrder += 26; }
+
+        itemValue = ETW[numberInOrder];
+    }
+    return itemValue;
+};
+
+// ITERATE CIPHER FUNCTION LETTER BY LETTER
+const sendText = (inputValue) => {
+    let resultValue = "";
+    for (let i = 0; i < inputValue.length; i++) {
+        const itemValue = letCipher(inputValue[i], i);
+        resultValue = resultValue.concat(itemValue);
+    }
+    output.innerText = resultValue;
+    const counterValue = "Anzahl der Buchstabe: " + resultValue.length;
+    counter.innerText = counterValue;
+};
+
+// VALIDATE INPUT STRING
+const getText = (e) => {
+    e.preventDefault();
+    const inputValueRaw = input.value;
+    let inputValue = "";
+    for (let i = 0; i < inputValueRaw.length; i++) {
+        if (ETW.includes(inputValueRaw[i].toUpperCase())) {
+            inputValue = inputValue.concat(inputValueRaw[i].toUpperCase());
+        }
+    }
+    sendText(inputValue);
+    input.value = "";
+};
+
+button.addEventListener("click", (e) => getText(e));
+```
+
+### Doppelschritt
+
+Poprawność szyfrowania sprawdzam, tworząc szyfrogram referencyjny: wrzucam ciąg liter AAA... do poprawnie działającego symulatora. Zapisany próbkę kilkuset znaków wrzucam do mojego interfejsu i uznaję, że kod działa, jeżeli dla tych samych ustawień dostaję wyjściowy ciąg liter AAA...
+
+Tu pojawia się problem polegający na tym, że o ile w referencyjnym symulatorze mogę ustawić walce na pozycji startowej, to nie mogę wyłączyć mechanizmu "podwójnego kroku", który jest dość skomplikowany. Pierwotnym zestawem walców, dla którego pisałem kod, był [I, II, III]. Początkowo dodatkowy krok walca wpisywałem do tablicy, do której odwoływał się warunek w ifie w drugim i trzecim walcu, szybko okazało się, że parametr ten cechuje się regularnością, którą łatwo było zautomatyzować. Był tam dość tajemniczy parametr wynoszący 80. Nie wiedziałem, skąd dokładnie się bierze, ale kod działał dla ustawień zespołu walców [I, II, III], oraz odwrotnego [III, II, I].
+
+Wszystko było OK, dopóki nie wypróbowałem ustawienia [II, III, I]. Okazało się, że wystarczy go zmienić, żeby i dla takiej kolejności działał. Czyżby rozwiązaniem była ifologia? Dla pięciu walców jest 60 możliwych ustawień, więc ifologia, nawet robiona switchem mogłaby być monstrualna.
+
+Zdecydowałem się poeksperymentować, żeby zobaczyć jakiś wzór w zmienności tego parametru dla tylko trzech pierwotnych rotorów. Dość szybko okazało się, że tylko środkowy walec decyduje o wielkości parametru. Napisanie switcha z pięcioma warunkami wystarczyło i na tym można by poprzestać. Mamy tylko pięć możliwych wielkości, wiadomo od czego zależą, kod działa.
+
+No ale można pójść dalej, mając te pięć liczb, postanowiłem sprawdzić jaki związek mają z podstawową liczbą maszyny, czyli wielkością walca - 26. Okazało się, że wszystkie są mnożnikiem 26 plus dwa. Bingo! Co więcej, wielkość tego mnożnika wprost zależy od pozycji litery z karbem (notch) w alfabecie. I to jest właśnie notchFinder w poniższym fragmencie kodu. Nie napisałem go, kierując się fenomenalną trójwymiarową wyobraźnią i wiedzą matematyczna, bo ich nie mam. Trochę poeksperymentowałem.
+
+```js
+// DOUBLE STEP (DOPPELSCHRITT) FACTOR
+const notchOneFinder = ETW.indexOf(rotorSequence[0].notch) - rotorSequence[0].shift
+const notchTwoFinder = ((ETW.indexOf(rotorSequence[1].notch) - 1) * 26) + 2;
+const DoppelSchrittFaktor = notchFinder + Doppelschritt;
+```
+
+### C.D.N.
+
+Końcowy kod JS z tego wpisu to w repozytorium Enigma [prototyp4](https://github.com/tdudkowski/Enigma/blob/master/prototyp4.js). Działa poprawnie dla dowolnego ustawienia kolejności i typów walców w zakresie przekraczającym okres kryptograficzny, sprawdziłem go dla ciągu 60 tys. znaków.
+
+W pierwszej części napisaliśmy kompletny, uniwersalny silnik Enigmy. Ale jeszcze wiele brakuje do działającej, używalnej aplikacji.
+
+W następnym wpisie wprowadzanie ustawień:
+
+- kolejność walców
+- pozycja początkowa walców
+- łącznica kablowa
+
+Czyli na podstawie tego kodu napiszemy działającą aplikację. Zapraszam - [Enigma cz. 9 - rekonstrukcja JS cz. 2](/blog/enigma-js-2)

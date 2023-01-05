@@ -1,0 +1,657 @@
+---
+title: "Frontend - menu RWD z Hamburgerem"
+section: "blog"
+subsection: "it"
+set: webdev
+date: 2022-05-19
+edited: 2022-05-21
+image: ../blogimages/code-optimised.png
+tags: css, rwd, hamburger, js, javascript
+url: https://dygresje.info/blog/webdev-menu
+description: "Nawigacja i formularze to dwa najbardziej wymagające elementy frontendu. Większość wejść na stronę jest z urządzeń mobilnych - jak zrobić nowoczesne, responsywne menu i to zachowując prostotę kodu. RWD, Hamburger, Rozwijane menu (dropdown menu) i menu blokowe (Mega Menu)."
+---
+
+Stały adres serii wpisów o IT - [/blog/webdev](/blog/webdev)
+
+### Wstęp
+
+Niniejszy wpis powstał przy okazji opracowania wpisu ["Gatsby cz. 8 - menu"](/blog/gatsby-menu). Uznałem, że dobrze byłoby odseparować sam mechanizm opisywanych tam rozwiązań menu od rozwiązań typowych dla Gatsby'ego i Reacta i wykonać je w czystym HTML + CSS z minimalnym dodatkiem vanilla JavaScriptu. Dzięki temu łatwiej będzie je zrozumieć i ewentualnie w razie potrzeby dostosować do innych frameworków czy kontekstów technologicznych niż Gatsby.
+
+W takiej prezentacji najważniejsza jest prostota i przejrzystość samej mechaniki menu. Dlatego wygląd jest sprawą drugorzędną i jest opisany minimalną liczbą reguł. Zostaną zastosowane tylko dwie wersje rozdzielczości: dla telefonu i dla komputera, będzie więc tylko jeden breakpoint.
+
+Wpis ten obejmie tylko kwestie RWD i mechaniki menu, natomiast resztę, czyli np. zastosowanie glifów lub sprite'ów CSS do nadania menu przejrzystości pozostawiam czytelnikom.
+
+Od kilku lat większość wejść na strony WWW jest z urządzeń mobilnych, dlatego zaczniemy od sprawy podstawowej dla responsive web design (dalej: RWD) czyli tzw. hamburgera. Jest to rozpoznawalna przez użytkowników formuła menu polegająca na umieszczeniu skrótu do menu w typowej postaci trzech równoległych kresek (stąd określenie) umieszczonych w roku ekranu. Dzięki temu menu nie zajmuje miejsca, a po kliknięciu albo rozwija się w dół, albo wysuwa się z boku.
+
+Opiszę te same wersje menu, które znajdą się we wzmiankowanym wpisie o menu w Gatsbym:
+
+- najprostsze płaskie menu mające dwie wersje: pionową dla małych rozdzielczości i poziomą dla większych.
+- płaskie menu z Hamburgerem w wersji dla małych rozdzielczości.
+- Dropdown z Hamburgerem.
+- Mega Menu z Hamburgerem.
+- j.w. z tym że w małej rozdzielczości submenu będzie wyjeżdżać w sposób podobny do Hamburgera.
+
+Wszystkie przedstawione tu modele są udostępnione na CodePen: [Menu - solutions](https://codepen.io/collection/JGKezQ?cursor=ZD0wJm89MCZwPTEmdj00).
+
+Powyższe oczywiście nie wyczerpują wszystkich sensownych możliwości menu, do tego byłaby potrzebna seria artykułów, ale zostaną przedstawione rozwiązania wystarczające dla samodzielnego opracowania dowolnego innego projektu menu. Wystarczy podstawowa znajomość CSS (z Flexbox CSS) oraz JavaScriptu. Nie są potrzebne żadne dodatkowe biblioteki.
+
+JavaScript może zostać uruchomiony dopiero po załadowaniu strony, więc może zostać pobrany w nagłówku z parametrem `defer`, lub umieszczony w tagu script tuż przed zamknięciem elementu body.
+
+### TODO
+
+Wciąż dwie rzeczy są do zrobienia:
+
+- Hamburger wysuwa menu w animacji zsynchronizowanej z animacją samego Hamburgera, natomiast chowanie menu odbywa się nagle. Tutaj niestety musiałem wyłączyć regułę 'transition' (a ściśle rzecz biorąc przenieść ją do akcji `.open ~ .menu-list`) bo pojawił się bardzo niepożądany efekt przy przejściu przez breakpoint z wyższej rozdzielczości - menu pojawiało się rozwinięte i chowało się animacją.
+- Hamburger z MegaMenu v2 - można jeszcze coś zrobić z przeliczaniem wysokości dokumentu. Nie jest to takie ważne, bo jest to dodatkowy element artykułu.
+
+Rozwiązaniem pierwszego może być propozycja ["Pure CSS Hamburger menu shows up when resizing viewport before disappearing"](https://localcoder.org/pure-css-hamburger-menu-shows-up-when-resizing-viewport-before-disappearing), czyli dodanie funkcji [IIFE](https://developer.mozilla.org/en-US/docs/Glossary/IIFE), która przy każdym resizie na chwilę (w tym wypadku na 0,1 s) wyłącza działanie 'transition':
+
+```js
+(function () {
+  const classes = document.body.classList;
+  let timer = null;
+  window.addEventListener('resize', function () {
+    if (timer){
+      clearTimeout(timer);
+      timer = null;
+    } else {
+      classes.add('stop-transition');
+    }
+    timer = setTimeout(() => {
+      classes.remove('stop-transition');
+      timer = null;
+    }, 100);
+  });
+})();
+```
+I tego CSS-a:
+
+```css
+body.stop-transition .menu-list {
+  transition: none;
+}
+```
+
+Działa, można przełożyć `transition: all 0.3s linear;` z warunku '.open~.menu-list' do samego '.menu-list'.
+
+Jednak szukam jakiegoś prostszego rozwiązania.
+
+### Layout strony
+
+Kod strony jest wspólny. Jest to standardowy layout używający Flexbox CSS. Menu jest umieszczone w elemencie header.
+
+```html
+<body>
+    <div class="container">
+        <header>
+            <!-- tu nav z listą menu -->
+        </header>
+        <main>
+            <p>main</p>
+        </main>
+        <footer>
+            <p>footer</p>
+        </footer>
+    </div>
+</body>
+```
+
+Wspólny CSS, pierwsze trzy reguły (1-18) tworzą jaki taki layout, kolejne trzy (20-37) nadają wygląd elementom menu:
+
+```css {numberLines: true}
+body {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: sans-serif;
+    }
+
+.container {
+    max-width: 1100px;
+    margin: 0 auto;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    }
+
+main {
+    flex: 1;
+    }
+
+ul {
+    padding-left: 0;
+    list-style-type: none;
+    margin: 0;
+    }
+
+ul a {
+    display: block;
+    text-align: center;
+    text-decoration: none;
+    height: 1.2rem;
+    padding: 5px 0;
+    }
+
+ul a:hover {
+    text-decoration: underline;
+    background-color: beige;
+    }
+```
+
+### Płaskie menu RWD
+
+Załóżmy, że nasze menu jest nieuporządkowaną listą odnośników wewnątrz kontenera nav. Jest to proste, poprawne i najbardziej typowe rozwiązanie:
+
+```html
+<nav class="menu-container">
+    <ul class="menu-list">
+        <li><a href="/01">Element 01</a></li>
+        <li><a href="/02">Element 02</a></li>
+        <li><a href="/03">Element 03</a></li>
+        <li><a href="/04">Element 04</a></li>
+        <li><a href="/05">Element 05</a></li>
+    </ul>
+</nav>
+```
+
+CSS, jak już napisałem jest - jeśli chodzi o wygląd - minimalne. Zgodnie z zasada bottom-up zakładamy na wstępie wspólne cechy oraz zestaw reguł dla małych rozdzielczości (1-8). Media query (10) jest zastosowane dla większych rozdzielczości - dlatego najpierw mamy pionowy układ menu (3), dopiero na końcu zmieniamy je w poziomy (12):
+
+```css {numberLines: true}
+.menu-list {
+    display: flex;
+    flex-direction: column;
+    }
+
+.menu-list li {
+    flex: 1;
+    }
+
+@media (min-width:800px) {
+    .menu-list {
+        flex-direction: row;
+        }
+    }
+```
+
+- CodePen [Simple RWD menu](https://codepen.io/tdudkowski/pen/MWEOVvo)
+
+### Hamburger
+
+Kolejne trzy następne menu używają Hamburgera. Samo rozwiązanie zaczerpnąłem z artykułu Wojciecha Snopkowskiego ["Gatsby Navigation using Styled Components and useState hook"](https://snopkowski.com/blog/gatsby-navigation-styled-components). Tutaj w sprowadzonej do vanilla JavaScriptu i uproszczonej formie - najpierw HTML, który składa się wyłącznie z dwóch zagnieżdżonych kontenerów.
+
+```html
+<div class="menu-toggler">
+    <div class="hamburger"></div>
+</div>
+```
+
+Zewnętrzny kontener w większych rozdzielczościach po prostu znika. Pojawia się tylko w rozdzielczości mobilnej. To z nim powiążemy akcję JavaScript - triggera uruchamiającego wysuwanie się i chowanie menu.
+
+W przeciwieństwie do HTML CSS nie jest aż tak prosty, ale nie jest trudny do zrozumienia.
+
+Zasadniczy Hamburger to kontener wewnętrzny, który składa się z kreski środkowej. Dwie dodatkowe kreski Hamburgera, górna i dolna są pseudoelementami ":before" i ':after' pozycjonowanymi absolutnie wobec środkowej. Domyślna jest pozycja zamknięta (wszystkie trzy kreski równoległe).
+
+Animacja do pozycji otwartej odbywa się po dodaniu klasy `.open`. Cała animacja elementu i samego menu odbywać się będzie właśnie przez dodanie i usunięcie tej klasy (metoda toggle dla właściwości [Element.classList](https://developer.mozilla.org/en-US/docs/Web/API/Element/classList). To jest sedno mechaniki menu.
+
+W przedstawionej tu postaci Hamburger nic nie robi, manipulacja klasą `.open` odbywa się za pomocą JavaScriptu. 
+
+CSS:
+
+```css {numberLines: true}
+    /* # HAMBURGER # */
+.menu-toggler {
+    display: flex;
+    height: 100%;
+    cursor: pointer;
+    padding-left: 1rem;
+    background-color: #666;
+    }
+    
+.hamburger {
+    background-color: #ccc;
+    width: 30px;
+    height: 3px;
+    align-self: center;
+    position: relative;
+    transition: all 0.3s linear;
+    }
+
+.hamburger::before,
+.hamburger::after {
+    width: 30px;
+    height: 3px;
+    background-color: #ccc;
+    content: "";
+    position: absolute;
+    transition: all 0.3s linear;
+    }
+
+.hamburger::before {
+    top: -10px;
+    }
+
+.hamburger::after {
+    top: 10px;
+    }
+
+/* # HAMBURGER ANIMATION # */
+.open .hamburger {
+    transform: rotate(-45deg);
+    }
+
+.open .hamburger::before {
+    transform: rotate(-90deg) translate(-10px, 0px);
+    }
+
+.open .hamburger::after {
+    transform: rotate(90deg) translate(-10px, 0px);
+    }
+
+/* # MEDIA QUERY # */
+@media (min-width:800px) {    
+    .menu-toggler {
+        display: none;
+        }
+    }
+```
+
+### Płaskie menu z Hamburgerem
+
+Czas na prawdziwą akcję. Tutaj mamy działające połączenie menu w postaci listy z Hamburgerem.
+
+HTML:
+
+```html {numberLines: true}
+<header>
+    <nav class="menu-container">
+        <div class="menu-toggler">
+            <div class="hamburger"></div>
+        </div>
+        <ul class="menu-list">
+            <li><a href="/01">Element 01</a></li>
+            <li><a href="/02">Element 02</a></li>
+            <li><a href="/03">Element 03</a></li>
+            <li><a href="/04">Element 04</a></li>
+            <li><a href="/05">Element 05</a></li>
+        </ul>
+    </nav>
+</header>
+```
+
+CSS jest tu podobny do płaskiego menu z poprzedniego przykładu, z tym że kontener menu ma ustawioną pozycję relative (3), dzięki czemu można do niego pozycjonować listę z elementami menu absolutnie (9) i co umożliwia umieszczenie jej poza ekranem z parametrami `width:100%; left:-100%;`.
+
+Kluczowym elementem mechanizmu jest zastosowanie selektora rodzeństwa `.open ~ .menu-list` (20) - otóż klasę `.open` zmieniamy tylko w Hamburgerze, a dzięki temu selektorowi możemy animować listę, zmieniając 'left' na zero. Identyczne parametry transition zapewniają, że animacja Hamburgera i menu jest synchroniczna.
+
+Poniższy CSS ma charakter referencyjny - żeby nie powiększać listingów ponad miarę, powtarzające się reguły w następnym menu reguły oznaczę komentarzem `/* tak samo jak w przykładzie referencyjnym */`.
+
+```css {numberLines: true}
+/* # MENU # */
+.menu-container {
+    position: relative;
+    height: 2rem;
+    }
+
+.menu-list {
+    display: flex;
+    position: absolute;
+    flex-direction: column;
+    left: -100%;
+    width: 100%;
+    }
+
+.menu-list li {
+    flex: 1;
+    }
+
+/* # ACTION # */
+.open~.menu-list {
+    left: 0;
+    transition: all 0.3s linear;
+    }
+
+/* # MEDIA QUERY # */
+@media (min-width:800px) {
+
+    .menu-list {
+        flex-direction: row;
+        left: 0;
+        }
+    }
+```
+
+I tutaj wreszcie mamy JavaScript: pobranie elementu z DOM-u (1) i na kliknięcie włączenie akcji przełączającej klasę w tym elemencie (2). Można to zrobić w jednej linii, ale tak jest bardziej przejrzyste.
+
+Dodałem też funkcję usuwającą klasę .open przy zmianie rozdzielczości do powyżej breakpointa (5-8). Ponieważ w rozdzielczości desktopowej Hamburger jest ukryty, JS może działać tylko w małej rozdzielczości.
+
+JS:
+
+```js {numberLines: true}
+const toggler = document.getElementsByClassName("menu-toggler")[0];
+toggler.addEventListener("click", () => toggler.classList.toggle("open"));
+
+// CLOSE EXPANDED ON RESIZE UP
+const closeExpanded = () => {
+      if (window.visualViewport.width>799) {toggler.classList.remove("open");}
+   }
+window.addEventListener('resize', closeExpanded);
+```
+
+- CodePen [Flat menu with Hamburger](https://codepen.io/tdudkowski/pen/gOGXeXO)
+
+### Dropdown menu z Hamburgerem
+
+HTML dalej jest - i pozostanie - tak prosty, jak to tylko jest możliwe. Lista Dropdown znajduje się w elemencie listy nadrzędnej, ale poza (zaraz po) odnośnikiem.
+
+Tutaj trzeba podjąć pierwsze wykluczające decyzje dotyczące tego, jak ma się zachowywać menu. Wykluczające dlatego, że trzeba wyłączyć pewne możliwości. Tutaj zakładam, że dla rozdzielczości desktopowej lepszym tzn. wygodniejszym dla użytkownika rozwiązaniem jest akcja na najechanie kursorem (pseudoklasa `:hover`) i brak akcji na kliknięcie. Natomiast dla urządzeń mobilnych najechanie jest prawie zawsze złym rozwiązaniem i tu pozostaje tylko kliknięcie (pacnięcie). Wadą takiego połączenia jest jego niespójność.
+
+HTML:
+
+```html {numberLines: true}
+<header>
+    <nav class="menu-container">
+        <div class="menu-toggler" id="menu-toggler">
+            <div class="hamburger"></div>
+        </div>
+        <ul class="menu-list" id="menu-list">
+            <li><a href="/01">Element 01</a>
+                <ul class="submenu-container">
+                    <li><a href="/021">Element 021</a></li>
+                    <li><a href="/022">Element 022</a></li>
+                    <li><a href="/023">Element 023</a></li>
+                    <li><a href="/024">Element 024</a></li>
+                    <li><a href="/025">Element 025</a></li>
+                </ul>
+            </li>
+ <!-- reszta menu -->
+        </ul>
+    </nav>
+</header>
+```
+
+Zgodnie z podjętą decyzją wyłączamy akcję dla odnośnika w elemencie listy zawierającym Dropdown (1-3).
+
+Kontener z Dropdownem w małej rozdzielczości jest ukryty (9-11), natomiast w dwóch przypadkach jest elementem blokowym:
+
+- kiedy znajduje się w elemencie listy z nadaną klasą `.open` (17-19)
+- w dużej rozdzielczości, kiedy w wyniku najechania kursorem (pseudoklasa `:hover`) na nadrzędny element listy (26-28)
+
+CSS:
+
+```css {numberLines: true}
+.menu-list > li > a {
+  pointer-events: none;
+  }
+
+/* # MENU # */
+
+/* tak samo jak w przykładzie referencyjnym */
+
+.submenu-container {
+    display: none;
+    }
+
+/* # OPEN # */
+
+/* tak samo jak w przykładzie referencyjnym */
+
+.menu-list li .open {
+    display: block;
+    }
+
+/* # MEDIA QUERY # */
+@media (min-width:800px) {
+    
+/* tak samo jak w przykładzie referencyjnym */
+
+    .menu-list li:hover .submenu-container {
+        display: block;
+        }
+    }
+```
+
+JavaScript jak poprzednio przełącza klasę `.open` dla Hamburgera. Drugim działaniem jest przełączenie klasy `.open` dla kontenera Dropdowna.
+
+Tutaj kod jest dużo bardziej rozbudowany.
+
+Zacznijmy od końca. Tak jak poprzednio przy przejściu do wyższych rozdzielczości trzeba odebrać klasę .open i to zarówno całemu menu (34), jak i wszystkim submenu (35-37). Pętla z licznikiem jest może prymitywna, ale zapewnia wydajność.
+
+Przełączenie .open dla samego menu funkcją listToggle wiąże się z wyłączeniem .open dla wszystkich submenu, również robionym w pętli (21-26).
+
+Zupełnie nowym elementem jest funkcja sublistToggle (4-19), która na samym początku jest ograniczona w działaniu do rozdzielczości mobilnej (5). W drugim kroku wyłączamy '.open' jeżeli już jest i kończymy funkcję (8-11), co zapewnia naturalne działanie otwórz / zamknij. Jeżeli zaś kliknięte submenu jest zamknięte, to najpierw zamykamy wszystkie inne (13-15), a potem przez toggle (17; równie dobrze może być add) włączamy klasę .open.
+
+JS:
+
+```js {numberLines: true}
+const toggler = document.getElementById("menu-toggler");
+const sublistToggler = document.getElementById("menu-list");
+
+const sublistToggle = (e) => {
+    if (window.visualViewport.width<800)  {
+    const clickedItemClasslist = e.path[0].children[1].classList
+    // COLLAPSE IF EXPANDED
+    if (clickedItemClasslist.contains('open')) {
+        clickedItemClasslist.remove("open");
+        return;
+        }
+    // ACCORDION
+    for (let i = 0; i < sublistToggler.children.length; i++) {
+        sublistToggler.children[i].children[1].classList.remove("open")
+        }
+    // EXPAND
+    clickedItemClasslist.toggle("open");
+    }
+  };
+
+const listToggle = () => {
+    toggler.classList.toggle("open");
+    for (let i = 0; i < sublistToggler.children.length; i++) {
+        sublistToggler.children[i].children[1].classList.remove("open")
+        }
+}
+
+sublistToggler.addEventListener("click", (e) => sublistToggle(e));
+toggler.addEventListener("click", () => listToggle());
+
+// CLOSE EXPANDED IF RESIZED UP
+const closeExpanded = () => {
+      if (window.visualViewport.width>799) {
+        toggler.classList.remove("open");
+    for (let i = 0; i < sublistToggler.children.length; i++) {
+        sublistToggler.children[i].children[1].classList.remove("open")
+        }
+      }
+   }
+window.addEventListener('resize', closeExpanded);
+```
+
+- CodePen [Flat menu with Hamburger](https://codepen.io/tdudkowski/pen/NWawYXr)
+
+### Mega Menu z Hamburgerem
+
+Czasem, jeżeli trzeba przedstawić większą liczbę elementów menu, stosuje się bardziej zaawansowaną formę - menu blokowe, po angielsku najczęściej określane jako Mega Menu. Terminologia jest jak to zwykle w tak dynamicznej branży raczej zwyczajowa, zwykle się stosuje te nazwy, które się zwykle stosuje, heh. Ale Mega Menu to najczęściej stosowane określenie, jakoś odnoszące się do obszerności.
+
+Zobaczmy jak to rozwiązało [Adobe](https://www.adobe.com/) - po kliknięciu w element nadrzędny pokazuje się cały blok menu.
+
+Tutaj warto zauważyć, że takich bloków w granicach rozsądku i użyteczności może rozmaita i dowolna liczba (w zasadzie od dwóch do czterech) i taki blok to może być zarówno lista menu, jak i obrazek, tekst, formularz, cokolwiek.
+
+Po przejściu do rozdzielczości mobilnej menu chowa się w Hamburger, który kliknięty pokazuje menu nadrzędne. Każdy z jego elementów po kliknięciu rozwija podstawowe elementy bloku menu, czyli nagłówki, które stają się klikalne i rozwijają swoje listy.
+
+Spróbujmy zrobić coś podobnego, korzystając z dotychczasowego kodu i upraszczając mechanikę do jednego stopnia operacji, tzn. po kliknięciu w element głównego menu rozwiną się wszystkie listy / elementy danego submenu. Wbrew pozorom jest to bardzo proste do zrobienia.
+
+HTML, żeby nie komplikować, załóżmy że wszystkie elementy submenu są listami:
+
+```html {numberLines: true}
+<header>
+    <nav class="menu-container">
+        <div class="menu-toggler" id="menu-toggler">
+            <div class="hamburger"></div>
+        </div>
+        <ul class="menu-list" id="menu-list">
+            <li><a href="/01">Element 01</a>
+                <div class="submenu-container">
+                    <div>
+                        <h4>submenu title 01</h4>
+                        <ul class="menu-sublist">
+                            <li><a href="/0211">Element 0211</a></li>
+                            <li><a href="/0212">Element 0212</a></li>
+                            <li><a href="/0213">Element 0213</a></li>
+                            <li><a href="/0214">Element 0214</a></li>
+                            <li><a href="/0215">Element 0215</a></li>
+                        </ul>
+                    </div>
+                    <div>
+                        <h4>submenu title 02</h4>
+                        <ul class="menu-sublist">
+                            <li><a href="/0221">Element 0221</a></li>
+                            <li><a href="/0222">Element 0222</a></li>
+                            <li><a href="/0223">Element 0223</a></li>
+                            <li><a href="/0224">Element 0224</a></li>
+                            <li><a href="/0225">Element 0225</a></li>
+                        </ul>
+                    </div>
+                    <div>
+                        <h4>submenu title 03</h4>
+                        <ul class="menu-sublist">
+                            <li><a href="/0231">Element 0231</a></li>
+                            <li><a href="/0232">Element 0232</a></li>
+                            <li><a href="/0233">Element 0233</a></li>
+                            <li><a href="/0234">Element 0234</a></li>
+                            <li><a href="/0235">Element 0235</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </li>
+            <!-- reszta elementów menu  -->
+        </ul>
+    </nav>
+</header>
+```
+
+Podobnie jak w poprzednim przykładzie w rozdzielczości desktopowej akcja na menu będzie się odbywać na najechanie myszy (:hover). Wewnątrz bloku listy układamy jak zwykle przez Flexbox, jako row dla większej i column dla mniejszej rozdzielczości.
+
+Jedyna różnice to reguły dla:
+
+- '.submenu-container' (1-4), która poprzednio była po prostu `display: none;`.
+- '.menu-list li .open' (6-10), poprzednio: `display: block;` tutaj w małej rozdzielczości ustawiamy je kolumną Flexboxa, a `position: relative;` zapewnia poprawne działanie akordeonu.
+- dla bloku w wyższej rozdzielczości: dwie pierwsze reguły są identyczne (13-20), w trzeciej (22-27) w poprzednim przykładzie dla '.menu-list li:hover .submenu-container' było to `display: block;`; dodatkowo tutaj pojawia się też reguła dla '.menu-list li:hover > .submenu-container div' (29-37).
+
+CSS:
+
+```css {numberLines: true}
+.submenu-container {
+  left: 0;
+  display: none;
+  }
+
+.menu-list li .open {
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  }
+
+@media (min-width: 800px) {
+  .menu-toggler {
+    display: none;
+  }
+
+  .menu-list {
+    flex-direction: row;
+    left: 0;    
+  }
+
+  .menu-list li:hover > .submenu-container {
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    position: absolute;
+  }
+
+  .menu-list li:hover > .submenu-container div {
+    flex: 1;
+  }
+}
+```
+
+Jak widać, są to różnice bardzo niewielkie jak dla tak odmiennej konstrukcji menu i poza jednym wyjątkiem dotyczą stylowania menu w większej rozdzielczości.
+
+A JavaScript? Jest ten sam jak w poprzednim przykładzie.
+
+- CodePen [Mega Menu with Hamburger](https://codepen.io/tdudkowski/pen/yLzPKvX)
+
+### Mega Menu z Hamburgerem v2
+
+W tej wersji mamy do czynienia z inną mechaniką submenu, które zamiast rozwijać się jak akordeon, będzie wyjeżdżało z boku, w tym wypadku z prawej strony.
+
+HTML jak w poprzednim przykładzie.
+
+CSS jest bardzo podobny, trzeba tylko dodać:
+
+- przesunięcie kontenera submenu w prawo (6)
+- jego animację po dodaniu klasy '.open' (10-13)
+- overflow (16-19)
+- domyślną pozycję kontenera submenu w rozdzielczości desktopowej (24-27)
+
+```css {numberLines: true}
+.submenu-container {
+  position: absolute;
+  box-shadow: 2px 2px 5px rgba(51, 51, 51, 0.5);
+  background-color: #ffe;
+  /* new rule below */
+  left: 200%;
+}
+
+/* new rule */
+.menu-list li .open.submenu-container {
+  left: 0;
+  transition: all 0.3s linear;
+}
+
+/* new rule */
+.newHeight {
+  overflow-x: hidden;
+  overflow-y: auto; 
+}
+
+@media (min-width: 800px) {
+ 
+  /* new rule */
+  .menu-list li .submenu-container {
+    left: 0;
+    display: none;
+  }
+
+}
+```
+
+JavaScript też jest bardzo podobny. Różni się tylko w trzech miejscach, poniżej przedstawiony jest tylko fragment z widocznymi różnicami:
+
+- pobranie kontenera - jest to dziecko body (3)
+- dodanie flagi (4)
+- inna sekcja EXPAND w funkcji sublistToggle (15-19)
+
+```js {numberLines: true}
+const toggler = document.getElementById("menu-toggler");
+const sublistToggler = document.getElementById("menu-list");
+const container = document.getElementsByClassName("container")[0];
+let flag = false;
+
+const sublistToggle = (e) => {
+    if (window.visualViewport.width<800)  {
+    const clickedItemClasslist = e.path[0].children[1].classList
+    
+    // COLLAPSE IF EXPANDED
+    if (clickedItemClasslist.contains('open')) {clickedItemClasslist.remove("open"); return;}
+    // ACCORDION
+    for (let i = 0; i < sublistToggler.children.length; i++) {sublistToggler.children[i].children[1].classList.remove("open")}
+    // EXPAND
+    if (e.target.children[1]) {
+    e.target.children[1].classList.toggle("open");
+    flag = e.target.children[1].classList.contains("open") ? true : false;
+    container.classList.add("newHeight");
+      }
+    }
+  };
+//   rest of code
+```
+
+- CodePen [Mega Menu with Hamburger v2](https://codepen.io/tdudkowski/pen/jOGazzB)

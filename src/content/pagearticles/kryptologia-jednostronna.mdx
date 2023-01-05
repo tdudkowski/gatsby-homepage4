@@ -1,0 +1,130 @@
+---
+title: "Kryptografia jednostronna"
+comment: ""
+section: "it"
+subsection: "kryptologia"
+---
+
+### Zasada
+
+Szyfr nieodwracalnie zamieniający tekst jawny w szyfrogram, odzyskanie jawnego tekstu z szyfrogramu jest niemożliwe. Musi być wydajny i deterministyczny. Wbrew pozorom bardzo pożyteczny i znajdujący wiele zastosowań, najczęściej spotykany w funkcjach haszujących (funkcjach skrótu), które tworzą skrót (tzw. hasz).
+
+Najczęściej używany w uwierzytelnianiu i przy sprawdzaniu integralności danych. Wciąż niestety popularne i już od dawna niebezpieczne: MD5 i SHA-1. 
+
+Schemat:
+
+```
+tekst jawny >--[funkcja haszująca]--> szyfrogram
+```
+      
+Założenia:
+
+- **deterministyczna** z tej samej wiadomości / tego samego pliku tworzy zawsze ten sam hasz
+- **skrótowa** niezależnie od długości wiadomości / wielkości pliku hasz jest tej samej długości - dlatego nazywany też skrótem wiadomości (message digest) lub cyfrowym odciskiem palca (digital fingerprint)
+- **nieodwracalna**, chociaż jest łatwa do wyliczenia, nie da się wykonać odwrotnej operacji, czyli mając skrót, nie można odtworzyć informacji; jednokierunkowość (one-wayness) - brak możliwości wnioskowania o wiadomości wejściowej ze skrótu
+- **unikalna** każda informacja daje skrót unikalny tylko dla niej, czyli nie da się (lub jest to nieopłacalnie trudne) odnaleźć dwóch informacji dających identyczny skrót - taka sytuacja, kiedy dwie wiadomości mają ten sam skrót (czyli tzw. kolizja) dyskwalifikuje szyfr, w praktyce oczywiście chodzi o łatwość znalezienia kolizji, można wymienić tu:
+  - odporność na kolizje (collision resistance): jest brak praktycznej możliwości wygenerowania dwóch dowolnych wiadomości o takim samym skrócie: nie da się znaleźć *m1* i *m2* takich, że hash*(m1)* = hash*(m2)*
+  - odporność na kolizje konkretnych wiadomości (target collision-resistance, preimage resistance) - brak praktycznej możliwości wygenerowania wiadomości o takim samym skrócie jak wskazana wiadomość;
+    - pierwszego rzędu: dla danego *h* powinno być trudne znalezienie takiego *m*, że *h = hash(m)*.
+    - drugiego rzędu (second preimage resistant): dla danego *m1*, nie powinno się dać znaleźć *m2* (inne niż *m1*) takie, że hasz*(m1)* = hasz*(m2)*.
+- **losowa** nawet odnalezienie dwóch informacji dających podobne skróty powinno być niewykonalne, niemożność odróżnienia od losowej wyroczni, atakujący nie może się dowiedzieć ze skrótu niczego; inaczej mówiąc najmniejsza nawet zmiana tekstu jawnego, nawet o jeden bit, powinna zmieniać ok połowy bitów skrótu, daje to brak podatności na kryptoanalizę różnicową; funkcje haszujące powinny zachowywać się jak funkcje losowe o ile to możliwe, będąc jednocześnie funkcjami deterministycznymi, łatwymi do obliczenia
+
+Konstrukcja (funkcja skrótu) Merkle-Damgård
+
+Funkcja haszująca musi być w stanie przetworzyć dowolnej długości wiadomość lub ciąg danych w skrót o ustalonej długości. Jest to osiągane przez dzielenie wejścia na jednakowej długości bloki i ich sekwencyjne przetwarzanie przy użyciu kompresji. Ostatni przetwarzany blok zawiera również długość całej wiadomości. 
+
+```
+      [message ]  [message ]      [message ]
+      [block 1 ]  [block 2 ]      [block n ]
+             |           |               |
+             V           V               V
+
+| IV | ->  | f |   ->  | f | ... ... -> | f |  ->  | Hasz |
+```
+
+Funkcja kompresji - *f* - przetwarza stałej długości wejście w wyjście tego samego rozmiaru. Algorytm startuje z wartością początkową, wektorem inicjalizacji (initialisation vector - *IV*). Dla każdego następnego bloku wiadomości, kompresja bierze poprzedni rezultat, łączy go z blokiem i wylicza rezultat pośredni. Bity reprezentujące długość całej wiadomości są dołączone do wiadomości jako część ostatniego bloku. Wartość ostatniego bloku jest skrótem całej wiadomości.
+
+Popularność tego rozwiązania wynika z faktu, że Merkle i Damgård dowiedli, że funkcja kompresji jest odporna na kolizję (*collision-resistant*), a funkcja mieszająca przejmuję tę właściwość. Niestety ta konstrukcja ma również kilka niepożądanych słabości: 
+
+- są podatne na *length-extension attacks*: dla danego *h(m)* i *len(m)*, ale nie *m*, przez wybranie odpowiedniego *m'* atakujący może wyliczyć *h(m || m')* gdzie || oznacza konkatenację, co może złamać prostsze mechanizmy uwierzytelnienia używające funkcji haszujących. Ten problem rozwiązuje HMAC
+- *second-preimage attacks* przeciwko długim wiadomościom są skuteczniejsze niż BF
+
+Idealna funkcja haszująca powinna być maksymalnie "nudna": nie powinna mieć żadnych interesujących właściwości takich jak długość rozszerzenia (length extension) i jedyną różnicą od funkcji przypadkowej powinno być to, że jest deterministyczna i łatwa do wyliczenia. To kryterium jest trudne do formalnego wyrażenia. Najbliższy mu jest model przypadkowej wyroczni (*random oracle model*) - jest on ideał, którego nie może zrealizować żadna prawdziwa funkcja haszująca. 
+
+Lista kryptograficznych funkcji haszujących (niektóre z nich są niebezpieczne): HAVAL, MD2, MD4, MD5, N-Hash, RIPEMD-160, SHA (seria funkcji rozwijana przez NSA: SHA znany jest także jako SHA-0, SHA-1 i cztery smaki funkcji znanej jako SHA-2.), Snefru, Tiger, Whirlpool 
+
+Jeśli atakujący odtworzyłby pierwotną wiadomość lub mógł odnaleźć taką o identycznym skrócie, byłby w stanie zastępować autoryzowane wiadomości swoimi.
+
+### Zastosowania
+
+Zastosowania funkcji haszujących. 
+
+- mechanizm zaangażowania (commitment scheme): Alice tworzy skrót rozwiązania (np. problemu, zadania) i przesyła go Bobowi, jeśli Bob wpadnie na nie później, będzie mógł potwierdzić, że Alice była pierwsza.
+- integralność danych (message integrity): ciągła kontrola lub porównanie przed i po transmisji, weryfikacja spójności danych; porównanie skrótów dwóch plików umożliwia stwierdzenie, czy w pliku zostały dokonane jakiekolwiek zmiany.
+- identyfikacja pliku: systemy kontroli wersji takie jak Git używają SHA do identyfikacji różnego rodzaju zawartości (zawartość plików, drzewa katalogów), również w sieciach P2P używa się nazwy i wielkości pliku, zapewniając dostateczną ilość danych do zlokalizowania, pobrania i weryfikacji zawartości pliku
+- weryfikacja hasła: hasła zwykle są przechowywane w postaci skrótów, wpisywane hasło jest przeliczane na skrót i oba skróty są porównywane; zabezpiecza to przed sytuacją, kiedy baza z hasłami wycieknie, jeśli były przechowywane w postaci jawnego tekstu, natychmiast narażone są wszystkie konta, jeśli były to skróty, sytuacja jest o wiele lepsza (pod warunkiem, że zastosowano silne szyfrowanie)
+- ze względu na wydajność większość algorytmów podpisu cyfrowego polega na tym, że to skrót wiadomości jest podpisywany
+- tworzenie pseudolosowych danych (pseudorandomness)
+- używanie skrótów w tablicach w celu szybkiego wyszukiwania danych
+- uwierzytelnienie wiadomości (message authentication),
+
+#### Checksum
+
+Suma kontrolna, wygenerowany skrót z pliku jest identyfikatorem pliku, potwierdza jego stan, jak i integralność. 
+
+#### MAC (Message Authentication Code)
+
+Kod uwierzytelniania wiadomości - do wyliczenia skrótu używa klucza i tylko osoby znające ten klucz mogą zweryfikować autentyczność wiadomości.
+
+HMAC (keyed-Hash Message Authentication Code aka Hash-based Message Authentication Code) - j.w. ale w tym wypadku tajny klucz jest wmieszany do funkcji skrótu, więc HMAC zapewnia potwierdzenie zarówno autentyczności, jak i integralności wiadomości / pliku.
+
+#### CRC (Checksums and Cyclic redundancy checks)
+
+System sum kontrolnych - służy do wykrywania błędów transmisji i magazynowania danych binarnych, w wykrywaniu błędów skuteczniejszy od sumy kontrolnej, ale nie nadaje się do kryptograficznej ochrony integralności danych, gdyż jest podatny na atak. Zastosowanie wyłącznie diagnostyczne.
+
+### Algorytmy
+
+#### MD5 (Message-Digest algorithm 5)
+
+Popularny kiedyś algorytm haszujący, który z dowolnego ciągu danych generuje 128-bitowy skrót; opracowany przez Ronalda Rivesta w 1991 roku. W 2004 stwierdzono istotne braki. Obliczany jest kolejno hasz z każdego bloku w łańcuchu (z dodaniem początkowego *initial seed* dla pierwszego), wartość ziarna z ostatniego bloku jest haszem całego łańcucha. Poprzednikiem był algorytm - MD4 -, który w wyniku analizy przeprowadzonej przez Hansa Dobbertina nie jest już bezpieczny.
+
+Ataki na MD5:
+
+- w 1996 Dobbertin zaprezentował analizę kolizji funkcji haszującej algorytmu MD5
+- W marcu 2004 powstał rozproszony projekt nazywany MD5CRK. Jean-Luc Cooke i jego współpracownicy. Miał on na celu wykazanie, że możliwe jest takie spreparowanie drugiej wiadomości na podstawie wiadomości wyjściowej, aby obie dały ten sam skrót; wykazano, że dysponując dostatecznie dużą mocą obliczeniową, możliwe jest podrabianie generowanych podpisów.
+- 17 sierpnia 2004 chińscy naukowcy (Xiaoyun Wang, Dengguo Fen, Xuejia Lai i Hongbo Yu) opublikowali analityczny algorytm ataku, w którym do podrobienia podpisu wystarczyła godzina działania klastrowego komputera IBM P690
+
+Sprawdzanie integralności: skrót MD5 był często stosowany przy dystrybucji oprogramowania dla zapewnienia, że ściągnięty plik nie został zmieniony - dzięki porównaniu opublikowanego skrótu z sumą kontrolną sprowadzonego pliku można było upewnić się, że jest to ten sam plik, który opublikowali programiści; chroniło to nie tylko przed podmianą, ale także przez zwykłym popsuciem pliku w czasie transferu lub niekompletnym transferem. Żeby zweryfikować integralność plików, należy sprowadzić plik MD5SUM do tego samego katalogu co sprawdzany plik i użyć programu MD5 (w systemach uniksowych polecenie md5sum).
+
+- Wikipedia: [MD5 (pl.)](http://pl.wikipedia.org/wiki/MD5), [MD5 (eng.)](http://en.wikipedia.org/wiki/MD5)
+- [MD5 crack](http://passcracking.com/)
+- CITS Insitute for Cryptology and IT-Security: [Attacking Hash Functions by Poisoned Messages "The Story of Alice and her Boss"](http://www.cits.rub.de/MD5Collisions/)
+- The Code Project: [Good Bye MD5](http://www.codeproject.com/useritems/GoodbyeMD5.asp), [Exploiting MD5 collisions (in C#)](http://www.codeproject.com/useritems/HackingMd5.asp)
+
+#### SHA (Secure Hash Algorithm)
+
+Rodzina powiązanych ze sobą funkcji haszujących zaprojektowanych przez NSA (National Security Agency) i publikowanych przez NIST (National Institute of Standards and Technology). Podstawowym celem publikacji SHA był Standard Podpisu Cyfrowego (Digital Signature Standard), którego SHA był częścią. SHA jest podstawą szyfru blokowego SHACAL.
+
+- Pierwszy z nich opublikowany w 1993 oficjalnie nazwany **SHA** (nieoficjalnie, żeby nie pomylić z następcą określany jako SHA-0).
+- **SHA-1** opublikowany został w 1995 i całkowicie zastąpił wycofanego (ze względu na nieujawnione oficjalnie wady) z użytku SHA-0.
+- Po 2001 powstały cztery następne warianty określane jako **SHA-2** (SHA-224, SHA-256, SHA-384, SHA-512).
+
+SHA-0 i SHA-1 tworzą 160-bitowy skrót z wiadomości o maksymalnym rozmiarze 264 bity i jest oparty o podobne zasady co MD5.
+
+NIST ogłosił, że do 2010 zaprzestanie stosować SHA-1 na rzecz różnych wariantów SHA-2.
+
+- [SHA](http://en.wikipedia.org/wiki/SHA)
+
+#### bcrypt
+
+Bezpieczna funkcja skrótu opracowana na bazie algorytmu Blowfish, przeznaczona do haszowania haseł. Odporny na atak tęczowymi tablicami i BF.
+
+- [bcrypt](https://en.wikipedia.org/wiki/Bcrypt)
+
+### Odnośniki
+
+- [Md5 Decrypt & Encrypt](https://md5decrypt.net/en/)
+- AdminAkademia ["Algorytmy haszujące (funkcje skrótu) - Wstęp do problematyki kryptografii (część 2)" [YT 39:57]](https://www.youtube.com/watch?v=FYpoZ6wzJWo) | ["Aspekty bezpieczeństwa algorytmów haszujących(m.in. menedżer haseł) - Podstawy kryptografii(część 3)" [YT 1:24:16]](https://www.youtube.com/watch?v=-Vr4fr2SSpY)
+- Programming with Professor Sluiter ["Hashing vs Encryption Differences" [YT 19:37]](https://www.youtube.com/watch?v=GI790E1JMgw)
+- Computerphile ["Hashing Algorithms and Security - Computerphile" [YT 8:11]](https://www.youtube.com/watch?v=b4b8ktEV4Bg)
+- Simply Explained ["Passwords & hash functions (Simply Explained)" [YT 7:27]](https://www.youtube.com/watch?v=cczlpiiu42M)
