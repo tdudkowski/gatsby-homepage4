@@ -21,8 +21,8 @@ h2 {color:#443;}
 
 & ul {display:flex; flex-direction:row; background-color: rgba(51,51,51,.2); list-style-type:none; padding-left:0;}
 & ul li {display:inline-block;}
-& ul li a, body.dark & ul li a {display:block; width:fit-content; background-color:transparent; color: #332;  margin:2px; padding: 3px .3rem; font-size:1rem;}
-& ul li a:hover, body.dark & ul li a:hover { color:#330; text-decoration:underline; background-color: rgba(51,51,51,.2);}
+& ul li a, body.dark & ul li a {display:block; width:fit-content; background-color:transparent; color: #cca;  margin:2px; padding: 3px .3rem; font-size:1rem;}
+& ul li a:hover, body.dark & ul li a:hover { color:#ffd; text-decoration:underline; background-color: rgba(51,51,51,.2);}
 
 @media (min-width: 850px) {
 flex-direction:row;

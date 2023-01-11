@@ -1,5 +1,5 @@
 import Prism from "prismjs";
-import "prismjs/themes/prism-okaidia.css";
+import "prismjs/themes/prism-night-owl.css";
 require("prismjs/plugins/line-numbers/prism-line-numbers.css")
 
 Prism.manual = true;
