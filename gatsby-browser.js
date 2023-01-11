@@ -1,6 +1,6 @@
 import Prism from "prismjs";
-import "prismjs/themes/prism-night-owl.css";
-require("prismjs/plugins/line-numbers/prism-line-numbers.css")
+import "./src/components/prism-night-owl.css";
+import "prismjs/plugins/line-numbers/prism-line-numbers.css";
 
 Prism.manual = true;
 
