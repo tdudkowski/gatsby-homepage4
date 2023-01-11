@@ -64,3 +64,5 @@ table tr {display:flex; flex-direction: column;}
 .section-meta {padding:1rem;}
 
 footer p {text-align: center;}
+
+div > code.language-text {display: inline-block; padding: 0 1rem;}

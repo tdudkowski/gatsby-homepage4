@@ -1,5 +1,5 @@
 import React from "react"
-import { graphql, Link } from "gatsby"
+import { useStaticQuery, graphql, Link } from "gatsby"
 import Seo from "../components/seo"
 import { MDXProvider } from "@mdx-js/react";
 import ArmiaNiemiecka from "../components/box-armia-niemiecka";
@@ -10,19 +10,35 @@ import SeeAlso from "../components/box-seealso";
 import LayoutFB from "../components/layout-fb"
 import 'gatsby-remark-vscode/styles.css';
 
-const shortcodes = { ArmiaNiemiecka, WojnaNaPacyfiku, DolnySlask, Europa, SeeAlso }
+const FBArticleTemplate = ( {data, children} ) => {
 
-const FBArticleTemplate = ({ data: {mdx}, children }) => {
+  const shortcodes = { ArmiaNiemiecka, WojnaNaPacyfiku, DolnySlask, Europa, SeeAlso }
 
-  const { frontmatter, body } = mdx;
-  const { title: pageTitle, img } = frontmatter;
+//   const data = useStaticQuery(graphql`
+//   query FBArticleQuery {
+//     mdx {
+//         body
+//         fields {
+//           slug
+//         }
+//         frontmatter {
+//           title
+//           tags
+//           date(formatString: "YYYY-MM-DD")
+//                   }
+//        }
+//   }
+// `)
+
+  const { frontmatter, body } = data.mdx;
+  const { title: pageTitle, img, tags } = frontmatter;
   const headerTitle = `Festung Breslau 1945 | ${pageTitle}`
 
   let tagsArray
-  if (mdx !== undefined) {
-    const { frontmatter } = mdx
-    tagsArray = [...frontmatter.tags.split(",")]
+  if (frontmatter !== undefined) {
+       tagsArray = [...frontmatter.tags.split(",")]
   }
+  console.log(data)
   
   return (
     <LayoutFB sub="article">
@@ -30,8 +46,9 @@ const FBArticleTemplate = ({ data: {mdx}, children }) => {
       <p>Aktualizacja: {frontmatter.date}</p>
       <p><Link to="../../">Powrót do strony głównej Bloga</Link></p>
       <section className="article">
-      <MDXProvider components={shortcodes}>{children}</MDXProvider>
-      {/* {children} */}
+      <MDXProvider components={shortcodes}>
+        {children}
+      </MDXProvider>
         <div className="tags tagsDiv">
           <h4>Tagi:</h4>
           <ul>{tagsArray.map(tag => <li key={tag}><Link to={`/festung-breslau/tag/${tag.trim()}`}>{tag.trim()}</Link></li>)}</ul>
@@ -46,7 +63,7 @@ const FBArticleTemplate = ({ data: {mdx}, children }) => {
 export default FBArticleTemplate
 
 export const query = graphql`
-query($id: String!) {
+query FBArticleQuery($id: String!) {
   mdx(id: { eq: $id }) {
       body
       fields {
@@ -54,9 +71,9 @@ query($id: String!) {
       }
       frontmatter {
         title
-        date(formatString: "YYYY-MM-DD")
         tags
-             }
+        date(formatString: "YYYY-MM-DD")
+                }
      }
-  }
-`;
+}
+`

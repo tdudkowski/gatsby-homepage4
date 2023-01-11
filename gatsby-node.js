@@ -17,7 +17,9 @@ exports.createPages = async ({ graphql, actions, reporter }) => {
   
   // GET DATA OF GRAPHQL
   const result = await graphql(`{
-      pageindexes: allMdx(filter: {internal: {contentFilePath: {glob: "**/src/content/pageindexes/*.mdx"}}}) {
+      pageindexes: allMdx(
+        filter: { internal: { contentFilePath: { glob: "**/src/content/pageindexes/*.mdx" } } }
+        ) {
       nodes {
         id
         internal {
@@ -30,7 +32,9 @@ exports.createPages = async ({ graphql, actions, reporter }) => {
       }
     }
 
-      pagearticles: allMdx(filter: {internal: {contentFilePath: {glob: "**/src/content/pagearticles/*.mdx"}}}) {
+      pagearticles: allMdx(
+        filter: { internal: { contentFilePath: { glob: "**/src/content/pagearticles/*.mdx" } } }
+        ) {
         nodes {
           id
           internal {
@@ -46,8 +50,10 @@ exports.createPages = async ({ graphql, actions, reporter }) => {
         }
       }
 
-      blogposts: allMdx(filter: {internal: {contentFilePath: {glob: "**/src/content/blogposts/*.mdx"}}},
-      sort: {frontmatter: {date: DESC} }) {
+      blogposts: allMdx(
+        filter: { internal: { contentFilePath: { glob: "**/src/content/blogposts/*.mdx" } } }
+        sort: { frontmatter: { date: DESC } }
+      ) {
         nodes {
           id
           internal {
@@ -63,8 +69,9 @@ exports.createPages = async ({ graphql, actions, reporter }) => {
         }
       }
 
-      fbposts:   allMdx(filter: {internal: {contentFilePath: {glob: "**/src/content/fbposts/*.mdx"}}},
-        sort: {frontmatter: {date: DESC} }
+      fbposts:   allMdx(
+        filter: { internal: { contentFilePath: { glob: "**/src/content/fbposts/*.mdx" } } }
+        sort: { frontmatter: { date: DESC } }
       ) {
         nodes {
           id
@@ -81,8 +88,10 @@ exports.createPages = async ({ graphql, actions, reporter }) => {
         }
       }
 
-      fbarticles: allMdx(filter: {internal: {contentFilePath: {glob: "**/src/content/fbarticles/*.mdx"}}},
-      sort: {frontmatter: {date: DESC} }) {
+      fbarticles: allMdx(
+        filter: { internal: { contentFilePath: { glob: "**/src/content/fbarticles/*.mdx" } } }
+        sort: { frontmatter: { date: DESC } }
+      ) {
         nodes {
           id
           internal {
@@ -111,49 +120,29 @@ exports.createPages = async ({ graphql, actions, reporter }) => {
     const fbposts = result.data.fbposts.nodes;
     const fbarticles = result.data.fbarticles.nodes;
 
+    // console.log(fbarticles)
     // MAKE PAGE INDEXES AND ARTICLES
 
     pageindexes.forEach(article => {
       createPage({
-        // As mentioned above you could also query something else like frontmatter.title above and use a helper function
-        // like slugify to create a slug
-        // path: '/post/' + node.fields.slug,
         path: "/" + article.frontmatter.section + "/" + article.frontmatter.subsection,
-        // Provide the path to the MDX content file so webpack can pick it up and transform it into JSX
-        // component: node.internal.contentFilePath,
         component: `${pageArticleTemplate}?__contentFilePath=${article.internal.contentFilePath}`,
-        // You can use the values in this context in
-        // our page layout component
         context: { id: article.id },
       })
     })
 
     pagearticles.forEach(article => {
       createPage({
-        // As mentioned above you could also query something else like frontmatter.title above and use a helper function
-        // like slugify to create a slug
-        // path: '/post/' + node.fields.slug,
         path: "/" + article.frontmatter.section + "/" + article.frontmatter.subsection + article.fields.slug,
-        // Provide the path to the MDX content file so webpack can pick it up and transform it into JSX
-        // component: node.internal.contentFilePath,
         component: `${pageArticleTemplate}?__contentFilePath=${article.internal.contentFilePath}`,
-        // You can use the values in this context in
-        // our page layout component
         context: { id: article.id },
       })
     })
 
     blogposts.forEach(article => {
       createPage({
-        // As mentioned above you could also query something else like frontmatter.title above and use a helper function
-        // like slugify to create a slug
-        // path: '/post/' + node.fields.slug,
         path: "/blog" + article.fields.slug,
-        // Provide the path to the MDX content file so webpack can pick it up and transform it into JSX
-        // component: node.internal.contentFilePath,
         component: `${pageBlogpostTemplate}?__contentFilePath=${article.internal.contentFilePath}`,
-        // You can use the values in this context in
-        // our page layout component
         context: { id: article.id },
       })
     })
@@ -185,30 +174,16 @@ exports.createPages = async ({ graphql, actions, reporter }) => {
 
     fbposts.forEach(article => {
       createPage({
-        // As mentioned above you could also query something else like frontmatter.title above and use a helper function
-        // like slugify to create a slug
-        // path: '/post/' + node.fields.slug,
         path: "/festung-breslau/blog" + article.fields.slug,
-        // Provide the path to the MDX content file so webpack can pick it up and transform it into JSX
-        // component: node.internal.contentFilePath,
         component: `${fbBlogpostTemplate}?__contentFilePath=${article.internal.contentFilePath}`,
-        // You can use the values in this context in
-        // our page layout component
         context: { id: article.id },
       })
     })
 
     fbarticles.forEach(article => {
       createPage({
-        // As mentioned above you could also query something else like frontmatter.title above and use a helper function
-        // like slugify to create a slug
-        // path: '/post/' + node.fields.slug,
-        path: "/festung-breslau/article" + article.fields.slug,
-        // Provide the path to the MDX content file so webpack can pick it up and transform it into JSX
-        // component: node.internal.contentFilePath,
+        path: "festung-breslau/article" + article.fields.slug,
         component: `${fbArticleTemplate}?__contentFilePath=${article.internal.contentFilePath}`,
-        // You can use the values in this context in
-        // our page layout component
         context: { id: article.id },
       })
     })

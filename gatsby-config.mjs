@@ -1,6 +1,14 @@
-require("dotenv").config({ path: `.env`, })
+// require("dotenv").config({ path: '.env', })
+import dotenv from 'dotenv';
+import remarkGfm from 'remark-gfm';
+import path from 'path';
+import { fileURLToPath } from 'url';
 
-module.exports = {
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+dotenv.config({ path: path.join(__dirname, '.env') });
+
+const config = {
     siteMetadata: {
         title: `Tadeusz Dudkowski Homepage :// `,
         titleTemplate: `Tadeusz Dudkowski | http://dygresje.info`,
@@ -12,6 +20,7 @@ module.exports = {
         twitterUsername: "@tdudkowski",
         facebookFanpage: "https://www.facebook.com/dygresje.info",
     },
+    pathPrefix: "/gatsby-homepage4",
     plugins: [
         'dotenv',
         `gatsby-plugin-styled-components`,
@@ -179,6 +188,11 @@ module.exports = {
                         },
                       },
                 ],
+                mdxOptions: {
+                    remarkPlugins: [
+                        remarkGfm,            
+                      ],
+                   },
             },
         },
         {
@@ -362,3 +376,5 @@ module.exports = {
         },
     ],
 }
+
+export default config;

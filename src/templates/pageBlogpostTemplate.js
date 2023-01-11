@@ -10,7 +10,7 @@ const shortcodes = { Warning }
 const PageBlogpost = ({ data: {mdx}, children, location }) => {
 
   const path = location.pathname
-  const { frontmatter, body } = mdx;
+  const { frontmatter } = mdx;
   const { date, edited, image } = frontmatter;
   const headerTitle = `dygresje.info / blog: ${frontmatter.title}`
 
@@ -19,7 +19,10 @@ const PageBlogpost = ({ data: {mdx}, children, location }) => {
       <h2>{frontmatter.title}</h2>
       {date ? <p>Data publikacji: {date}</p> : null}
       {edited ? <p>Ostatnia edycja: {edited}</p> : null}
-      <MDXProvider components={shortcodes}>{children}</MDXProvider>
+
+        <MDXProvider components={shortcodes}>
+        {children}
+      </MDXProvider>
     </LayoutBlog>
   );
 };
@@ -34,7 +37,6 @@ export const query = graphql`
  query($id: String!) {
   mdx(id: { eq: $id }) {
       id
-      body
       fields {
         slug
       }

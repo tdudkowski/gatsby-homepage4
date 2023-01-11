@@ -31,7 +31,9 @@ const FBBlogPostTemplate = ({ data: {mdx}, children }) => {
       <p><Link to="../../">Powrót do strony głównej Bloga</Link></p>
       <section className="post">
        
-        <MDXProvider components={shortcodes}>{children}</MDXProvider>
+      <MDXProvider components={shortcodes}>
+        {children}
+      </MDXProvider>
         
           <div className="tags tagsDiv">
           <h4>Tagi:</h4>

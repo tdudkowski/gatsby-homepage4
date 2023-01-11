@@ -10,7 +10,7 @@ const shortcodes = { Warning }
 
 const ArticlePage = ({ data: {mdx}, children, pageContext, location  }) => {
 
-  const { frontmatter, body } = mdx;
+  const { frontmatter } = mdx;
   const headerTitle = `dygresje.info | ${frontmatter.title}`
   const {
     breadcrumb: { crumbs },
@@ -27,8 +27,9 @@ const ArticlePage = ({ data: {mdx}, children, pageContext, location  }) => {
       />
 
       <h2>{mdx.frontmatter.title}</h2>
-         <MDXProvider components={shortcodes}>{children}</MDXProvider>
-      {/* <div>{children}</div> */}
+      <MDXProvider components={shortcodes}>
+        {children}
+      </MDXProvider>
       
     </LayoutPage>
   );
@@ -44,7 +45,6 @@ export const query = graphql`
 query($id: String!) {
     mdx(id: { eq: $id }) {
       id
-      body
       fields {
         slug
       }
