@@ -24,8 +24,8 @@ div.content {flex:1; display:flex; flex-direction:column;}
 div.content > div {flex:1; margin:5px; border:1px solid rgba(150,150,150,.3); }
 div.content ul {list-style-type:circle; padding-left:1rem;}
 div.content header {border-bottom:1px solid rgba(150,150,150,.3);}
-div.content header h3 {background-color: #1f3f5f; color:#ddc; padding:10px; margin:0;}
-div.content h4 {padding: .5rem 5px; margin:0; background-color: #9bd;}
+div.content header h3 {background-color: #8f5f5f; color: #ddc; padding:10px; margin:0;}
+div.content h4 {padding: .5rem 5px; margin:0; background-color: #e1d2c6;}
 div.content header p {display:block; flex:1; padding-left:1rem; }
 p, ul {margin:5px;}
 @media (min-width:911px) {

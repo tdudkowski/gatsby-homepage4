@@ -3,13 +3,21 @@ import styled from "styled-components"
 import { Link } from 'gatsby'
 import MenuNav from "./menu_nav"
 
+const StyledDiv = styled.div`
+padding: .5rem;
+
+background-color: #cf9f9f;
+`;
+
 const StyledP = styled.p`
 text-align: center;
+padding: .5rem;
+margin: .5rem 0;
 `;
 
 const Menu = ( ) => {
     return (
-        <>
+        <StyledDiv>
         <MenuNav>
             <ul>
                 <li><Link to='/o_mnie' activeClassName="active">O mnie</Link></li>
@@ -19,7 +27,7 @@ const Menu = ( ) => {
             </ul>
         </MenuNav>
         <StyledP>Wszystkie prawa zastrzeżone. Strona wykonana w <a href="https://www.gatsbyjs.com/">Gatsby v5</a> @{new Date().getFullYear()}; hosting: <a href="https://www.netlify.com/">Netlify</a></StyledP>
-        </>
+        </StyledDiv>
     )
 }
 export default Menu

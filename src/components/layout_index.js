@@ -14,6 +14,11 @@ display: flex; flex-direction: column;
 & h1 {font-size: 1rem;}
 & ul > li:nth-child(1) {display: none;}
 
+background-color: #e1d2c6;
+color: #5d5c61;
+a {color: #076653};
+a:hover {color: #073603};
+
 @media (min-width: 900px) {
     flex-direction: row;
     & h1 {padding: 0 2rem;}

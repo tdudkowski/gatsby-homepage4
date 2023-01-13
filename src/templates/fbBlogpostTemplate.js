@@ -16,8 +16,7 @@ const FBBlogPostTemplate = ({ data: {mdx}, children }) => {
 
   const { frontmatter, body } = mdx;
   const { title: pageTitle, img } = frontmatter;
-  const headerTitle = `Festung Breslau, ${frontmatter.date1945} | ${frontmatter.title}`
-
+ 
   let tagsArray
   if (mdx !== undefined) {
     const { frontmatter } = mdx
@@ -49,8 +48,11 @@ const FBBlogPostTemplate = ({ data: {mdx}, children }) => {
 export default FBBlogPostTemplate
 
 export function Head({data}) { 
-  console.log(data.mdx.frontmatter)
-  return ( <Seo title={`Festung Breslau 1945 ${data.mdx.frontmatter.date1945} ${data.mdx.frontmatter.title}`} /> ) }
+  // console.log(data.mdx.frontmatter)
+  return (
+  <Seo title={`Festung Breslau 1945 täglich: ${data.mdx.frontmatter.date1945} | ${data.mdx.frontmatter.title}`} /> 
+  )
+}
 
 export const query = graphql`
   query($id: String!) {

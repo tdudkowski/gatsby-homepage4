@@ -12,6 +12,7 @@ import { useStaticQuery, graphql } from "gatsby"
 function SEO({ description, lang, meta, title, image, location }) {
 
     console.log(title)
+    console.log("FROM COMPONENT")
     const pageTitle = title;
     const { site } = useStaticQuery(
         graphql`
@@ -29,10 +30,10 @@ function SEO({ description, lang, meta, title, image, location }) {
     `
     )
 
-    const twitterImage = site.siteMetadata.siteUrl + image
-    const metaDescription = site.siteMetadata.description
-    const metaTitle = title ? `${site.siteMetadata.title} ${title}` : site.siteMetadata.title
-    const smimage = image || site.siteMetadata.image
+    const twitterImage = site.siteMetadata.siteUrl + image;
+    const metaDescription = site.siteMetadata.description;
+    const metaTitle = pageTitle ? pageTitle : `${site.siteMetadata.title} ${title}`;
+    const smimage = image || site.siteMetadata.image;
 
     title = metaTitle // site.siteMetadata.title || {pageTitle}
             // titleTemplate={metaTitle}
@@ -42,7 +43,7 @@ function SEO({ description, lang, meta, title, image, location }) {
         <>
         <title>{title}</title>
         <meta name="description" content={metaDescription} />
-        <meta name="og:title" content={title} />
+        <meta name="og:title" content={metaTitle} />
         <meta name="og:description" content={metaDescription} />
         <meta name="og:type" content="website" />
         <meta name="og:image" content={smimage} />
