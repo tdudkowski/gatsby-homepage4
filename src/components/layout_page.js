@@ -18,6 +18,9 @@ const StyledHeader = styled.header`
 & h1 {font-size: 1rem;}
 & ul > li:nth-child(1) {display: none;}
 
+background-color: #ffe;
+box-shadow: 0 4px 8px 0 rgb(0 0 0 / 20%);
+
 @media (min-width: 900px) {
     position: sticky; top: 0; z-index: 100;
     & div {flex-direction: row;}
@@ -34,7 +37,12 @@ flex: 1;
 const StyledFooter = styled.footer`
 width: 100%; max-width: 1200px;
 margin: 0 auto;
-& nav {padding: 1rem 0;}
+
+border-top: 1px solid #ddc;
+background-color: #ffe;
+
+& nav {padding: 1rem 0; background-color: #ffe;}
+& div {background-color: #ffe; border-top: 1px solid #ddc;}
 `;
 
 const Layout = ({children}) => {

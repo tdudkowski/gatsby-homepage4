@@ -31,7 +31,9 @@ export default PageBlogpost
 
 export function Head({data}) { 
   const {frontmatter} = data.mdx
-  return ( <Seo title={frontmatter.title} section={frontmatter.section} /> ) }
+  return (
+    <Seo title={`dygresje.info Blog: ${frontmatter.set} | ${frontmatter.title}`} /> 
+  ) }
 
 export const query = graphql`
  query($id: String!) {
@@ -46,6 +48,7 @@ export const query = graphql`
         subsection
         date(formatString: "YYYY-MM-DD")
         edited(formatString: "YYYY-MM-DD")
+        set
         tags
         image {
            childImageSharp {

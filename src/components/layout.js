@@ -14,8 +14,6 @@ import "./index.css"
 
 const Layout = ({  children, section, subsection }) => {
   
-// console.log(section)
-
     let Layout;
 
     switch (section) {

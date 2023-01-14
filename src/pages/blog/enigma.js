@@ -64,12 +64,12 @@ export default GatsbyBlog
 
 export function Head() { 
     
-    return ( <Seo title="Das ist Enigma" /> ) }
+    return ( <Seo title="dygresje.info Blog: Das ist Enigma" /> ) }
 
 export const query = graphql`
         query AllEnigmaBlogPosts {
             allMdx(
-                filter: {internal: {contentFilePath: {glob: "**/src/content/blogposts/*.mdx"}}, frontmatter : {set : {eq: "enigma" } } },
+                filter: {internal: {contentFilePath: {glob: "**/src/content/blogposts/*.mdx"}}, frontmatter : {set : {eq: "Das ist Enigma" } } },
                 sort: {frontmatter: {date: ASC} }
         ) {
             nodes {

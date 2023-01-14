@@ -1,7 +1,7 @@
 import * as React from "react"
 import { Link, graphql } from "gatsby"
 import Seo from "../components/seo"
-import Layout from "../components/layout"
+import Layout from "../components/layout_page"
 
 const Sitemap = ({ data }) => {
 
@@ -55,7 +55,7 @@ const Sitemap = ({ data }) => {
 
 export default Sitemap
 
-export function Head() { return ( <Seo title="Mapa strony" /> ) }
+export function Head() { return ( <Seo title="dygresje.info: Mapa strony" /> ) }
 
 export const query = graphql`
     query AllArticlesIndexQuery {

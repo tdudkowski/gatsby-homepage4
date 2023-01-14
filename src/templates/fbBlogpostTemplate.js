@@ -47,10 +47,9 @@ const FBBlogPostTemplate = ({ data: {mdx}, children }) => {
 
 export default FBBlogPostTemplate
 
-export function Head({data}) { 
-  // console.log(data.mdx.frontmatter)
+export function Head({data}) {
   return (
-  <Seo title={`Festung Breslau 1945 täglich: ${data.mdx.frontmatter.date1945} | ${data.mdx.frontmatter.title}`} /> 
+  <Seo title={`Festung Breslau 1945 täglich: ${data.mdx.frontmatter.date1945} | ${data.mdx.frontmatter.title}`} image={data.mdx.frontmatter.image} /> 
   )
 }
 

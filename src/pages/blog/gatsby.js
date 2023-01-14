@@ -2,7 +2,6 @@ import * as React from "react"
 import { Link, graphql } from "gatsby"
 import Seo from "../../components/seo";
 import LayoutBlog from "../../components/layout-blog"
-// import Seo from "../../components/seo"
 
 const GatsbyBlog = ({ data, location }) => {
     const headerTitle = `dygresje.info / wpisy o Gatsbym`
@@ -73,12 +72,12 @@ export default GatsbyBlog
 
 export function Head() { 
     
-    return ( <Seo title="Hello, Gatsby!" /> ) }
+    return ( <Seo title="dygresje.info Blog: Hello, Gatsby!" /> ) }
 
 export const query = graphql`
         query AllGatsbyBlogPosts {
             allMdx(
-                filter: {internal: {contentFilePath: {glob: "**/src/content/blogposts/*.mdx"}}, frontmatter : {set : {eq: "gatsby" } } },
+                filter: {internal: {contentFilePath: {glob: "**/src/content/blogposts/*.mdx"}}, frontmatter : {set : {eq: "Hello, Gatsby!" } } },
                 sort: {frontmatter: {date: ASC} }
         ) {
             nodes {

@@ -1,5 +1,6 @@
 import React from "react";
 import { Link, graphql } from "gatsby";
+import Seo from "../components/seo"
 import LayoutBlog from "../components/layout-fb";
 
 const fbTagListPage = ({ data, location }) => {
@@ -41,6 +42,16 @@ const fbTagListPage = ({ data, location }) => {
     );
 };
 export default fbTagListPage
+
+export function Head({location}) {
+    
+    let tag = decodeURI(location.pathname.slice(21))
+    if (tag[tag.length-1] === "/") {tag=tag.slice(0, -1)}
+
+    return (
+    <Seo title={`Festung Breslau 1945 täglich - tag: ${tag}`}/> 
+    )
+  }
 
 export const query = graphql`
 query AllFBTags {

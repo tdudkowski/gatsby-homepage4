@@ -1,5 +1,6 @@
 import React from "react";
 import { Link, graphql } from "gatsby";
+import Seo from "../components/seo";
 import LayoutBlog from "../components/layout-blog"
 
 const tagListPage = ({ data, location }) => {
@@ -13,7 +14,7 @@ const tagListPage = ({ data, location }) => {
     return (
         <LayoutBlog path={path}>
            <Link to="/blog">blog main page</Link>
-            <h2>{frontmatter.title}</h2>
+           <br />
             <h2>Posty z tagiem <span>{tag}</span></h2>
             <section>
                 <ul>
@@ -31,6 +32,17 @@ const tagListPage = ({ data, location }) => {
     );
 };
 export default tagListPage
+
+export function Head({location}) {
+    
+
+    let tag = decodeURI(location.pathname.slice(10))
+    if (tag[tag.length-1] === "/") {tag=tag.slice(0, -1)}
+    console.log(location.pathname, tag)
+    return (
+    <Seo title={`dygresje.info Blog - tag: ${tag}`}/> 
+    )
+  }
 
 export const query = graphql`
 query AllBlogTags {

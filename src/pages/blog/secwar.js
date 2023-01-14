@@ -41,7 +41,7 @@ export default GatsbyBlog
 
 export function Head() { 
     
-    return ( <Seo title="sec.w@r" /> ) }
+    return ( <Seo title="dygresje.info Blog: sec.w@r" /> ) }
 
 export const query = graphql`
         query AllSecwarBlogPosts {

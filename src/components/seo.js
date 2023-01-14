@@ -11,8 +11,6 @@ import { useStaticQuery, graphql } from "gatsby"
 
 function SEO({ description, lang, meta, title, image, location }) {
 
-    console.log(title)
-    console.log("FROM COMPONENT")
     const pageTitle = title;
     const { site } = useStaticQuery(
         graphql`

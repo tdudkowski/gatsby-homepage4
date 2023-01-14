@@ -35,12 +35,12 @@ export default GatsbyWebdevBlog
 
 export function Head() { 
     
-    return ( <Seo title="Webdev everythink" /> ) }
+    return ( <Seo title="dygresje.info Blog: Webdev everythink" /> ) }
 
 export const query = graphql`
         query AllWebdevBlogPosts {
             allMdx(
-                filter: {internal: {contentFilePath: {glob: "**/src/content/blogposts/*.mdx"}}, frontmatter : {set : {eq: "webdev" } } },
+                filter: {internal: {contentFilePath: {glob: "**/src/content/blogposts/*.mdx"}}, frontmatter : {set : {eq: "Webdev everythink" } } },
                 sort: {frontmatter: {date: ASC} }
         ) {
             nodes {

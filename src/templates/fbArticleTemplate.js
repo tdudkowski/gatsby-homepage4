@@ -62,6 +62,12 @@ const FBArticleTemplate = ( {data, children} ) => {
 
 export default FBArticleTemplate
 
+export function Head({data}) { 
+  return (
+  <Seo title={`Festung Breslau 1945 täglich: ${data.mdx.frontmatter.title}`} /> 
+  )
+}
+
 export const query = graphql`
 query FBArticleQuery($id: String!) {
   mdx(id: { eq: $id }) {

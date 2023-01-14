@@ -39,7 +39,9 @@ export default ArticlePage
 
 export function Head({data}) { 
   const {frontmatter} = data.mdx
-  return ( <Seo title={frontmatter.title} section={frontmatter.section} /> ) }
+  return ( 
+    <Seo title={`dygresje.info: ${frontmatter.section} | ${frontmatter.title}`} /> 
+  ) }
 
 export const query = graphql`
 query($id: String!) {
