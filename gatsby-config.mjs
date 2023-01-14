@@ -347,7 +347,7 @@ const config = {
         {
             resolve: `gatsby-plugin-offline`,
             options: {
-                precachePages: [`/sitemap/`, `/kontakt/*`],
+                // precachePages: [`/sitemap/`, `/kontakt/*`],
             },
         },
           {
