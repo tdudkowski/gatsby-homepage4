@@ -2,6 +2,7 @@ import React from "react"
 import { graphql, Link } from "gatsby"
 import Seo from "../components/seo"
 import { MDXProvider } from "@mdx-js/react";
+import BoxImage from "../components/box-image.js";
 import ArmiaNiemiecka from "../components/box-armia-niemiecka.js";
 import WojnaNaPacyfiku from "../components/box-pacyfik.js";
 import DolnySlask from "../components/box-dolny-slask.js";
@@ -10,7 +11,7 @@ import SeeAlso from "../components/box-seealso.js";
 import LayoutFB from "../components/layout-fb"
 import 'gatsby-remark-vscode/styles.css';
 
-const shortcodes = { ArmiaNiemiecka, WojnaNaPacyfiku, DolnySlask, Europa, SeeAlso }
+const shortcodes = { BoxImage, ArmiaNiemiecka, WojnaNaPacyfiku, DolnySlask, Europa, SeeAlso }
 
 const FBBlogPostTemplate = ({ data: {mdx}, children }) => {
 
@@ -48,8 +49,9 @@ const FBBlogPostTemplate = ({ data: {mdx}, children }) => {
 export default FBBlogPostTemplate
 
 export function Head({data}) {
+  
   return (
-  <Seo title={`Festung Breslau 1945 täglich: ${data.mdx.frontmatter.date1945} | ${data.mdx.frontmatter.title}`} image={data.mdx.frontmatter.image} /> 
+  <Seo title={`Festung Breslau 1945 täglich: ${data.mdx.frontmatter.date1945} | ${data.mdx.frontmatter.title}`} image={data.mdx.frontmatter.img.childImageSharp.gatsbyImageData.images.fallback.src} /> 
   )
 }
 
