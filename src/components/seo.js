@@ -33,6 +33,10 @@ function SEO({ description, lang, meta, title, image, location }) {
     const metaTitle = pageTitle ? pageTitle : `${site.siteMetadata.title} ${title}`;
     const smimage = image || site.siteMetadata.image;
 
+    // console.log("FROM SEO COMPONENT")
+    // console.log(image, smimage, site.siteMetadata.image)
+    // console.log(twitterImage)
+
     title = metaTitle // site.siteMetadata.title || {pageTitle}
             // titleTemplate={metaTitle}
             // image={image}
@@ -49,7 +53,7 @@ function SEO({ description, lang, meta, title, image, location }) {
         <meta name="twitter:creator" content={site.siteMetadata.author} />
         <meta name="twitter:title" content={title} />
         <meta name="twitter:description" content={metaDescription} />
-        <meta name="twitter:image" content={smimage} />
+        <meta name="twitter:image:src" content={twitterImage} />
         </> 
     )
 }
