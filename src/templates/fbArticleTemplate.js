@@ -1,5 +1,5 @@
 import React from "react"
-import { useStaticQuery, graphql, Link } from "gatsby"
+import { graphql, Link } from "gatsby"
 import Seo from "../components/seo"
 import { MDXProvider } from "@mdx-js/react";
 import ArmiaNiemiecka from "../components/box-armia-niemiecka";
@@ -7,28 +7,13 @@ import WojnaNaPacyfiku from "../components/box-pacyfik";
 import DolnySlask from "../components/box-dolny-slask";
 import Europa from "../components/box-europa";
 import SeeAlso from "../components/box-seealso";
+import BoxImageWrapper from "../components/box-fbimage-wrapper";
 import LayoutFB from "../components/layout-fb"
 import 'gatsby-remark-vscode/styles.css';
 
 const FBArticleTemplate = ( {data, children} ) => {
 
-  const shortcodes = { ArmiaNiemiecka, WojnaNaPacyfiku, DolnySlask, Europa, SeeAlso }
-
-//   const data = useStaticQuery(graphql`
-//   query FBArticleQuery {
-//     mdx {
-//         body
-//         fields {
-//           slug
-//         }
-//         frontmatter {
-//           title
-//           tags
-//           date(formatString: "YYYY-MM-DD")
-//                   }
-//        }
-//   }
-// `)
+  const shortcodes = { ArmiaNiemiecka, WojnaNaPacyfiku, DolnySlask, Europa, SeeAlso, BoxImageWrapper }
 
   const { frontmatter, body } = data.mdx;
   const { title: pageTitle, img, tags } = frontmatter;

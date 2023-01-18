@@ -8,10 +8,11 @@ import WojnaNaPacyfiku from "../components/box-pacyfik.js";
 import DolnySlask from "../components/box-dolny-slask.js";
 import Europa from "../components/box-europa.js";
 import SeeAlso from "../components/box-seealso.js";
+import BoxImageWrapper from "../components/box-fbimage-wrapper";
 import LayoutFB from "../components/layout-fb"
 import 'gatsby-remark-vscode/styles.css';
 
-const shortcodes = { BoxImage, ArmiaNiemiecka, WojnaNaPacyfiku, DolnySlask, Europa, SeeAlso }
+const shortcodes = { BoxImage, ArmiaNiemiecka, WojnaNaPacyfiku, DolnySlask, Europa, SeeAlso, BoxImageWrapper }
 
 const FBBlogPostTemplate = ({ data: {mdx}, children }) => {
 
