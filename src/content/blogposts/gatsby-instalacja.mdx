@@ -40,9 +40,9 @@ Zmieniło się to w końcu pierwszej dekady XXI wieku.
 - 2017 [Gatsby.js](https://www.gatsbyjs.com/) kreator statycznych stron, framework Reacta.
 - 2020 [Deno](https://deno.land/) 1.0 - Ryan Dahl, twórca Node'a niezadowolony z kierunku jego rozwoju, stworzył jego alternatywę. Czy osiągnie sukces? Zobaczymy.
 
-Bo dobrze. Ale czym właściwie jest Gatsby i dlaczego warto się nim zainteresować? Przecież jest WordPress...
+No dobrze. Ale czym właściwie jest Gatsby i dlaczego warto się nim zainteresować? Przecież jest WordPress...
 
-Wcale nie ironizuję. WordPress jest i pozostanie najważniejszym system publikacji treści. Szacunki są różne, nie jest to łatwo policzyć, ale na pewno ponad połowa stron WWW to WordPress. Największa i najlepsza konkurencja nic tu nie zmieni.
+Wcale nie ironizuję. WordPress jest i jeszcze długo pozostanie najważniejszym system publikacji treści. Szacunki są różne, nie jest to łatwo policzyć, ale wciąż ponad połowa stron WWW to WordPress. Największa i najlepsza konkurencja nic tu nie zmieni.
 
 Wciąż jest wiele zastosowań, w których dobrze znane i sprawdzone w boju CMS-y takie jak WordPress są najlepszym rozwiązaniem. Jest jednak ogromny sektor rynku, w którym już są i zawsze będą gorszą opcją. To wcale nie jest przypadek ani fanaberia, że witryny wielu wielkich brandów są zbudowane na Reaccie (oj jak to się źle odmienia!)... dobrze, przy użyciu Reacta, Nexta czy Gatsby'ego. Dlaczego tak postąpili, to jest temat na osobną dyskusję i tu zapraszam zarówno na znakomity film Adama Romańskiego ["React vs. Next vs. Gatsby – czym się różnią? ⌨️ hello roman #84" [YT 18:19]](https://www.youtube.com/watch?v=sip8r9PMbFQ), jak i wstęp w mocno już w tej chwili przestarzałym i wymagającym poprawy moim [artykule o Gatsby'm](/it/js/gatsby). Jego początek może być wprowadzeniem w tę tematykę.
 
@@ -62,16 +62,16 @@ Potrzebujemy zainstalować trzy rzeczy:
 - [Node.js](https://nodejs.org/en/), z którym domyślnie dostajemy system zarządzania pakietami [npm](https://www.npmjs.com/), alternatywnie może być to też [yarn](https://yarnpkg.com/).
 - [gatsby-cli](https://www.gatsbyjs.com/docs/reference/gatsby-cli/) jak sama nazwa wskazuje CLI (Command Line Interface) Gatsby'ego. Instalowany poleceniem `npm i -g gatsby-cli`.
 
-Opcjonalnie do zarządzania różnymi wersjami Node'a - [nvm-sh / nvm](https://github.com/nvm-sh/nvm)
+Opcjonalnie do zarządzania różnymi wersjami Node'a - [nvm-sh / nvm](https://github.com/nvm-sh/nvm). Przydaje się.
 
 ### Deweloping
 
 Jeszcze zanim przejedziemy do instalacji, trzeba wyjaśnić jedną rzecz - jak wygląda tworzenie i publikacja strony w Gatsbym.
 
-- **Instalacja** - opisana poniżej - trzeba mieć świadomość, że cały katalog ze środowiskiem deweloperskim zajmuje od 250 do ponad 500 MB.
+- **Instalacja** - opisana poniżej - trzeba mieć świadomość, że cały katalog ze środowiskiem deweloperskim zajmuje, zależnie od liczby pluginów od 250 do ponad 500 MB.
 - **Uruchomienie środowiska deweloperskiego** poleceniem `gatsby develop`, na tym etapie dokonuje się właściwe tworzenie strony. Efekt widoczny jest pod adresem `localhost:8000`. środowisko zapewnia hot-loading, co znaczy, że reaguje na dokonane zmiany, zapisuje je i od razu przerysowuje stronę, ale trzeba mieć świadomość, że każda zmiana w którymś z plików konfiguracyjnych /gatsby-*.js wymaga restartu środowiska, a to zajmuje zależnie od wielkości strony od minuty do ponad 10 minut. Wiec od razu przygotuj sobie jakąś książkę do poczytania na boku ;-)
 - **Build**, ciężko to przetłumaczyć na polski, bo "budowanie" niewiele tu mówi. Samo środowisko deweloperskie zapewnia serwer i działanie strony, ale jest to bardzo nieoptymalne, strony są generowane w locie i jak już pisałem, wszystko wymaga ponad 200 MB miejsca oraz dość sporej mocy obliczeniowej. Natomiast build kompiluje to, co napisaliśmy, łącznie z udostępnionymi zasobami w zoptymalizowany, statyczny produkt końcowy. Build uruchamia się poleceniem `gatsby build`. Zajmuje to - takie mam wrażenie - trochę krócej niż uruchomienie środowiska deweloperskiego. Ponieważ rysuje od razu całą stronę, jest też bardziej wymagające. Build potrafi wywalić się na kodzie, który dla środowiska deweloperskiego był OK. Więc po każdej poważniejszej zmianie, przed wysłaniem na serwer dobrze jest sprawdzić, czy działa build lokalny. Żeby zobaczyć stronę tak zbudowaną, uruchamiany serwer poleceniem `gatsby serve` i po chwili możemy zobaczyć pod adresem `localhost:9000`. To, co zobaczymy to statyczny efekt, który nie podlega zmianom.
-- **Deploy** czyli wysłanie na serwer zewnętrzny, publikacja strony online. O tym będzie w osobnym wpisie. Jeżeli kod się nie skompiluje na serwerze, poprzednia wersja strony pozostaje.
+- **Deploy** czyli wysłanie na serwer zewnętrzny, publikacja strony online. O tym będzie w osobnym wpisie. Jeżeli kod się nie skompiluje na serwerze, poprzednia wersja strony pozostaje. Tak wiec sytuacja możliwa dla CMS-a kiedy to update wywala stronę nie jest tu możliwa. Taki update nie zostanie po prostu zrealizowany.
 
 Najkrócej mówiąc:
 
@@ -95,8 +95,8 @@ Można zainstalować na kilka sposobów:
 
 - przy użyciu startera: [Gatsby Starters](https://www.gatsbyjs.com/docs/starters/) | [Gatsby Starters](https://www.gatsbyjs.com/starters/?)
 - interaktywnie, wymaga pewnej znajomości środowiska, a przede wszystkim orientacji w tym, czego potrzebujemy, szerzej opisane jest tutaj, w API Commands polecenie "new": [Commands (Gatsby CLI)](https://www.gatsbyjs.com/docs/reference/gatsby-cli/)
-- nieinteraktywnie
-- Gatsby from Scratch i tę instalację tutaj opiszę, pozwala ona poznać Gatsby'ego lepiej o zobaczyć jak wygląda od podstaw.
+- nieinteraktywnie, czyli domyślna instalacja domyślnym starterem
+- Gatsby from Scratch i tę instalację tutaj opiszę, pozwala ona poznać Gatsby'ego lepiej i zobaczyć jak wygląda od podstaw.
 
 Instalacja nieinteraktywna - używa domyślnego startera:
 
@@ -286,11 +286,11 @@ Uwaga, poniżej przedstawiona jest docelowa struktura, część z nich tworzona 
   - /styles - CSS jeżeli potrzebujemy osobnego katalogu dla stylów
   - /templates - szablony stron generowanych programistycznie
 - gatsby-browser.js - opcjonalny; globalny wrapper dla komponentów [Gatsby Browser APIs](https://www.gatsbyjs.com/docs/reference/config-files/gatsby-browser/)
-- gatsby-config.js - plik konfiguracyjny [Gatsby Config API](https://www.gatsbyjs.com/docs/reference/config-files/gatsby-config/)
+- gatsby-config.js - plik konfiguracyjny, obligatoryjny [Gatsby Config API](https://www.gatsbyjs.com/docs/reference/config-files/gatsby-config/)
 - gatsby-node.js - opcjonalny; programistyczne tworzenie stron [Gatsby Node APIs](https://www.gatsbyjs.com/docs/reference/config-files/gatsby-node/)
 - gatsby-ssr.js - opcjonalny; jeżeli używamy SSR [Gatsby Server Rendering APIs](https://www.gatsbyjs.com/docs/reference/config-files/gatsby-ssr/)
 - .gitignore - plik gita [Git - gitignore Documentation](https://git-scm.com/docs/gitignore)
-- log.md - to moja propozycja, notatnik wszystkich ważnych działań administracyjnych, trzeba dodać do gitignora
+- log.md - to moja propozycja, notatnik wszystkich ważnych działań administracyjnych i TODO, trzeba dodać do gitignora
 - package.json - informacja dla npm-a jakie moduły są zainstalowane, raczej nie zmieniać, czasem trzeba dokonać zmian w ograniczeniach update, powinniśmy zadbać o archiwizację, (najlepsza jest ta na GitHubie) [package.json](https://docs.npmjs.com/cli/v7/configuring-npm/package-json)
 - package-lock.json - kompletne info dla npm, nie do edycji [package-lock.json](https://docs.npmjs.com/cli/v7/configuring-npm/package-lock-json)
 

@@ -8,7 +8,7 @@ padding: 0;
 border: 1px solid rgba(235, 235, 235, .1);
 background-color: rgba(25, 25, 25, .4);
 
-& p {padding: 1rem; background-color: rgba(250, 250, 250, .1); margin: 0;}
+&.boximagewrapper > p {padding: 1rem; background-color: rgba(250, 250, 250, .1); margin: 0;}
 `;
 
 const BoxImageWrapper = ({ children }) => {

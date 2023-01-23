@@ -22,7 +22,9 @@ const MenuArmiaNiemiecka = () => {
                 <li><Link activeClassName="menuLinkActive" to="/festung-breslau/article/ss">SS</Link></li>
                 <li><Link activeClassName="menuLinkActive" to="/festung-breslau/article/volkssturm">Volkssturm</Link></li>
                 <li><Link activeClassName="menuLinkActive" to="/festung-breslau/article/wunderwaffe">Wunderwaffe</Link></li>
-                <li><Link activeClassName="menuLinkActive" to="/festung-breslau/article/vergeltungswaffe">Vergeltungswaffe od V1 do V4 / Broń Zemsty</Link></li>
+                <li><Link activeClassName="menuLinkActive" to="/festung-breslau/article/wunderwaffe-lotnictwo">Wunderwaffe - lotnictwo</Link></li>
+                <li><Link activeClassName="menuLinkActive" to="/festung-breslau/article/wunderwaffe-rakiety">Wunderwaffe - rakiety</Link></li>
+                <li><Link activeClassName="menuLinkActive" to="/festung-breslau/article/vergeltungswaffe">Vergeltungswaffe (Broń Zemsty) V1 - V4</Link></li>
                 <li><Link activeClassName="menuLinkActive" to="/festung-breslau/article/front-niemiecki-1945">Front niemiecki w Polsce w 1945</Link></li>
                 <li><Link activeClassName="menuLinkActive" to="/festung-breslau/article/ostfront">Ostfront, czyli o przyczynie wojny na wschodzie</Link></li>
                 <li><Link activeClassName="menuLinkActive" to="/festung-breslau/article/werner-molders">Podpułkownik Werner Mölders (1913-41)</Link></li>
