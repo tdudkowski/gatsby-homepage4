@@ -3,9 +3,10 @@ import { graphql } from "gatsby";
 import Seo from "../components/seo";
 import { MDXProvider } from "@mdx-js/react";
 import Warning from "../components/box-warning.js";
+import BoxBlogImageWrapper from "../components/box-blogimage-wrapper"
 import LayoutBlog from "../components/layout-blog";
 
-const shortcodes = { Warning }
+const shortcodes = { Warning, BoxBlogImageWrapper }
 
 const PageBlogpost = ({ data: {mdx}, children, location }) => {
 

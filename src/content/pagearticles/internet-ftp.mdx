@@ -45,61 +45,26 @@ Kluczowe elementy sesji FTP to:
 
 ### Polecenia
 
-Podstawowe polecenia FTP. Co prawda ich znajomośc nie jest już niezbędna by korzystać z tej usługi, ale czasem przydaje się jeśli napotkamy nietypową konfigurację serwera lub z jakichś innych przyczyn program zawiedzie i trzeba będzie posłużyć się linią poleceń. 
+Podstawowe polecenia FTP. Co prawda ich znajomość nie jest już niezbędna by korzystać z tej usługi, ale czasem przydaje się jeśli napotkamy nietypową konfigurację serwera lub z jakichś innych przyczyn program zawiedzie i trzeba będzie posłużyć się linią poleceń. 
 
-help lub ?
-wymienia pełną listę poleceń wraz z opisem
-
-open [host] [port]
-inicjuje sesję, otwiera połączenie pomiędzy klientem a serwerem
-
-user [login]
-używa nazwy użytkownika do logowania
-
-passiv
-przełącza na tryb pasywny przesyłania plików
-
-dir lub ls
-wyświetla katalogi na serwerze
-
-nlist
-wyświetla listę plików na serwerze
-
-cd
-zmienia katalogi na zdalnym komputerze w górę i w dół
-
-pwd
-pokazuje bieżący katalog i ścieżkę dostępu
-
-lls, lcd, lpwd
-wyświetlenie katalogu, zmiana i pokazanie ścieżki na lokalnym komputerze
-
-get
-kopiuje plik z serwera na lokalny komputer
-
-put
-kopiuje plik z lokalnego komputera na serwer
-
-mput, mget
-to samo co powyżej ale w odniesieniu do wielu plików jednocześnie, serwer zapyta się o potwierdzenie
-
-prompt
-ustanawia interaktywny prompt; "on" zwiększa bezpieczeństwo dzięki weryfikacji każdego kroku; "off" pozwala poleceniom działać [unimpeded]
-
-delete
-kasuje plik na zdalnym katalogu
-
-rmdir
-kasuje katalog na zdalnym katalogu
-
-acsii/binary
-określa jakiego rodzaju pliki przesyłamy (np. trybu ascii powinniśmy używać przy przesyłaniu plików tekstowych takich jak .txt czy .html a binary przy plikach graficznych .jpg .png)
-
-close
-zamyka połączenie z serwerem FTP
-
-quit lub bye
-konczy sesję FTP
+- **help** lub **?** wymienia pełną listę poleceń wraz z opisem
+- **open [host] [port]** inicjuje sesję, otwiera połączenie pomiędzy klientem a serwerem
+- **user [login]** używa nazwy użytkownika do logowania
+- **passiv** przełącza na tryb pasywny przesyłania plików
+- **dir** lub **ls** wyświetla katalogi na serwerze
+- **nlist** wyświetla listę plików na serwerze
+- **cd** zmienia katalogi na zdalnym komputerze w górę i w dół
+- **pwd** pokazuje bieżący katalog i ścieżkę dostępu
+- **lls**, **lcd**, **lpwd** wyświetlenie katalogu, zmiana i pokazanie ścieżki na lokalnym komputerze
+- **get** kopiuje plik z serwera na lokalny komputer
+- **put** kopiuje plik z lokalnego komputera na serwer
+- **mput**, **mget** to samo co powyżej ale w odniesieniu do wielu plików jednocześnie, serwer zapyta się o potwierdzenie
+- **prompt** ustanawia interaktywny prompt; "on" zwiększa bezpieczeństwo dzięki weryfikacji każdego kroku; "off" pozwala poleceniom działać [unimpeded]
+- **delete** kasuje plik na zdalnym katalogu
+- **rmdir** kasuje katalog na zdalnym katalogu
+- **acsii/binary** określa jakiego rodzaju pliki przesyłamy (np. trybu ascii powinniśmy używać przy przesyłaniu plików tekstowych takich jak .txt czy .html a binary przy plikach graficznych .jpg .png)
+- **close** zamyka połączenie z serwerem FTP
+- **quit** lub **bye** konczy sesję FTP
 
 Składnia polecenia ftp:  
 
@@ -117,8 +82,11 @@ Składnia polecenia ftp:
 Istnieją programy, które umożliwiają korzystanie z FTP przy pomocy graficznego interfejsu, dodatkową ich zaletą jest możliwość zautomatyzowania procesu. 
 Wszystkie tego typu programu zarówno posiadają podobny interfejs jak i oferują mniej więcej te same możliwości. Dobrym przykładem klienta FTP jest Filezilla:
 
+<BoxPageImageWrapper>
 ![Filezilla](../../images/it/filezilla-interface3.png)
-*Filezilla interface*
+
+Filezilla interface
+</BoxPageImageWrapper>
 
 Filezilla prezentuje typowy interfejs klienta FTP. W większości z nich (np. [gFTP](http://linux.sky.pl/teksty/gftp.html) dla Linuksa) można napotkać następujące elementy:  
 
@@ -142,8 +110,11 @@ Filezilla jest darmowym (licencja GPL) klientem FTP dla Windows i Linuksa.
 Sama instalacja przebiega w bardzo prosty, automatyczny sposób, wybieramy język polski i standardową instalację a następnie jeśli ktoś jeszcze będzie korzystał z komputera wybieramy tryb ochrony i decydujemy gdzie program trzyma swoje ustawienia (w rejestrze lub pliku xml); po zaakceptowaniu domyślnej lokalizacji program się instaluje. 
 Konfigurację przeprowadza się poprzez _Edycja/Ustawienia_.
 
+<BoxPageImageWrapper>
 ![Filezilla](../../images/it/filezilla-settings.png)
-*Filezilla okno ustawień*
+
+Filezilla okno ustawień
+</BoxPageImageWrapper>
 
 #### Nawiązanie połączenia
 
@@ -153,29 +124,41 @@ Połączenie z serwerem można nawiązać na trzy sposoby
 
 Jest to najwygodniejsza opcja, chociaż wymaga na początku skonfigurowania Menedżera Stron; nie jest to trudne: _Plik/Menedżer Stron_.
 
+<BoxPageImageWrapper>
 ![Filezilla](../../images/it/filezilla-sitemanager.png)
-*Filezilla site manager*
 
-a następnie już w oknie ustawień Menedżera Stron: _Nowa Strona_ (uwaga: wtedy trzeba wpisać nazwę, która może być dowolna ale powinna być znacząca, żeby później nie mylić serwerów) a potem po kolei wpisujemy nazwę hosta, wybieramy typ serwera oraz ustawienia logowania.
+Filezilla site manager
+</BoxPageImageWrapper>
+
+A następnie już w oknie ustawień Menedżera Stron: _Nowa Strona_ (uwaga: wtedy trzeba wpisać nazwę, która może być dowolna ale powinna być znacząca, żeby później nie mylić serwerów) a potem po kolei wpisujemy nazwę hosta, wybieramy typ serwera oraz ustawienia logowania.
 
 Kiedy wszystkie dane są już wprowadzone można się połączyć albo zamknąć okno ustawień a potem uruchomić dane połączenie wybierając je z paska narzędziowego:
 
+<BoxPageImageWrapper>
 ![Filezilla](../../images/it/filezilla-connect.png)
-*Filezilla connect*
+
+Filezilla connect
+</BoxPageImageWrapper>
 
 ##### Szybkie Połączenie
 
 Te same dane wpisujemy w pola paska Szybkiego Połączenia, jest to może prostsze ale trzeba je wpisywać za kazdym razem i opcja ta przydatna jest raczej do jednorazowych połaczeń.
 
+<BoxPageImageWrapper>
 ![Filezilla](../../images/it/filezilla-quickconnect.png)
-*Filezilla quickconnect*
+
+Filezilla quickconnect
+</BoxPageImageWrapper>
 
 ##### Polecenie FTP
 
 Całą sesję lub jej część można przeprowadzić używając linii poleceń FTP: Serwer/Polecenie FTP
 
+<BoxPageImageWrapper>
 ![Filezilla](../../images/it/filezilla-ftpcommand.png)
-*Filezilla FTP command*
+
+Filezilla FTP command
+</BoxPageImageWrapper>
 
 #### Transfer plików
 
@@ -185,22 +168,31 @@ Już po nawiązaniu połączenia możemy przeglądać zasoby serwera FTP i kopio
 
 Największą część okna zajmują dwa panele: lewy pokazujący pliki lokalne, prawy, w którym jest podgląd serwera. W tym drugim najwygodniejszy jest tryb podglądu: widok drzewa, oraz włączenie podglądu zaznaczonych katalogów. Jeśli użytkownik ma odpowiednie uprawnienia może sam tworzyć i kasować katalogi.
 
+<BoxPageImageWrapper>
 ![Filezilla](../../images/it/filezilla-treeview.png)
-*Filezilla tree view*
+
+Filezilla tree view
+</BoxPageImageWrapper>
 
 ##### Kopiowanie plików na serwer
 
 Tutaj widać wszystkie opcje edycyjne udostępnione przez program, plik można od razu wysłać na serwer, dodać do kolejki, wysłać pod zmienioną nazwą. Oprócz tego dostępne są normalne polecenia systemowe.
 
+<BoxPageImageWrapper>
 ![Filezilla](../../images/it/filezilla-upload.png)
-*Filezilla upload*
+
+Filezilla upload
+</BoxPageImageWrapper>
 
 ##### Kopiowanie plików z serwera
 
 To samo w odniesieniu do plików znajdujacych się na serwerze.
 
+<BoxPageImageWrapper>
 ![Filezilla](../../images/it/filezilla-download.png)
-*Filezilla download*
+
+Filezilla download
+</BoxPageImageWrapper>
 
 ##### Koniec połączenia
 

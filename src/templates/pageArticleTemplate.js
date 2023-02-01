@@ -4,9 +4,10 @@ import Seo from "../components/seo";
 import { MDXProvider } from "@mdx-js/react";
 import { Breadcrumb } from 'gatsby-plugin-breadcrumb'
 import Warning from "../components/box-warning.js";
+import BoxPageImageWrapper from "../components/box-pageimage-wrapper"
 import LayoutPage from "../components/layout"
 
-const shortcodes = { Warning }
+const shortcodes = { Warning, BoxPageImageWrapper }
 
 const ArticlePage = ({ data: {mdx}, children, pageContext, location  }) => {
 

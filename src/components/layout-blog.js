@@ -34,7 +34,7 @@ flex-direction: column;
   & article h3 { font-family:Alegreya, sans-serif; border-bottom:1px solid #ddc; margin: 2rem 0; font-size:2rem; color:#444;}
   & article h4 { font-size:1.3rem; color:#110;}
   & article h5 { font-size:1rem; color:#221;}
-  & article img { box-shadow: 3px 3px 14px #666;}
+  /* & article img { box-shadow: 3px 3px 14px #666;} */
   & article pre {white-space: pre-wrap;}
   & span + em {margin: 1rem; padding: 10px; display:block; border-bottom: 1px solid #aaa; color: #444;}
 
