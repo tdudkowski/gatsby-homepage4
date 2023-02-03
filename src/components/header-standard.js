@@ -3,7 +3,7 @@ import styled from "styled-components"
 import { Link } from "gatsby"
 
 const StyledNav = styled.nav`
-  //background-color: rgba(51,51,51,.7);
+  background-color: rgba(51,51,51,.7);
   display:flex;
   flex-direction: column; 
 & div a {display:block; padding:1rem; font-family: "Andale Mono"; font-weight: bold; text-decoration: none;}
@@ -13,6 +13,7 @@ const StyledNav = styled.nav`
 & ul li a {display:block; text-align:center; text-decoration:none; padding:1rem 3rem; margin:0 .5rem;}
 & ul li a:hover {text-decoration:underline;}
 & a { color:#ffe;}
+
   @media(min-width:900px) {
     flex-direction: row;
     justify-content: space-between;
@@ -24,7 +25,7 @@ const Navigation = () => {
 
   return (
     <StyledNav>
-      <div><Link to="/">Tadeusz Dudkowski Homepage<br />dygresje.info</Link></div>
+      <div><Link to="/">Tadeusz Dudkowski Homepage<br />dygresje.info here</Link></div>
       <ul>
         <li><Link to="/turystyka">/turystyka</Link></li>
         <li><Link to="/it">/it</Link></li>

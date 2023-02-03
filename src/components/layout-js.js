@@ -1,7 +1,7 @@
 import * as React from "react"
 import styled from "styled-components"
-import Navigation from "./navigation"
-import Footer from "./footer"
+import HeaderStandard from "./header-standard"
+import FooterStandard from "./footer-standard"
 import MenuIT from "./menu-it"
 import ToC from "./toc"
 import "./layout.css"
@@ -211,7 +211,7 @@ border:1px solid rgba(51,51,51,.9);}
   }  
 `;
 
-const StyledFooter = styled(Footer)`
+const StyledFooter = styled(FooterStandard)`
     min-height: 2rem;
     display: flex;
     flex-direction: column;
@@ -291,7 +291,7 @@ const Layout = ({ children, section, subsection }) => {
   return (
     <>
       <StyledHeader>
-        <Navigation />
+        <HeaderStandard />
       </StyledHeader>
       <StyledMain>
         <aside>

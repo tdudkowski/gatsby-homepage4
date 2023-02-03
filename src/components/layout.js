@@ -8,7 +8,6 @@ import LayoutJs from "./layout-js"
 import LayoutKryptologia from "./layout-kryptologia"
 import LayoutWebAccessibility from "./layout-webaccessibility"
 import LayoutErr from "./layout-err"
-// import Seo from "./seo"
 import "./layout.css"
 import "./index.css"
 
@@ -61,7 +60,6 @@ const Layout = ({  children, section, subsection }) => {
 
     return (
         <div className="container">
-            {/* <Seo title={headerTitle} defer={false} /> */}
             <Layout children={children} section={section} subsection={subsection} />
         </div>)
 }

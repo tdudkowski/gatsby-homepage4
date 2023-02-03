@@ -55,7 +55,7 @@ const GatsbyBlog = ({ data, location }) => {
                 <li>dodać inne wersje Enigmy</li>
             </ul>
 
-            <p>Bagatela LOL. Kiedy? Mam nadzieję, że jeszcze w 2022.</p>
+            <p>Bagatela LOL. Kiedy? Mam nadzieję, że jeszcze w tym roku.</p>
 
     </LayoutBlog >)
 }

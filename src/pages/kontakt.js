@@ -1,6 +1,6 @@
 import * as React from 'react'
 import Seo from "../components/seo"
-import Layout from "../components/layout_page"
+import Layout from "../components/layout"
 import styled from "styled-components"
 
 const StyledForm = styled.form`

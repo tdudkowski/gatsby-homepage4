@@ -1,7 +1,7 @@
 import * as React from "react"
 import styled from "styled-components"
-import Navigation from "./navigation"
-import Footer from "./footer"
+import HeaderStandard from "./header-standard"
+import FooterStandard from "./footer-standard"
 import MenuIT from "./menu-it"
 import ToC from "./toc"
 import "./layout.css"
@@ -126,7 +126,7 @@ const Layout = ({ children, section, subsection }) => {
   return (
     <>
       <StyledHeader>
-        <Navigation />
+        <HeaderStandard />
       </StyledHeader>
       <StyledMain>
         <aside>
@@ -138,7 +138,7 @@ const Layout = ({ children, section, subsection }) => {
           {children}
         </StyledArticle>
       </StyledMain>
-      <Footer />
+      <FooterStandard />
     </>)
 }
 

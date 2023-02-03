@@ -1,6 +1,6 @@
 import * as React from "react"
-import Navigation from "./navigation"
-import Footer from "./footer"
+import HeaderStandard from "./header-standard"
+import FooterStandard from "./footer-standard"
 
 import "./layout.css"
 
@@ -8,12 +8,12 @@ const Layout = ({ children, section }) => {
     return (
         <>
             <header>
-                <Navigation />
+                <HeaderStandard />
             </header>
             <main>
-                <h2>ERR</h2>
+                {/* <h2>ERR</h2> */}
                 {children}</main>
-            <Footer />
+            <FooterStandard />
         </>)
 }
 

@@ -1,15 +1,15 @@
 import * as React from "react"
 import { Link } from "gatsby"
 import styled from "styled-components"
-import Navigation from "./navigation"
-import Footer from "./footer"
+import HeaderStandard from "./header-standard"
+import FooterStandard from './footer-standard'
 import ToC from "./toc"
 import "./layout-fb.css"
 import "./layout.css"
-// import Seo from "../components/seo";
 
 const StyledHeader = styled.header`
-       & a > h2 {margin:0; font-size:3.5rem; text-align:center; overflow:hidden; font-family:Alegreya, sans-serif; background-color: rgba(51,51,51,.8); color: rgba(250,250,250,.6);}
+
+       & a > h2 {margin:0; font-size:3.5rem; text-align:center; overflow:hidden; font-family:Alegreya, sans-serif; background-color: rgba(250, 250, 250, .05); color: rgba(250,250,250,.6);}
   `;
 
 const StyledMain = styled.main`
@@ -66,10 +66,9 @@ const LayoutBlog = ({ children, data, path }) => {
 
     return (
         <div className="container">
-            {/* <Seo title={headerTitle} defer={false} /> */}
 
             <StyledHeader>
-                <Navigation />
+                <HeaderStandard />
                 <Link to="/blog"><h2>Blog</h2></Link>
             </StyledHeader>
             <StyledMain background={data ? data.frontmatter.image.childImageSharp.gatsbyImageData.images.fallback.src : null}>
@@ -100,7 +99,7 @@ const LayoutBlog = ({ children, data, path }) => {
                     {children}
                 </article>
             </StyledMain>
-            <Footer />
+            <FooterStandard />
         </div>)
 }
 

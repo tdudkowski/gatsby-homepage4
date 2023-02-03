@@ -6,7 +6,7 @@ import MenuNav from "./menu_nav"
 const StyledDiv = styled.div`
 padding: .5rem;
 
-background-color: #cf9f9f;
+background-color: rgba(250, 250, 250, .1);
 `;
 
 const StyledP = styled.p`

@@ -1,6 +1,7 @@
 import * as React from 'react'
 import { Link } from 'gatsby'
 import styled from "styled-components"
+import HeaderStandard from './header-standard'
 import MenuHeader from "./menu_main"
 import MenuFooter from "./menu_footer"
 import "./layout.css"
@@ -13,7 +14,7 @@ display: flex; flex-direction: column;
 `;
 
 const StyledHeader = styled.header`
-& div {max-width: 1200px; margin: 0 auto; display: flex; flex-direction: column;}
+& div {max-width: 1300px; margin: 0 auto; display: flex; flex-direction: column;}
 & div > a {text-decoration: none; padding-left: 1rem;}
 & h1 {font-size: 1rem;}
 & ul > li:nth-child(1) {display: none;}
